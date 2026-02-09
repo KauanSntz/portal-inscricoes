@@ -1,4 +1,9 @@
-window.PORTAL_COURSES = {
+// assets/js/courses-data.js
+// Estrutura base por UNIDADE e MODALIDADE.
+// Modalidades suportadas: presencial | hibrido | semipresencial | ead
+// Cada item: { nome: "Curso", turno: "Matutino|Vespertino|Noturno|Flex|Online" }
+
+const coursesData = {
   sede: {
     presencial: [
       {"nome":"Administração","turno":"Matutino"},
@@ -102,67 +107,184 @@ window.PORTAL_COURSES = {
       {"nome":"Tecnologia em Segurança no Trabalho","turno":"Noturno"},
       {"nome":"Turismo","turno":"Noturno"}
     ],
+
     hibrido: [
-  {"nome":"Administração","turno":"Matutino"},
-  {"nome":"Administração","turno":"Noturno"},
-  {"nome":"Biomedicina","turno":"Matutino"},
-  {"nome":"Biomedicina","turno":"Noturno"},
-  {"nome":"Engenharia Ambiental","turno":"Matutino"},
-  {"nome":"Engenharia Ambiental","turno":"Noturno"},
-  {"nome":"Engenharia Civil","turno":"Matutino"},
-  {"nome":"Engenharia Civil","turno":"Noturno"},
-  {"nome":"Engenharia de Produção","turno":"Matutino"},
-  {"nome":"Engenharia de Produção","turno":"Noturno"},
-  {"nome":"Engenharia Elétrica","turno":"Matutino"},
-  {"nome":"Engenharia Elétrica","turno":"Noturno"},
-  {"nome":"Engenharia Mecânica","turno":"Matutino"},
-  {"nome":"Engenharia Mecânica","turno":"Noturno"},
-  {"nome":"Farmácia","turno":"Matutino"},
-  {"nome":"Farmácia","turno":"Noturno"},
-  {"nome":"Fisioterapia","turno":"Matutino"},
-  {"nome":"Fisioterapia","turno":"Noturno"},
-  {"nome":"Fonoaudiologia","turno":"Matutino"},
-  {"nome":"Fonoaudiologia","turno":"Noturno"},
-  {"nome":"Nutrição","turno":"Matutino"},
-  {"nome":"Nutrição","turno":"Noturno"}
-],
+      {"nome":"Administração","turno":"Matutino"},
+      {"nome":"Administração","turno":"Noturno"},
+      {"nome":"Biomedicina","turno":"Matutino"},
+      {"nome":"Biomedicina","turno":"Noturno"},
+      {"nome":"Engenharia Ambiental","turno":"Matutino"},
+      {"nome":"Engenharia Ambiental","turno":"Noturno"},
+      {"nome":"Engenharia Civil","turno":"Matutino"},
+      {"nome":"Engenharia Civil","turno":"Noturno"},
+      {"nome":"Engenharia de Produção","turno":"Matutino"},
+      {"nome":"Engenharia de Produção","turno":"Noturno"},
+      {"nome":"Engenharia Elétrica","turno":"Matutino"},
+      {"nome":"Engenharia Elétrica","turno":"Noturno"},
+      {"nome":"Engenharia Mecânica","turno":"Matutino"},
+      {"nome":"Engenharia Mecânica","turno":"Noturno"},
+      {"nome":"Farmácia","turno":"Matutino"},
+      {"nome":"Farmácia","turno":"Noturno"},
+      {"nome":"Fisioterapia","turno":"Matutino"},
+      {"nome":"Fisioterapia","turno":"Noturno"},
+      {"nome":"Fonoaudiologia","turno":"Matutino"},
+      {"nome":"Fonoaudiologia","turno":"Noturno"},
+      {"nome":"Nutrição","turno":"Matutino"},
+      {"nome":"Nutrição","turno":"Noturno"}
+    ],
+
     semipresencial: [
-  {"nome":"Nutrição","turno":"Flex"},
-  {"nome":"Farmácia","turno":"Flex"},
-  {"nome":"Análise e Desenvolvimento de Sistemas","turno":"Flex"},
-  {"nome":"Ciências Contábeis","turno":"Flex"},
-  {"nome":"Biomedicina","turno":"Flex"},
-  {"nome":"Fisioterapia","turno":"Flex"},
-  {"nome":"Pedagogia","turno":"Flex"},
-  {"nome":"Educação Física Bacharelado","turno":"Flex"},
-  {"nome":"Administração","turno":"Flex"},
-  {"nome":"Educação Física Licenciatura","turno":"Flex"},
-  {"nome":"Engenharia Civil","turno":"Flex"},
-  {"nome":"Engenharia Elétrica","turno":"Flex"},
-  {"nome":"Letras","turno":"Flex"},
-  {"nome":"Psicopedagogia","turno":"Flex"},
-  {"nome":"Serviço Social","turno":"Flex"},
-  {"nome":"Logística","turno":"Flex"},
-  {"nome":"Engenharia de Software","turno":"Flex"},
-  {"nome":"Estética e Cosmética","turno":"Flex"}
-],
+      {"nome":"Nutrição","turno":"Flex"},
+      {"nome":"Farmácia","turno":"Flex"},
+      {"nome":"Análise e Desenvolvimento de Sistemas","turno":"Flex"},
+      {"nome":"Ciências Contábeis","turno":"Flex"},
+      {"nome":"Biomedicina","turno":"Flex"},
+      {"nome":"Fisioterapia","turno":"Flex"},
+      {"nome":"Pedagogia","turno":"Flex"},
+      {"nome":"Educação Física Bacharelado","turno":"Flex"},
+      {"nome":"Administração","turno":"Flex"},
+      {"nome":"Educação Física Licenciatura","turno":"Flex"},
+      {"nome":"Engenharia Civil","turno":"Flex"},
+      {"nome":"Engenharia Elétrica","turno":"Flex"},
+      {"nome":"Letras","turno":"Flex"},
+      {"nome":"Psicopedagogia","turno":"Flex"},
+      {"nome":"Serviço Social","turno":"Flex"},
+      {"nome":"Logística","turno":"Flex"},
+      {"nome":"Engenharia de Software","turno":"Flex"},
+      {"nome":"Estética e Cosmética","turno":"Flex"}
+    ],
 
     ead: [
-  {"nome":"Ciências Contábeis","turno":"Online"},
-  {"nome":"Tecnologia em Análise e Desenvolvimento de Sistemas","turno":"Online"},
-  {"nome":"Tecnologia em Gestão Comercial","turno":"Online"},
-  {"nome":"Tecnologia em Gestão da Tecnologia da Informação","turno":"Online"},
-  {"nome":"Tecnologia em Gestão de Recursos Humanos","turno":"Online"},
-  {"nome":"Tecnologia em Gestão de Segurança Privada","turno":"Online"},
-  {"nome":"Tecnologia em Gestão Financeira","turno":"Online"},
-  {"nome":"Tecnologia em Gestão Pública","turno":"Online"},
-  {"nome":"Tecnologia em Logística","turno":"Online"},
-  {"nome":"Tecnologia em Marketing","turno":"Online"},
-  {"nome":"Tecnologia em Segurança Pública","turno":"Online"},
-  {"nome":"Tecnologia em Gestão Portuária","turno":"Online"},
-  {"nome":"Tecnologia em Gestão da Qualidade","turno":"Online"},
-  {"nome":"Engenharia de Software","turno":"Online"},
-  {"nome":"Administração","turno":"Online"}
-],
+      {"nome":"Ciências Contábeis","turno":"Online"},
+      {"nome":"Tecnologia em Análise e Desenvolvimento de Sistemas","turno":"Online"},
+      {"nome":"Tecnologia em Gestão Comercial","turno":"Online"},
+      {"nome":"Tecnologia em Gestão da Tecnologia da Informação","turno":"Online"},
+      {"nome":"Tecnologia em Gestão de Recursos Humanos","turno":"Online"},
+      {"nome":"Tecnologia em Gestão de Segurança Privada","turno":"Online"},
+      {"nome":"Tecnologia em Gestão Financeira","turno":"Online"},
+      {"nome":"Tecnologia em Gestão Pública","turno":"Online"},
+      {"nome":"Tecnologia em Logística","turno":"Online"},
+      {"nome":"Tecnologia em Marketing","turno":"Online"},
+      {"nome":"Tecnologia em Segurança Pública","turno":"Online"},
+      {"nome":"Tecnologia em Gestão Portuária","turno":"Online"},
+      {"nome":"Tecnologia em Gestão da Qualidade","turno":"Online"},
+      {"nome":"Engenharia de Software","turno":"Online"},
+      {"nome":"Administração","turno":"Online"}
+    ]
+  },
+
+  leste: {
+    presencial: [
+      { "nome": "Administração", "turno": "Matutino" },
+      { "nome": "Administração", "turno": "Noturno" },
+
+      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Matutino" },
+      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Noturno" },
+
+      { "nome": "Biomedicina", "turno": "Matutino" },
+      { "nome": "Biomedicina", "turno": "Noturno" },
+
+      { "nome": "Ciências Contábeis", "turno": "Matutino" },
+      { "nome": "Ciências Contábeis", "turno": "Noturno" },
+
+      { "nome": "Direito", "turno": "Matutino" },
+      { "nome": "Direito", "turno": "Noturno" },
+
+      { "nome": "Educação Física Bacharelado", "turno": "Matutino" },
+      { "nome": "Educação Física Bacharelado", "turno": "Noturno" },
+
+      { "nome": "Educação Física Licenciatura", "turno": "Matutino" },
+      { "nome": "Educação Física Licenciatura", "turno": "Noturno" },
+
+      { "nome": "Enfermagem", "turno": "Matutino" },
+      { "nome": "Enfermagem", "turno": "Noturno" },
+
+      { "nome": "Engenharia Ambiental e Energias Renováveis", "turno": "Matutino" },
+      { "nome": "Engenharia Ambiental e Energias Renováveis", "turno": "Noturno" },
+
+      { "nome": "Engenharia Civil", "turno": "Matutino" },
+      { "nome": "Engenharia Civil", "turno": "Noturno" },
+
+      { "nome": "Engenharia de Produção", "turno": "Matutino" },
+      { "nome": "Engenharia de Produção", "turno": "Noturno" },
+
+      { "nome": "Engenharia Elétrica", "turno": "Matutino" },
+      { "nome": "Engenharia Elétrica", "turno": "Noturno" },
+
+      { "nome": "Farmácia", "turno": "Matutino" },
+      { "nome": "Farmácia", "turno": "Noturno" },
+
+      { "nome": "Fisioterapia", "turno": "Matutino" },
+      { "nome": "Fisioterapia", "turno": "Noturno" },
+
+      { "nome": "Jornalismo", "turno": "Matutino" },
+      { "nome": "Jornalismo", "turno": "Noturno" },
+
+      { "nome": "Nutrição", "turno": "Matutino" },
+      { "nome": "Nutrição", "turno": "Noturno" },
+
+      { "nome": "Pedagogia", "turno": "Matutino" },
+      { "nome": "Pedagogia", "turno": "Noturno" },
+
+      { "nome": "Psicologia", "turno": "Matutino" },
+      { "nome": "Psicologia", "turno": "Noturno" },
+
+      { "nome": "Serviço Social", "turno": "Matutino" },
+      { "nome": "Serviço Social", "turno": "Noturno" },
+
+      { "nome": "Sistemas de Informação", "turno": "Matutino" },
+      { "nome": "Sistemas de Informação", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Design Gráfico", "turno": "Matutino" },
+      { "nome": "Tecnologia em Design Gráfico", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Matutino" },
+      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Gastronomia", "turno": "Matutino" },
+      { "nome": "Tecnologia em Gastronomia", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Matutino" },
+      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Matutino" },
+      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Logística", "turno": "Matutino" },
+      { "nome": "Tecnologia em Logística", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Marketing", "turno": "Matutino" },
+      { "nome": "Tecnologia em Marketing", "turno": "Noturno" },
+
+      { "nome": "Tecnologia em Radiologia", "turno": "Noturno" },
+      { "nome": "Tecnologia em Segurança no Trabalho", "turno": "Noturno" }
+    ],
+    hibrido: [],
+    semipresencial: [],
+    ead: []
+  },
+
+  sul: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: []
+  },
+
+  norte: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: []
+  },
+
+  oeste: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: []
   }
 };
+
+// deixa disponível globalmente pro app.js
+window.coursesData = coursesData;
