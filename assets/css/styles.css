@@ -1,0 +1,510 @@
+/* =========================================================
+   PORTAL FAMETRO 2026/1 — CSS (Refatorado)
+   Estrutura: Tokens -> Base -> Layout -> Componentes -> Modal -> Cursos -> Temas
+   ========================================================= */
+
+/* =========================
+   1) TOKENS (Design System)
+   ========================= */
+:root{
+  /* Tipografia */
+  --font-sans: "Segoe UI", Tahoma, Verdana, sans-serif;
+
+  /* Cores base */
+  --bg-page-1: #f5f7fa;
+  --bg-page-2: #c3cfe2;
+  --surface: #ffffff;
+  --surface-2: #fafbff;
+
+  --text: #111827;
+  --muted: #4b5563;
+
+  --border: #e9ebf2;
+  --border-strong: #d8dbe2;
+
+  /* Gradiente do header */
+  --header-g1: #667eea;
+  --header-g2: #764ba2;
+
+  /* Raios */
+  --r-1: 10px;
+  --r-2: 12px;
+  --r-3: 15px;
+  --r-4: 18px;
+
+  /* Espaçamentos */
+  --sp-1: 8px;
+  --sp-2: 12px;
+  --sp-3: 16px;
+  --sp-4: 20px;
+  --sp-5: 30px;
+  --sp-6: 40px;
+
+  /* Sombras */
+  --sh-1: 0 5px 20px rgba(0,0,0,0.10);
+  --sh-2: 0 10px 20px rgba(0,0,0,0.18);
+  --sh-3: 0 25px 80px rgba(0,0,0,0.35);
+
+  /* Foco (acessibilidade) */
+  --focus-ring: 0 0 0 4px rgba(37,99,235,0.16);
+}
+
+/* =========================
+   2) BASE / RESET
+   ========================= */
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html, body{ height:100%; }
+
+body{
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-page-1), var(--bg-page-2));
+  padding: var(--sp-4);
+}
+
+a{ color: inherit; }
+button, input{ font-family: inherit; }
+
+/* =========================
+   3) LAYOUT
+   ========================= */
+.container{
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+header{
+  text-align:center;
+  padding: var(--sp-6);
+  background: linear-gradient(135deg, var(--header-g1), var(--header-g2));
+  color:#fff;
+  border-radius: var(--r-3);
+  margin-bottom: var(--sp-6);
+}
+
+header h1{
+  font-size: 2.4rem;
+  letter-spacing: .2px;
+}
+
+footer{
+  text-align:center;
+  color: var(--muted);
+  margin: var(--sp-6) 0;
+}
+
+/* =========================
+   4) UNIDADE (CARD)
+   ========================= */
+.unidade{
+  /* tema da unidade (defaults) */
+  --accent: #111;
+  --grad1: #444;
+  --grad2: #222;
+
+  background: var(--surface);
+  border-radius: var(--r-3);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  box-shadow: var(--sh-1);
+}
+
+.unidade-header{
+  display:flex;
+  align-items:flex-end;
+  gap: var(--sp-3);
+}
+
+.unidade-header h2{
+  flex:1;
+  font-size: 2rem;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+/* =========================
+   5) SUBTÍTULOS DE MODALIDADE
+   ========================= */
+.subtitulo-modalidade{
+  font-size: 1.3rem;
+  margin-top: 35px;
+  margin-bottom: 20px;
+
+  color: var(--accent);
+  font-weight: 900;
+  text-transform: uppercase;
+
+  border-left: 6px solid var(--accent);
+  background: rgba(0,0,0,0.03);
+  padding: 10px 15px;
+  border-radius: 0 var(--r-1) var(--r-1) 0;
+}
+
+/* =========================
+   6) BOTÕES DE INSCRIÇÃO (cards clicáveis)
+   ========================= */
+.botoes{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--sp-4);
+}
+
+.botao{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  padding: 25px;
+  min-height: 160px;
+
+  border-radius: var(--r-2);
+  text-decoration:none;
+  text-align:center;
+
+  color:#fff;
+  font-weight: 700;
+
+  background: linear-gradient(135deg, var(--grad1), var(--grad2));
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.botao:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--sh-2);
+}
+
+.codigo{
+  background: rgba(0,0,0,0.25);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  font-size: .9rem;
+}
+
+.tipo{
+  font-size: 1.1rem;
+  display:block;
+  margin-bottom: 5px;
+}
+
+.modalidade{
+  font-size: 1rem;
+  opacity: .9;
+}
+
+/* =========================
+   7) BOTÃO "PESQUISAR CURSOS" (ação)
+   ========================= */
+.btn-cursos{
+  display:inline-flex;
+  align-items:center;
+  gap: 10px;
+
+  padding: 10px 14px;
+  border-radius: var(--r-2);
+
+  border: 2px solid var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+
+  font-weight: 900;
+  cursor: pointer;
+  user-select:none;
+
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+}
+
+.btn-cursos svg{ width: 18px; height: 18px; }
+
+.btn-cursos:hover{
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.btn-cursos:focus-visible{
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* =========================
+   8) MODAL (POPUP GRANDE)
+   ========================= */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding: 22px;
+  background: rgba(0,0,0,0.45);
+  z-index: 9999;
+
+  /* recebe --accent via JS */
+  --accent: #2563eb;
+}
+
+.modal-overlay.is-open{ display:flex; }
+
+.modal{
+  width: min(1100px, 96vw);
+  max-height: 86vh;
+
+  background: var(--surface);
+  border-radius: var(--r-4);
+  overflow:hidden;
+
+  border: 3px solid var(--accent);
+  box-shadow: var(--sh-3);
+}
+
+.modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.06));
+}
+
+.modal-title{
+  font-size: 1.2rem;
+  font-weight: 950;
+  color: var(--accent);
+}
+
+.modal-close{
+  width: 42px;
+  height: 42px;
+
+  border-radius: var(--r-2);
+  border: 2px solid var(--accent);
+
+  background: var(--surface);
+  color: var(--accent);
+
+  font-weight: 950;
+  cursor: pointer;
+
+  transition: background .18s ease, color .18s ease;
+}
+
+.modal-close:hover{
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal-close:focus-visible{
+  outline:none;
+  box-shadow: var(--focus-ring);
+}
+
+.modal-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.tab-btn{
+  padding: 10px 12px;
+  border-radius: var(--r-2);
+
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+
+  cursor:pointer;
+  font-weight: 900;
+
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+
+.tab-btn:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tab-btn.is-active{
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.tab-btn:focus-visible{
+  outline:none;
+  box-shadow: var(--focus-ring);
+}
+
+.modal-body{
+  padding: 14px 16px 18px;
+  overflow:auto;
+  max-height: calc(86vh - 140px);
+}
+
+/* =========================
+   9) BUSCA / FILTROS
+   ========================= */
+.search-row{
+  display:flex;
+  gap: 10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom: 12px;
+}
+
+.search-input{
+  flex:1;
+  min-width: 260px;
+
+  padding: 12px 14px;
+  border-radius: var(--r-2);
+
+  border: 2px solid var(--border-strong);
+  outline:none;
+
+  font-weight: 800;
+}
+
+.search-input:focus{
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+.chips{
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+}
+
+.chip{
+  padding: 9px 12px;
+  border-radius: 999px;
+
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+
+  cursor:pointer;
+  font-weight: 900;
+
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+
+.chip:hover{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip.is-active{
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.chip:focus-visible{
+  outline:none;
+  box-shadow: var(--focus-ring);
+}
+
+.courses-meta{
+  color: var(--muted);
+  font-weight: 900;
+  margin: 8px 0 14px;
+}
+
+/* =========================
+   10) LISTA DE CURSOS (NÃO CLICÁVEL)
+   - objetivo: alta separação visual sem poluição
+   - sem hover "de botão"
+   ========================= */
+.course-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.course-card{
+  background: var(--surface);
+  border: 2px solid #cfd5e6;      /* cinza sempre */
+  border-radius: var(--r-4);
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(17,24,39,0.06);
+  cursor: default;
+
+  transition: border-color .18s ease; /* só a borda muda */
+}
+
+.course-card:hover{
+  border-color: var(--accent);    /* cor da unidade */
+}
+
+
+.course-card:hover{
+  /* hover super discreto (não parece botão) */
+  border-color: #cfd5e6;
+}
+
+.course-name{
+  font-weight: 950;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: .1px;
+}
+
+.badges{
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  font-size: .82rem;
+  font-weight: 950;
+
+  padding: 7px 10px;
+  border-radius: 999px;
+
+  background: rgba(37,99,235,0.10); /* azul suave padrão */
+  color: var(--accent);
+
+  border: 1px solid rgba(37,99,235,0.18);
+}
+
+.empty-state{
+  padding: 18px;
+  border-radius: var(--r-4);
+  border: 2px dashed var(--border-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 950;
+}
+
+/* =========================
+   11) TEMAS POR UNIDADE
+   ========================= */
+:root{
+  --u-sede:  #2563eb;
+  --u-leste: #059669;
+  --u-sul:   #dc2626;
+  --u-norte: #7c3aed;
+  --u-oeste: #14b8a6;
+}
+
+/* Unidades */
+.unidade.sede { --accent: var(--u-sede);  --grad1:#3b82f6; --grad2: var(--u-sede); }
+.unidade.leste{ --accent: var(--u-leste); --grad1:#10b981; --grad2: var(--u-leste); }
+.unidade.sul  { --accent: var(--u-sul);   --grad1:#ef4444; --grad2: var(--u-sul); }
+.unidade.norte{ --accent: var(--u-norte); --grad1:#8b5cf6; --grad2: var(--u-norte); }
+.unidade.oeste{ --accent: var(--u-oeste); --grad1:#2dd4bf; --grad2: var(--u-oeste); }
