@@ -563,3 +563,49 @@ footer{
   }
   .modal-tabs::-webkit-scrollbar{ display:none; }
 }
+
+/* ===== FIX: abas (modalidades) não ficarem cortadas no mobile ===== */
+
+/* garante que header e tabs não sejam "espremidos" */
+.modal{
+  display: flex;
+  flex-direction: column;
+  max-height: 86vh;
+  max-height: 86dvh;
+  overflow: hidden;
+}
+
+.modal-header,
+.modal-tabs{
+  flex: 0 0 auto;     /* NÃO encolhe */
+  min-height: fit-content;
+}
+
+/* no mobile, tabs viram uma "faixa" rolável (não corta) */
+@media (max-width: 520px){
+  .modal-tabs{
+    flex-wrap: nowrap;            /* evita quebrar e ficar esquisito */
+    overflow-x: auto;             /* permite arrastar pro lado */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding-bottom: 10px;         /* espaço pro dedo + não cortar borda */
+    scrollbar-width: none;
+  }
+  .modal-tabs::-webkit-scrollbar{ display:none; }
+
+  .tab-btn{
+    flex: 0 0 auto;               /* cada botão mantém tamanho */
+    white-space: nowrap;          /* texto não quebra */
+  }
+}
+
+/* mantém seu fix do conteúdo cortado */
+.modal-body{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: calc(18px + env(safe-area-inset-bottom));
+}
