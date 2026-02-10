@@ -1,3 +1,4 @@
+// assets/js/links-data.js
 window.PORTAL_LINKS = [
   {
     slug: "sede",
@@ -15,8 +16,10 @@ window.PORTAL_LINKS = [
         links: [
           { codigo: "3118", tipo: "Vestibular Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3118#/es/inscricoeswizard" },
           { codigo: "3123", tipo: "Matrícula Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3123#/es/inscricoeswizard" },
+
           { codigo: "3117", tipo: "Vestibular Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard" },
           { codigo: "3122", tipo: "Matrícula Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard" },
+
           { codigo: "3119", tipo: "Vestibular Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard" },
           { codigo: "3124", tipo: "Matrícula Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard" }
         ]
@@ -47,8 +50,10 @@ window.PORTAL_LINKS = [
         links: [
           { codigo: "3128", tipo: "Vestibular Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3128#/es/inscricoeswizard" },
           { codigo: "3134", tipo: "Matrícula Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3134#/es/inscricoeswizard" },
+
           { codigo: "3127", tipo: "Vestibular Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3127#/es/inscricoeswizard" },
           { codigo: "3133", tipo: "Matrícula Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3133#/es/inscricoeswizard" },
+
           { codigo: "3130", tipo: "Vestibular Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3130#/es/inscricoeswizard" },
           { codigo: "3135", tipo: "Matrícula Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3135#/es/inscricoeswizard" }
         ]
@@ -79,8 +84,10 @@ window.PORTAL_LINKS = [
         links: [
           { codigo: "3139", tipo: "Vestibular Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3139#/es/inscricoeswizard" },
           { codigo: "3144", tipo: "Matrícula Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3144#/es/inscricoeswizard" },
+
           { codigo: "3138", tipo: "Vestibular Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3138#/es/inscricoeswizard" },
           { codigo: "3143", tipo: "Matrícula Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3143#/es/inscricoeswizard" },
+
           { codigo: "3140", tipo: "Vestibular Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3140#/es/inscricoeswizard" },
           { codigo: "3145", tipo: "Matrícula Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3145#/es/inscricoeswizard" }
         ]
@@ -111,8 +118,10 @@ window.PORTAL_LINKS = [
         links: [
           { codigo: "3148", tipo: "Vestibular Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3148#/es/inscricoeswizard" },
           { codigo: "3152", tipo: "Matrícula Online", modalidade: "Híbrido", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3152#/es/inscricoeswizard" },
+
           { codigo: "3147", tipo: "Vestibular Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3147#/es/inscricoeswizard" },
           { codigo: "3151", tipo: "Matrícula Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3151#/es/inscricoeswizard" },
+
           { codigo: "3149", tipo: "Vestibular Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3149#/es/inscricoeswizard" },
           { codigo: "3153", tipo: "Matrícula Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3153#/es/inscricoeswizard" }
         ]
@@ -143,6 +152,7 @@ window.PORTAL_LINKS = [
         links: [
           { codigo: "3117", tipo: "Vestibular Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard/dados-basicos" },
           { codigo: "3122", tipo: "Matrícula Online", modalidade: "Semipresencial", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard" },
+
           { codigo: "3119", tipo: "Vestibular Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard/dados-basicos" },
           { codigo: "3124", tipo: "Matrícula Online", modalidade: "Semi Flex", href: "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard" }
         ]
