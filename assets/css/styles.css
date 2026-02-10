@@ -1,611 +1,438 @@
 /* =========================================================
-   PORTAL FAMETRO 2026/1 — CSS (Refatorado)
-   Estrutura: Tokens -> Base -> Layout -> Componentes -> Modal -> Cursos -> Temas
+   PORTAL FAMETRO 2026/1 — CSS (limpo e consistente)
+   Tokens -> Base -> Layout -> Unidades/Links -> Modal -> Cursos -> Temas/Responsivo
    ========================================================= */
 
 /* =========================
-   1) TOKENS (Design System)
+   1) TOKENS
    ========================= */
 :root{
-  /* Tipografia */
-  --font-sans: "Segoe UI", Tahoma, Verdana, sans-serif;
+  --font: "Segoe UI", Tahoma, Verdana, sans-serif;
 
-  /* Cores base */
-  --bg-page-1: #f5f7fa;
-  --bg-page-2: #c3cfe2;
-  --surface: #ffffff;
-  --surface-2: #fafbff;
+  --bg1:#f5f7fa;
+  --bg2:#c3cfe2;
 
-  --text: #111827;
-  --muted: #4b5563;
+  --surface:#fff;
+  --surface-2:#fafbff;
 
-  --border: #e9ebf2;
-  --border-strong: #d8dbe2;
+  --text:#111827;
+  --muted:#4b5563;
 
-  /* Gradiente do header */
-  --header-g1: #667eea;
-  --header-g2: #764ba2;
+  --border:#e9ebf2;
+  --border-strong:#d8dbe2;
 
-  /* Raios */
-  --r-1: 10px;
-  --r-2: 12px;
-  --r-3: 15px;
-  --r-4: 18px;
+  --header-g1:#667eea;
+  --header-g2:#764ba2;
 
-  /* Espaçamentos */
-  --sp-1: 8px;
-  --sp-2: 12px;
-  --sp-3: 16px;
-  --sp-4: 20px;
-  --sp-5: 30px;
-  --sp-6: 40px;
+  --r1:10px;
+  --r2:12px;
+  --r3:15px;
+  --r4:18px;
 
-  /* Sombras */
-  --sh-1: 0 5px 20px rgba(0,0,0,0.10);
-  --sh-2: 0 10px 20px rgba(0,0,0,0.18);
-  --sh-3: 0 25px 80px rgba(0,0,0,0.35);
+  --sp1:8px;
+  --sp2:12px;
+  --sp3:16px;
+  --sp4:20px;
+  --sp5:30px;
+  --sp6:40px;
 
-  /* Foco (acessibilidade) */
-  --focus-ring: 0 0 0 4px rgba(37,99,235,0.16);
+  --sh1:0 5px 20px rgba(0,0,0,.10);
+  --sh2:0 10px 20px rgba(0,0,0,.18);
+  --sh3:0 25px 80px rgba(0,0,0,.35);
+
+  --focus:0 0 0 4px rgba(37,99,235,.16);
+
+  /* Cores por unidade */
+  --u-sede:#2563eb;
+  --u-leste:#059669;
+  --u-sul:#dc2626;
+  --u-norte:#7c3aed;
+  --u-oeste:#14b8a6;
 }
 
 /* =========================
-   2) BASE / RESET
+   2) BASE
    ========================= */
-*{ margin:0; padding:0; box-sizing:border-box; }
-
-html, body{ height:100%; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
 
 body{
-  font-family: var(--font-sans);
-  color: var(--text);
-  background: linear-gradient(135deg, var(--bg-page-1), var(--bg-page-2));
-  padding: var(--sp-4);
+  font-family:var(--font);
+  color:var(--text);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  padding:var(--sp4);
 }
 
-a{ color: inherit; }
-button, input{ font-family: inherit; }
+a{color:inherit}
+button,input{font-family:inherit}
 
 /* =========================
    3) LAYOUT
    ========================= */
-.container{
-  max-width: 1400px;
-  margin: 0 auto;
-}
+.container{max-width:1400px;margin:0 auto}
 
 header{
   text-align:center;
-  padding: var(--sp-6);
-  background: linear-gradient(135deg, var(--header-g1), var(--header-g2));
+  padding:var(--sp6);
+  background:linear-gradient(135deg,var(--header-g1),var(--header-g2));
   color:#fff;
-  border-radius: var(--r-3);
-  margin-bottom: var(--sp-6);
+  border-radius:var(--r3);
+  margin-bottom:var(--sp6);
 }
-
-header h1{
-  font-size: 2.4rem;
-  letter-spacing: .2px;
-}
+header h1{font-size:2.4rem;letter-spacing:.2px}
 
 footer{
   text-align:center;
-  color: var(--muted);
-  margin: var(--sp-6) 0;
+  color:var(--muted);
+  margin:var(--sp6) 0;
 }
 
 /* =========================
    4) UNIDADE (CARD)
    ========================= */
 .unidade{
-  /* tema da unidade (defaults) */
-  --accent: #111;
-  --grad1: #444;
-  --grad2: #222;
+  --accent:#111;
+  --grad1:#444;
+  --grad2:#222;
 
-  background: var(--surface);
-  border-radius: var(--r-3);
-  padding: var(--sp-5);
-  margin-bottom: var(--sp-6);
-  box-shadow: var(--sh-1);
+  background:var(--surface);
+  border-radius:var(--r3);
+  padding:var(--sp5);
+  margin-bottom:var(--sp6);
+  box-shadow:var(--sh1);
 }
 
 .unidade-header{
   display:flex;
   align-items:flex-end;
-  gap: var(--sp-3);
+  gap:var(--sp3);
 }
 
 .unidade-header h2{
   flex:1;
-  font-size: 2rem;
-  padding-bottom: 15px;
-  border-bottom: 3px solid var(--accent);
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 0;
+  font-size:2rem;
+  padding-bottom:15px;
+  border-bottom:3px solid var(--accent);
+  color:var(--accent);
+  text-transform:uppercase;
+  margin:0;
 }
 
+/* Botão "Pesquisar cursos" */
+.btn-cursos{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  padding:10px 14px;
+  border-radius:var(--r2);
+
+  border:2px solid var(--accent);
+  background:var(--surface);
+  color:var(--accent);
+
+  font-weight:900;
+  cursor:pointer;
+  user-select:none;
+  transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.btn-cursos svg{width:18px;height:18px}
+.btn-cursos:hover{background:var(--accent);color:#fff;transform:translateY(-1px);box-shadow:0 10px 20px rgba(0,0,0,.12)}
+.btn-cursos:focus-visible{outline:none;box-shadow:var(--focus)}
+
 /* =========================
-   5) SUBTÍTULOS DE MODALIDADE
+   5) FRONT (LINKS) — título + 2 links embaixo
+   (isso é o “Híbrido -> Vestibular/Matrícula” etc)
    ========================= */
-.subtitulo-modalidade{
-  font-size: 1.3rem;
-  margin-top: 35px;
-  margin-bottom: 20px;
+.unidade .subtitulo-modalidade{
+  margin-top:22px;
+  margin-bottom:10px;
 
-  color: var(--accent);
-  font-weight: 900;
-  text-transform: uppercase;
+  padding:12px 14px;
+  border-radius:14px;
 
-  border-left: 6px solid var(--accent);
-  background: rgba(0,0,0,0.03);
-  padding: 10px 15px;
-  border-radius: 0 var(--r-1) var(--r-1) 0;
+  font-size:1.05rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+
+  color:var(--accent);
+  background:var(--surface-2);
+
+  border:1px solid var(--border);
+  border-left:6px solid var(--accent);
 }
 
-/* =========================
-   6) BOTÕES DE INSCRIÇÃO (cards clicáveis)
-   ========================= */
-.botoes{
+/* caixa dos botões (sempre 2 colunas) */
+.unidade .subtitulo-modalidade + .botoes{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--sp-4);
+  grid-template-columns:repeat(2,minmax(220px,1fr));
+  gap:16px;
+
+  padding:16px;
+  border-radius:var(--r4);
+
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
-.botao{
+@media (max-width:640px){
+  .unidade .subtitulo-modalidade + .botoes{grid-template-columns:1fr}
+}
+
+/* botões (links) */
+.unidade .botoes .botao{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 
-  padding: 25px;
-  min-height: 160px;
+  min-height:132px;
+  padding:18px;
 
-  border-radius: var(--r-2);
+  border-radius:var(--r4);
   text-decoration:none;
   text-align:center;
 
   color:#fff;
-  font-weight: 700;
+  font-weight:900;
 
-  background: linear-gradient(135deg, var(--grad1), var(--grad2));
-  transition: transform .18s ease, box-shadow .18s ease;
-}
+  background:linear-gradient(135deg,var(--grad1),var(--grad2));
+  box-shadow:0 12px 22px rgba(0,0,0,.12);
 
-.botao:hover{
-  transform: translateY(-6px);
-  box-shadow: var(--sh-2);
+  transform:translateY(0);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
 }
+.unidade .botoes .botao:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(0,0,0,.16);filter:brightness(1.03)}
 
 .codigo{
-  background: rgba(0,0,0,0.25);
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 10px;
-  font-size: .9rem;
+  background:rgba(0,0,0,.22);
+  padding:6px 12px;
+  border-radius:999px;
+  margin-bottom:10px;
+  font-size:.9rem;
+  font-weight:950;
 }
-
-.tipo{
-  font-size: 1.1rem;
-  display:block;
-  margin-bottom: 5px;
-}
-
-.modalidade{
-  font-size: 1rem;
-  opacity: .9;
-}
+.tipo{font-size:1.05rem;font-weight:950;margin-bottom:4px}
+.modalidade{font-size:.95rem;opacity:.92;font-weight:900}
 
 /* =========================
-   7) BOTÃO "PESQUISAR CURSOS" (ação)
-   ========================= */
-.btn-cursos{
-  display:inline-flex;
-  align-items:center;
-  gap: 10px;
-
-  padding: 10px 14px;
-  border-radius: var(--r-2);
-
-  border: 2px solid var(--accent);
-  background: var(--surface);
-  color: var(--accent);
-
-  font-weight: 900;
-  cursor: pointer;
-  user-select:none;
-
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
-}
-
-.btn-cursos svg{ width: 18px; height: 18px; }
-
-.btn-cursos:hover{
-  background: var(--accent);
-  color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-}
-
-.btn-cursos:focus-visible{
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-/* =========================
-   8) MODAL (POPUP GRANDE)
+   6) MODAL (POPUP) — estrutura estável no mobile
    ========================= */
 .modal-overlay{
-  position: fixed;
-  inset: 0;
+  position:fixed;
+  inset:0;
 
   display:none;
   align-items:center;
   justify-content:center;
 
-  padding: 22px;
-  background: rgba(0,0,0,0.45);
-  z-index: 9999;
+  padding:22px;
+  background:rgba(0,0,0,.45);
+  z-index:9999;
 
-  /* recebe --accent via JS */
-  --accent: #2563eb;
+  --accent:#2563eb;
 }
-
-.modal-overlay.is-open{ display:flex; }
+.modal-overlay.is-open{display:flex}
 
 .modal{
-  width: min(1100px, 96vw);
-  max-height: 86vh;
+  display:flex;
+  flex-direction:column;
 
-  background: var(--surface);
-  border-radius: var(--r-4);
+  width:min(1100px,96vw);
+  max-height:86vh;
+  max-height:86dvh;
+
+  background:var(--surface);
+  border-radius:var(--r4);
   overflow:hidden;
 
-  border: 3px solid var(--accent);
-  box-shadow: var(--sh-3);
+  border:3px solid var(--accent);
+  box-shadow:var(--sh3);
 }
 
 .modal-header{
+  flex:0 0 auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  padding: 14px 16px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.06));
+  padding:14px 16px;
+  background:linear-gradient(135deg,rgba(0,0,0,.02),rgba(0,0,0,.06));
 }
-
-.modal-title{
-  font-size: 1.2rem;
-  font-weight: 950;
-  color: var(--accent);
-}
+.modal-title{font-size:1.2rem;font-weight:950;color:var(--accent)}
 
 .modal-close{
-  width: 42px;
-  height: 42px;
-
-  border-radius: var(--r-2);
-  border: 2px solid var(--accent);
-
-  background: var(--surface);
-  color: var(--accent);
-
-  font-weight: 950;
-  cursor: pointer;
-
-  transition: background .18s ease, color .18s ease;
+  width:42px;height:42px;
+  border-radius:var(--r2);
+  border:2px solid var(--accent);
+  background:var(--surface);
+  color:var(--accent);
+  font-weight:950;
+  cursor:pointer;
+  transition:background .18s ease,color .18s ease;
 }
-
-.modal-close:hover{
-  background: var(--accent);
-  color: #fff;
-}
-
-.modal-close:focus-visible{
-  outline:none;
-  box-shadow: var(--focus-ring);
-}
+.modal-close:hover{background:var(--accent);color:#fff}
+.modal-close:focus-visible{outline:none;box-shadow:var(--focus)}
 
 .modal-tabs{
+  flex:0 0 auto;
   display:flex;
-  flex-wrap:wrap;
-  gap: 10px;
+  gap:10px;
+  padding:12px 16px;
 
-  padding: 12px 16px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--surface-2);
+}
+
+/* mobile: tabs roláveis (não cortam) */
+@media (max-width:520px){
+  .modal-tabs{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:10px;
+  }
+  .modal-tabs::-webkit-scrollbar{display:none}
 }
 
 .tab-btn{
-  padding: 10px 12px;
-  border-radius: var(--r-2);
-
-  border: 2px solid var(--border-strong);
-  background: var(--surface);
-
+  flex:0 0 auto;
+  padding:10px 12px;
+  border-radius:var(--r2);
+  border:2px solid var(--border-strong);
+  background:var(--surface);
   cursor:pointer;
-  font-weight: 900;
-
-  transition: border-color .18s ease, color .18s ease, background .18s ease;
+  font-weight:950;
+  transition:border-color .18s ease,color .18s ease,background .18s ease;
+  white-space:nowrap;
 }
-
-.tab-btn:hover{
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.tab-btn.is-active{
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.tab-btn:focus-visible{
-  outline:none;
-  box-shadow: var(--focus-ring);
-}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tab-btn.is-active{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab-btn:focus-visible{outline:none;box-shadow:var(--focus)}
 
 .modal-body{
-  padding: 14px 16px 18px;
+  flex:1;
+  min-height:0;
   overflow:auto;
-  max-height: calc(86vh - 140px);
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+
+  padding:14px 16px calc(18px + env(safe-area-inset-bottom));
 }
 
 /* =========================
-   9) BUSCA / FILTROS
+   7) BUSCA / FILTROS
    ========================= */
 .search-row{
   display:flex;
-  gap: 10px;
+  gap:10px;
   flex-wrap:wrap;
   align-items:center;
-  margin-bottom: 12px;
+  margin-bottom:12px;
 }
 
 .search-input{
   flex:1;
-  min-width: 260px;
-
-  padding: 12px 14px;
-  border-radius: var(--r-2);
-
-  border: 2px solid var(--border-strong);
+  min-width:260px;
+  padding:12px 14px;
+  border-radius:var(--r2);
+  border:2px solid var(--border-strong);
   outline:none;
-
-  font-weight: 800;
+  font-weight:900;
 }
+.search-input:focus{border-color:var(--accent);box-shadow:var(--focus)}
 
-.search-input:focus{
-  border-color: var(--accent);
-  box-shadow: var(--focus-ring);
-}
-
-.chips{
-  display:flex;
-  gap: 8px;
-  flex-wrap:wrap;
-}
-
+.chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{
-  padding: 9px 12px;
-  border-radius: 999px;
-
-  border: 2px solid var(--border-strong);
-  background: var(--surface);
-
+  padding:9px 12px;
+  border-radius:999px;
+  border:2px solid var(--border-strong);
+  background:var(--surface);
   cursor:pointer;
-  font-weight: 900;
-
-  transition: border-color .18s ease, color .18s ease, background .18s ease;
+  font-weight:950;
+  transition:border-color .18s ease,color .18s ease,background .18s ease;
 }
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.is-active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:focus-visible{outline:none;box-shadow:var(--focus)}
 
-.chip:hover{
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.chip.is-active{
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.chip:focus-visible{
-  outline:none;
-  box-shadow: var(--focus-ring);
-}
-
-.courses-meta{
-  color: var(--muted);
-  font-weight: 900;
-  margin: 8px 0 14px;
-}
+.courses-meta{color:var(--muted);font-weight:950;margin:8px 0 14px}
 
 /* =========================
-   10) LISTA DE CURSOS (NÃO CLICÁVEL)
-   - objetivo: alta separação visual sem poluição
-   - sem hover "de botão"
+   8) CURSOS (cards não clicáveis)
+   - borda cinza sempre
+   - hover só muda a borda pra cor da unidade
    ========================= */
 .course-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:14px;
+}
+@media (max-width:520px){
+  .course-grid{grid-template-columns:1fr;gap:12px}
 }
 
 .course-card{
-  background: var(--surface);
-  border: 2px solid #cfd5e6;      /* cinza sempre */
-  border-radius: var(--r-4);
-  padding: 14px;
-  box-shadow: 0 2px 10px rgba(17,24,39,0.06);
-  cursor: default;
-
-  transition: border-color .18s ease; /* só a borda muda */
+  background:var(--surface);
+  border:2px solid #cfd5e6; /* cinza sempre */
+  border-radius:var(--r4);
+  padding:14px;
+  box-shadow:0 2px 10px rgba(17,24,39,.06);
+  cursor:default;
+  transition:border-color .18s ease;
 }
-
-.course-card:hover{
-  border-color: var(--accent);    /* cor da unidade */
-}
-
-
-.course-card:hover{
-  /* hover super discreto (não parece botão) */
-  border-color: #cfd5e6;
-}
+.course-card:hover{border-color:var(--accent)}
 
 .course-name{
-  font-weight: 950;
-  font-size: 1.05rem;
-  color: var(--text);
-  margin-bottom: 10px;
-  letter-spacing: .1px;
+  font-weight:950;
+  font-size:1.05rem;
+  margin-bottom:10px;
+  letter-spacing:.1px;
 }
 
-.badges{
-  display:flex;
-  gap: 8px;
-  flex-wrap:wrap;
-}
-
+.badges{display:flex;gap:8px;flex-wrap:wrap}
 .badge{
-  font-size: .82rem;
-  font-weight: 950;
+  font-size:.82rem;
+  font-weight:950;
+  padding:7px 10px;
+  border-radius:999px;
 
-  padding: 7px 10px;
-  border-radius: 999px;
-
-  background: rgba(37,99,235,0.10); /* azul suave padrão */
-  color: var(--accent);
-
-  border: 1px solid rgba(37,99,235,0.18);
+  background:rgba(0,0,0,.04);
+  border:1px solid rgba(0,0,0,.08);
+  color:var(--accent);
 }
 
 .empty-state{
-  padding: 18px;
-  border-radius: var(--r-4);
-  border: 2px dashed var(--border-strong);
-  background: var(--surface);
-  color: var(--muted);
-  font-weight: 950;
+  padding:18px;
+  border-radius:var(--r4);
+  border:2px dashed var(--border-strong);
+  background:var(--surface);
+  color:var(--muted);
+  font-weight:950;
 }
 
 /* =========================
-   11) TEMAS POR UNIDADE
+   9) TEMAS POR UNIDADE
    ========================= */
-:root{
-  --u-sede:  #2563eb;
-  --u-leste: #059669;
-  --u-sul:   #dc2626;
-  --u-norte: #7c3aed;
-  --u-oeste: #14b8a6;
+.unidade.sede { --accent:var(--u-sede);  --grad1:#3b82f6; --grad2:var(--u-sede); }
+.unidade.leste{ --accent:var(--u-leste); --grad1:#10b981; --grad2:var(--u-leste); }
+.unidade.sul  { --accent:var(--u-sul);   --grad1:#ef4444; --grad2:var(--u-sul); }
+.unidade.norte{ --accent:var(--u-norte); --grad1:#8b5cf6; --grad2:var(--u-norte); }
+.unidade.oeste{ --accent:var(--u-oeste); --grad1:#2dd4bf; --grad2:var(--u-oeste); }
+
+/* =========================
+   10) MOBILE GERAL
+   ========================= */
+@media (max-width:520px){
+  body{padding:12px}
+  header{padding:24px;border-radius:14px}
+  .unidade{padding:18px}
+  .modal-overlay{padding:12px}
 }
 
-/* Unidades */
-.unidade.sede { --accent: var(--u-sede);  --grad1:#3b82f6; --grad2: var(--u-sede); }
-.unidade.leste{ --accent: var(--u-leste); --grad1:#10b981; --grad2: var(--u-leste); }
-.unidade.sul  { --accent: var(--u-sul);   --grad1:#ef4444; --grad2: var(--u-sul); }
-.unidade.norte{ --accent: var(--u-norte); --grad1:#8b5cf6; --grad2: var(--u-norte); }
-.unidade.oeste{ --accent: var(--u-oeste); --grad1:#2dd4bf; --grad2: var(--u-oeste); }
-
-/* ===== FIX MOBILE: modal não cortar o final ===== */
-
-/* usa altura dinâmica no mobile (dvh) com fallback */
-.modal{
-  display: flex;
-  flex-direction: column;
-  width: min(1100px, 96vw);
-
-  /* antes era max-height + calc no body; agora o modal controla */
-  max-height: 86vh;
-  max-height: 86dvh; /* mobile moderno */
-
-  overflow: hidden;
-}
-
-/* remove o cálculo de altura e deixa o body ocupar o resto */
-.modal-body{
-  flex: 1;
-  min-height: 0;              /* ESSENCIAL pra scroll interno funcionar */
-  overflow: auto;
-
-  -webkit-overflow-scrolling: touch; /* iOS mais suave */
-  overscroll-behavior: contain;
-
-  /* espaço extra pra último card não ficar "cortado" */
-  padding-bottom: calc(18px + env(safe-area-inset-bottom));
-}
-
-/* também ajuda em alguns celulares com barra flutuante */
-.modal-overlay{
-  padding-bottom: calc(22px + env(safe-area-inset-bottom));
-}
-
-/* ===== Responsivo: cursos em 1 coluna no celular ===== */
-@media (max-width: 520px){
-  body{ padding: 12px; }
-  header{ padding: 24px; border-radius: 14px; }
-  .unidade{ padding: 18px; }
-
-  .modal-overlay{ padding: 12px; }
-
-  .course-grid{
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  /* tabs podem estourar largura no mobile */
-  .modal-tabs{
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .modal-tabs::-webkit-scrollbar{ display:none; }
-}
-
-/* ===== FIX: abas (modalidades) não ficarem cortadas no mobile ===== */
-
-/* garante que header e tabs não sejam "espremidos" */
-.modal{
-  display: flex;
-  flex-direction: column;
-  max-height: 86vh;
-  max-height: 86dvh;
-  overflow: hidden;
-}
-
-.modal-header,
-.modal-tabs{
-  flex: 0 0 auto;     /* NÃO encolhe */
-  min-height: fit-content;
-}
-
-/* no mobile, tabs viram uma "faixa" rolável (não corta) */
-@media (max-width: 520px){
-  .modal-tabs{
-    flex-wrap: nowrap;            /* evita quebrar e ficar esquisito */
-    overflow-x: auto;             /* permite arrastar pro lado */
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    gap: 10px;
-    padding-bottom: 10px;         /* espaço pro dedo + não cortar borda */
-    scrollbar-width: none;
-  }
-  .modal-tabs::-webkit-scrollbar{ display:none; }
-
-  .tab-btn{
-    flex: 0 0 auto;               /* cada botão mantém tamanho */
-    white-space: nowrap;          /* texto não quebra */
-  }
-}
-
-/* mantém seu fix do conteúdo cortado */
-.modal-body{
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  padding-bottom: calc(18px + env(safe-area-inset-bottom));
-}
+body.no-scroll { overflow: hidden; }

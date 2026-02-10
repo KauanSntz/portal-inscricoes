@@ -1,301 +1,345 @@
-(function () {
-  const root = document.getElementById("app");
-  const linksData = window.PORTAL_LINKS;
-  const coursesData = window.PORTAL_COURSES || {};
+// assets/js/courses-data.js
+// Estrutura por UNIDADE e MODALIDADE.
+// Modalidades suportadas no app: presencial | hibrido | semipresencial | ead
+// Cada item: { nome: "Curso", turno: "Matutino|Vespertino|Noturno|Flex|Online" }
 
-  if (!root) {
-    console.error("Elemento #app não encontrado.");
-    return;
-  }
-  if (!Array.isArray(linksData)) {
-    console.error("PORTAL_LINKS não carregou. Verifique links-data.js.");
-    return;
-  }
+// ✅ EAD é igual em todas as unidades → unificado aqui
+const EAD_PADRAO = [
+  { nome: "Administração", turno: "Online" },
+  { nome: "Ciências Contábeis", turno: "Online" },
+  { nome: "Engenharia de Software", turno: "Online" },
+  { nome: "Tecnologia em Análise e Desenvolvimento de Sistemas", turno: "Online" },
+  { nome: "Tecnologia em Gestão Comercial", turno: "Online" },
+  { nome: "Tecnologia em Gestão da Qualidade", turno: "Online" },
+  { nome: "Tecnologia em Gestão da Tecnologia da Informação", turno: "Online" },
+  { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Online" },
+  { nome: "Tecnologia em Gestão de Segurança Privada", turno: "Online" },
+  { nome: "Tecnologia em Gestão Financeira", turno: "Online" },
+  { nome: "Tecnologia em Gestão Portuária", turno: "Online" },
+  { nome: "Tecnologia em Gestão Pública", turno: "Online" },
+  { nome: "Tecnologia em Logística", turno: "Online" },
+  { nome: "Tecnologia em Marketing", turno: "Online" },
+  { nome: "Tecnologia em Segurança Pública", turno: "Online" },
+];
 
-  // cria o modal uma vez
-  const modal = ensureCoursesModal();
+// (opcional, mas recomendado) cada unidade recebe sua própria cópia
+const CLONE_EAD = () => EAD_PADRAO.map((c) => ({ ...c }));
 
-  root.innerHTML = "";
-  linksData.forEach((unidade) => root.appendChild(renderUnidade(unidade)));
+const coursesData = {
+  sede: {
+    presencial: [
+      { nome: "Administração", turno: "Matutino" },
+      { nome: "Administração", turno: "Noturno" },
+      { nome: "Arquitetura e Urbanismo", turno: "Matutino" },
+      { nome: "Arquitetura e Urbanismo", turno: "Noturno" },
+      { nome: "Big Data e Inteligência Analítica", turno: "Matutino" },
+      { nome: "Big Data e Inteligência Analítica", turno: "Noturno" },
+      { nome: "Biomedicina", turno: "Matutino" },
+      { nome: "Biomedicina", turno: "Noturno" },
+      { nome: "Ciência da Computação", turno: "Matutino" },
+      { nome: "Ciência da Computação", turno: "Noturno" },
+      { nome: "Ciências Contábeis", turno: "Matutino" },
+      { nome: "Ciências Contábeis", turno: "Noturno" },
+      { nome: "Ciências de Dados", turno: "Matutino" },
+      { nome: "Ciências de Dados", turno: "Noturno" },
+      { nome: "Ciências Econômicas", turno: "Matutino" },
+      { nome: "Ciências Econômicas", turno: "Noturno" },
+      { nome: "Direito", turno: "Matutino" },
+      { nome: "Direito", turno: "Noturno" },
+      { nome: "Direito", turno: "Vespertino" },
+      { nome: "Educação Física Bacharelado", turno: "Matutino" },
+      { nome: "Educação Física Bacharelado", turno: "Noturno" },
+      { nome: "Educação Física Licenciatura", turno: "Matutino" },
+      { nome: "Educação Física Licenciatura", turno: "Noturno" },
+      { nome: "Enfermagem", turno: "Matutino" },
+      { nome: "Enfermagem", turno: "Noturno" },
+      { nome: "Enfermagem", turno: "Vespertino" },
+      { nome: "Engenharia Ambiental", turno: "Matutino" },
+      { nome: "Engenharia Ambiental", turno: "Noturno" },
+      { nome: "Engenharia Civil", turno: "Matutino" },
+      { nome: "Engenharia Civil", turno: "Noturno" },
+      { nome: "Engenharia da Computação", turno: "Matutino" },
+      { nome: "Engenharia da Computação", turno: "Noturno" },
+      { nome: "Engenharia de Produção", turno: "Matutino" },
+      { nome: "Engenharia de Produção", turno: "Noturno" },
+      { nome: "Engenharia de Software", turno: "Matutino" },
+      { nome: "Engenharia de Software", turno: "Noturno" },
+      { nome: "Engenharia Elétrica", turno: "Matutino" },
+      { nome: "Engenharia Elétrica", turno: "Noturno" },
+      { nome: "Engenharia Mecânica", turno: "Matutino" },
+      { nome: "Engenharia Mecânica", turno: "Noturno" },
+      { nome: "Farmácia", turno: "Matutino" },
+      { nome: "Farmácia", turno: "Noturno" },
+      { nome: "Fisioterapia", turno: "Matutino" },
+      { nome: "Fisioterapia", turno: "Noturno" },
+      { nome: "Fisioterapia", turno: "Vespertino" },
+      { nome: "Fonoaudiologia", turno: "Matutino" },
+      { nome: "Fonoaudiologia", turno: "Noturno" },
+      { nome: "Fullstack", turno: "Matutino" },
+      { nome: "Fullstack", turno: "Noturno" },
+      { nome: "Gestão da Segurança e Defesa Cibernética", turno: "Matutino" },
+      { nome: "Gestão da Segurança e Defesa Cibernética", turno: "Noturno" },
+      { nome: "Gestão de Serviços Jurídicos e Notariais", turno: "Matutino" },
+      { nome: "Gestão de Serviços Jurídicos e Notariais", turno: "Noturno" },
+      { nome: "Inteligência Artificial", turno: "Matutino" },
+      { nome: "Inteligência Artificial", turno: "Noturno" },
+      { nome: "Internet das Coisas (IoT)", turno: "Matutino" },
+      { nome: "Internet das Coisas (IoT)", turno: "Noturno" },
+      { nome: "Jogos Digitais", turno: "Matutino" },
+      { nome: "Jogos Digitais", turno: "Noturno" },
+      { nome: "Jornalismo", turno: "Matutino" },
+      { nome: "Jornalismo", turno: "Noturno" },
+      { nome: "Medicina Veterinária", turno: "Matutino" },
+      { nome: "Medicina Veterinária", turno: "Noturno" },
+      { nome: "Nutrição", turno: "Matutino" },
+      { nome: "Nutrição", turno: "Noturno" },
+      { nome: "Odontologia", turno: "Matutino" },
+      { nome: "Odontologia", turno: "Noturno" },
+      { nome: "Pedagogia", turno: "Matutino" },
+      { nome: "Pedagogia", turno: "Noturno" },
+      { nome: "Psicologia", turno: "Matutino" },
+      { nome: "Psicologia", turno: "Noturno" },
+      { nome: "Publicidade e Propaganda", turno: "Matutino" },
+      { nome: "Publicidade e Propaganda", turno: "Noturno" },
+      { nome: "Quiropraxia", turno: "Matutino" },
+      { nome: "Quiropraxia", turno: "Noturno" },
+      { nome: "Redes de Computadores", turno: "Matutino" },
+      { nome: "Redes de Computadores", turno: "Noturno" },
+      { nome: "Serviço Social", turno: "Noturno" },
+      { nome: "Sistemas de Informação", turno: "Matutino" },
+      { nome: "Sistemas de Informação", turno: "Noturno" },
+      { nome: "Tecnologia em Análise e Desenvolvimento de Sistemas", turno: "Matutino" },
+      { nome: "Tecnologia em Análise e Desenvolvimento de Sistemas", turno: "Noturno" },
+      { nome: "Tecnologia em Design Gráfico", turno: "Matutino" },
+      { nome: "Tecnologia em Design Gráfico", turno: "Noturno" },
+      { nome: "Tecnologia em Estética e Cosmética", turno: "Matutino" },
+      { nome: "Tecnologia em Estética e Cosmética", turno: "Noturno" },
+      { nome: "Tecnologia em Gastronomia", turno: "Matutino" },
+      { nome: "Tecnologia em Gastronomia", turno: "Noturno" },
+      { nome: "Tecnologia em Gestão da Qualidade", turno: "Matutino" },
+      { nome: "Tecnologia em Gestão da Qualidade", turno: "Noturno" },
+      { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Matutino" },
+      { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Noturno" },
+      { nome: "Tecnologia em Logística", turno: "Matutino" },
+      { nome: "Tecnologia em Logística", turno: "Noturno" },
+      { nome: "Tecnologia em Marketing", turno: "Matutino" },
+      { nome: "Tecnologia em Marketing", turno: "Noturno" },
+      { nome: "Tecnologia em Radiologia", turno: "Matutino" },
+      { nome: "Tecnologia em Radiologia", turno: "Noturno" },
+      { nome: "Tecnologia em Segurança no Trabalho", turno: "Noturno" },
+      { nome: "Turismo", turno: "Noturno" },
+    ],
 
-  function renderUnidade(unidade) {
-    const section = document.createElement("section");
-    section.className = `unidade ${unidade.slug}`;
+    hibrido: [
+      { nome: "Administração", turno: "Matutino" },
+      { nome: "Administração", turno: "Noturno" },
+      { nome: "Biomedicina", turno: "Matutino" },
+      { nome: "Biomedicina", turno: "Noturno" },
+      { nome: "Engenharia Ambiental", turno: "Matutino" },
+      { nome: "Engenharia Ambiental", turno: "Noturno" },
+      { nome: "Engenharia Civil", turno: "Matutino" },
+      { nome: "Engenharia Civil", turno: "Noturno" },
+      { nome: "Engenharia de Produção", turno: "Matutino" },
+      { nome: "Engenharia de Produção", turno: "Noturno" },
+      { nome: "Engenharia Elétrica", turno: "Matutino" },
+      { nome: "Engenharia Elétrica", turno: "Noturno" },
+      { nome: "Engenharia Mecânica", turno: "Matutino" },
+      { nome: "Engenharia Mecânica", turno: "Noturno" },
+      { nome: "Farmácia", turno: "Matutino" },
+      { nome: "Farmácia", turno: "Noturno" },
+      { nome: "Fisioterapia", turno: "Matutino" },
+      { nome: "Fisioterapia", turno: "Noturno" },
+      { nome: "Fonoaudiologia", turno: "Matutino" },
+      { nome: "Fonoaudiologia", turno: "Noturno" },
+      { nome: "Nutrição", turno: "Matutino" },
+      { nome: "Nutrição", turno: "Noturno" },
+    ],
 
-    // header row: h2 + botão à direita
-    const headerRow = document.createElement("div");
-    headerRow.className = "unidade-header";
+    semipresencial: [
+      { nome: "Nutrição", turno: "Flex" },
+      { nome: "Farmácia", turno: "Flex" },
+      { nome: "Análise e Desenvolvimento de Sistemas", turno: "Flex" },
+      { nome: "Ciências Contábeis", turno: "Flex" },
+      { nome: "Biomedicina", turno: "Flex" },
+      { nome: "Fisioterapia", turno: "Flex" },
+      { nome: "Pedagogia", turno: "Flex" },
+      { nome: "Educação Física Bacharelado", turno: "Flex" },
+      { nome: "Administração", turno: "Flex" },
+      { nome: "Educação Física Licenciatura", turno: "Flex" },
+      { nome: "Engenharia Civil", turno: "Flex" },
+      { nome: "Engenharia Elétrica", turno: "Flex" },
+      { nome: "Letras", turno: "Flex" },
+      { nome: "Psicopedagogia", turno: "Flex" },
+      { nome: "Serviço Social", turno: "Flex" },
+      { nome: "Logística", turno: "Flex" },
+      { nome: "Engenharia de Software", turno: "Flex" },
+      { nome: "Estética e Cosmética", turno: "Flex" },
+    ],
 
-    const h2 = document.createElement("h2");
-    h2.textContent = unidade.titulo;
+    ead: CLONE_EAD(),
+  },
 
-    headerRow.appendChild(h2);
+  leste: {
+    presencial: [
+      { nome: "Administração", turno: "Matutino" },
+      { nome: "Administração", turno: "Noturno" },
 
-    // Por enquanto: só SEDE tem botão
-    if (unidade.slug === "sede") {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "btn-cursos";
-      btn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
-          <path d="M16.3 16.3 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        Pesquisar Cursos
-      `;
+      { nome: "Análise e Desenvolvimento de Sistemas", turno: "Matutino" },
+      { nome: "Análise e Desenvolvimento de Sistemas", turno: "Noturno" },
 
-      btn.addEventListener("click", () => openCoursesModal(section, unidade));
-      headerRow.appendChild(btn);
-    }
+      { nome: "Biomedicina", turno: "Matutino" },
+      { nome: "Biomedicina", turno: "Noturno" },
 
-    section.appendChild(headerRow);
+      { nome: "Ciências Contábeis", turno: "Matutino" },
+      { nome: "Ciências Contábeis", turno: "Noturno" },
 
-    // modalidades / links (igual antes)
-    unidade.modalidades.forEach((mod) => {
-      const h3 = document.createElement("h3");
-      h3.className = "subtitulo-modalidade";
-      h3.textContent = mod.titulo;
-      section.appendChild(h3);
+      { nome: "Direito", turno: "Matutino" },
+      { nome: "Direito", turno: "Noturno" },
 
-      const grid = document.createElement("div");
-      grid.className = "botoes";
+      { nome: "Educação Física Bacharelado", turno: "Matutino" },
+      { nome: "Educação Física Bacharelado", turno: "Noturno" },
 
-      mod.links.forEach((link) => grid.appendChild(renderBotao(link)));
-      section.appendChild(grid);
-    });
+      { nome: "Educação Física Licenciatura", turno: "Matutino" },
+      { nome: "Educação Física Licenciatura", turno: "Noturno" },
 
-    return section;
-  }
+      { nome: "Enfermagem", turno: "Matutino" },
+      { nome: "Enfermagem", turno: "Noturno" },
 
-  function renderBotao(link) {
-    const a = document.createElement("a");
-    a.className = "botao";
-    a.href = link.href;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
+      { nome: "Engenharia Ambiental e Energias Renováveis", turno: "Matutino" },
+      { nome: "Engenharia Ambiental e Energias Renováveis", turno: "Noturno" },
 
-    const codigo = document.createElement("span");
-    codigo.className = "codigo";
-    codigo.textContent = link.codigo;
+      { nome: "Engenharia Civil", turno: "Matutino" },
+      { nome: "Engenharia Civil", turno: "Noturno" },
 
-    const tipo = document.createElement("span");
-    tipo.className = "tipo";
-    tipo.textContent = link.tipo;
+      { nome: "Engenharia de Produção", turno: "Matutino" },
+      { nome: "Engenharia de Produção", turno: "Noturno" },
 
-    const modalidade = document.createElement("span");
-    modalidade.className = "modalidade";
-    modalidade.textContent = link.modalidade;
+      { nome: "Engenharia Elétrica", turno: "Matutino" },
+      { nome: "Engenharia Elétrica", turno: "Noturno" },
 
-    a.append(codigo, tipo, modalidade);
-    return a;
-  }
+      { nome: "Farmácia", turno: "Matutino" },
+      { nome: "Farmácia", turno: "Noturno" },
 
-  // ===== Modal =====
-  function ensureCoursesModal() {
-    let overlay = document.querySelector(".modal-overlay");
-    if (overlay) return overlay;
+      { nome: "Fisioterapia", turno: "Matutino" },
+      { nome: "Fisioterapia", turno: "Noturno" },
 
-    overlay = document.createElement("div");
-    overlay.className = "modal-overlay";
-    overlay.innerHTML = `
-      <div class="modal" role="dialog" aria-modal="true" aria-label="Pesquisar cursos">
-        <div class="modal-header">
-          <div class="modal-title" id="modalTitle">Cursos</div>
-          <button class="modal-close" type="button" aria-label="Fechar">✕</button>
-        </div>
+      { nome: "Jornalismo", turno: "Matutino" },
+      { nome: "Jornalismo", turno: "Noturno" },
 
-        <div class="modal-tabs" id="modalTabs"></div>
-        <div class="modal-body" id="modalBody"></div>
-      </div>
-    `;
+      { nome: "Nutrição", turno: "Matutino" },
+      { nome: "Nutrição", turno: "Noturno" },
 
-    document.body.appendChild(overlay);
+      { nome: "Pedagogia", turno: "Matutino" },
+      { nome: "Pedagogia", turno: "Noturno" },
 
-    // fechar clicando fora
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal();
-    });
+      { nome: "Psicologia", turno: "Matutino" },
+      { nome: "Psicologia", turno: "Noturno" },
 
-    // fechar no X
-    overlay.querySelector(".modal-close").addEventListener("click", closeModal);
+      { nome: "Serviço Social", turno: "Matutino" },
+      { nome: "Serviço Social", turno: "Noturno" },
 
-    // fechar no ESC
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
-    });
+      { nome: "Sistemas de Informação", turno: "Matutino" },
+      { nome: "Sistemas de Informação", turno: "Noturno" },
 
-    function closeModal() {
-      overlay.classList.remove("is-open");
-      document.body.style.overflow = "";
-    }
+      { nome: "Tecnologia em Design Gráfico", turno: "Matutino" },
+      { nome: "Tecnologia em Design Gráfico", turno: "Noturno" },
 
-    // expõe para outras funções
-    overlay._closeModal = closeModal;
-    return overlay;
-  }
+      { nome: "Tecnologia em Estética e Cosmética", turno: "Matutino" },
+      { nome: "Tecnologia em Estética e Cosmética", turno: "Noturno" },
 
-  function openCoursesModal(sectionEl, unidade) {
-    const computed = getComputedStyle(sectionEl);
-    const accent = computed.getPropertyValue("--accent").trim() || "#2563eb";
+      { nome: "Tecnologia em Gastronomia", turno: "Matutino" },
+      { nome: "Tecnologia em Gastronomia", turno: "Noturno" },
 
-    modal.style.setProperty("--accent", accent);
-    modal.classList.add("is-open");
-    document.body.style.overflow = "hidden";
+      { nome: "Tecnologia em Gestão da Qualidade", turno: "Matutino" },
+      { nome: "Tecnologia em Gestão da Qualidade", turno: "Noturno" },
 
-    const titleEl = modal.querySelector("#modalTitle");
-    const tabsEl = modal.querySelector("#modalTabs");
-    const bodyEl = modal.querySelector("#modalBody");
+      { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Matutino" },
+      { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Noturno" },
 
-    titleEl.textContent = `Cursos — ${unidade.titulo}`;
+      { nome: "Tecnologia em Logística", turno: "Matutino" },
+      { nome: "Tecnologia em Logística", turno: "Noturno" },
 
-    const tabs = [
-      { key: "presencial", label: "Presencial" },
-      { key: "hibrido", label: "Híbrido" },
-      { key: "semipresencial", label: "Semipresencial" },
-      { key: "ead", label: "EAD" }
-    ];
+      { nome: "Tecnologia em Marketing", turno: "Matutino" },
+      { nome: "Tecnologia em Marketing", turno: "Noturno" },
 
-    let activeTab = "presencial";
+      { nome: "Tecnologia em Radiologia", turno: "Noturno" },
+      { nome: "Tecnologia em Segurança no Trabalho", turno: "Noturno" },
+    ],
 
-    tabsEl.innerHTML = "";
-    tabs.forEach((t) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "tab-btn" + (t.key === activeTab ? " is-active" : "");
-      b.textContent = t.label;
-      b.addEventListener("click", () => {
-        activeTab = t.key;
-        [...tabsEl.querySelectorAll(".tab-btn")].forEach((x) => x.classList.remove("is-active"));
-        b.classList.add("is-active");
-        renderTab();
-      });
-      tabsEl.appendChild(b);
-    });
+    hibrido: [
+      { nome: "Administração", turno: "Matutino" },
+      { nome: "Administração", turno: "Noturno" },
 
-    renderTab();
+      { nome: "Biomedicina", turno: "Matutino" },
+      { nome: "Biomedicina", turno: "Noturno" },
 
-    function renderTab() {
-  const unidadeCourses = (coursesData[unidade.slug] || {});
-  const list = unidadeCourses[activeTab] || [];
+      { nome: "Engenharia Ambiental", turno: "Matutino" },
+      { nome: "Engenharia Ambiental", turno: "Noturno" },
 
-  if (!list.length) {
-    bodyEl.innerHTML = `
-      <div class="empty-state">
-        Conteúdo de <b>${tabLabel(activeTab)}</b> ainda não cadastrado para ${unidade.titulo}.
-      </div>
-    `;
-    return;
-  }
+      { nome: "Engenharia Civil", turno: "Matutino" },
+      { nome: "Engenharia Civil", turno: "Noturno" },
 
-  const grouped = groupCoursesByName(list);
+      { nome: "Engenharia de Produção", turno: "Matutino" },
+      { nome: "Engenharia de Produção", turno: "Noturno" },
 
-  bodyEl.innerHTML = `
-    <div class="search-row">
-      <input class="search-input" id="courseSearch" type="text"
-        placeholder="Pesquisar curso em ${tabLabel(activeTab)} (ex.: Direito, Enfermagem, Psicologia...)" />
-      <div class="chips" id="turnChips">
-        <button class="chip is-active" data-turno="todos" type="button">Todos</button>
-        <button class="chip" data-turno="Matutino" type="button">Matutino</button>
-        <button class="chip" data-turno="Vespertino" type="button">Vespertino</button>
-        <button class="chip" data-turno="Noturno" type="button">Noturno</button>
-      </div>
-    </div>
+      { nome: "Engenharia Elétrica", turno: "Matutino" },
+      { nome: "Engenharia Elétrica", turno: "Noturno" },
 
-    <div class="courses-meta" id="coursesMeta"></div>
-    <div class="course-grid" id="courseGrid"></div>
-  `;
+      { nome: "Engenharia Mecânica", turno: "Matutino" },
+      { nome: "Engenharia Mecânica", turno: "Noturno" },
 
-  const input = bodyEl.querySelector("#courseSearch");
-  const chips = bodyEl.querySelector("#turnChips");
-  const meta = bodyEl.querySelector("#coursesMeta");
-  const grid = bodyEl.querySelector("#courseGrid");
+      { nome: "Farmácia", turno: "Matutino" },
+      { nome: "Farmácia", turno: "Noturno" },
 
-  let currentTurn = "todos";
+      { nome: "Fisioterapia", turno: "Matutino" },
+      { nome: "Fisioterapia", turno: "Noturno" },
 
-  function renderList() {
-    const q = normalize(input.value || "");
-    const filtered = grouped.filter((c) => {
-      const matchName = !q || normalize(c.nome).includes(q);
-      const matchTurn = (currentTurn === "todos") || c.turnos.includes(currentTurn);
-      return matchName && matchTurn;
-    });
+      { nome: "Nutrição", turno: "Matutino" },
+      { nome: "Nutrição", turno: "Noturno" },
+    ],
 
-    meta.textContent = `${filtered.length} curso(s) encontrado(s)`;
+    semipresencial: [
+      { nome: "Administração", turno: "Flex" },
+      { nome: "Análise e Desenvolvimento de Sistemas", turno: "Flex" },
+      { nome: "Biomedicina", turno: "Flex" },
+      { nome: "Ciências Contábeis", turno: "Flex" },
+      { nome: "Educação Física Bacharelado", turno: "Flex" },
+      { nome: "Educação Física Licenciatura", turno: "Flex" },
+      { nome: "Engenharia de Software", turno: "Flex" },
+      { nome: "Estética e Cosmética", turno: "Flex" },
+      { nome: "Fisioterapia", turno: "Flex" },
+      { nome: "Letras", turno: "Flex" },
+      { nome: "Logística", turno: "Flex" },
+      { nome: "Nutrição", turno: "Flex" },
+      { nome: "Pedagogia", turno: "Flex" },
+      { nome: "Psicopedagogia", turno: "Flex" },
+      { nome: "Serviço Social", turno: "Flex" },
+    ],
 
-    grid.innerHTML = "";
-    if (!filtered.length) {
-      grid.innerHTML = `<div class="empty-state">Nenhum curso encontrado com esse filtro.</div>`;
-      return;
-    }
+    ead: CLONE_EAD(),
+  },
 
-    filtered.forEach((c) => {
-      const card = document.createElement("div");
-      card.className = "course-card";
-      card.innerHTML = `
-        <div class="course-name">${escapeHtml(c.nome)}</div>
-        <div class="badges">
-          ${c.turnos.map(t => `<span class="badge">${escapeHtml(t)}</span>`).join("")}
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
+  sul: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: CLONE_EAD(),
+  },
 
-  chips.addEventListener("click", (e) => {
-    const btn = e.target.closest(".chip");
-    if (!btn) return;
-    currentTurn = btn.getAttribute("data-turno");
+  norte: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: CLONE_EAD(),
+  },
 
-    [...chips.querySelectorAll(".chip")].forEach((x) => x.classList.remove("is-active"));
-    btn.classList.add("is-active");
-    renderList();
-  });
+  oeste: {
+    presencial: [],
+    hibrido: [],
+    semipresencial: [],
+    ead: CLONE_EAD(),
+  },
+};
 
-  input.addEventListener("input", renderList);
-
-  setTimeout(() => input.focus(), 30);
-  renderList();
-}
-
-
-    function tabLabel(key) {
-      return ({ presencial:"Presencial", hibrido:"Híbrido", semipresencial:"Semipresencial", ead:"EAD" }[key] || key);
-    }
-  }
-
-  function groupCoursesByName(list) {
-    const map = new Map();
-    (list || []).forEach((item) => {
-      const nome = (item.nome || "").trim();
-      const turno = (item.turno || "").trim();
-      if (!nome) return;
-
-      if (!map.has(nome)) map.set(nome, new Set());
-      if (turno) map.get(nome).add(turno);
-    });
-
-    // ordena por nome
-    return [...map.entries()]
-      .map(([nome, set]) => ({ nome, turnos: [...set].sort(sortTurno) }))
-      .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
-  }
-
-  function sortTurno(a, b) {
-    const order = { Matutino: 1, Vespertino: 2, Noturno: 3 };
-    return (order[a] || 99) - (order[b] || 99);
-  }
-
-  function normalize(str) {
-    return (str || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .trim();
-  }
-
-  function escapeHtml(str) {
-    return (str || "").replace(/[&<>"']/g, (m) => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
-    }[m]));
-  }
-})();
+// deixa disponível globalmente pro app.js
+window.coursesData = coursesData;
