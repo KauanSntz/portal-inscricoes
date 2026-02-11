@@ -1,311 +1,328 @@
-// assets/js/app.js
+/* assets/js/app.js */
 (() => {
   const LINKS = window.PORTAL_LINKS;
-  const COURSES = window.coursesData || {};
+  const COURSES = window.coursesData;
 
-  const app = document.getElementById("app");
-  if (!app) return;
+  const $ = (sel, root = document) => root.querySelector(sel);
 
-  if (!Array.isArray(LINKS) || !LINKS.length) {
-    app.innerHTML = `<p style="font-weight:800;color:#111827;text-align:center">
-      Erro: PORTAL_LINKS não encontrado (assets/js/links-data.js).
-    </p>`;
-    return;
-  }
+  // ---------- helpers ----------
+  const escapeHTML = (s = "") =>
+    String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 
-  const escapeHtml = (s) =>
-    String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const normalize = (s = "") => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-  const norm = (s) =>
-    String(s || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim();
-
-  const modalityKeyFromLink = (link) => {
-    const m = norm(link.modalidade);
-    if (m.includes("presencial")) return "presencial";
-    if (m.includes("hibrido") || m.includes("híbrido")) return "hibrido";
-    if (m.includes("semi flex") || m.includes("flex")) return "semiflex";
-    if (m.includes("semipresencial")) return "semipresencial";
-    if (m.includes("ead") || m.includes("100%")) return "ead";
-    return "outros";
+  const getUnitAccent = (slug) => {
+    const card = $(`.unidade.${slug}`);
+    if (!card) return "#2563eb";
+    return getComputedStyle(card).getPropertyValue("--accent").trim() || "#2563eb";
   };
 
-  const modalityTitle = {
-    presencial: "Presencial",
-    hibrido: "Híbrido",
-    semipresencial: "Semipresencial",
-    semiflex: "Semipresencial Flex",
-    ead: "EAD (100% Online)"
-  };
+  const iconSearch = () => `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor"
+        d="M10 4a6 6 0 104.472 10.03l4.249 4.25a1 1 0 001.415-1.415l-4.25-4.249A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/>
+    </svg>
+  `;
 
-  const modalityOrder = ["presencial", "hibrido", "semipresencial", "semiflex", "ead"];
-
-  function groupLinksByModality(unit) {
-    const allLinks = (unit.modalidades || []).flatMap((m) => (m.links || []));
-    const grouped = { presencial: [], hibrido: [], semipresencial: [], semiflex: [], ead: [] };
-
-    for (const link of allLinks) {
-      const k = modalityKeyFromLink(link);
-      if (grouped[k]) grouped[k].push(link);
-    }
-
-    // vestibular primeiro
-    for (const k of Object.keys(grouped)) {
-      grouped[k].sort((a, b) => {
-        const av = norm(a.tipo).includes("vestibular") ? 0 : 1;
-        const bv = norm(b.tipo).includes("vestibular") ? 0 : 1;
-        return av - bv;
-      });
-    }
-
-    return grouped;
+  // ---------- build FRONT (links) ----------
+  function flattenLinks(unit) {
+    const groups = Array.isArray(unit.modalidades) ? unit.modalidades : [];
+    return groups.flatMap((g) => Array.isArray(g.links) ? g.links : []);
   }
 
-  function iconSearchSvg() {
-    return `
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
-        <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
+  function pickGroup(allLinks, kind) {
+  const modNorm = (l) => normalize(l.modalidade || "");
+
+  const is = {
+    presencial: (l) => modNorm(l) === "presencial",
+    hibrido: (l) => modNorm(l).includes("hibrido"),
+    semipresencial: (l) => modNorm(l).includes("semipresencial") && !modNorm(l).includes("flex"),
+    flex: (l) => modNorm(l).includes("flex"),
+    ead: (l) => modNorm(l).includes("ead") || modNorm(l).includes("100%"),
+  }[kind];
+
+  const list = allLinks.filter(is);
+
+  // garante vestibular + matrícula (quando existir)
+  const byType = (rx) => list.find((x) => rx.test(normalize(x.tipo || "")));
+  const vest = byType(/vestib/);
+  const matr = byType(/matr/);
+
+  const out = [];
+  if (vest) out.push(vest);
+  if (matr && matr !== vest) out.push(matr);
+
+  // fallback (se faltar algum)
+  for (const x of list) {
+    if (out.length >= 2) break;
+    if (!out.includes(x)) out.push(x);
   }
+
+  return out;
+}
+
 
   function renderUnit(unit) {
-    const grouped = groupLinksByModality(unit);
+    const allLinks = flattenLinks(unit);
 
-    const blocks = modalityOrder
-      .filter((k) => grouped[k] && grouped[k].length)
-      .map((k) => {
-        const links = grouped[k].slice(0, 2); // 2 links por modalidade
-        return `
-          <h3 class="subtitulo-modalidade ${k === "semiflex" ? "is-flex" : ""}">${escapeHtml(modalityTitle[k])}</h3>
-          <div class="botoes">
-            ${links
-              .map(
-                (l) => `
-              <a class="botao" target="_blank" rel="noopener" href="${escapeHtml(l.href)}">
-                <span class="codigo">${escapeHtml(l.codigo)}</span>
-                <span class="tipo">${escapeHtml(l.tipo)}</span>
-                <span class="modalidade">${escapeHtml(l.modalidade)}</span>
-              </a>`
-              )
-              .join("")}
-          </div>
-        `;
-      })
-      .join("");
+    const blocks = [
+      { title: "Presencial", kind: "presencial" },
+      { title: "Híbrido", kind: "hibrido" },
+      { title: "Semipresencial", kind: "semipresencial" },
+      { title: "Semipresencial Flex", kind: "flex" },
+      { title: "EAD (100% Online)", kind: "ead" },
+    ].map((b) => ({ ...b, links: pickGroup(allLinks, b.kind) }))
+     .filter((b) => b.links.length);
+
+    const blocksHTML = blocks.map((b) => {
+      const btns = b.links.slice(0, 2).map((l) => `
+        <a class="botao" target="_blank" rel="noopener" href="${escapeHTML(l.href)}">
+          <span class="codigo">${escapeHTML(l.codigo)}</span>
+          <span class="tipo">${escapeHTML(l.tipo)}</span>
+          <span class="modalidade">${escapeHTML(l.modalidade)}</span>
+        </a>
+      `).join("");
+
+      return `
+        <h3 class="subtitulo-modalidade">${escapeHTML(b.title)}</h3>
+        <div class="botoes">${btns}</div>
+      `;
+    }).join("");
 
     return `
-      <section class="unidade ${escapeHtml(unit.slug)}" data-slug="${escapeHtml(unit.slug)}">
+      <section class="unidade ${escapeHTML(unit.slug)}" data-slug="${escapeHTML(unit.slug)}">
         <div class="unidade-header">
-          <h2>${escapeHtml(unit.titulo)}</h2>
-
-          <button type="button" class="btn-cursos" data-open-cursos="${escapeHtml(unit.slug)}">
-            ${iconSearchSvg()}
-            <span>Pesquisar Cursos</span>
+          <h2>${escapeHTML(unit.titulo)}</h2>
+          <button class="btn-cursos" type="button" data-action="open-courses" data-slug="${escapeHTML(unit.slug)}">
+            ${iconSearch()} <span>Pesquisar Cursos</span>
           </button>
         </div>
-
-        ${blocks}
+        ${blocksHTML}
       </section>
     `;
   }
 
-  function renderPortal() {
-    app.innerHTML = LINKS.map(renderUnit).join("");
+  function renderApp() {
+    const host = $("#app");
+    if (!host) return;
+
+    if (!Array.isArray(LINKS)) {
+      host.innerHTML = `<p style="text-align:center;font-weight:800;color:#b91c1c">Erro: PORTAL_LINKS não encontrado (assets/js/links-data.js).</p>`;
+      return;
+    }
+
+    host.innerHTML = LINKS.map(renderUnit).join("");
   }
 
-  // ========= MODAL =========
-  let overlay = null;
-  const state = { slug: null, tab: "presencial", q: "", turno: "Todos" };
-
+  // ---------- COURSES modal (single instance + delegation) ----------
   function ensureModal() {
+    let overlay = $("#coursesModal");
     if (overlay) return overlay;
 
     overlay = document.createElement("div");
     overlay.className = "modal-overlay";
+    overlay.id = "coursesModal";
     overlay.innerHTML = `
-      <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Cursos">
         <div class="modal-header">
-          <div class="modal-title"></div>
-          <button type="button" class="modal-close" aria-label="Fechar">×</button>
+          <div class="modal-title" id="coursesModalTitle">Cursos</div>
+          <button class="modal-close" type="button" data-action="close-modal" aria-label="Fechar">×</button>
         </div>
-        <div class="modal-tabs"></div>
-        <div class="modal-body"></div>
+
+        <div class="modal-tabs" role="tablist">
+          <button class="tab-btn is-active" type="button" role="tab" data-tab="presencial">Presencial</button>
+          <button class="tab-btn" type="button" role="tab" data-tab="hibrido">Híbrido</button>
+          <button class="tab-btn" type="button" role="tab" data-tab="semipresencial">Semipresencial</button>
+          <button class="tab-btn" type="button" role="tab" data-tab="ead">EAD</button>
+        </div>
+
+        <div class="modal-body" id="coursesModalBody"></div>
       </div>
     `;
     document.body.appendChild(overlay);
 
+    // clique no fundo fecha
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeModal();
     });
 
-    overlay.querySelector(".modal-close").addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      closeModal();
-    });
-
+    // ESC fecha
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
-    });
-
-    overlay.querySelector(".modal-tabs").addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-tab]");
-      if (!btn) return;
-      state.tab = btn.dataset.tab;
-      state.q = "";
-      state.turno = "Todos";
-      renderModal();
-    });
-
-    overlay.querySelector(".modal-body").addEventListener("click", (e) => {
-      const chip = e.target.closest("[data-turno]");
-      if (!chip) return;
-      state.turno = chip.dataset.turno;
-      renderModal();
-    });
-
-    overlay.querySelector(".modal-body").addEventListener("input", (e) => {
-      if (e.target.matches(".search-input")) {
-        state.q = e.target.value || "";
-        renderModal();
-      }
+      if (e.key === "Escape") closeModal();
     });
 
     return overlay;
   }
 
-  function closeModal() {
-    if (!overlay) return;
-    overlay.classList.remove("is-open");
-    state.slug = null;
-    state.tab = "presencial";
-    state.q = "";
-    state.turno = "Todos";
-    overlay.querySelector(".modal-title").textContent = "";
-    overlay.querySelector(".modal-tabs").innerHTML = "";
-    overlay.querySelector(".modal-body").innerHTML = "";
-  }
+  let currentUnitSlug = null;
+  let currentTab = "presencial";
+  let currentQuery = "";
+  let currentTurno = "Todos";
 
-  function openModal(slug) {
-    ensureModal();
+  const TURNOS_ORDER = ["Matutino", "Vespertino", "Noturno", "Flex", "Online"];
 
-    const unitEl = document.querySelector(`.unidade[data-slug="${slug}"]`);
-    const accent = unitEl ? getComputedStyle(unitEl).getPropertyValue("--accent").trim() : "#2563eb";
-    overlay.style.setProperty("--accent", accent);
-
-    state.slug = slug;
-    state.tab = "presencial";
-    state.q = "";
-    state.turno = "Todos";
-
-    overlay.classList.add("is-open");
-    renderModal();
-  }
-
-  function groupCourses(list) {
+  function groupCourses(items) {
     const map = new Map();
-    for (const item of list) {
-      const name = String(item.nome || "").trim();
-      const turno = String(item.turno || "").trim();
-      if (!name) continue;
-      if (!map.has(name)) map.set(name, new Set());
-      if (turno) map.get(name).add(turno);
+    for (const it of items || []) {
+      const nome = (it?.nome || "").trim();
+      const turno = (it?.turno || "").trim();
+      if (!nome) continue;
+      if (!map.has(nome)) map.set(nome, new Set());
+      if (turno) map.get(nome).add(turno);
     }
     return [...map.entries()]
-      .map(([nome, set]) => ({ nome, turnos: [...set] }))
+      .map(([nome, set]) => ({ nome, turnos: [...set].sort((a, b) => TURNOS_ORDER.indexOf(a) - TURNOS_ORDER.indexOf(b)) }))
       .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
   }
 
-  function renderModal() {
-    if (!overlay || !state.slug) return;
+  function getTabItems() {
+    const unit = COURSES?.[currentUnitSlug];
+    const arr = unit?.[currentTab];
+    return Array.isArray(arr) ? arr : [];
+  }
 
-    const unit = LINKS.find((u) => u.slug === state.slug);
-    overlay.querySelector(".modal-title").textContent = `Cursos — ${unit ? unit.titulo : state.slug.toUpperCase()}`;
+  function renderCoursesBody() {
+    const overlay = ensureModal();
+    const body = $("#coursesModalBody", overlay);
+    if (!body) return;
 
-    const tabs = [
-      { k: "presencial", t: "Presencial" },
-      { k: "hibrido", t: "Híbrido" },
-      { k: "semipresencial", t: "Semipresencial" },
-      { k: "ead", t: "EAD" }
-    ];
-
-    overlay.querySelector(".modal-tabs").innerHTML = tabs
-      .map(
-        ({ k, t }) => `
-        <button type="button" class="tab-btn ${state.tab === k ? "is-active" : ""}" data-tab="${k}">
-          ${t}
-        </button>`
-      )
-      .join("");
-
-    const raw = (COURSES[state.slug] && COURSES[state.slug][state.tab]) || [];
-    const grouped = groupCourses(raw);
-
-    const turnosSet = new Set();
-    grouped.forEach((c) => c.turnos.forEach((t) => turnosSet.add(t)));
-    const turnosOrder = ["Matutino", "Vespertino", "Noturno", "Flex", "Online"];
-    const turnos = ["Todos", ...turnosOrder.filter((t) => turnosSet.has(t))];
-
-    const qn = norm(state.q);
-    const filtered = grouped.filter((c) => {
-      const okQ = !qn || norm(c.nome).includes(qn);
-      const okT = state.turno === "Todos" || c.turnos.some((t) => norm(t) === norm(state.turno));
-      return okQ && okT;
-    });
-
-    const body = overlay.querySelector(".modal-body");
+    const raw = getTabItems();
     if (!raw.length) {
       body.innerHTML = `
-        <div class="empty-state">Conteúdo de ${tabs.find(x=>x.k===state.tab)?.t || state.tab} ainda não cadastrado para ${unit ? unit.titulo : state.slug}.</div>
+        <div class="empty-state">
+          Conteúdo de ${escapeHTML(labelTab(currentTab))} ainda não cadastrado para ${escapeHTML(currentUnitSlug?.toUpperCase() || "")}.
+        </div>
       `;
       return;
     }
 
+    const grouped = groupCourses(raw);
+
+    const allTurnos = [...new Set(raw.map((x) => x.turno).filter(Boolean))].sort(
+      (a, b) => TURNOS_ORDER.indexOf(a) - TURNOS_ORDER.indexOf(b)
+    );
+
+    const chips = ["Todos", ...allTurnos];
+
+    const q = normalize(currentQuery);
+    const filtered = grouped.filter((c) => {
+      const matchName = normalize(c.nome).includes(q);
+      const matchTurno = currentTurno === "Todos" ? true : c.turnos.includes(currentTurno);
+      return matchName && matchTurno;
+    });
+
     body.innerHTML = `
       <div class="search-row">
-        <input class="search-input" value="${escapeHtml(state.q)}"
-          placeholder="Pesquisar curso em ${tabs.find(x=>x.k===state.tab)?.t || state.tab} (ex.: Direito, Enfermagem...)" />
+        <input class="search-input" type="search" value="${escapeHTML(currentQuery)}"
+          placeholder="Pesquisar curso em ${escapeHTML(labelTab(currentTab))} (ex.: Direito, Enfermagem, Psicologia...)"
+          data-action="search" />
         <div class="chips">
-          ${turnos
-            .map(
-              (t) => `<button type="button" class="chip ${state.turno === t ? "is-active" : ""}" data-turno="${t}">${t}</button>`
-            )
-            .join("")}
+          ${chips.map((t) => `
+            <button type="button" class="chip ${t === currentTurno ? "is-active" : ""}" data-action="turno" data-turno="${escapeHTML(t)}">
+              ${escapeHTML(t)}
+            </button>
+          `).join("")}
         </div>
       </div>
 
       <div class="courses-meta">${filtered.length} curso(s) encontrado(s)</div>
 
-      ${
-        filtered.length
-          ? `<div class="course-grid">
-              ${filtered
-                .map(
-                  (c) => `
-                <div class="course-card">
-                  <div class="course-name">${escapeHtml(c.nome)}</div>
-                  <div class="badges">
-                    ${c.turnos.map((t) => `<span class="badge">${escapeHtml(t)}</span>`).join("")}
-                  </div>
-                </div>`
-                )
-                .join("")}
-            </div>`
-          : `<div class="empty-state">Nenhum curso encontrado com esse filtro.</div>`
-      }
+      <div class="course-grid">
+        ${filtered.map((c) => `
+          <div class="course-card">
+            <div class="course-name">${escapeHTML(c.nome)}</div>
+            <div class="badges">
+              ${c.turnos.map((t) => `<span class="badge">${escapeHTML(t)}</span>`).join("")}
+            </div>
+          </div>
+        `).join("")}
+      </div>
     `;
+
+    // input handler (sem depender de re-bind externo)
+    const input = $(".search-input", body);
+    if (input) {
+      input.addEventListener("input", () => {
+        currentQuery = input.value || "";
+        renderCoursesBody();
+      }, { passive: true });
+    }
   }
 
-  // ========= INIT =========
-  renderPortal();
+  function labelTab(tab) {
+    return { presencial: "Presencial", hibrido: "Híbrido", semipresencial: "Semipresencial", ead: "EAD" }[tab] || tab;
+  }
 
-  app.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-open-cursos]");
-    if (!btn) return;
-    openModal(btn.dataset.openCursos);
+  function setActiveTab(tab) {
+    currentTab = tab;
+    currentQuery = "";
+    currentTurno = "Todos";
+
+    const overlay = ensureModal();
+    overlay.querySelectorAll(".tab-btn").forEach((b) => {
+      b.classList.toggle("is-active", b.dataset.tab === tab);
+    });
+
+    renderCoursesBody();
+  }
+
+  function openModal(slug) {
+    currentUnitSlug = slug;
+    currentTab = "presencial";
+    currentQuery = "";
+    currentTurno = "Todos";
+
+    const overlay = ensureModal();
+    overlay.style.setProperty("--accent", getUnitAccent(slug));
+    $("#coursesModalTitle", overlay).textContent = `Cursos — ${String(slug).toUpperCase()}`;
+
+    overlay.classList.add("is-open");
+    setActiveTab("presencial");
+  }
+
+  function closeModal() {
+    const overlay = $("#coursesModal");
+    if (!overlay) return;
+    overlay.classList.remove("is-open");
+  }
+
+  // ---------- Global click delegation (stable) ----------
+  function bindGlobalClicks() {
+    document.addEventListener("click", (e) => {
+      const openBtn = e.target.closest('[data-action="open-courses"]');
+      if (openBtn) {
+        openModal(openBtn.dataset.slug);
+        return;
+      }
+
+      const closeBtn = e.target.closest('[data-action="close-modal"]');
+      if (closeBtn) {
+        closeModal();
+        return;
+      }
+
+      const tabBtn = e.target.closest(".tab-btn");
+      if (tabBtn && $("#coursesModal")?.classList.contains("is-open")) {
+        setActiveTab(tabBtn.dataset.tab);
+        return;
+      }
+
+      const chip = e.target.closest('[data-action="turno"]');
+      if (chip && $("#coursesModal")?.classList.contains("is-open")) {
+        currentTurno = chip.dataset.turno || "Todos";
+        renderCoursesBody();
+        return;
+      }
+    });
+  }
+
+  // ---------- init ----------
+  // remove overlays duplicados (se você já criou mais de 1 em tentativas anteriores)
+  document.querySelectorAll(".modal-overlay").forEach((el, idx) => {
+    if (idx > 0) el.remove();
   });
+
+  renderApp();
+  ensureModal();
+  bindGlobalClicks();
 })();
