@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -8,23 +8,22 @@
 </head>
 
 <body>
-  <header>
+  <header class="site-header">
     <h1>Portal de Inscrições – Fametro 2026/1</h1>
   </header>
 
   <main class="container">
-    <!-- O app.js monta tudo aqui dentro (unidades, modalidades e botões) -->
-    <div id="app"></div>
+    <div id="app" aria-live="polite"></div>
   </main>
 
-  <footer>
+  <footer class="site-footer">
     <p>© 2026 Nawk & Bentes – Todos os direitos reservados</p>
   </footer>
-  
+
+  <!-- Ordem importa (defer mantém a ordem) -->
   <script defer src="./assets/js/links-data.js"></script>
   <script defer src="./assets/js/courses-data.js"></script>
+  <script defer src="./assets/js/legacy.js"></script>
   <script defer src="./assets/js/app.js"></script>
-
-
 </body>
 </html>

@@ -1,328 +1,469 @@
 /* assets/js/app.js */
 (() => {
-  const LINKS = window.PORTAL_LINKS;
-  const COURSES = window.coursesData;
+  "use strict";
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-
-  // ---------- helpers ----------
-  const escapeHTML = (s = "") =>
-    String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-
-  const normalize = (s = "") => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-  const getUnitAccent = (slug) => {
-    const card = $(`.unidade.${slug}`);
-    if (!card) return "#2563eb";
-    return getComputedStyle(card).getPropertyValue("--accent").trim() || "#2563eb";
-  };
-
-  const iconSearch = () => `
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path fill="currentColor"
-        d="M10 4a6 6 0 104.472 10.03l4.249 4.25a1 1 0 001.415-1.415l-4.25-4.249A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/>
-    </svg>
-  `;
-
-  // ---------- build FRONT (links) ----------
-  function flattenLinks(unit) {
-    const groups = Array.isArray(unit.modalidades) ? unit.modalidades : [];
-    return groups.flatMap((g) => Array.isArray(g.links) ? g.links : []);
-  }
-
-  function pickGroup(allLinks, kind) {
-  const modNorm = (l) => normalize(l.modalidade || "");
-
-  const is = {
-    presencial: (l) => modNorm(l) === "presencial",
-    hibrido: (l) => modNorm(l).includes("hibrido"),
-    semipresencial: (l) => modNorm(l).includes("semipresencial") && !modNorm(l).includes("flex"),
-    flex: (l) => modNorm(l).includes("flex"),
-    ead: (l) => modNorm(l).includes("ead") || modNorm(l).includes("100%"),
-  }[kind];
-
-  const list = allLinks.filter(is);
-
-  // garante vestibular + matrícula (quando existir)
-  const byType = (rx) => list.find((x) => rx.test(normalize(x.tipo || "")));
-  const vest = byType(/vestib/);
-  const matr = byType(/matr/);
-
-  const out = [];
-  if (vest) out.push(vest);
-  if (matr && matr !== vest) out.push(matr);
-
-  // fallback (se faltar algum)
-  for (const x of list) {
-    if (out.length >= 2) break;
-    if (!out.includes(x)) out.push(x);
-  }
-
-  return out;
-}
-
-
-  function renderUnit(unit) {
-    const allLinks = flattenLinks(unit);
-
-    const blocks = [
-      { title: "Presencial", kind: "presencial" },
-      { title: "Híbrido", kind: "hibrido" },
-      { title: "Semipresencial", kind: "semipresencial" },
-      { title: "Semipresencial Flex", kind: "flex" },
-      { title: "EAD (100% Online)", kind: "ead" },
-    ].map((b) => ({ ...b, links: pickGroup(allLinks, b.kind) }))
-     .filter((b) => b.links.length);
-
-    const blocksHTML = blocks.map((b) => {
-      const btns = b.links.slice(0, 2).map((l) => `
-        <a class="botao" target="_blank" rel="noopener" href="${escapeHTML(l.href)}">
-          <span class="codigo">${escapeHTML(l.codigo)}</span>
-          <span class="tipo">${escapeHTML(l.tipo)}</span>
-          <span class="modalidade">${escapeHTML(l.modalidade)}</span>
-        </a>
-      `).join("");
-
-      return `
-        <h3 class="subtitulo-modalidade">${escapeHTML(b.title)}</h3>
-        <div class="botoes">${btns}</div>
-      `;
-    }).join("");
-
-    return `
-      <section class="unidade ${escapeHTML(unit.slug)}" data-slug="${escapeHTML(unit.slug)}">
-        <div class="unidade-header">
-          <h2>${escapeHTML(unit.titulo)}</h2>
-          <button class="btn-cursos" type="button" data-action="open-courses" data-slug="${escapeHTML(unit.slug)}">
-            ${iconSearch()} <span>Pesquisar Cursos</span>
-          </button>
-        </div>
-        ${blocksHTML}
-      </section>
-    `;
-  }
-
-  function renderApp() {
-    const host = $("#app");
-    if (!host) return;
-
-    if (!Array.isArray(LINKS)) {
-      host.innerHTML = `<p style="text-align:center;font-weight:800;color:#b91c1c">Erro: PORTAL_LINKS não encontrado (assets/js/links-data.js).</p>`;
-      return;
-    }
-
-    host.innerHTML = LINKS.map(renderUnit).join("");
-  }
-
-  // ---------- COURSES modal (single instance + delegation) ----------
-  function ensureModal() {
-    let overlay = $("#coursesModal");
-    if (overlay) return overlay;
-
-    overlay = document.createElement("div");
-    overlay.className = "modal-overlay";
-    overlay.id = "coursesModal";
-    overlay.innerHTML = `
-      <div class="modal" role="dialog" aria-modal="true" aria-label="Cursos">
-        <div class="modal-header">
-          <div class="modal-title" id="coursesModalTitle">Cursos</div>
-          <button class="modal-close" type="button" data-action="close-modal" aria-label="Fechar">×</button>
-        </div>
-
-        <div class="modal-tabs" role="tablist">
-          <button class="tab-btn is-active" type="button" role="tab" data-tab="presencial">Presencial</button>
-          <button class="tab-btn" type="button" role="tab" data-tab="hibrido">Híbrido</button>
-          <button class="tab-btn" type="button" role="tab" data-tab="semipresencial">Semipresencial</button>
-          <button class="tab-btn" type="button" role="tab" data-tab="ead">EAD</button>
-        </div>
-
-        <div class="modal-body" id="coursesModalBody"></div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-
-    // clique no fundo fecha
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal();
-    });
-
-    // ESC fecha
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
-    });
-
-    return overlay;
-  }
-
-  let currentUnitSlug = null;
-  let currentTab = "presencial";
-  let currentQuery = "";
-  let currentTurno = "Todos";
-
-  const TURNOS_ORDER = ["Matutino", "Vespertino", "Noturno", "Flex", "Online"];
-
-  function groupCourses(items) {
-    const map = new Map();
-    for (const it of items || []) {
-      const nome = (it?.nome || "").trim();
-      const turno = (it?.turno || "").trim();
-      if (!nome) continue;
-      if (!map.has(nome)) map.set(nome, new Set());
-      if (turno) map.get(nome).add(turno);
-    }
-    return [...map.entries()]
-      .map(([nome, set]) => ({ nome, turnos: [...set].sort((a, b) => TURNOS_ORDER.indexOf(a) - TURNOS_ORDER.indexOf(b)) }))
-      .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
-  }
-
-  function getTabItems() {
-    const unit = COURSES?.[currentUnitSlug];
-    const arr = unit?.[currentTab];
-    return Array.isArray(arr) ? arr : [];
-  }
-
-  function renderCoursesBody() {
-    const overlay = ensureModal();
-    const body = $("#coursesModalBody", overlay);
-    if (!body) return;
-
-    const raw = getTabItems();
-    if (!raw.length) {
-      body.innerHTML = `
-        <div class="empty-state">
-          Conteúdo de ${escapeHTML(labelTab(currentTab))} ainda não cadastrado para ${escapeHTML(currentUnitSlug?.toUpperCase() || "")}.
-        </div>
-      `;
-      return;
-    }
-
-    const grouped = groupCourses(raw);
-
-    const allTurnos = [...new Set(raw.map((x) => x.turno).filter(Boolean))].sort(
-      (a, b) => TURNOS_ORDER.indexOf(a) - TURNOS_ORDER.indexOf(b)
-    );
-
-    const chips = ["Todos", ...allTurnos];
-
-    const q = normalize(currentQuery);
-    const filtered = grouped.filter((c) => {
-      const matchName = normalize(c.nome).includes(q);
-      const matchTurno = currentTurno === "Todos" ? true : c.turnos.includes(currentTurno);
-      return matchName && matchTurno;
-    });
-
-    body.innerHTML = `
-      <div class="search-row">
-        <input class="search-input" type="search" value="${escapeHTML(currentQuery)}"
-          placeholder="Pesquisar curso em ${escapeHTML(labelTab(currentTab))} (ex.: Direito, Enfermagem, Psicologia...)"
-          data-action="search" />
-        <div class="chips">
-          ${chips.map((t) => `
-            <button type="button" class="chip ${t === currentTurno ? "is-active" : ""}" data-action="turno" data-turno="${escapeHTML(t)}">
-              ${escapeHTML(t)}
-            </button>
-          `).join("")}
-        </div>
-      </div>
-
-      <div class="courses-meta">${filtered.length} curso(s) encontrado(s)</div>
-
-      <div class="course-grid">
-        ${filtered.map((c) => `
-          <div class="course-card">
-            <div class="course-name">${escapeHTML(c.nome)}</div>
-            <div class="badges">
-              ${c.turnos.map((t) => `<span class="badge">${escapeHTML(t)}</span>`).join("")}
-            </div>
-          </div>
-        `).join("")}
-      </div>
-    `;
-
-    // input handler (sem depender de re-bind externo)
-    const input = $(".search-input", body);
-    if (input) {
-      input.addEventListener("input", () => {
-        currentQuery = input.value || "";
-        renderCoursesBody();
-      }, { passive: true });
-    }
-  }
-
-  function labelTab(tab) {
-    return { presencial: "Presencial", hibrido: "Híbrido", semipresencial: "Semipresencial", ead: "EAD" }[tab] || tab;
-  }
-
-  function setActiveTab(tab) {
-    currentTab = tab;
-    currentQuery = "";
-    currentTurno = "Todos";
-
-    const overlay = ensureModal();
-    overlay.querySelectorAll(".tab-btn").forEach((b) => {
-      b.classList.toggle("is-active", b.dataset.tab === tab);
-    });
-
-    renderCoursesBody();
-  }
-
-  function openModal(slug) {
-    currentUnitSlug = slug;
-    currentTab = "presencial";
-    currentQuery = "";
-    currentTurno = "Todos";
-
-    const overlay = ensureModal();
-    overlay.style.setProperty("--accent", getUnitAccent(slug));
-    $("#coursesModalTitle", overlay).textContent = `Cursos — ${String(slug).toUpperCase()}`;
-
-    overlay.classList.add("is-open");
-    setActiveTab("presencial");
-  }
-
-  function closeModal() {
-    const overlay = $("#coursesModal");
-    if (!overlay) return;
-    overlay.classList.remove("is-open");
-  }
-
-  // ---------- Global click delegation (stable) ----------
-  function bindGlobalClicks() {
-    document.addEventListener("click", (e) => {
-      const openBtn = e.target.closest('[data-action="open-courses"]');
-      if (openBtn) {
-        openModal(openBtn.dataset.slug);
-        return;
-      }
-
-      const closeBtn = e.target.closest('[data-action="close-modal"]');
-      if (closeBtn) {
-        closeModal();
-        return;
-      }
-
-      const tabBtn = e.target.closest(".tab-btn");
-      if (tabBtn && $("#coursesModal")?.classList.contains("is-open")) {
-        setActiveTab(tabBtn.dataset.tab);
-        return;
-      }
-
-      const chip = e.target.closest('[data-action="turno"]');
-      if (chip && $("#coursesModal")?.classList.contains("is-open")) {
-        currentTurno = chip.dataset.turno || "Todos";
-        renderCoursesBody();
-        return;
-      }
-    });
-  }
-
-  // ---------- init ----------
-  // remove overlays duplicados (se você já criou mais de 1 em tentativas anteriores)
-  document.querySelectorAll(".modal-overlay").forEach((el, idx) => {
-    if (idx > 0) el.remove();
+  // -----------------------------
+  // Config
+  // -----------------------------
+  const CONFIG = Object.freeze({
+    ROOT_ID: "app",
+    EMPTY_TEXT: "Modalidade não disponível para essa unidade",
+    COURSE_TABS: [
+      { key: "presencial", label: "Presencial" },
+      { key: "hibrido", label: "Híbrido" },
+      { key: "semipresencial", label: "Semipresencial" },
+      { key: "ead", label: "EAD" },
+    ],
+    LINK_BLOCKS_ORDER: [
+      { key: "presencial", label: "Presencial" },
+      { key: "hibrido", label: "Híbrido" },
+      { key: "semipresencial", label: "Semipresencial" },
+      { key: "flex", label: "Semipresencial Flex" },
+      { key: "ead", label: "EAD (100% Online)" },
+    ],
+    DEBUG: new URLSearchParams(location.search).has("debug"),
   });
 
-  renderApp();
-  ensureModal();
-  bindGlobalClicks();
+  // -----------------------------
+  // Utils (DOM seguro)
+  // -----------------------------
+  const $ = (sel, root = document) => root.querySelector(sel);
+
+  const el = (tag, attrs = {}, children = []) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null) continue;
+      if (k === "class") node.className = v;
+      else if (k === "text") node.textContent = String(v);
+      else if (k.startsWith("data-")) node.setAttribute(k, String(v));
+      else if (k === "html") node.innerHTML = String(v); // use com cautela (não usamos com dados)
+      else node.setAttribute(k, String(v));
+    }
+    for (const c of children) node.appendChild(c);
+    return node;
+  };
+
+  const safeExternalUrl = (href) => {
+    try {
+      const u = new URL(String(href), location.href);
+      if (u.protocol !== "https:" && u.protocol !== "http:") return null;
+      return u.toString();
+    } catch {
+      return null;
+    }
+  };
+
+  const uniq = (arr) => Array.from(new Set(arr));
+
+  // -----------------------------
+  // Data validation
+  // -----------------------------
+  const getDataOrThrow = () => {
+    if (!Array.isArray(window.PORTAL_LINKS)) {
+      throw new Error("PORTAL_LINKS não encontrado (assets/js/links-data.js).");
+    }
+    if (!window.COURSES || !window.COURSES.catalog || !window.COURSES.offers) {
+      throw new Error("COURSES não encontrado (assets/js/courses-data.js).");
+    }
+    return { links: window.PORTAL_LINKS, courses: window.COURSES };
+  };
+
+  // -----------------------------
+  // Rendering: Units + Link blocks
+  // -----------------------------
+  const renderApp = ({ links }) => {
+    const root = document.getElementById(CONFIG.ROOT_ID);
+    root.textContent = "";
+
+    const frag = document.createDocumentFragment();
+    for (const unit of links) frag.appendChild(renderUnit(unit));
+    root.appendChild(frag);
+  };
+
+  const renderUnit = (unit) => {
+    const unitCard = el("section", { class: `unit unit--${unit.theme}` });
+
+    const head = el("div", { class: "unit-head" }, [
+      el("h2", { class: "unit-title", text: unit.title }),
+      el(
+        "button",
+        {
+          class: "btn-courses",
+          type: "button",
+          "data-action": "open-courses",
+          "data-unit": unit.coursesKey,
+          "data-title": unit.title,
+          "data-theme": unit.theme,
+          "aria-label": `Pesquisar cursos - ${unit.title}`,
+        },
+        [el("span", { text: "Pesquisar cursos" })]
+      ),
+    ]);
+
+    unitCard.appendChild(head);
+
+    for (const blk of CONFIG.LINK_BLOCKS_ORDER) {
+      const blockData = unit.blocks?.[blk.key] || { title: blk.label, links: [] };
+      unitCard.appendChild(renderLinkBlock(blockData, blk.label));
+    }
+
+    return unitCard;
+  };
+
+  const renderLinkBlock = (block, fallbackTitle) => {
+    const wrap = el("div", { class: "mod-block" });
+
+    wrap.appendChild(el("h3", { class: "mod-title", text: block.title || fallbackTitle }));
+
+    const content = el("div", { class: "mod-content" });
+    const links = Array.isArray(block.links) ? block.links : [];
+
+    if (links.length < 2) {
+      content.appendChild(el("div", { class: "empty", text: CONFIG.EMPTY_TEXT }));
+      wrap.appendChild(content);
+      return wrap;
+    }
+
+    // valida: preferimos exatamente 2 links (vestibular/matrícula)
+    const two = links.slice(0, 2);
+
+    const grid = el("div", { class: "link-grid" });
+    for (const ln of two) grid.appendChild(renderLinkCard(ln));
+    content.appendChild(grid);
+
+    wrap.appendChild(content);
+    return wrap;
+  };
+
+  const renderLinkCard = (ln) => {
+    const url = safeExternalUrl(ln.href);
+    const a = el("a", {
+      class: "link-card",
+      href: url || "#",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      "aria-label": `${ln.type} - ${ln.modality} (código ${ln.code})`,
+    });
+
+    a.appendChild(el("div", { class: "link-code", text: ln.code }));
+    a.appendChild(el("div", { class: "link-type", text: ln.type }));
+    a.appendChild(el("div", { class: "link-mod", text: ln.modality }));
+
+    if (!url) {
+      a.setAttribute("tabindex", "-1");
+      a.style.opacity = "0.6";
+      a.style.pointerEvents = "none";
+    }
+
+    return a;
+  };
+
+  // -----------------------------
+  // Modal (singleton)
+  // -----------------------------
+  const modal = (() => {
+    let overlay = null;
+    let lastFocus = null;
+
+    const state = {
+      isOpen: false,
+      unitKey: "",
+      unitTitle: "",
+      theme: "",
+      tab: "presencial",
+      query: "",
+      turnoFilter: "Todos",
+    };
+
+    const ensure = () => {
+      if (overlay) return overlay;
+
+      overlay = el("div", { class: "modal-overlay", role: "dialog", "aria-modal": "true" });
+
+      const dialog = el("div", { class: "modal" });
+      const head = el("div", { class: "modal-head" }, [
+        el("div", { class: "modal-title", "data-role": "title" }),
+        el("button", { class: "modal-close", type: "button", "data-action": "close-modal", "aria-label": "Fechar" }, [
+          el("span", { text: "×" }),
+        ]),
+      ]);
+
+      const tabs = el("div", { class: "modal-tabs", "data-role": "tabs" });
+      const body = el("div", { class: "modal-body", "data-role": "body" });
+
+      dialog.appendChild(head);
+      dialog.appendChild(tabs);
+      dialog.appendChild(body);
+      overlay.appendChild(dialog);
+
+      overlay.addEventListener("click", (e) => {
+        // clique fora fecha
+        if (e.target === overlay) close();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!state.isOpen) return;
+        if (e.key === "Escape") close();
+      });
+
+      document.body.appendChild(overlay);
+      return overlay;
+    };
+
+    const open = ({ unitKey, unitTitle, theme, accent }) => {
+      lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+      state.isOpen = true;
+      state.unitKey = unitKey;
+      state.unitTitle = unitTitle;
+      state.theme = theme;
+      state.tab = "presencial";
+      state.query = "";
+      state.turnoFilter = "Todos";
+
+      const ov = ensure();
+      ov.classList.add("is-open");
+
+      const modalEl = $(".modal", ov);
+      modalEl.style.setProperty("--accent", accent);
+
+      render();
+      // foco inicial
+      const closeBtn = $('[data-action="close-modal"]', ov);
+      closeBtn?.focus();
+    };
+
+    const close = () => {
+      if (!overlay) return;
+      state.isOpen = false;
+      overlay.classList.remove("is-open");
+
+      // limpa body (evita “modal fantasma” e zumbis)
+      const body = $('[data-role="body"]', overlay);
+      if (body) body.textContent = "";
+
+      if (lastFocus) lastFocus.focus();
+    };
+
+    const render = () => {
+      if (!overlay) return;
+      const { courses } = getDataOrThrow();
+
+      const titleEl = $('[data-role="title"]', overlay);
+      titleEl.textContent = `Cursos disponíveis — ${state.unitTitle}`;
+
+      // tabs
+      const tabsEl = $('[data-role="tabs"]', overlay);
+      tabsEl.textContent = "";
+      for (const t of CONFIG.COURSE_TABS) {
+        const b = el("button", {
+          class: `tab${t.key === state.tab ? " is-active" : ""}`,
+          type: "button",
+          "data-action": "set-tab",
+          "data-tab": t.key,
+        }, [el("span", { text: t.label })]);
+        tabsEl.appendChild(b);
+      }
+
+      // body
+      const body = $('[data-role="body"]', overlay);
+      body.textContent = "";
+
+      const list = courses.offers?.[state.unitKey]?.[state.tab] || [];
+      if (!Array.isArray(list) || list.length === 0) {
+        body.appendChild(el("div", { class: "empty", text: CONFIG.EMPTY_TEXT }));
+        return;
+      }
+
+      const searchRow = el("div", { class: "search-row" });
+      const input = el("input", {
+        class: "search-input",
+        type: "search",
+        placeholder: "Pesquisar curso...",
+        value: state.query,
+        "aria-label": "Pesquisar curso",
+      });
+      input.addEventListener("input", () => {
+        state.query = input.value || "";
+        render(); // simples e previsível (lista não é gigante)
+      });
+      searchRow.appendChild(input);
+
+      // chips apenas presencial/hibrido
+      const showChips = state.tab === "presencial" || state.tab === "hibrido";
+      if (showChips) {
+        const allTurnos = uniq(list.flatMap((x) => x.turnos || [])).sort((a, b) => a.localeCompare(b, "pt-BR"));
+        const chips = ["Todos", ...allTurnos];
+
+        const chipsWrap = el("div", { class: "chips" });
+        for (const c of chips) {
+          const btn = el("button", {
+            class: `chip${c === state.turnoFilter ? " is-active" : ""}`,
+            type: "button",
+            "data-action": "set-turno",
+            "data-turno": c,
+          }, [el("span", { text: c })]);
+          chipsWrap.appendChild(btn);
+        }
+        searchRow.appendChild(chipsWrap);
+      }
+
+      body.appendChild(searchRow);
+
+      const filtered = applyCourseFilters(courses, list, state);
+      body.appendChild(el("div", { class: "meta", text: `${filtered.length} curso(s) encontrado(s)` }));
+
+      const grid = el("div", { class: "course-grid" });
+      for (const item of filtered) grid.appendChild(renderCourseCard(courses, item));
+      body.appendChild(grid);
+
+      // event delegation (tabs + chips)
+      // event delegation (tabs + chips)
+tabsEl.onclick = (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  if (btn.dataset.action === "set-tab") {
+    state.tab = btn.dataset.tab || "presencial";
+    state.query = "";
+    state.turnoFilter = "Todos";
+    render();
+  }
+};
+
+body.onclick = (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+
+  if (btn.dataset.action === "set-turno") {
+    state.turnoFilter = btn.dataset.turno || "Todos";
+    render();
+  }
+};
+
+
+    const applyCourseFilters = (courses, list, st) => {
+      const q = (st.query || "").trim().toLowerCase();
+
+      return list.filter((x) => {
+        const name = courses.catalog?.[x.id]?.name || x.id;
+        if (q && !name.toLowerCase().includes(q)) return false;
+
+        if (st.tab === "presencial" || st.tab === "hibrido") {
+          if (st.turnoFilter && st.turnoFilter !== "Todos") {
+            return (x.turnos || []).includes(st.turnoFilter);
+          }
+        }
+
+        // semipresencial/ead: sem filtro de turno
+        return true;
+      });
+    };
+
+    const renderCourseCard = (courses, item) => {
+      const name = courses.catalog?.[item.id]?.name || item.id;
+
+      const card = el("div", { class: "course" });
+      card.appendChild(el("div", { class: "course-name", text: name }));
+
+      const badges = el("div", { class: "badges" });
+      for (const t of (item.turnos || [])) badges.appendChild(el("span", { class: "badge", text: t }));
+      card.appendChild(badges);
+
+      return card;
+    };
+
+    return { open, close };
+  })();
+
+  // -----------------------------
+  // Events
+  // -----------------------------
+  const bindEvents = () => {
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      if (action === "open-courses") {
+        const { links } = getDataOrThrow();
+        const unitKey = btn.dataset.unit;
+        const unitTitle = btn.dataset.title;
+        const theme = btn.dataset.theme;
+
+        // pega accent do CSS (por theme) de forma robusta
+        const fake = document.createElement("div");
+        fake.className = `unit unit--${theme}`;
+        document.body.appendChild(fake);
+        const accent = getComputedStyle(fake).getPropertyValue("--accent").trim() || "#2563eb";
+        fake.remove();
+
+        modal.open({ unitKey, unitTitle, theme, accent });
+      }
+
+      if (action === "close-modal") {
+        modal.close();
+      }
+    });
+  };
+
+  // -----------------------------
+  // Diagnostics / tests (manual + semi-automático)
+  // -----------------------------
+  const runDiagnostics = () => {
+    if (!CONFIG.DEBUG) return;
+
+    const { links, courses } = getDataOrThrow();
+
+    // 1) Links: cada bloco deve ter 0 ou >=2, e quando >=2, validamos URL
+    for (const u of links) {
+      for (const blk of Object.values(u.blocks || {})) {
+        const arr = Array.isArray(blk.links) ? blk.links : [];
+        if (arr.length !== 0 && arr.length < 2) {
+          console.warn("[links] bloco com 1 link (incompleto):", u.key, blk.title);
+        }
+        for (const ln of arr) {
+          if (!safeExternalUrl(ln.href)) console.warn("[links] url inválida:", u.key, blk.title, ln);
+        }
+      }
+    }
+
+    // 2) Courses: unidade e modalidades existem
+    const mustUnits = ["sede", "leste", "sul", "norte", "compensa"];
+    for (const k of mustUnits) {
+      if (!courses.offers[k]) console.error("[courses] unidade faltando:", k);
+    }
+
+    // 3) Performance (dados grandes)
+    const t0 = performance.now();
+    const big = [];
+    const ids = Object.keys(courses.catalog);
+    for (let i = 0; i < 10000; i++) {
+      big.push({ id: ids[i % ids.length], turnos: ["Matutino", "Noturno"] });
+    }
+    // filtra (simula render)
+    const q = "a";
+    const out = big.filter((x) => (courses.catalog[x.id]?.name || "").toLowerCase().includes(q));
+    const t1 = performance.now();
+    console.log("[debug] perf filter 10k:", Math.round(t1 - t0), "ms | hits:", out.length);
+  };
+
+  // -----------------------------
+  // Init
+  // -----------------------------
+  const init = () => {
+    try {
+      const data = getDataOrThrow();
+      renderApp(data);
+      bindEvents();
+      runDiagnostics();
+    } catch (err) {
+      console.error(err);
+      const root = document.getElementById(CONFIG.ROOT_ID);
+      root.textContent = "";
+      root.appendChild(el("div", { class: "empty", text: `Erro: ${err.message}` }));
+    }
+  };
+
+  init();
 })();

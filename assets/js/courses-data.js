@@ -1,405 +1,610 @@
-// assets/js/courses-data.js
-// Estrutura por UNIDADE e MODALIDADE:
-// presencial | hibrido | semipresencial | ead
-// Cada item: { nome: "Curso", turno: "Matutino|Vespertino|Noturno|Flex|Online" }
+/* assets/js/courses-data.js */
+(() => {
+  "use strict";
 
-const EAD_SHARED = [
-  { nome: "Administração", turno: "Online" },
-  { nome: "Ciências Contábeis", turno: "Online" },
-  { nome: "Engenharia de Software", turno: "Online" },
-  { nome: "Tecnologia em Análise e Desenvolvimento de Sistemas", turno: "Online" },
-  { nome: "Tecnologia em Gestão Comercial", turno: "Online" },
-  { nome: "Tecnologia em Gestão da Qualidade", turno: "Online" },
-  { nome: "Tecnologia em Gestão da Tecnologia da Informação", turno: "Online" },
-  { nome: "Tecnologia em Gestão de Recursos Humanos", turno: "Online" },
-  { nome: "Tecnologia em Gestão de Segurança Privada", turno: "Online" },
-  { nome: "Tecnologia em Gestão Financeira", turno: "Online" },
-  { nome: "Tecnologia em Gestão Portuária", turno: "Online" },
-  { nome: "Tecnologia em Gestão Pública", turno: "Online" },
-  { nome: "Tecnologia em Logística", turno: "Online" },
-  { nome: "Tecnologia em Marketing", turno: "Online" },
-  { nome: "Tecnologia em Segurança Pública", turno: "Online" }
-];
+  // ---------- Helpers (puros) ----------
+  const normalizeKey = (s) =>
+    String(s || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ");
 
-const coursesData = {
-  sede: {
-    presencial: [
-      {"nome":"Administração","turno":"Matutino"},
-      {"nome":"Administração","turno":"Noturno"},
-      {"nome":"Arquitetura e Urbanismo","turno":"Matutino"},
-      {"nome":"Arquitetura e Urbanismo","turno":"Noturno"},
-      {"nome":"Big Data e Inteligência Analítica","turno":"Matutino"},
-      {"nome":"Big Data e Inteligência Analítica","turno":"Noturno"},
-      {"nome":"Biomedicina","turno":"Matutino"},
-      {"nome":"Biomedicina","turno":"Noturno"},
-      {"nome":"Ciência da Computação","turno":"Matutino"},
-      {"nome":"Ciência da Computação","turno":"Noturno"},
-      {"nome":"Ciências Contábeis","turno":"Matutino"},
-      {"nome":"Ciências Contábeis","turno":"Noturno"},
-      {"nome":"Ciências de Dados","turno":"Matutino"},
-      {"nome":"Ciências de Dados","turno":"Noturno"},
-      {"nome":"Ciências Econômicas","turno":"Matutino"},
-      {"nome":"Ciências Econômicas","turno":"Noturno"},
-      {"nome":"Direito","turno":"Matutino"},
-      {"nome":"Direito","turno":"Noturno"},
-      {"nome":"Direito","turno":"Vespertino"},
-      {"nome":"Educação Física Bacharelado","turno":"Matutino"},
-      {"nome":"Educação Física Bacharelado","turno":"Noturno"},
-      {"nome":"Educação Física Licenciatura","turno":"Matutino"},
-      {"nome":"Educação Física Licenciatura","turno":"Noturno"},
-      {"nome":"Enfermagem","turno":"Matutino"},
-      {"nome":"Enfermagem","turno":"Noturno"},
-      {"nome":"Enfermagem","turno":"Vespertino"},
-      {"nome":"Engenharia Ambiental","turno":"Matutino"},
-      {"nome":"Engenharia Ambiental","turno":"Noturno"},
-      {"nome":"Engenharia Civil","turno":"Matutino"},
-      {"nome":"Engenharia Civil","turno":"Noturno"},
-      {"nome":"Engenharia da Computação","turno":"Matutino"},
-      {"nome":"Engenharia da Computação","turno":"Noturno"},
-      {"nome":"Engenharia de Produção","turno":"Matutino"},
-      {"nome":"Engenharia de Produção","turno":"Noturno"},
-      {"nome":"Engenharia de Software","turno":"Matutino"},
-      {"nome":"Engenharia de Software","turno":"Noturno"},
-      {"nome":"Engenharia Elétrica","turno":"Matutino"},
-      {"nome":"Engenharia Elétrica","turno":"Noturno"},
-      {"nome":"Engenharia Mecânica","turno":"Matutino"},
-      {"nome":"Engenharia Mecânica","turno":"Noturno"},
-      {"nome":"Farmácia","turno":"Matutino"},
-      {"nome":"Farmácia","turno":"Noturno"},
-      {"nome":"Fisioterapia","turno":"Matutino"},
-      {"nome":"Fisioterapia","turno":"Noturno"},
-      {"nome":"Fisioterapia","turno":"Vespertino"},
-      {"nome":"Fonoaudiologia","turno":"Matutino"},
-      {"nome":"Fonoaudiologia","turno":"Noturno"},
-      {"nome":"Fullstack","turno":"Matutino"},
-      {"nome":"Fullstack","turno":"Noturno"},
-      {"nome":"Gestão da Segurança e Defesa Cibernética","turno":"Matutino"},
-      {"nome":"Gestão da Segurança e Defesa Cibernética","turno":"Noturno"},
-      {"nome":"Gestão de Serviços Jurídicos e Notariais","turno":"Matutino"},
-      {"nome":"Gestão de Serviços Jurídicos e Notariais","turno":"Noturno"},
-      {"nome":"Inteligência Artificial","turno":"Matutino"},
-      {"nome":"Inteligência Artificial","turno":"Noturno"},
-      {"nome":"Internet das Coisas (IoT)","turno":"Matutino"},
-      {"nome":"Internet das Coisas (IoT)","turno":"Noturno"},
-      {"nome":"Jogos Digitais","turno":"Matutino"},
-      {"nome":"Jogos Digitais","turno":"Noturno"},
-      {"nome":"Jornalismo","turno":"Matutino"},
-      {"nome":"Jornalismo","turno":"Noturno"},
-      {"nome":"Medicina Veterinária","turno":"Matutino"},
-      {"nome":"Medicina Veterinária","turno":"Noturno"},
-      {"nome":"Nutrição","turno":"Matutino"},
-      {"nome":"Nutrição","turno":"Noturno"},
-      {"nome":"Odontologia","turno":"Matutino"},
-      {"nome":"Odontologia","turno":"Noturno"},
-      {"nome":"Pedagogia","turno":"Matutino"},
-      {"nome":"Pedagogia","turno":"Noturno"},
-      {"nome":"Psicologia","turno":"Matutino"},
-      {"nome":"Psicologia","turno":"Noturno"},
-      {"nome":"Publicidade e Propaganda","turno":"Matutino"},
-      {"nome":"Publicidade e Propaganda","turno":"Noturno"},
-      {"nome":"Quiropraxia","turno":"Matutino"},
-      {"nome":"Quiropraxia","turno":"Noturno"},
-      {"nome":"Redes de Computadores","turno":"Matutino"},
-      {"nome":"Redes de Computadores","turno":"Noturno"},
-      {"nome":"Serviço Social","turno":"Noturno"},
-      {"nome":"Sistemas de Informação","turno":"Matutino"},
-      {"nome":"Sistemas de Informação","turno":"Noturno"},
-      {"nome":"Tecnologia em Análise e Desenvolvimento de Sistemas","turno":"Matutino"},
-      {"nome":"Tecnologia em Análise e Desenvolvimento de Sistemas","turno":"Noturno"},
-      {"nome":"Tecnologia em Design Gráfico","turno":"Matutino"},
-      {"nome":"Tecnologia em Design Gráfico","turno":"Noturno"},
-      {"nome":"Tecnologia em Estética e Cosmética","turno":"Matutino"},
-      {"nome":"Tecnologia em Estética e Cosmética","turno":"Noturno"},
-      {"nome":"Tecnologia em Gastronomia","turno":"Matutino"},
-      {"nome":"Tecnologia em Gastronomia","turno":"Noturno"},
-      {"nome":"Tecnologia em Gestão da Qualidade","turno":"Matutino"},
-      {"nome":"Tecnologia em Gestão da Qualidade","turno":"Noturno"},
-      {"nome":"Tecnologia em Gestão de Recursos Humanos","turno":"Matutino"},
-      {"nome":"Tecnologia em Gestão de Recursos Humanos","turno":"Noturno"},
-      {"nome":"Tecnologia em Logística","turno":"Matutino"},
-      {"nome":"Tecnologia em Logística","turno":"Noturno"},
-      {"nome":"Tecnologia em Marketing","turno":"Matutino"},
-      {"nome":"Tecnologia em Marketing","turno":"Noturno"},
-      {"nome":"Tecnologia em Radiologia","turno":"Matutino"},
-      {"nome":"Tecnologia em Radiologia","turno":"Noturno"},
-      {"nome":"Tecnologia em Segurança no Trabalho","turno":"Noturno"},
-      {"nome":"Turismo","turno":"Noturno"}
-    ],
-    hibrido: [
-      {"nome":"Administração","turno":"Matutino"},
-      {"nome":"Administração","turno":"Noturno"},
-      {"nome":"Biomedicina","turno":"Matutino"},
-      {"nome":"Biomedicina","turno":"Noturno"},
-      {"nome":"Engenharia Ambiental","turno":"Matutino"},
-      {"nome":"Engenharia Ambiental","turno":"Noturno"},
-      {"nome":"Engenharia Civil","turno":"Matutino"},
-      {"nome":"Engenharia Civil","turno":"Noturno"},
-      {"nome":"Engenharia de Produção","turno":"Matutino"},
-      {"nome":"Engenharia de Produção","turno":"Noturno"},
-      {"nome":"Engenharia Elétrica","turno":"Matutino"},
-      {"nome":"Engenharia Elétrica","turno":"Noturno"},
-      {"nome":"Engenharia Mecânica","turno":"Matutino"},
-      {"nome":"Engenharia Mecânica","turno":"Noturno"},
-      {"nome":"Farmácia","turno":"Matutino"},
-      {"nome":"Farmácia","turno":"Noturno"},
-      {"nome":"Fisioterapia","turno":"Matutino"},
-      {"nome":"Fisioterapia","turno":"Noturno"},
-      {"nome":"Fonoaudiologia","turno":"Matutino"},
-      {"nome":"Fonoaudiologia","turno":"Noturno"},
-      {"nome":"Nutrição","turno":"Matutino"},
-      {"nome":"Nutrição","turno":"Noturno"}
-    ],
-    semipresencial: [
-      {"nome":"Nutrição","turno":"Flex"},
-      {"nome":"Farmácia","turno":"Flex"},
-      {"nome":"Análise e Desenvolvimento de Sistemas","turno":"Flex"},
-      {"nome":"Ciências Contábeis","turno":"Flex"},
-      {"nome":"Biomedicina","turno":"Flex"},
-      {"nome":"Fisioterapia","turno":"Flex"},
-      {"nome":"Pedagogia","turno":"Flex"},
-      {"nome":"Educação Física Bacharelado","turno":"Flex"},
-      {"nome":"Administração","turno":"Flex"},
-      {"nome":"Educação Física Licenciatura","turno":"Flex"},
-      {"nome":"Engenharia Civil","turno":"Flex"},
-      {"nome":"Engenharia Elétrica","turno":"Flex"},
-      {"nome":"Letras","turno":"Flex"},
-      {"nome":"Psicopedagogia","turno":"Flex"},
-      {"nome":"Serviço Social","turno":"Flex"},
-      {"nome":"Logística","turno":"Flex"},
-      {"nome":"Engenharia de Software","turno":"Flex"},
-      {"nome":"Estética e Cosmética","turno":"Flex"}
-    ],
-    ead: EAD_SHARED
-  },
+  const toId = (canonicalName) =>
+    normalizeKey(canonicalName)
+      .replace(/[^\w\s]/g, "")
+      .replace(/\s+/g, "_");
 
-  leste: {
-    presencial: [
-      { "nome": "Administração", "turno": "Matutino" },
-      { "nome": "Administração", "turno": "Noturno" },
-      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Matutino" },
-      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Noturno" },
-      { "nome": "Biomedicina", "turno": "Matutino" },
-      { "nome": "Biomedicina", "turno": "Noturno" },
-      { "nome": "Ciências Contábeis", "turno": "Matutino" },
-      { "nome": "Ciências Contábeis", "turno": "Noturno" },
-      { "nome": "Direito", "turno": "Matutino" },
-      { "nome": "Direito", "turno": "Noturno" },
-      { "nome": "Educação Física Bacharelado", "turno": "Matutino" },
-      { "nome": "Educação Física Bacharelado", "turno": "Noturno" },
-      { "nome": "Educação Física Licenciatura", "turno": "Matutino" },
-      { "nome": "Educação Física Licenciatura", "turno": "Noturno" },
-      { "nome": "Enfermagem", "turno": "Matutino" },
-      { "nome": "Enfermagem", "turno": "Noturno" },
-      { "nome": "Engenharia Ambiental e Energias Renováveis", "turno": "Matutino" },
-      { "nome": "Engenharia Ambiental e Energias Renováveis", "turno": "Noturno" },
-      { "nome": "Engenharia Civil", "turno": "Matutino" },
-      { "nome": "Engenharia Civil", "turno": "Noturno" },
-      { "nome": "Engenharia de Produção", "turno": "Matutino" },
-      { "nome": "Engenharia de Produção", "turno": "Noturno" },
-      { "nome": "Engenharia Elétrica", "turno": "Matutino" },
-      { "nome": "Engenharia Elétrica", "turno": "Noturno" },
-      { "nome": "Farmácia", "turno": "Matutino" },
-      { "nome": "Farmácia", "turno": "Noturno" },
-      { "nome": "Fisioterapia", "turno": "Matutino" },
-      { "nome": "Fisioterapia", "turno": "Noturno" },
-      { "nome": "Jornalismo", "turno": "Matutino" },
-      { "nome": "Jornalismo", "turno": "Noturno" },
-      { "nome": "Nutrição", "turno": "Matutino" },
-      { "nome": "Nutrição", "turno": "Noturno" },
-      { "nome": "Pedagogia", "turno": "Matutino" },
-      { "nome": "Pedagogia", "turno": "Noturno" },
-      { "nome": "Psicologia", "turno": "Matutino" },
-      { "nome": "Psicologia", "turno": "Noturno" },
-      { "nome": "Serviço Social", "turno": "Matutino" },
-      { "nome": "Serviço Social", "turno": "Noturno" },
-      { "nome": "Sistemas de Informação", "turno": "Matutino" },
-      { "nome": "Sistemas de Informação", "turno": "Noturno" },
-      { "nome": "Tecnologia em Design Gráfico", "turno": "Matutino" },
-      { "nome": "Tecnologia em Design Gráfico", "turno": "Noturno" },
-      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Matutino" },
-      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Noturno" },
-      { "nome": "Tecnologia em Gastronomia", "turno": "Matutino" },
-      { "nome": "Tecnologia em Gastronomia", "turno": "Noturno" },
-      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Matutino" },
-      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Noturno" },
-      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Matutino" },
-      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Noturno" },
-      { "nome": "Tecnologia em Logística", "turno": "Matutino" },
-      { "nome": "Tecnologia em Logística", "turno": "Noturno" },
-      { "nome": "Tecnologia em Marketing", "turno": "Matutino" },
-      { "nome": "Tecnologia em Marketing", "turno": "Noturno" },
-      { "nome": "Tecnologia em Radiologia", "turno": "Noturno" },
-      { "nome": "Tecnologia em Segurança no Trabalho", "turno": "Noturno" }
-    ],
-    hibrido: [
-      { "nome": "Administração", "turno": "Matutino" },
-      { "nome": "Administração", "turno": "Noturno" },
-      { "nome": "Biomedicina", "turno": "Matutino" },
-      { "nome": "Biomedicina", "turno": "Noturno" },
-      { "nome": "Engenharia Ambiental", "turno": "Matutino" },
-      { "nome": "Engenharia Ambiental", "turno": "Noturno" },
-      { "nome": "Engenharia Civil", "turno": "Matutino" },
-      { "nome": "Engenharia Civil", "turno": "Noturno" },
-      { "nome": "Engenharia de Produção", "turno": "Matutino" },
-      { "nome": "Engenharia de Produção", "turno": "Noturno" },
-      { "nome": "Engenharia Elétrica", "turno": "Matutino" },
-      { "nome": "Engenharia Elétrica", "turno": "Noturno" },
-      { "nome": "Engenharia Mecânica", "turno": "Matutino" },
-      { "nome": "Engenharia Mecânica", "turno": "Noturno" },
-      { "nome": "Farmácia", "turno": "Matutino" },
-      { "nome": "Farmácia", "turno": "Noturno" },
-      { "nome": "Fisioterapia", "turno": "Matutino" },
-      { "nome": "Fisioterapia", "turno": "Noturno" },
-      { "nome": "Nutrição", "turno": "Matutino" },
-      { "nome": "Nutrição", "turno": "Noturno" }
-    ],
-    semipresencial: [
-      { "nome": "Administração", "turno": "Flex" },
-      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Flex" },
-      { "nome": "Biomedicina", "turno": "Flex" },
-      { "nome": "Ciências Contábeis", "turno": "Flex" },
-      { "nome": "Educação Física Bacharelado", "turno": "Flex" },
-      { "nome": "Educação Física Licenciatura", "turno": "Flex" },
-      { "nome": "Engenharia de Software", "turno": "Flex" },
-      { "nome": "Estética e Cosmética", "turno": "Flex" },
-      { "nome": "Fisioterapia", "turno": "Flex" },
-      { "nome": "Letras", "turno": "Flex" },
-      { "nome": "Logística", "turno": "Flex" },
-      { "nome": "Nutrição", "turno": "Flex" },
-      { "nome": "Pedagogia", "turno": "Flex" },
-      { "nome": "Psicopedagogia", "turno": "Flex" },
-      { "nome": "Serviço Social", "turno": "Flex" }
-    ],
-    ead: EAD_SHARED
-  },
+  const uniq = (arr) => Array.from(new Set(arr));
 
-  sul: {
-    // Base do Presencial (extraído das suas prints). Se faltar, você adiciona depois.
-    presencial: [
-      { "nome": "Administração", "turno": "Matutino" },
-      { "nome": "Administração", "turno": "Noturno" },
+  // Canonical map: variações -> nome canônico
+  // Regra: se for tecnólogo, fica "Tecnologia em ..."
+  const CANON = (() => {
+    const map = new Map();
 
-      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Matutino" },
-      { "nome": "Análise e Desenvolvimento de Sistemas", "turno": "Noturno" },
+    const set = (raw, canonical) => map.set(normalizeKey(raw), canonical);
 
-      { "nome": "Biomedicina", "turno": "Matutino" },
-      { "nome": "Biomedicina", "turno": "Noturno" },
+    // Tec (base)
+    set("Análise e Desenvolvimento de Sistemas", "Tecnologia em Análise e Desenvolvimento de Sistemas");
+    set("Analise e Desenvolvimento de Sistemas", "Tecnologia em Análise e Desenvolvimento de Sistemas");
+    set("Tecnologia em Análise e Desenvolvimento de Sistemas", "Tecnologia em Análise e Desenvolvimento de Sistemas");
 
-      { "nome": "Ciências Contábeis", "turno": "Matutino" },
-      { "nome": "Ciências Contábeis", "turno": "Noturno" },
+    set("Logística", "Tecnologia em Logística");
+    set("Tecnologia em Logística", "Tecnologia em Logística");
 
-      { "nome": "Direito", "turno": "Matutino" },
-      { "nome": "Direito", "turno": "Noturno" },
+    set("Marketing", "Tecnologia em Marketing");
+    set("Tecnologia em Marketing", "Tecnologia em Marketing");
 
-      { "nome": "Educação Física Bacharelado", "turno": "Matutino" },
-      { "nome": "Educação Física Bacharelado", "turno": "Noturno" },
+    set("Gestão da Qualidade", "Tecnologia em Gestão da Qualidade");
+    set("Tecnologia em Gestão da Qualidade", "Tecnologia em Gestão da Qualidade");
 
-      { "nome": "Educação Física Licenciatura", "turno": "Matutino" },
-      { "nome": "Educação Física Licenciatura", "turno": "Noturno" },
+    set("Gestão de Recursos Humanos", "Tecnologia em Gestão de Recursos Humanos");
+    set("Recursos Humanos", "Tecnologia em Gestão de Recursos Humanos");
+    set("Tecnologia em Gestão de Recursos Humanos", "Tecnologia em Gestão de Recursos Humanos");
 
-      { "nome": "Enfermagem", "turno": "Matutino" },
-      { "nome": "Enfermagem", "turno": "Noturno" },
+    set("Radiologia", "Tecnologia em Radiologia");
+    set("Tecnologia em Radiologia", "Tecnologia em Radiologia");
 
-      { "nome": "Engenharia Civil", "turno": "Matutino" },
-      { "nome": "Engenharia Civil", "turno": "Noturno" },
+    set("Segurança no Trabalho", "Tecnologia em Segurança no Trabalho");
+    set("Tecnologia em Segurança no Trabalho", "Tecnologia em Segurança no Trabalho");
 
-      { "nome": "Engenharia de Produção", "turno": "Matutino" },
-      { "nome": "Engenharia de Produção", "turno": "Noturno" },
+    set("Design Gráfico", "Tecnologia em Design Gráfico");
+    set("Tecnologia em Design Gráfico", "Tecnologia em Design Gráfico");
 
-      { "nome": "Engenharia Elétrica", "turno": "Matutino" },
-      { "nome": "Engenharia Elétrica", "turno": "Noturno" },
+    set("Estética e Cosmética", "Tecnologia em Estética e Cosmética");
+    set("Tecnologia em Estética e Cosmética", "Tecnologia em Estética e Cosmética");
 
-      { "nome": "Engenharia Mecânica", "turno": "Matutino" },
-      { "nome": "Engenharia Mecânica", "turno": "Noturno" },
+    set("Gastronomia", "Tecnologia em Gastronomia");
+    set("Tecnologia em Gastronomia", "Tecnologia em Gastronomia");
 
-      { "nome": "Engenharia de Software", "turno": "Noturno" },
+    set("Fullstack", "Tecnologia em Desenvolvimento Full Stack");
+    set("Tecnologia em Desenvolvimento Full Stack", "Tecnologia em Desenvolvimento Full Stack");
 
-      { "nome": "Farmácia", "turno": "Matutino" },
-      { "nome": "Farmácia", "turno": "Noturno" },
+    set("Big Data e Inteligência Analítica", "Tecnologia em Big Data e Inteligência Analítica");
+    set("Tecnologia em Big Data e Inteligência Analítica", "Tecnologia em Big Data e Inteligência Analítica");
 
-      { "nome": "Fisioterapia", "turno": "Matutino" },
-      { "nome": "Fisioterapia", "turno": "Noturno" },
+    set("Ciências de Dados", "Tecnologia em Ciência de Dados");
+    set("Tecnologia em Ciência de Dados", "Tecnologia em Ciência de Dados");
 
-      { "nome": "Nutrição", "turno": "Matutino" },
-      { "nome": "Nutrição", "turno": "Noturno" },
+    set("Inteligência Artificial", "Tecnologia em Inteligência Artificial");
+    set("Tecnologia em Inteligência Artificial", "Tecnologia em Inteligência Artificial");
 
-      { "nome": "Pedagogia", "turno": "Matutino" },
-      { "nome": "Pedagogia", "turno": "Noturno" },
+    set("Internet das Coisas (IoT)", "Tecnologia em Internet das Coisas (IoT)");
+    set("Tecnologia em Internet das Coisas (IoT)", "Tecnologia em Internet das Coisas (IoT)");
 
-      { "nome": "Psicologia", "turno": "Matutino" },
-      { "nome": "Psicologia", "turno": "Noturno" },
+    set("Jogos Digitais", "Tecnologia em Jogos Digitais");
+    set("Tecnologia em Jogos Digitais", "Tecnologia em Jogos Digitais");
 
-      { "nome": "Serviço Social", "turno": "Noturno" },
+    set("Gestão da Segurança e Defesa Cibernética", "Tecnologia em Gestão da Segurança e Defesa Cibernética");
+    set("Tecnologia em Gestão da Segurança e Defesa Cibernética", "Tecnologia em Gestão da Segurança e Defesa Cibernética");
 
-      { "nome": "Sistemas de Informação", "turno": "Matutino" },
-      { "nome": "Sistemas de Informação", "turno": "Noturno" },
+    set("Gestão de Serviços Jurídicos e Notariais", "Tecnologia em Gestão de Serviços Jurídicos e Notariais");
+    set("Tecnologia em Gestão de Serviços Jurídicos e Notariais", "Tecnologia em Gestão de Serviços Jurídicos e Notariais");
 
-      { "nome": "Tecnologia em Design Gráfico", "turno": "Noturno" },
+    // variações comuns
+    set("Redes de Computadores", "Redes de Computadores");
+    set("Rede de Computadores", "Redes de Computadores");
 
-      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Matutino" },
-      { "nome": "Tecnologia em Estética e Cosmética", "turno": "Noturno" },
+    set("Engenharia Ambiental", "Engenharia Ambiental e Energias Renováveis");
+    set("Engenharia Ambiental e Energias Renováveis", "Engenharia Ambiental e Energias Renováveis");
 
-      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Matutino" },
-      { "nome": "Tecnologia em Gestão da Qualidade", "turno": "Noturno" },
+    return map;
+  })();
 
-      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Matutino" },
-      { "nome": "Tecnologia em Gestão de Recursos Humanos", "turno": "Noturno" },
+  const canonicalizeName = (rawName) => {
+    const key = normalizeKey(rawName);
+    if (!key) return "";
+    return CANON.get(key) || String(rawName).trim();
+  };
 
-      { "nome": "Tecnologia em Logística", "turno": "Matutino" },
-      { "nome": "Tecnologia em Logística", "turno": "Noturno" },
+  const expandTurnosMap = (turnosMap) =>
+    Object.entries(turnosMap).flatMap(([nome, turnos]) =>
+      (turnos || []).map((turno) => ({ nome, turno }))
+    );
 
-      { "nome": "Tecnologia em Marketing", "turno": "Matutino" },
-      { "nome": "Tecnologia em Marketing", "turno": "Noturno" },
+  const expandFixedTurnos = (names, turnos) =>
+    (names || []).flatMap((nome) =>
+      (turnos || []).map((turno) => ({ nome, turno }))
+    );
 
-      { "nome": "Tecnologia em Radiologia", "turno": "Noturno" },
-      { "nome": "Tecnologia em Segurança no Trabalho", "turno": "Noturno" },
+  // ---------- RAW OFFERS (fonte única) ----------
+  // Você edita aqui futuramente, e o builder cuida de:
+  // - padronizar nomes
+  // - agrupar turnos
+  // - gerar IDs e catálogo
+  const RAW_OFFERS = {
+    sede: {
+      presencial: expandTurnosMap({
+        "Administração": ["Matutino", "Noturno"],
+        "Arquitetura e Urbanismo": ["Matutino", "Noturno"],
+        "Big Data e Inteligência Analítica": ["Matutino", "Noturno"],
+        "Biomedicina": ["Matutino", "Noturno"],
+        "Ciência da Computação": ["Matutino", "Noturno"],
+        "Ciências Contábeis": ["Matutino", "Noturno"],
+        "Ciências de Dados": ["Matutino", "Noturno"],
+        "Ciências Econômicas": ["Matutino", "Noturno"],
+        "Direito": ["Matutino", "Noturno", "Vespertino"],
+        "Educação Física Bacharelado": ["Matutino", "Noturno"],
+        "Educação Física Licenciatura": ["Matutino", "Noturno"],
+        "Enfermagem": ["Matutino", "Noturno", "Vespertino"],
+        "Engenharia Ambiental": ["Matutino", "Noturno"],
+        "Engenharia Civil": ["Matutino", "Noturno"],
+        "Engenharia da Computação": ["Matutino", "Noturno"],
+        "Engenharia de Produção": ["Matutino", "Noturno"],
+        "Engenharia de Software": ["Matutino", "Noturno"],
+        "Engenharia Elétrica": ["Matutino", "Noturno"],
+        "Engenharia Mecânica": ["Matutino", "Noturno"],
+        "Farmácia": ["Matutino", "Noturno"],
+        "Fisioterapia": ["Matutino", "Noturno", "Vespertino"],
+        "Fonoaudiologia": ["Matutino", "Noturno"],
+        "Fullstack": ["Matutino", "Noturno"],
+        "Gestão da Segurança e Defesa Cibernética": ["Matutino", "Noturno"],
+        "Gestão de Serviços Jurídicos e Notariais": ["Matutino", "Noturno"],
+        "Inteligência Artificial": ["Matutino", "Noturno"],
+        "Internet das Coisas (IoT)": ["Matutino", "Noturno"],
+        "Jogos Digitais": ["Matutino", "Noturno"],
+        "Jornalismo": ["Matutino", "Noturno"],
+        "Medicina Veterinária": ["Matutino", "Noturno"],
+        "Nutrição": ["Matutino", "Noturno"],
+        "Odontologia": ["Matutino", "Noturno"],
+        "Pedagogia": ["Matutino", "Noturno"],
+        "Psicologia": ["Matutino", "Noturno"],
+        "Publicidade e Propaganda": ["Matutino", "Noturno"],
+        "Quiropraxia": ["Matutino", "Noturno"],
+        "Redes de Computadores": ["Matutino", "Noturno"],
+        "Serviço Social": ["Noturno"],
+        "Sistemas de Informação": ["Matutino", "Noturno"],
+        "Tecnologia em Análise e Desenvolvimento de Sistemas": ["Matutino", "Noturno"],
+        "Tecnologia em Design Gráfico": ["Matutino", "Noturno"],
+        "Tecnologia em Estética e Cosmética": ["Matutino", "Noturno"],
+        "Tecnologia em Gastronomia": ["Matutino", "Noturno"],
+        "Tecnologia em Gestão da Qualidade": ["Matutino", "Noturno"],
+        "Tecnologia em Gestão de Recursos Humanos": ["Matutino", "Noturno"],
+        "Tecnologia em Logística": ["Matutino", "Noturno"],
+        "Tecnologia em Marketing": ["Matutino", "Noturno"],
+        "Tecnologia em Radiologia": ["Matutino", "Noturno"],
+        "Tecnologia em Segurança no Trabalho": ["Noturno"],
+        "Turismo": ["Noturno"],
+      }),
 
-      { "nome": "Terapia Ocupacional", "turno": "Noturno" }
-    ],
-    hibrido: [
-  { "nome": "Administração", "turno": "Matutino" },
-  { "nome": "Administração", "turno": "Noturno" },
+      hibrido: expandFixedTurnos(
+        [
+          "Administração",
+          "Biomedicina",
+          "Engenharia Ambiental",
+          "Engenharia Civil",
+          "Engenharia de Produção",
+          "Engenharia Elétrica",
+          "Engenharia Mecânica",
+          "Farmácia",
+          "Fisioterapia",
+          "Fonoaudiologia",
+          "Nutrição",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-  { "nome": "Biomedicina", "turno": "Matutino" },
-  { "nome": "Biomedicina", "turno": "Noturno" },
+      // Semipresencial (modal) = Noturno + Flex (sempre)
+      semipresencial: [
+        "Nutrição",
+        "Farmácia",
+        "Análise e Desenvolvimento de Sistemas",
+        "Ciências Contábeis",
+        "Biomedicina",
+        "Fisioterapia",
+        "Pedagogia",
+        "Educação Física Bacharelado",
+        "Administração",
+        "Educação Física Licenciatura",
+        "Engenharia Civil",
+        "Engenharia Elétrica",
+        "Letras",
+        "Psicopedagogia",
+        "Serviço Social",
+        "Logística",
+        "Engenharia de Software",
+        "Estética e Cosmética",
+      ],
 
-  { "nome": "Engenharia Ambiental", "turno": "Matutino" },
-  { "nome": "Engenharia Ambiental", "turno": "Noturno" },
+      ead: [
+        "Administração",
+        "Ciências Contábeis",
+        "Engenharia de Software",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Gestão Comercial",
+        "Tecnologia em Gestão da Tecnologia da Informação",
+        "Tecnologia em Gestão de Recursos Humanos",
+        "Tecnologia em Gestão de Segurança Privada",
+        "Tecnologia em Gestão Financeira",
+        "Tecnologia em Gestão Pública",
+        "Tecnologia em Logística",
+        "Tecnologia em Marketing",
+        "Tecnologia em Segurança Pública",
+        "Tecnologia em Gestão Portuária",
+        "Tecnologia em Gestão da Qualidade",
+      ],
+    },
 
-  { "nome": "Engenharia Civil", "turno": "Matutino" },
-  { "nome": "Engenharia Civil", "turno": "Noturno" },
+    leste: {
+      presencial: expandFixedTurnos(
+        [
+          "Administração",
+          "Análise e Desenvolvimento de Sistemas",
+          "Biomedicina",
+          "Ciências Contábeis",
+          "Direito",
+          "Educação Física Bacharelado",
+          "Educação Física Licenciatura",
+          "Enfermagem",
+          "Engenharia Ambiental e Energias Renováveis",
+          "Engenharia Civil",
+          "Engenharia de Produção",
+          "Engenharia Elétrica",
+          "Farmácia",
+          "Fisioterapia",
+          "Jornalismo",
+          "Nutrição",
+          "Pedagogia",
+          "Psicologia",
+          "Serviço Social",
+          "Sistemas de Informação",
+          "Tecnologia em Design Gráfico",
+          "Tecnologia em Estética e Cosmética",
+          "Tecnologia em Gastronomia",
+          "Tecnologia em Gestão da Qualidade",
+          "Tecnologia em Gestão de Recursos Humanos",
+          "Tecnologia em Logística",
+          "Tecnologia em Marketing",
+          "Tecnologia em Radiologia",
+          "Tecnologia em Segurança no Trabalho",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-  { "nome": "Engenharia de Produção", "turno": "Matutino" },
-  { "nome": "Engenharia de Produção", "turno": "Noturno" },
+      hibrido: expandFixedTurnos(
+        [
+          "Administração",
+          "Biomedicina",
+          "Engenharia Ambiental",
+          "Engenharia Civil",
+          "Engenharia de Produção",
+          "Engenharia Elétrica",
+          "Engenharia Mecânica",
+          "Farmácia",
+          "Fisioterapia",
+          "Nutrição",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-  { "nome": "Engenharia Elétrica", "turno": "Matutino" },
-  { "nome": "Engenharia Elétrica", "turno": "Noturno" },
+      semipresencial: [
+        "Administração",
+        "Análise e Desenvolvimento de Sistemas",
+        "Biomedicina",
+        "Ciências Contábeis",
+        "Educação Física Bacharelado",
+        "Educação Física Licenciatura",
+        "Engenharia de Software",
+        "Estética e Cosmética",
+        "Fisioterapia",
+        "Letras",
+        "Logística",
+        "Nutrição",
+        "Pedagogia",
+        "Psicopedagogia",
+        "Serviço Social",
+      ],
 
-  { "nome": "Engenharia Mecânica", "turno": "Matutino" },
-  { "nome": "Engenharia Mecânica", "turno": "Noturno" },
+      ead: [
+        "Administração",
+        "Ciências Contábeis",
+        "Engenharia de Software",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Gestão Comercial",
+        "Tecnologia em Gestão da Qualidade",
+        "Tecnologia em Gestão da Tecnologia da Informação",
+        "Tecnologia em Gestão de Recursos Humanos",
+        "Tecnologia em Gestão de Segurança Privada",
+        "Tecnologia em Gestão Financeira",
+        "Tecnologia em Gestão Portuária",
+        "Tecnologia em Gestão Pública",
+        "Tecnologia em Logística",
+        "Tecnologia em Marketing",
+        "Tecnologia em Segurança Pública",
+      ],
+    },
 
-  { "nome": "Farmácia", "turno": "Matutino" },
-  { "nome": "Farmácia", "turno": "Noturno" },
+    sul: {
+      presencial: expandTurnosMap({
+        "Administração": ["Matutino", "Noturno"],
+        "Análise e Desenvolvimento de Sistemas": ["Matutino", "Noturno"],
+        "Biomedicina": ["Matutino", "Noturno"],
+        "Ciências Contábeis": ["Matutino", "Noturno"],
+        "Direito": ["Matutino", "Noturno"],
+        "Educação Física Bacharelado": ["Matutino", "Noturno"],
+        "Educação Física Licenciatura": ["Matutino", "Noturno"],
+        "Enfermagem": ["Matutino", "Noturno"],
+        "Engenharia Civil": ["Matutino", "Noturno"],
+        "Engenharia de Produção": ["Matutino", "Noturno"],
+        "Engenharia Elétrica": ["Matutino", "Noturno"],
+        "Engenharia Mecânica": ["Matutino", "Noturno"],
+        "Engenharia de Software": ["Noturno"],
+        "Farmácia": ["Matutino", "Noturno"],
+        "Fisioterapia": ["Matutino", "Noturno"],
+        "Nutrição": ["Matutino", "Noturno"],
+        "Pedagogia": ["Matutino", "Noturno"],
+        "Psicologia": ["Matutino", "Noturno"],
+        "Serviço Social": ["Noturno"],
+        "Sistemas de Informação": ["Matutino", "Noturno"],
+        "Tecnologia em Design Gráfico": ["Noturno"],
+        "Tecnologia em Estética e Cosmética": ["Matutino", "Noturno"],
+        "Tecnologia em Gestão da Qualidade": ["Matutino", "Noturno"],
+        "Tecnologia em Gestão de Recursos Humanos": ["Matutino", "Noturno"],
+        "Tecnologia em Logística": ["Matutino", "Noturno"],
+        "Tecnologia em Marketing": ["Matutino", "Noturno"],
+        "Tecnologia em Radiologia": ["Noturno"],
+        "Tecnologia em Segurança no Trabalho": ["Noturno"],
+        "Terapia Ocupacional": ["Noturno"],
+      }),
 
-  { "nome": "Fisioterapia", "turno": "Matutino" },
-  { "nome": "Fisioterapia", "turno": "Noturno" },
+      hibrido: expandFixedTurnos(
+        [
+          "Administração",
+          "Biomedicina",
+          "Engenharia Ambiental",
+          "Engenharia Civil",
+          "Engenharia de Produção",
+          "Engenharia Elétrica",
+          "Engenharia Mecânica",
+          "Farmácia",
+          "Fisioterapia",
+          "Fonoaudiologia",
+          "Logística",
+          "Nutrição",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-  { "nome": "Fonoaudiologia", "turno": "Matutino" },
-  { "nome": "Fonoaudiologia", "turno": "Noturno" },
+      semipresencial: [
+        "Administração",
+        "Análise e Desenvolvimento de Sistemas",
+        "Biomedicina",
+        "Ciências Contábeis",
+        "Educação Física Bacharelado",
+        "Educação Física Licenciatura",
+        "Engenharia de Software",
+        "Estética e Cosmética",
+        "Fisioterapia",
+        "Letras",
+        "Nutrição",
+        "Pedagogia",
+        "Psicopedagogia",
+        "Serviço Social",
+        "Tecnologia em Logística",
+      ],
 
-  { "nome": "Logística", "turno": "Matutino" },
-  { "nome": "Logística", "turno": "Noturno" },
+      ead: [
+        "Administração",
+        "Ciências Contábeis",
+        "Engenharia de Software",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Gestão Comercial",
+        "Tecnologia em Gestão da Qualidade",
+        "Tecnologia em Gestão da Tecnologia da Informação",
+        "Tecnologia em Gestão de Recursos Humanos",
+        "Tecnologia em Gestão de Segurança Privada",
+        "Tecnologia em Gestão Financeira",
+        "Tecnologia em Gestão Portuária",
+        "Tecnologia em Gestão Pública",
+        "Tecnologia em Logística",
+        "Tecnologia em Marketing",
+        "Tecnologia em Segurança Pública",
+      ],
+    },
 
-  { "nome": "Nutrição", "turno": "Matutino" },
-  { "nome": "Nutrição", "turno": "Noturno" }
-],
+    norte: {
+      presencial: expandFixedTurnos(
+        [
+          "Administração",
+          "Biomedicina",
+          "Ciências Contábeis",
+          "Direito",
+          "Educação Física Bacharelado",
+          "Enfermagem",
+          "Engenharia da Computação",
+          "Farmácia",
+          "Fisioterapia",
+          "Nutrição",
+          "Pedagogia",
+          "Psicologia",
+          "Tecnologia em Análise e Desenvolvimento de Sistemas",
+          "Tecnologia em Estética e Cosmética",
+          "Tecnologia em Gestão da Qualidade",
+          "Tecnologia em Gestão de Recursos Humanos",
+          "Tecnologia em Logística",
+          "Tecnologia em Marketing",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-    semipresencial: [],
-    ead: EAD_SHARED
-  },
+      hibrido: expandFixedTurnos(
+        [
+          "Administração",
+          "Biomedicina",
+          "Engenharia Ambiental",
+          "Engenharia Civil",
+          "Engenharia de Produção",
+          "Engenharia Elétrica",
+          "Engenharia Mecânica",
+          "Farmácia",
+          "Fisioterapia",
+          "Fonoaudiologia",
+          "Nutrição",
+        ],
+        ["Matutino", "Noturno"]
+      ),
 
-  norte: { presencial: [], hibrido: [], semipresencial: [], ead: EAD_SHARED },
-  oeste: { presencial: [], hibrido: [], semipresencial: [], ead: EAD_SHARED }
-};
+      semipresencial: [
+        "Administração",
+        "Biomedicina",
+        "Ciências Contábeis",
+        "Educação Física Bacharelado",
+        "Educação Física Licenciatura",
+        "Engenharia de Software",
+        "Fisioterapia",
+        "Letras",
+        "Nutrição",
+        "Pedagogia",
+        "Psicopedagogia",
+        "Serviço Social",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Estética e Cosmética",
+        "Tecnologia em Logística",
+      ],
 
-window.coursesData = coursesData;
+      ead: [
+        "Administração",
+        "Ciências Contábeis",
+        "Engenharia de Software",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Gestão Comercial",
+        "Tecnologia em Gestão da Qualidade",
+        "Tecnologia em Gestão da Tecnologia da Informação",
+        "Tecnologia em Gestão de Recursos Humanos",
+        "Tecnologia em Gestão de Segurança Privada",
+        "Tecnologia em Gestão Financeira",
+        "Tecnologia em Gestão Portuária",
+        "Tecnologia em Gestão Pública",
+        "Tecnologia em Logística",
+        "Tecnologia em Marketing",
+        "Tecnologia em Segurança Pública",
+      ],
+    },
+
+    // BACK ONLY (Oeste no front aponta pra cá)
+    compensa: {
+      presencial: expandTurnosMap({
+        "Administração": ["Matutino", "Noturno"],
+        "Biomedicina": ["Matutino", "Noturno"],
+        "Ciências Contábeis": ["Matutino", "Noturno"],
+        "Direito": ["Matutino", "Noturno"],
+        "Enfermagem": ["Matutino", "Noturno"],
+        "Estética e Cosmética": ["Matutino", "Noturno"],
+        "Farmácia": ["Matutino", "Noturno"],
+        "Logística": ["Matutino", "Noturno"],
+        "Marketing": ["Matutino", "Noturno"],
+        "Nutrição": ["Matutino", "Noturno"],
+        "Pedagogia": ["Matutino", "Noturno"],
+        "Psicologia": ["Matutino", "Noturno"],
+        "Recursos Humanos": ["Matutino", "Noturno"],
+      }),
+
+      hibrido: [], // não oferece
+
+      semipresencial: [
+        "Administração",
+        "Ciências Contábeis",
+        "Pedagogia",
+        "Educação Física Bacharelado",
+        "Educação Física Licenciatura",
+        "Letras",
+        "Psicopedagogia",
+        "Serviço Social",
+        "Logística",
+        "Engenharia de Software",
+      ],
+
+      ead: [
+        "Administração",
+        "Ciências Contábeis",
+        "Engenharia de Software",
+        "Tecnologia em Análise e Desenvolvimento de Sistemas",
+        "Tecnologia em Gestão Comercial",
+        "Tecnologia em Gestão da Qualidade",
+        "Tecnologia em Gestão da Tecnologia da Informação",
+        "Tecnologia em Gestão de Recursos Humanos",
+        "Tecnologia em Gestão de Segurança Privada",
+        "Tecnologia em Gestão Financeira",
+        "Tecnologia em Gestão Portuária",
+        "Tecnologia em Gestão Pública",
+        "Tecnologia em Logística",
+        "Tecnologia em Marketing",
+        "Tecnologia em Segurança Pública",
+      ],
+    },
+  };
+
+  // ---------- Builder (catalog + offers) ----------
+  const build = (raw) => {
+    const catalog = Object.create(null);
+    const offers = Object.create(null);
+
+    const ensureCourse = (canonicalName) => {
+      const name = canonicalizeName(canonicalName);
+      const id = toId(name);
+      if (!catalog[id]) {
+        catalog[id] = {
+          id,
+          name,
+          degree: name.toLowerCase().startsWith("tecnologia em ") ? "tecnologo" : "nao_definido",
+          // futuro: duration, price, etc.
+        };
+      }
+      return id;
+    };
+
+    const addOffer = (unitKey, modalityKey, courseId, turnos) => {
+      offers[unitKey] ||= Object.create(null);
+      offers[unitKey][modalityKey] ||= Object.create(null); // map id -> {id, turnos[]}
+      const slot = offers[unitKey][modalityKey];
+
+      if (!slot[courseId]) slot[courseId] = { id: courseId, turnos: [] };
+      slot[courseId].turnos = uniq(slot[courseId].turnos.concat(turnos));
+    };
+
+    for (const [unitKey, unitObj] of Object.entries(raw)) {
+      for (const [modalityKey, list] of Object.entries(unitObj)) {
+        const isSemi = modalityKey === "semipresencial";
+        const isEad = modalityKey === "ead";
+
+        const forceTurnos = isSemi ? ["Noturno", "Flex"] : isEad ? ["Online"] : null;
+
+        const items = Array.isArray(list) ? list : [];
+        for (const item of items) {
+          if (typeof item === "string") {
+            const id = ensureCourse(item);
+            addOffer(unitKey, modalityKey, id, forceTurnos || []);
+            continue;
+          }
+          if (item && typeof item === "object") {
+            const id = ensureCourse(item.nome);
+            const t = forceTurnos || (item.turno ? [String(item.turno)] : []);
+            addOffer(unitKey, modalityKey, id, t);
+          }
+        }
+      }
+    }
+
+    // Transform maps -> arrays sorted alphabetically
+    const offersFinal = Object.create(null);
+    for (const [unitKey, unitObj] of Object.entries(offers)) {
+      offersFinal[unitKey] = Object.create(null);
+      for (const [modalityKey, map] of Object.entries(unitObj)) {
+        const arr = Object.values(map)
+          .map((x) => ({ id: x.id, turnos: uniq(x.turnos) }))
+          .sort((a, b) => catalog[a.id].name.localeCompare(catalog[b.id].name, "pt-BR"));
+        offersFinal[unitKey][modalityKey] = arr;
+      }
+    }
+
+    return {
+      catalog,
+      offers: offersFinal,
+      canonicalizeName,
+      toId,
+    };
+  };
+
+  window.COURSES = build(RAW_OFFERS);
+})();
