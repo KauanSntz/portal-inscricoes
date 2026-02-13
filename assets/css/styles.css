@@ -1181,3 +1181,13 @@ body{
 @media (max-width: 980px){
   .links-page .links-controls-grid--inline{ grid-template-columns: 1fr; }
 }
+
+/* Home: alternância azul/vermelho por unidade */
+.unit--home-blue{ --accent: var(--p-blue-1, #2897f4); }
+.unit--home-red{ --accent: var(--p-red-2, #ee4242); }
+
+.unit--home-blue .unit-title,
+.unit--home-blue .btn-courses{ color: var(--p-blue-1, #2897f4); border-color: var(--p-blue-1, #2897f4); }
+
+.unit--home-red .unit-title,
+.unit--home-red .btn-courses{ color: var(--p-red-2, #ee4242); border-color: var(--p-red-2, #ee4242); }

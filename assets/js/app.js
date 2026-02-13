@@ -191,6 +191,18 @@ const scrollLock = (() => {
     return "sede";
   };
 
+  const homeToneByUnit = (coursesKey) => {
+    const key = norm(coursesKey);
+    const map = {
+      sede: "blue",
+      leste: "red",
+      sul: "blue",
+      norte: "red",
+      compensa: "blue",
+    };
+    return map[key] || "blue";
+  };
+
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
     const gt = norm(groupTitle);
@@ -233,8 +245,9 @@ const scrollLock = (() => {
 
 
   const renderUnit = (unit) => {
+    const tone = homeToneByUnit(unit.coursesKey);
     const unitCard = el("section", {
-      class: `unit theme--${unit.theme}`,
+      class: `unit theme--${unit.theme} unit--home-${tone}`,
       id: `unit-${unit.coursesKey}`,
       "data-unit-key": unit.coursesKey,
     });

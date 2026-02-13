@@ -10,8 +10,8 @@
   const UNKNOWN_UNIT = "UNIDADE NAO IDENTIFICADA";
 
   const TYPE_LABELS = Object.freeze({ vestibular: "Vestibular", matricula: "Matrícula", outro: "Outro" });
-  const MODALITY_LABELS = Object.freeze({ ead: "100% EAD", semipresencial: "Semipresencial", flex: "Flex", outro: "Outro" });
-  const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, outro: 3 });
+  const MODALITY_LABELS = Object.freeze({ ead: "100% EAD", semipresencial: "Semipresencial", flex: "Flex", presencial: "Presencial", hibrido: "Híbrido", outro: "Outro" });
+  const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, presencial: 3, hibrido: 4, outro: 5 });
   const TYPE_ORDER = Object.freeze({ vestibular: 0, matricula: 1, outro: 2 });
 
   const state = {
@@ -74,6 +74,8 @@
     if (t.includes("100% ead") || /\bead\b/.test(t)) return "ead";
     if (t.includes("semi-flex") || t.includes("semi flex") || /\bflex\b/.test(t)) return "flex";
     if (t.includes("semipresencial")) return "semipresencial";
+    if (t.includes("hibrido")) return "hibrido";
+    if (t.includes("presencial")) return "presencial";
     return "outro";
   };
 
