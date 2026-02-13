@@ -1069,3 +1069,115 @@ body{
 @media (max-width:980px){
   body{ background: var(--p-white); }
 }
+
+/* =========================================================
+  Links page v4: unit-only blocks + modality separators
+========================================================= */
+.links-page .links-controls-grid--inline{
+  grid-template-columns: minmax(224px,2fr) repeat(3, minmax(152px, 1fr)) auto auto;
+}
+
+.links-page .field span{
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0 0 4px;
+  clip: auto;
+  overflow: visible;
+  color: var(--p-blue-1);
+  font-weight: 700;
+  font-size: .9rem;
+}
+
+.links-page .unit-group{
+  border: 1px solid var(--p-blue-2);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.links-page .unit-group--blue{ --unit-tone: var(--p-blue-1); }
+.links-page .unit-group--red{ --unit-tone: var(--p-red-1); }
+
+.links-page .unit-group__title{
+  color: var(--unit-tone);
+  margin-bottom: 8px;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.links-page .modality-group{
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--p-blue-2) 45%, var(--p-white));
+}
+
+.links-page .modality-group:first-child{
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.links-page .modality-group__title{
+  color: var(--p-blue-2);
+  font-size: .95rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.links-page .unit-row{
+  padding: 8px 0;
+  border-top: 0;
+}
+
+.links-page .process-link-title,
+.links-page .process-code,
+.links-page .process-text{
+  color: var(--unit-tone);
+}
+
+.links-page .process-code{
+  background: color-mix(in srgb, var(--unit-tone) 18%, var(--p-white));
+  border-color: color-mix(in srgb, var(--unit-tone) 45%, var(--p-white));
+  min-width: 56px;
+}
+
+.links-page .process-text{
+  font-size: 1.03rem;
+  font-weight: 800;
+}
+
+.links-page .unit-row[data-warning="true"] .process-text::after{
+  content: " • revisar";
+  color: var(--p-red-3);
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.links-page .badge-chip--modality-vestibular{
+  background: color-mix(in srgb, var(--p-blue-2) 55%, var(--p-white));
+  color: var(--p-blue-1);
+  border: 1px solid var(--p-blue-2);
+}
+
+.links-page .badge-chip--modality-matricula{
+  background: color-mix(in srgb, var(--p-red-3) 50%, var(--p-white));
+  color: var(--p-red-2);
+  border: 1px solid var(--p-red-3);
+}
+
+.links-page .badge-chip--vestibular{
+  background: var(--p-blue-1);
+  color: var(--p-white);
+  border: 1px solid var(--p-blue-1);
+}
+
+.links-page .badge-chip--matricula{
+  background: var(--p-red-2);
+  color: var(--p-white);
+  border: 1px solid var(--p-red-2);
+}
+
+@media (max-width: 980px){
+  .links-page .links-controls-grid--inline{ grid-template-columns: 1fr; }
+}

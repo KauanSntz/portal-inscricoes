@@ -15,13 +15,16 @@
   });
 
   const MODALITY_LABELS = Object.freeze({
-    presencial: "Presencial",
-    hibrido: "Híbrido",
+    ead: "100% EAD",
     semipresencial: "Semipresencial",
     flex: "Flex",
-    ead: "EAD",
+    hibrido: "Híbrido",
+    presencial: "Presencial",
     outro: "Outro",
   });
+
+  const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, hibrido: 3, presencial: 4, outro: 5 });
+  const TYPE_ORDER = Object.freeze({ vestibular: 0, matricula: 1, outro: 2 });
 
   const UNIT_ALIAS = Object.freeze({
     oeste: "compensa",
@@ -78,8 +81,8 @@
     const t = norm(txt);
     if (t.includes("flex")) return "flex";
     if (t.includes("semi")) return "semipresencial";
-    if (t.includes("hibrid")) return "hibrido";
     if (t.includes("ead") || t.includes("online")) return "ead";
+    if (t.includes("hibrid")) return "hibrido";
     if (t.includes("presencial")) return "presencial";
     return "outro";
   };
@@ -106,7 +109,6 @@
     const withoutCode = code ? raw.replace(new RegExp(`^${code}\\s*`), "") : raw;
 
     const parts = withoutCode.split(" - ").map((x) => x.trim()).filter(Boolean);
-    const processPrefix = parts[0] || "Processo";
     const unitAndMode = parts[1] || "";
 
     const modePatterns = [
@@ -123,8 +125,21 @@
     for (const rgx of modePatterns) unitName = unitName.replace(rgx, "").trim();
     if (!unitName) unitName = "OUTROS";
 
-    const processTitle = withoutCode;
-    return { code, unitName, processTitle, processPrefix };
+    return { code, unitName, processTitle: withoutCode };
+  };
+
+  const hasUnitInTitle = (processTitle, expectedUnit) => {
+    const p = norm(processTitle);
+    const e = norm(expectedUnit);
+    if (p.includes(e)) return true;
+
+    const aliases = {
+      compensa: ["oeste", "compensa"],
+      "oeste — compensa": ["oeste", "compensa"],
+    };
+
+    const list = aliases[e] || [e];
+    return list.some((x) => p.includes(norm(x)));
   };
 
   const normalizeFromDataJson = (payload) => {
@@ -133,13 +148,14 @@
       for (const entry of sheet.entries || []) {
         if (entry.type !== "link") continue;
 
-        const title = String(entry.title || "");
-        const split = splitTitle(title);
+        const fullTitle = String(entry.title || "");
+        const split = splitTitle(fullTitle);
         const unitKey = unitKeyFromName(split.unitName);
-        const unitName = humanUnit(unitKey) === unitKey.toUpperCase() ? split.unitName.toUpperCase() : humanUnit(unitKey);
-        const modalityKey = parseModality(title);
-        const typeKey = parseType(title);
-        const url = normalizeWizardUrl(entry.url);
+        const mapped = humanUnit(unitKey);
+        const unitName = mapped === unitKey.toUpperCase() ? split.unitName.toUpperCase() : mapped;
+
+        const modalityKey = parseModality(fullTitle);
+        const typeKey = parseType(fullTitle);
 
         out.push({
           unitKey,
@@ -150,9 +166,10 @@
           modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
           typeKey,
           typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
-          url,
+          url: normalizeWizardUrl(entry.url),
           rawUrl: String(entry.url || ""),
-          searchable: norm([split.unitName, split.processTitle, sheet.name, entry.url].join(" ")),
+          dataWarning: !hasUnitInTitle(split.processTitle, unitName),
+          searchable: norm([unitName, split.processTitle, sheet.name, entry.url].join(" ")),
         });
       }
     }
@@ -164,13 +181,15 @@
     for (const unit of Array.isArray(units) ? units : []) {
       const unitKey = unitKeyFromName(unit.coursesKey || unit.key || unit.title);
       const unitName = humanUnit(unitKey);
+
       for (const [blockKey, block] of Object.entries(unit.blocks || {})) {
         for (const item of block.links || []) {
           const typeKey = parseType(item.type);
           const modalityKey = parseModality(`${item.modality || ""} ${blockKey}`);
-          const typeLabel = item.type || TYPE_LABELS[typeKey] || TYPE_LABELS.outro;
+          const typeLabel = TYPE_LABELS[typeKey] || TYPE_LABELS.outro;
           const modalityLabel = MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro;
-          const processTitle = `${typeLabel.toUpperCase()} - ${unitName} ${modalityLabel.toUpperCase()} - 2026/1`;
+          const processTitle = `${String(item.type || typeLabel).toUpperCase()} - ${unitName} ${modalityLabel.toUpperCase()} - 2026/1`;
+
           out.push({
             unitKey,
             unitName,
@@ -179,9 +198,10 @@
             modalityKey,
             modalityLabel,
             typeKey,
-            typeLabel: TYPE_LABELS[typeKey] || typeLabel,
+            typeLabel,
             url: normalizeWizardUrl(item.href),
             rawUrl: String(item.href || ""),
+            dataWarning: !hasUnitInTitle(processTitle, unitName),
             searchable: norm([unitName, processTitle, item.code, item.href].join(" ")),
           });
         }
@@ -193,24 +213,28 @@
   const dedupeAndSort = (records) => {
     const seen = new Set();
     const unique = [];
+
     for (const rec of records) {
       const key = [rec.unitKey, rec.code, rec.typeKey, rec.url].join("|");
       if (seen.has(key)) continue;
       seen.add(key);
       unique.push(rec);
     }
+
     return unique.sort((a, b) =>
       a.unitName.localeCompare(b.unitName, "pt-BR") ||
-      a.code.localeCompare(b.code, "pt-BR") ||
-      a.typeLabel.localeCompare(b.typeLabel, "pt-BR")
+      (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) ||
+      (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) ||
+      a.code.localeCompare(b.code, "pt-BR")
     );
   };
 
-  const buildQA = (records) => {
-    const invalidUrls = records.filter((x) => !x.url || !x.url.endsWith(FIXED_HASH)).length;
-    const emptyCodes = records.filter((x) => !x.code).length;
-    return { total: records.length, invalidUrls, emptyCodes };
-  };
+  const buildQA = (records) => ({
+    total: records.length,
+    invalidUrls: records.filter((x) => !x.url || !x.url.endsWith(FIXED_HASH)).length,
+    emptyCodes: records.filter((x) => !x.code).length,
+    warnings: records.filter((x) => x.dataWarning).length,
+  });
 
   const debounce = (fn, ms) => {
     let timer;
@@ -226,13 +250,6 @@
     for (const value of values) select.appendChild(new Option(labels[value] || value, value));
   };
 
-  const unitTone = (unitKey) => {
-    const tones = ["tone-red-1", "tone-red-2", "tone-red-3", "tone-blue-1", "tone-blue-2"];
-    let h = 0;
-    for (const ch of unitKey) h += ch.charCodeAt(0);
-    return tones[h % tones.length];
-  };
-
   const createBadge = (text, kind) => {
     const span = document.createElement("span");
     span.className = `badge-chip badge-chip--${kind}`;
@@ -242,6 +259,7 @@
 
   const renderGroups = () => {
     dom.groups.textContent = "";
+
     const visible = state.filtered.slice(0, state.renderCount);
     const grouped = new Map();
 
@@ -250,54 +268,85 @@
       grouped.get(rec.unitKey).items.push(rec);
     }
 
+    const entries = Array.from(grouped.entries()).sort((a, b) => a[1].unitName.localeCompare(b[1].unitName, "pt-BR"));
     const frag = document.createDocumentFragment();
-    for (const [unitKey, group] of grouped.entries()) {
+
+    entries.forEach(([unitKey, group], unitIndex) => {
       const card = document.createElement("article");
-      card.className = `unit-group ${unitTone(unitKey)}`;
+      card.className = `unit-group ${unitIndex % 2 === 0 ? "unit-group--blue" : "unit-group--red"}`;
 
-      const h2 = document.createElement("h2");
-      h2.className = "unit-group__title";
-      h2.textContent = group.unitName;
-      card.appendChild(h2);
+      const title = document.createElement("h2");
+      title.className = "unit-group__title";
+      title.textContent = group.unitName;
+      card.appendChild(title);
 
-      const list = document.createElement("div");
-      list.className = "unit-group__list";
-
-      for (const rec of group.items) {
-        const row = document.createElement("div");
-        row.className = "unit-row";
-
-        const main = document.createElement(rec.url ? "a" : "div");
-        main.className = "process-link-title";
-        if (rec.url) {
-          main.href = rec.url;
-          main.target = "_blank";
-          main.rel = "noopener noreferrer";
-        }
-
-        const code = document.createElement("span");
-        code.className = "process-code";
-        code.textContent = rec.code || "—";
-
-        const text = document.createElement("span");
-        text.className = "process-text";
-        text.textContent = rec.processTitle;
-
-        const meta = document.createElement("div");
-        meta.className = "unit-row__meta";
-        meta.appendChild(createBadge(rec.modalityLabel, "modality"));
-        meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
-
-        main.appendChild(code);
-        main.appendChild(text);
-        row.appendChild(main);
-        row.appendChild(meta);
-        list.appendChild(row);
+      const modalityGroups = new Map();
+      for (const item of group.items) {
+        if (!modalityGroups.has(item.modalityKey)) modalityGroups.set(item.modalityKey, []);
+        modalityGroups.get(item.modalityKey).push(item);
       }
 
-      card.appendChild(list);
+      const orderKeys = Array.from(modalityGroups.keys()).sort((a, b) => (MODALITY_ORDER[a] ?? 9) - (MODALITY_ORDER[b] ?? 9));
+      const listWrap = document.createElement("div");
+      listWrap.className = "unit-group__list";
+
+      for (const mk of orderKeys) {
+        const sub = document.createElement("section");
+        sub.className = "modality-group";
+
+        const subTitle = document.createElement("h3");
+        subTitle.className = "modality-group__title";
+        subTitle.textContent = MODALITY_LABELS[mk] || MODALITY_LABELS.outro;
+        sub.appendChild(subTitle);
+
+        const rows = modalityGroups
+          .get(mk)
+          .slice()
+          .sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR"));
+
+        rows.forEach((rec) => {
+          if (rec.dataWarning) {
+            console.warn(`[WARN] unidade divergente expected=${group.unitName} got=${rec.processTitle} code=${rec.code}`);
+          }
+
+          const row = document.createElement("div");
+          row.className = "unit-row";
+          if (rec.dataWarning) row.dataset.warning = "true";
+
+          const link = document.createElement(rec.url ? "a" : "div");
+          link.className = "process-link-title";
+          if (rec.url) {
+            link.href = rec.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+          }
+
+          const code = document.createElement("span");
+          code.className = "process-code";
+          code.textContent = rec.code || "—";
+
+          const text = document.createElement("span");
+          text.className = "process-text";
+          text.textContent = rec.processTitle;
+
+          const meta = document.createElement("div");
+          meta.className = "unit-row__meta";
+          meta.appendChild(createBadge(rec.modalityLabel, rec.typeKey === "matricula" ? "modality-matricula" : "modality-vestibular"));
+          meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
+
+          link.appendChild(code);
+          link.appendChild(text);
+          row.appendChild(link);
+          row.appendChild(meta);
+          sub.appendChild(row);
+        });
+
+        listWrap.appendChild(sub);
+      }
+
+      card.appendChild(listWrap);
       frag.appendChild(card);
-    }
+    });
 
     dom.groups.appendChild(frag);
     dom.empty.hidden = state.filtered.length > 0;
@@ -309,11 +358,11 @@
   };
 
   const renderQA = () => {
-    if (!state.qa) return;
     dom.qaList.innerHTML = `
       <li>Total de links normalizados: <strong>${state.qa.total}</strong></li>
-      <li>Links inválidos ou fora do padrão wizard: <strong>${state.qa.invalidUrls}</strong></li>
+      <li>Links fora do padrão wizard: <strong>${state.qa.invalidUrls}</strong></li>
       <li>Códigos vazios: <strong>${state.qa.emptyCodes}</strong></li>
+      <li>Divergências unidade ↔ título: <strong>${state.qa.warnings}</strong></li>
     `;
   };
 
@@ -333,7 +382,7 @@
   };
 
   const toCSV = (rows) => {
-    const head = ["unidade", "modalidade", "tipo", "codigo", "titulo", "url"];
+    const head = ["unidade", "modalidade", "ingresso", "codigo", "titulo", "url"];
     const lines = rows.map((r) => [r.unitName, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
     return [head, ...lines]
       .map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(","))
@@ -392,6 +441,7 @@
 
   const loadRecords = async () => {
     const fallback = dedupeAndSort(normalizeFromPortalLinks(window.PORTAL_LINKS));
+
     try {
       const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
       if (!res.ok) throw new Error("json fail");
@@ -413,9 +463,14 @@
     state.records = await loadRecords();
     state.qa = buildQA(state.records);
 
-    buildOptions(dom.unit, [...new Set(state.records.map((r) => r.unitKey))], Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitName])));
+    const unitMap = Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitName]));
+    buildOptions(dom.unit, [...new Set(state.records.map((r) => r.unitKey))], unitMap);
     buildOptions(dom.modality, [...new Set(state.records.map((r) => r.modalityKey))], MODALITY_LABELS);
-    buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], TYPE_LABELS);
+    buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], {
+      vestibular: "Vestibular",
+      matricula: "Matrícula",
+      outro: "Outro",
+    });
 
     bindEvents();
     applyFilters();
