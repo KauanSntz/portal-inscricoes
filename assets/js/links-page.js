@@ -396,7 +396,6 @@
 
           const meta = document.createElement("div");
           meta.className = "unit-row__meta";
-          meta.appendChild(createBadge(rec.modalityLabel, "modality"));
           meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
 
           link.appendChild(code);

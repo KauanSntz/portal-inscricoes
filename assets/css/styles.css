@@ -41,8 +41,8 @@ html, body {
 body {
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--blue) 82%, #ffffff);
-  background: color-mix(in srgb, var(--blue-soft) 16%, #ffffff);
+  color: color-mix(in srgb, var(--red-mid) 78%, #ffffff);
+  background: color-mix(in srgb, var(--red-soft) 10%, #ffffff);
 }
 
 body.modal-open {
@@ -50,6 +50,17 @@ body.modal-open {
 }
 
 a { color: inherit; }
+
+.theme-blue,
+.theme-red {
+  color: color-mix(in srgb, var(--accent) 85%, #ffffff);
+}
+
+.unit,
+.unit-block,
+.modal {
+  color: color-mix(in srgb, var(--accent) 85%, #ffffff);
+}
 
 .container {
   width: min(1200px, 100% - 2rem);
@@ -150,7 +161,7 @@ select:focus-visible,
   padding: 0.75rem 0 1.5rem;
   text-align: center;
   font-size: 0.95rem;
-  color: color-mix(in srgb, var(--blue) 60%, #ffffff);
+  color: color-mix(in srgb, var(--red-mid) 62%, #ffffff);
 }
 
 /* Portal */
@@ -239,10 +250,13 @@ select:focus-visible,
   color: var(--accent);
 }
 
-.link-type { font-weight: 700; }
+.link-type {
+  font-weight: 700;
+  color: var(--accent);
+}
 
 .link-mod {
-  color: color-mix(in srgb, var(--accent) 82%, #ffffff);
+  color: color-mix(in srgb, var(--accent) 70%, #ffffff);
   font-size: 0.92rem;
 }
 
@@ -497,15 +511,27 @@ select {
 }
 
 .modality-group__title {
-  margin: 0 0 0.45rem;
-  color: color-mix(in srgb, var(--accent) 76%, #ffffff);
-  font-size: 1rem;
-  font-weight: 600;
+  margin: 0 0 0.55rem;
+  color: var(--accent);
+  font-size: 1.04rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modality-group__title::before {
+  content: "";
+  width: 0.4rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .unit-row {
   border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
   background: var(--surface-soft);
+  color: color-mix(in srgb, var(--accent) 82%, #ffffff);
   border-radius: var(--radius-md);
   padding: 0.7rem;
   display: grid;
@@ -540,8 +566,7 @@ select {
 }
 
 .badge-chip--vestibular,
-.badge-chip--matricula,
-.badge-chip--modality {
+.badge-chip--matricula {
   border-radius: 999px;
   padding: 0.22rem 0.55rem;
   font-size: 0.78rem;
@@ -561,12 +586,6 @@ select {
   font-weight: 800;
 }
 
-.badge-chip--modality {
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, #ffffff);
-  background: #ffffff;
-  color: color-mix(in srgb, var(--accent) 72%, #ffffff);
-  font-weight: 500;
-}
 
 .links-qa {
   border: 1px solid var(--accent-border);
