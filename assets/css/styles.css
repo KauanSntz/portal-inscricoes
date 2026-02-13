@@ -27,6 +27,7 @@
 
   --accent: var(--blue);
   --accent-soft: var(--blue-soft);
+  --accent-border: color-mix(in srgb, var(--accent) 34%, #ffffff);
 }
 
 * { box-sizing: border-box; }
@@ -102,7 +103,7 @@ a { color: inherit; }
 .chip,
 .btn-unit {
   appearance: none;
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   background: #ffffff;
   color: var(--accent);
   border-radius: 999px;
@@ -159,7 +160,7 @@ select:focus-visible,
 }
 
 .unit {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   background: #ffffff;
   border-radius: var(--radius-lg);
   padding: clamp(0.875rem, 2vw, 1.3rem);
@@ -182,7 +183,7 @@ select:focus-visible,
 }
 
 .mod-block {
-  border: 1px solid var(--line-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
   border-radius: var(--radius-md);
   padding: 0.85rem;
   background: var(--surface-soft);
@@ -201,7 +202,7 @@ select:focus-visible,
 }
 
 .mod-content {
-  border: 1px solid var(--line-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--accent-soft) 15%, #ffffff);
   padding: 0.55rem;
@@ -216,7 +217,7 @@ select:focus-visible,
 .link-card {
   display: grid;
   gap: 0.2rem;
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-sm);
   background: #ffffff;
   text-decoration: none;
@@ -264,7 +265,7 @@ select:focus-visible,
 
 /* Forms / controls */
 .links-controls {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   background: #ffffff;
   border-radius: var(--radius-lg);
   padding: var(--space-2);
@@ -292,7 +293,7 @@ select:focus-visible,
 .search-input,
 select {
   width: 100%;
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-sm);
   padding: 0.64rem 0.72rem;
   background: #ffffff;
@@ -327,7 +328,7 @@ select {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
   background: #ffffff;
   box-shadow: var(--shadow-md);
@@ -352,7 +353,7 @@ select {
   width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   color: var(--accent);
   background: #ffffff;
   cursor: pointer;
@@ -401,7 +402,7 @@ select {
 
 .course,
 .result-card {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-md);
   background: #ffffff;
   padding: 0.75rem;
@@ -428,7 +429,7 @@ select {
 .badge,
 .tag,
 .badge-chip {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: 999px;
   padding: 0.22rem 0.55rem;
   font-size: 0.78rem;
@@ -439,7 +440,7 @@ select {
 
 .result-row {
   margin-top: 0.65rem;
-  border: 1px solid var(--line-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
   border-radius: var(--radius-sm);
   padding: 0.65rem;
   display: flex;
@@ -466,7 +467,7 @@ select {
 }
 
 .unit-block {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
   background: #ffffff;
   padding: clamp(0.95rem, 2vw, 1.4rem);
@@ -503,7 +504,7 @@ select {
 }
 
 .unit-row {
-  border: 1px solid var(--line-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
   background: var(--surface-soft);
   border-radius: var(--radius-md);
   padding: 0.7rem;
@@ -548,15 +549,16 @@ select {
 }
 
 .badge-chip--vestibular {
-  border-color: var(--accent);
+  border: 1px solid var(--accent);
   background: var(--accent);
   color: #ffffff;
 }
 
 .badge-chip--matricula {
-  border-color: var(--accent);
+  border: 1px solid var(--accent);
   background: #ffffff;
   color: var(--accent);
+  font-weight: 800;
 }
 
 .badge-chip--modality {
@@ -567,7 +569,7 @@ select {
 }
 
 .links-qa {
-  border: 1px solid var(--line-mid);
+  border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
   background: #ffffff;
   padding: 0.95rem;
@@ -590,21 +592,36 @@ select {
 .theme-blue {
   --accent: var(--blue);
   --accent-soft: var(--blue-soft);
+  --accent-border: color-mix(in srgb, var(--accent) 34%, #ffffff);
 }
 
 .theme-red {
-  --accent: var(--red);
+  --accent: var(--red-mid);
   --accent-soft: var(--red-soft);
+  --accent-border: color-mix(in srgb, var(--red-mid) 25%, #ffffff);
 }
 
-.is-blue {
-  --accent: var(--blue);
-  --accent-soft: var(--blue-soft);
+
+
+.section-title,
+.section-subtitle,
+.section-label {
+  color: var(--accent);
+  font-weight: 700;
 }
 
-.is-red {
-  --accent: var(--red);
-  --accent-soft: var(--red-soft);
+.section-wrap {
+  background: var(--surface-soft);
+  border: 1px solid var(--accent-border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+}
+
+.mod-label {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--accent) 62%, #ffffff);
+  font-weight: 500;
 }
 
 /* A11y helpers */

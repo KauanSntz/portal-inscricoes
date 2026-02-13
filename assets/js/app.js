@@ -77,6 +77,12 @@
       return null;
     }
   };
+  const applyUnitTheme = (containerEl, theme) => {
+    if (!containerEl) return;
+    containerEl.classList.remove("theme-blue", "theme-red");
+    const normalized = String(theme || "").toLowerCase();
+    containerEl.classList.add(normalized.includes("red") ? "theme-red" : "theme-blue");
+  };
   // -----------------------------
 // Scroll lock (impede scroll do fundo com modal aberto)
 // -----------------------------
@@ -151,7 +157,7 @@ const scrollLock = (() => {
           blocks: u.blocks || {},
         };
       });
-      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue" : "theme-red" }));
+      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "blue" : "red" }));
     }
 
     // formato cru: { slug, titulo, modalidades:[{titulo, links:[...]}] }
@@ -188,7 +194,7 @@ const scrollLock = (() => {
       return { key: slug, coursesKey, title, theme, blocks };
     });
 
-    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue" : "theme-red" }));
+    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "blue" : "red" }));
   };
 
   const normalizeTheme = (slugOrTheme) => {
@@ -202,7 +208,7 @@ const scrollLock = (() => {
     return "sede";
   };
 
-  const toneClassByUnitKey = (unit) => unit.toneClass || "theme-blue";
+  const toneClassByUnitKey = (unit) => unit.toneClass || "blue";
 
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
@@ -248,10 +254,12 @@ const scrollLock = (() => {
   const renderUnit = (unit) => {
     const toneClass = toneClassByUnitKey(unit);
     const unitCard = el("section", {
-      class: `unit ${toneClass}`,
+      class: "unit",
       id: `unit-${unit.coursesKey}`,
       "data-unit-key": unit.coursesKey,
     });
+
+    applyUnitTheme(unitCard, toneClass);
 
     const head = el("div", { class: "unit-head" }, [
       el("h2", { class: "unit-title", text: unit.title }),
@@ -399,7 +407,7 @@ const scrollLock = (() => {
       isOpen: false,
       unitKey: "",
       unitTitle: "",
-      themeClass: "theme-blue",
+      themeClass: "blue",
       tab: "presencial",
       query: "",
       turno: "Todos",
@@ -409,7 +417,8 @@ const scrollLock = (() => {
     const ensure = () => {
       if (overlay) return overlay;
 
-      overlay = el("div", { class: "modal-overlay theme-blue", role: "dialog", "aria-modal": "true" });
+      overlay = el("div", { class: "modal-overlay", role: "dialog", "aria-modal": "true" });
+      applyUnitTheme(overlay, "blue");
       const dialog = el("div", { class: "modal" });
 
       const head = el("div", { class: "modal-head" }, [
@@ -509,13 +518,14 @@ const scrollLock = (() => {
       state.isOpen = true;
       state.unitKey = unitKey;
       state.unitTitle = unitTitle;
-      state.themeClass = theme || "theme-blue";
+      state.themeClass = theme || "blue";
       state.tab = "presencial";
       state.query = "";
       state.turno = "Todos";
 
       // aplica theme no overlay
-      overlay.className = `modal-overlay is-open ${state.themeClass}`;
+      overlay.className = "modal-overlay is-open";
+      applyUnitTheme(overlay, state.themeClass);
 
       titleEl.textContent = `Cursos disponíveis — ${state.unitTitle}`;
 
@@ -673,7 +683,8 @@ const globalModal = (() => {
   const ensure = () => {
     if (overlay) return overlay;
 
-    overlay = el("div", { class: "modal-overlay theme-blue", role: "dialog", "aria-modal": "true" });
+    overlay = el("div", { class: "modal-overlay", role: "dialog", "aria-modal": "true" });
+      applyUnitTheme(overlay, "blue");
     const dialog = el("div", { class: "modal" });
 
     const head = el("div", { class: "modal-head" }, [
@@ -801,9 +812,10 @@ const globalModal = (() => {
         }));
 
       for (const u of orderedUnits) {
-        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), toneClass: "theme-blue" };
+        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), toneClass: "blue" };
 
-        const row = el("div", { class: `result-row ${meta.toneClass || "theme-blue"}` });
+        const row = el("div", { class: "result-row" });
+        applyUnitTheme(row, meta.toneClass || "blue");
 
         const left = el("div", { class: "result-left" });
         left.appendChild(el("div", { class: "result-unit", text: `Unidade ${meta.title}` }));

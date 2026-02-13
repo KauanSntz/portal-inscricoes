@@ -61,6 +61,12 @@
       .filter(Boolean)
       .map((w) => w[0].toUpperCase() + w.slice(1))
       .join(" ");
+  const applyUnitTheme = (containerEl, theme) => {
+    if (!containerEl) return;
+    containerEl.classList.remove("theme-blue", "theme-red");
+    const normalized = String(theme || "").toLowerCase();
+    containerEl.classList.add(normalized.includes("red") ? "theme-red" : "theme-blue");
+  };
 
   const parseTypeKey = (title) => {
     const t = norm(title);
@@ -335,7 +341,8 @@
 
     units.forEach((group, idx) => {
       const card = document.createElement("article");
-      card.className = `unit-group unit-block ${idx % 2 === 0 ? "theme-blue" : "theme-red"}`;
+      card.className = "unit-group unit-block";
+      applyUnitTheme(card, idx % 2 === 0 ? "blue" : "red");
 
       const h2 = document.createElement("h2");
       h2.className = "unit-group__title";
