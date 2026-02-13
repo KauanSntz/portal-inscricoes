@@ -6,35 +6,34 @@
   <title>Portal de Inscrições - Fametro 2026/1</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
-
 <body>
   <header class="site-header">
     <h1>Portal de Inscrições – Fametro 2026/1</h1>
   </header>
 
-  <<div class="global-search">
-  <button
-    class="btn btn-global-search"
-    type="button"
-    data-action="open-global-search"
-    aria-label="Pesquisar cursos             nas unidades"
-  >
-    Pesquisar cursos nas unidades
-  </button>
-</div>
-
-
+  <main class="container">
+    <div class="global-search">
+      <button
+        class="btn btn-global-search"
+        type="button"
+        data-action="open-global-search"
+        aria-label="Pesquisar cursos nas unidades"
+      >
+        Pesquisar cursos nas unidades
+      </button>
     </div>
 
-    <!-- ✅ Apenas 1 root -->
+    <div class="global-search">
+      <a class="btn" href="./links.html">Abrir central de links</a>
+    </div>
+
     <div id="app" aria-live="polite"></div>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 Nawk & Bentes – Todos os direitos reservados</p>
+    <p>© 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
   </footer>
 
-  <!-- Ordem importa (defer mantém a ordem) -->
   <script defer src="./assets/js/links-data.js"></script>
   <script defer src="./assets/js/courses-data.js"></script>
   <script defer src="./assets/js/legacy.js"></script>

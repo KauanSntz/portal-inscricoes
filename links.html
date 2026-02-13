@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central de Links - Fametro 2026/1</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>Central de Links — Fametro 2026/1</h1>
+    <p class="links-subtitle">Unidade → Modalidade → Tipo (Vestibular / Matrícula)</p>
+  </header>
+
+  <main class="container links-page theme--sede">
+    <nav class="links-nav">
+      <a class="btn" href="./index.html">← Voltar para portal</a>
+    </nav>
+
+    <section class="links-controls" aria-label="Filtros de links">
+      <div class="links-controls-grid">
+        <label class="field">
+          <span>Buscar por código, URL ou texto</span>
+          <input id="filter-query" class="search-input" type="search" placeholder="Ex.: 3116, ead, vestibular" />
+        </label>
+
+        <label class="field">
+          <span>Unidade</span>
+          <select id="filter-unit"></select>
+        </label>
+
+        <label class="field">
+          <span>Modalidade</span>
+          <select id="filter-modality"></select>
+        </label>
+
+        <label class="field">
+          <span>Tipo</span>
+          <select id="filter-type"></select>
+        </label>
+      </div>
+
+      <div class="links-actions">
+        <button class="btn" type="button" data-action="reset-filters">Limpar filtros</button>
+        <button class="btn btn--accent" type="button" data-action="export-csv">Exportar CSV</button>
+      </div>
+
+      <div class="links-meta" aria-live="polite" id="links-meta"></div>
+    </section>
+
+    <section class="links-table-wrap" aria-label="Tabela de links">
+      <table class="links-table">
+        <thead>
+          <tr>
+            <th>Unidade</th>
+            <th>Modalidade</th>
+            <th>Tipo</th>
+            <th>Código</th>
+            <th>URL</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="links-tbody"></tbody>
+      </table>
+      <div id="links-empty" class="empty" hidden>Nenhum link encontrado para os filtros atuais.</div>
+      <button id="links-load-more" class="btn" type="button" hidden data-action="load-more">Carregar mais</button>
+    </section>
+
+    <section class="links-qa" aria-label="Resumo de validação">
+      <h2>Resumo QA</h2>
+      <ul id="qa-list"></ul>
+    </section>
+  </main>
+
+  <script defer src="./assets/js/links-data.js"></script>
+  <script defer src="./assets/js/links-page.js"></script>
+</body>
+</html>
