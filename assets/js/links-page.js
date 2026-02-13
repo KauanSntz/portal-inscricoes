@@ -19,6 +19,15 @@
     "oeste - compensa": "compensa",
   };
 
+  const MODALITY_LABELS = {
+    presencial: "Presencial",
+    hibrido: "Híbrido",
+    semipresencial: "Semipresencial",
+    flex: "Flex",
+    ead: "EAD",
+    outro: "Outro",
+  };
+
   const state = {
     records: [],
     filtered: [],
@@ -34,7 +43,7 @@
   };
 
   const dom = {
-    tbody: document.getElementById("links-tbody"),
+    groups: document.getElementById("links-groups"),
     meta: document.getElementById("links-meta"),
     empty: document.getElementById("links-empty"),
     loadMore: document.getElementById("links-load-more"),
@@ -95,6 +104,15 @@
     return map[key] || String(key || "").toUpperCase();
   };
 
+  const removeCodePrefix = (title, code) => {
+    const cleanTitle = String(title || "").trim();
+    if (!code) return cleanTitle;
+    return cleanTitle.replace(new RegExp(`^${code}\\s*[-–—:]?\\s*`, "i"), "").trim();
+  };
+
+  const buildFallbackTitle = ({ typeLabel, unitName, modalityLabel }) =>
+    `${typeLabel} Online - ${unitName} ${modalityLabel} - 2026/1`;
+
   const normalizeFromPortalLinks = (units) => {
     const out = [];
     for (const unit of Array.isArray(units) ? units : []) {
@@ -106,17 +124,25 @@
         for (const item of links) {
           const merged = `${item.modality || ""} ${blockKey}`;
           const url = safeUrl(item.href);
+          const typeKey = parseType(item.type);
+          const typeLabel = item.type || TYPE_LABELS.outro;
+          const modalityKey = parseModality(merged);
+          const modalityLabel = MODALITY_LABELS[modalityKey] || block.title || item.modality || "Outro";
+          const code = String(item.code || "").trim();
+          const processTitle = buildFallbackTitle({ typeLabel, unitName, modalityLabel });
+
           out.push({
             unitKey,
             unitName,
-            modalityKey: parseModality(merged),
-            modalityLabel: item.modality || block.title || blockKey,
-            typeKey: parseType(item.type),
-            typeLabel: item.type || TYPE_LABELS.outro,
-            code: String(item.code || "").trim(),
+            modalityKey,
+            modalityLabel,
+            typeKey,
+            typeLabel,
+            code,
+            processTitle,
             url,
             rawUrl: String(item.href || "").trim(),
-            searchable: norm([unitName, block.title, item.modality, item.type, item.code, item.href].join(" ")),
+            searchable: norm([unitName, processTitle, item.modality, item.type, item.code, item.href].join(" ")),
           });
         }
       }
@@ -142,11 +168,13 @@
     for (const sheet of sheets) {
       for (const entry of Array.isArray(sheet.entries) ? sheet.entries : []) {
         if (entry.type !== "link") continue;
-        const title = String(entry.title || "");
-        const code = String(entry.params?.ps || title.split(" ")[0] || "").trim();
-        const typeKey = parseType(title);
-        const modalityKey = parseModality(title);
-        const unitKey = extractUnitFromTitle(title);
+
+        const fullTitle = String(entry.title || "");
+        const code = String(entry.params?.ps || fullTitle.split(" ")[0] || "").trim();
+        const processTitle = removeCodePrefix(fullTitle, code);
+        const typeKey = parseType(fullTitle);
+        const modalityKey = parseModality(fullTitle);
+        const unitKey = extractUnitFromTitle(fullTitle);
         const unitName = humanUnit(unitKey);
         const url = safeUrl(entry.url);
 
@@ -154,13 +182,14 @@
           unitKey,
           unitName,
           modalityKey,
-          modalityLabel: title,
+          modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
           typeKey,
           typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
           code,
+          processTitle,
           url,
           rawUrl: String(entry.url || "").trim(),
-          searchable: norm([unitName, sheet.name, title, code, entry.url].join(" ")),
+          searchable: norm([unitName, sheet.name, fullTitle, code, entry.url].join(" ")),
         });
       }
     }
@@ -181,7 +210,7 @@
 
     return unique.sort((a, b) =>
       a.unitName.localeCompare(b.unitName, "pt-BR") ||
-      a.modalityLabel.localeCompare(b.modalityLabel, "pt-BR") ||
+      a.processTitle.localeCompare(b.processTitle, "pt-BR") ||
       a.typeLabel.localeCompare(b.typeLabel, "pt-BR") ||
       a.code.localeCompare(b.code, "pt-BR")
     );
@@ -216,94 +245,87 @@
     for (const value of values) select.appendChild(new Option(labels[value] || value, value));
   };
 
-  const createPill = (text) => {
+  const createBadge = (text, variant) => {
     const span = document.createElement("span");
-    span.className = "pill";
+    span.className = `badge-chip badge-chip--${variant}`;
     span.textContent = text;
     return span;
   };
 
-  const appendCell = (row, childOrText) => {
-    const td = document.createElement("td");
-    if (typeof childOrText === "string") td.textContent = childOrText;
-    else td.appendChild(childOrText);
-    row.appendChild(td);
+  const getToneClass = (unitName) => {
+    const normalized = norm(unitName);
+    let hash = 0;
+    for (let i = 0; i < normalized.length; i += 1) hash += normalized.charCodeAt(i);
+    return `unit-tone-${(hash % 8) + 1}`;
   };
 
   const renderRows = () => {
-    dom.tbody.textContent = "";
+    dom.groups.textContent = "";
     const frag = document.createDocumentFragment();
 
-    for (const rec of state.filtered.slice(0, state.renderCount)) {
-      const tr = document.createElement("tr");
+    const visible = state.filtered.slice(0, state.renderCount);
+    const grouped = new Map();
 
-      const processCell = document.createElement("td");
-      processCell.className = "process-cell";
-      const unit = document.createElement("div");
-      unit.className = "process-unit";
-      unit.textContent = rec.unitName;
-
-      const process = document.createElement("div");
-      process.className = "process-title";
-      process.textContent = rec.modalityLabel;
-
-      const processLink = document.createElement("a");
-      processLink.className = "process-link";
-      processLink.href = rec.url || "#";
-      processLink.target = "_blank";
-      processLink.rel = "noopener noreferrer";
-      processLink.textContent = rec.url || rec.rawUrl || "URL inválida";
-      if (!rec.url) {
-        processLink.removeAttribute("href");
-        processLink.setAttribute("aria-disabled", "true");
-      }
-
-      processCell.appendChild(unit);
-      processCell.appendChild(process);
-      processCell.appendChild(processLink);
-      tr.appendChild(processCell);
-
-      appendCell(tr, createPill(rec.modalityKey === "outro" ? rec.modalityLabel : rec.modalityKey));
-      appendCell(tr, createPill(rec.typeLabel));
-
-      const strong = document.createElement("strong");
-      strong.textContent = rec.code || "—";
-      appendCell(tr, strong);
-
-      const actions = document.createElement("div");
-      actions.className = "links-copy-actions";
-
-      const copyCode = document.createElement("button");
-      copyCode.className = "btn";
-      copyCode.type = "button";
-      copyCode.dataset.action = "copy-code";
-      copyCode.dataset.value = rec.code;
-      copyCode.textContent = "Código";
-      actions.appendChild(copyCode);
-
-      const copyUrl = document.createElement("button");
-      copyUrl.className = "btn";
-      copyUrl.type = "button";
-      copyUrl.dataset.action = "copy-url";
-      copyUrl.dataset.value = rec.url || rec.rawUrl;
-      copyUrl.textContent = "Link";
-      actions.appendChild(copyUrl);
-
-      if (rec.url) {
-        const open = document.createElement("a");
-        open.className = "btn";
-        open.href = rec.url;
-        open.target = "_blank";
-        open.rel = "noopener noreferrer";
-        open.textContent = "Abrir";
-        actions.appendChild(open);
-      }
-
-      appendCell(tr, actions);
-      frag.appendChild(tr);
+    for (const item of visible) {
+      const key = item.unitName;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(item);
     }
 
-    dom.tbody.appendChild(frag);
+    for (const [unitName, items] of grouped.entries()) {
+      const card = document.createElement("article");
+      card.className = `unit-group ${getToneClass(unitName)}`;
+
+      const title = document.createElement("h2");
+      title.className = "unit-group__title";
+      title.textContent = unitName;
+      card.appendChild(title);
+
+      const list = document.createElement("div");
+      list.className = "unit-group__list";
+
+      for (const rec of items) {
+        const row = document.createElement("div");
+        row.className = "unit-row";
+
+        const main = document.createElement("div");
+        main.className = "unit-row__main";
+
+        const titleLine = rec.url ? document.createElement("a") : document.createElement("div");
+        titleLine.className = "process-link-title";
+        if (rec.url) {
+          titleLine.href = rec.url;
+          titleLine.target = "_blank";
+          titleLine.rel = "noopener noreferrer";
+        }
+
+        const code = document.createElement("span");
+        code.className = "process-code";
+        code.textContent = rec.code || "—";
+
+        const label = document.createElement("span");
+        label.className = "process-text";
+        label.textContent = rec.processTitle;
+
+        titleLine.appendChild(code);
+        titleLine.appendChild(label);
+
+        const meta = document.createElement("div");
+        meta.className = "unit-row__meta";
+        meta.appendChild(createBadge(rec.modalityLabel, "modality"));
+        meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
+
+        main.appendChild(titleLine);
+        row.appendChild(main);
+        row.appendChild(meta);
+        list.appendChild(row);
+      }
+
+      card.appendChild(list);
+      frag.appendChild(card);
+    }
+
+    dom.groups.appendChild(frag);
     dom.empty.hidden = state.filtered.length > 0;
     dom.loadMore.hidden = state.filtered.length <= state.renderCount;
   };
@@ -331,30 +353,15 @@
       if (q && !r.searchable.includes(q)) return false;
       return true;
     });
+
     state.renderCount = CHUNK_SIZE;
     renderRows();
     renderMeta();
   };
 
-  const copyToClipboard = async (value) => {
-    if (!value) return false;
-    try {
-      await navigator.clipboard.writeText(value);
-      return true;
-    } catch {
-      const temp = document.createElement("textarea");
-      temp.value = value;
-      document.body.appendChild(temp);
-      temp.select();
-      const ok = document.execCommand("copy");
-      temp.remove();
-      return ok;
-    }
-  };
-
   const toCSV = (rows) => {
-    const header = ["unidade", "modalidade", "tipo", "codigo", "url"];
-    const lines = rows.map((r) => [r.unitName, r.modalityLabel, r.typeLabel, r.code, r.url || r.rawUrl]);
+    const header = ["unidade", "modalidade", "tipo", "codigo", "titulo", "url"];
+    const lines = rows.map((r) => [r.unitName, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
     return [header, ...lines]
       .map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(","))
       .join("\n");
@@ -372,7 +379,7 @@
   };
 
   const bindEvents = () => {
-    document.addEventListener("click", async (event) => {
+    document.addEventListener("click", (event) => {
       const trigger = event.target.closest("[data-action]");
       if (!trigger) return;
 
@@ -390,15 +397,6 @@
         applyFilters();
       }
 
-      if (trigger.dataset.action === "copy-code" || trigger.dataset.action === "copy-url") {
-        const ok = await copyToClipboard(trigger.dataset.value || "");
-        const original = trigger.dataset.action === "copy-code" ? "Copiar código" : "Copiar link";
-        trigger.textContent = ok ? "Copiado!" : "Falhou";
-        setTimeout(() => {
-          trigger.textContent = original;
-        }, 900);
-      }
-
       if (trigger.dataset.action === "export-csv") exportCSV();
     });
 
@@ -406,14 +404,17 @@
       state.filters.unit = dom.unit.value;
       applyFilters();
     });
+
     dom.modality.addEventListener("change", () => {
       state.filters.modality = dom.modality.value;
       applyFilters();
     });
+
     dom.type.addEventListener("change", () => {
       state.filters.type = dom.type.value;
       applyFilters();
     });
+
     dom.query.addEventListener(
       "input",
       debounce(() => {
@@ -453,14 +454,7 @@
     const types = [...new Set(state.records.map((r) => r.typeKey))];
 
     buildOptions(dom.unit, units, Object.fromEntries(units.map((u) => [u, humanUnit(u)])));
-    buildOptions(dom.modality, modalities, {
-      presencial: "Presencial",
-      hibrido: "Híbrido",
-      semipresencial: "Semipresencial",
-      flex: "Flex",
-      ead: "EAD",
-      outro: "Outro",
-    });
+    buildOptions(dom.modality, modalities, MODALITY_LABELS);
     buildOptions(dom.type, types, TYPE_LABELS);
 
     bindEvents();

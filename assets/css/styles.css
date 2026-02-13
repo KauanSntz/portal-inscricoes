@@ -817,3 +817,137 @@ body{
   .btn--ghost{ justify-content:flex-start; padding-left:0; }
   .process-unit{ font-size:1.15rem; }
 }
+
+/* =========================================================
+  Links page v3 (clean grouped UI)
+========================================================= */
+.links-groups{
+  display:grid;
+  gap:18px;
+}
+
+.unit-group{
+  background:#fff;
+  border:1px solid #dce3ef;
+  border-radius:20px;
+  padding:18px;
+  box-shadow: 0 10px 26px rgba(15,23,42,.06);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.unit-group:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(15,23,42,.09);
+}
+
+.unit-group__title{
+  color: var(--unit-tone);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin-bottom: 10px;
+}
+
+.unit-group__list{ display:grid; gap:8px; }
+
+.unit-row{
+  display:grid;
+  gap:12px;
+  grid-template-columns: 1fr auto;
+  align-items:center;
+  padding: 12px 0;
+  border-top:1px solid #edf1f7;
+}
+.unit-row:first-child{ border-top:0; }
+
+.process-link-title{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  color: var(--unit-tone);
+  text-decoration:none;
+}
+.process-link-title:hover .process-text{ text-decoration: underline; }
+
+.process-code{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:64px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--unit-tone) 24%, #ffffff);
+  background: color-mix(in srgb, var(--unit-tone) 12%, #ffffff);
+  font-weight:900;
+  font-size: 1.05rem;
+  line-height:1;
+}
+
+.process-text{
+  font-size: clamp(1.06rem, 1.8vw, 1.9rem);
+  font-weight: 800;
+  line-height:1.25;
+}
+
+.unit-row__meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.badge-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 14px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.95rem;
+  letter-spacing:.1px;
+}
+
+/* família exclusiva para modalidade (tons aqua/lilás suaves) */
+.badge-chip--modality{
+  color:#18526a;
+  background:#dff4ff;
+  border:1px solid #c5e8fb;
+}
+
+/* família exclusiva para tipo (azul x coral) */
+.badge-chip--vestibular{
+  color:#13476b;
+  background:#d8ecff;
+  border:1px solid #b5d8fa;
+}
+.badge-chip--matricula{
+  color:#7e2e2b;
+  background:#ffe2df;
+  border:1px solid #ffc6c0;
+}
+
+/* tons das unidades (não reutiliza paleta de modalidade/tipo) */
+.unit-tone-1{ --unit-tone:#ac1d46; }
+.unit-tone-2{ --unit-tone:#1f6cb7; }
+.unit-tone-3{ --unit-tone:#2a7a6d; }
+.unit-tone-4{ --unit-tone:#6f56b8; }
+.unit-tone-5{ --unit-tone:#a55f18; }
+.unit-tone-6{ --unit-tone:#006f82; }
+.unit-tone-7{ --unit-tone:#8d3d8d; }
+.unit-tone-8{ --unit-tone:#3f6a2d; }
+
+@media (max-width: 900px){
+  .unit-row{
+    grid-template-columns: 1fr;
+    gap:9px;
+  }
+  .unit-row__meta{ justify-content:flex-start; }
+}
+
+@media (max-width: 640px){
+  .unit-group{ padding:14px; border-radius:16px; }
+  .process-code{ min-width:58px; font-size:.95rem; }
+  .process-text{ font-size:1rem; }
+  .badge-chip{ font-size:.86rem; padding:6px 11px; }
+}

@@ -22,7 +22,7 @@
       <div class="links-controls-grid links-controls-grid--inline">
         <label class="field field--search">
           <span class="sr-only">Buscar por código, URL ou texto</span>
-          <input id="filter-query" class="search-input" type="search" placeholder="🔎 Busca..." />
+          <input id="filter-query" class="search-input" type="search" placeholder="🔎 Buscar..." />
         </label>
 
         <label class="field">
@@ -47,22 +47,10 @@
       <div class="links-meta" aria-live="polite" id="links-meta"></div>
     </section>
 
-    <section class="links-table-wrap" aria-label="Tabela de links">
-      <table class="links-table">
-        <thead>
-          <tr>
-            <th>UNIDADE / PROCESSO</th>
-            <th>MODALIDADE</th>
-            <th>TIPO</th>
-            <th>CÓDIGO</th>
-            <th>AÇÕES</th>
-          </tr>
-        </thead>
-        <tbody id="links-tbody"></tbody>
-      </table>
-      <div id="links-empty" class="empty" hidden>Nenhum link encontrado para os filtros atuais.</div>
-      <button id="links-load-more" class="btn" type="button" hidden data-action="load-more">Carregar mais</button>
-    </section>
+    <section class="links-groups" id="links-groups" aria-label="Lista de links agrupada por unidade"></section>
+
+    <div id="links-empty" class="empty" hidden>Nenhum link encontrado para os filtros atuais.</div>
+    <button id="links-load-more" class="btn" type="button" hidden data-action="load-more">Carregar mais</button>
 
     <section class="links-qa" aria-label="Resumo de validação">
       <h2>Resumo QA</h2>
