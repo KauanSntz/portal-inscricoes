@@ -8,29 +8,10 @@
   const JSON_DATA_PATH = "./assets/data/portal_links_2026_1.json";
   const FIXED_HASH = "#/es/inscricoeswizard/dados-basicos";
 
-  const TYPE_LABELS = Object.freeze({
-    vestibular: "Vestibular",
-    matricula: "Matrícula",
-    outro: "Outro",
-  });
-
-  const MODALITY_LABELS = Object.freeze({
-    ead: "100% EAD",
-    semipresencial: "Semipresencial",
-    flex: "Flex",
-    hibrido: "Híbrido",
-    presencial: "Presencial",
-    outro: "Outro",
-  });
-
-  const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, hibrido: 3, presencial: 4, outro: 5 });
+  const TYPE_LABELS = Object.freeze({ vestibular: "Vestibular", matricula: "Matrícula", outro: "Outro" });
+  const MODALITY_LABELS = Object.freeze({ ead: "100% EAD", semipresencial: "Semipresencial", flex: "Flex", outro: "Outro" });
+  const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, outro: 3 });
   const TYPE_ORDER = Object.freeze({ vestibular: 0, matricula: 1, outro: 2 });
-
-  const UNIT_ALIAS = Object.freeze({
-    oeste: "compensa",
-    "oeste compensa": "compensa",
-    compensa: "compensa",
-  });
 
   const state = {
     records: [],
@@ -70,163 +51,139 @@
     }
   };
 
-  const parseType = (txt) => {
-    const t = norm(txt);
-    if (t.includes("vestib")) return "vestibular";
-    if (t.includes("matric")) return "matricula";
-    return "outro";
-  };
+  const normalizeUnitName = (rawName) => {
+    let name = norm(rawName)
+      .replace(/[—–]/g, "-")
+      .replace(/\b2026\/1\b/gi, "")
+      .replace(/\s*-\s*$/g, "")
+      .trim();
 
-  const parseModality = (txt) => {
-    const t = norm(txt);
-    if (t.includes("flex")) return "flex";
-    if (t.includes("semi")) return "semipresencial";
-    if (t.includes("ead") || t.includes("online")) return "ead";
-    if (t.includes("hibrid")) return "hibrido";
-    if (t.includes("presencial")) return "presencial";
-    return "outro";
-  };
-
-  const unitKeyFromName = (unitName) => {
-    const key = norm(unitName).replace(/[—–-]/g, " ").replace(/\s+/g, " ").trim();
-    return UNIT_ALIAS[key] || key;
-  };
-
-  const humanUnit = (key) => {
-    const map = {
-      sede: "SEDE",
-      leste: "LESTE",
-      sul: "SUL",
-      norte: "NORTE",
-      compensa: "OESTE — COMPENSA",
-    };
-    return map[key] || String(key || "").toUpperCase();
-  };
-
-  const splitTitle = (fullTitle) => {
-    const raw = String(fullTitle || "").trim();
-    const code = String(raw.split(" ")[0] || "").replace(/\D/g, "");
-    const withoutCode = code ? raw.replace(new RegExp(`^${code}\\s*`), "") : raw;
-
-    const parts = withoutCode.split(" - ").map((x) => x.trim()).filter(Boolean);
-    const unitAndMode = parts[1] || "";
-
-    const modePatterns = [
-      /\s+100%\s*EAD$/i,
-      /\s+SEMIPRESENCIAL\s+FLEX$/i,
-      /\s+SEMIPRESENCIAL$/i,
-      /\s+H[ÍI]BRIDO$/i,
-      /\s+PRESENCIAL$/i,
-      /\s+EAD$/i,
-      /\s+FLEX$/i,
+    // remove sufixos de modalidade no final
+    const suffixes = [
+      /\s*100%\s*ead\s*$/i,
+      /\s*ead\s*$/i,
+      /\s*semipresencial\s*$/i,
+      /\s*semi[-\s]?flex\s*$/i,
+      /\s*flex\s*$/i,
     ];
 
-    let unitName = unitAndMode || parts[2] || "OUTROS";
-    for (const rgx of modePatterns) unitName = unitName.replace(rgx, "").trim();
-    if (!unitName) unitName = "OUTROS";
+    for (const rgx of suffixes) name = name.replace(rgx, "").trim();
 
-    return { code, unitName, processTitle: withoutCode };
+    return name
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase();
   };
 
-  const hasUnitInTitle = (processTitle, expectedUnit) => {
-    const p = norm(processTitle);
-    const e = norm(expectedUnit);
-    if (p.includes(e)) return true;
-
-    const aliases = {
-      compensa: ["oeste", "compensa"],
-      "oeste — compensa": ["oeste", "compensa"],
-    };
-
-    const list = aliases[e] || [e];
-    return list.some((x) => p.includes(norm(x)));
+  const parseTypeKey = (title) => {
+    const t = norm(title);
+    if (t.includes("vestibular")) return "vestibular";
+    if (t.includes("matricula")) return "matricula";
+    return "outro";
   };
 
-  const normalizeFromDataJson = (payload) => {
-    const out = [];
-    for (const sheet of payload?.sheets || []) {
-      for (const entry of sheet.entries || []) {
-        if (entry.type !== "link") continue;
+  const parseModalityKey = (title) => {
+    const t = norm(title);
+    if (t.includes("100% ead") || t.includes(" ead")) return "ead";
+    if (t.includes("semi-flex") || t.includes("semi flex") || t.includes(" flex")) return "flex";
+    if (t.includes("semipresencial")) return "semipresencial";
+    return "outro";
+  };
 
-        const fullTitle = String(entry.title || "");
-        const split = splitTitle(fullTitle);
-        const unitKey = unitKeyFromName(split.unitName);
-        const mapped = humanUnit(unitKey);
-        const unitName = mapped === unitKey.toUpperCase() ? split.unitName.toUpperCase() : mapped;
+  const codeFromTitle = (title, fallback = "") => {
+    const m = String(title || "").match(/^\s*(\d+)/);
+    return String(m?.[1] || fallback || "").trim();
+  };
 
-        const modalityKey = parseModality(fullTitle);
-        const typeKey = parseType(fullTitle);
+  const unitFromTitle = (title) => {
+    const clean = String(title || "").replace(/^\s*\d+\s*/, "");
+    const parts = clean.split(" - ").map((x) => x.trim()).filter(Boolean);
+    const candidate = parts[1] || "";
+    return normalizeUnitName(candidate);
+  };
 
-        out.push({
-          unitKey,
-          unitName,
-          code: split.code || String(entry.params?.ps || ""),
-          processTitle: split.processTitle,
-          modalityKey,
-          modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
-          typeKey,
-          typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
-          url: normalizeWizardUrl(entry.url),
-          rawUrl: String(entry.url || ""),
-          dataWarning: !hasUnitInTitle(split.processTitle, unitName),
-          searchable: norm([unitName, split.processTitle, sheet.name, entry.url].join(" ")),
-        });
+  const processTitleFromTitle = (title, code) =>
+    String(title || "")
+      .replace(new RegExp(`^\\s*${code}\\s*`), "")
+      .trim();
+
+  const normalizeLinksData = (rawItems) => {
+    const normalized = rawItems.map((item) => {
+      const title = String(item.title || "");
+      const code = codeFromTitle(title, item.code || item.ps || "");
+      const typeKey = parseTypeKey(title || item.type || "");
+      const modalityKey = parseModalityKey(title || item.modality || "");
+      const unitCanonical = normalizeUnitName(item.unitHint || unitFromTitle(title));
+
+      const processTitle = title
+        ? processTitleFromTitle(title, code)
+        : `${TYPE_LABELS[typeKey].toUpperCase()} - ${unitCanonical} ${MODALITY_LABELS[modalityKey].toUpperCase()} - 2026/1`;
+
+      const url = normalizeWizardUrl(item.url || item.href || "");
+      const dataWarning = !norm(processTitle).includes(norm(unitCanonical));
+
+      if (dataWarning) {
+        console.warn(`[WARN] unidade divergente expected=${unitCanonical} got=${processTitle} code=${code}`);
       }
-    }
-    return out;
-  };
 
-  const normalizeFromPortalLinks = (units) => {
-    const out = [];
-    for (const unit of Array.isArray(units) ? units : []) {
-      const unitKey = unitKeyFromName(unit.coursesKey || unit.key || unit.title);
-      const unitName = humanUnit(unitKey);
+      return {
+        unitKey: norm(unitCanonical),
+        unitCanonical,
+        code,
+        typeKey,
+        typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
+        modalityKey,
+        modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
+        processTitle,
+        url,
+        rawUrl: String(item.url || item.href || ""),
+        dataWarning,
+        searchable: norm([unitCanonical, processTitle, item.sheetName || "", item.url || item.href || ""].join(" ")),
+      };
+    });
 
-      for (const [blockKey, block] of Object.entries(unit.blocks || {})) {
-        for (const item of block.links || []) {
-          const typeKey = parseType(item.type);
-          const modalityKey = parseModality(`${item.modality || ""} ${blockKey}`);
-          const typeLabel = TYPE_LABELS[typeKey] || TYPE_LABELS.outro;
-          const modalityLabel = MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro;
-          const processTitle = `${String(item.type || typeLabel).toUpperCase()} - ${unitName} ${modalityLabel.toUpperCase()} - 2026/1`;
-
-          out.push({
-            unitKey,
-            unitName,
-            code: String(item.code || "").trim(),
-            processTitle,
-            modalityKey,
-            modalityLabel,
-            typeKey,
-            typeLabel,
-            url: normalizeWizardUrl(item.href),
-            rawUrl: String(item.href || ""),
-            dataWarning: !hasUnitInTitle(processTitle, unitName),
-            searchable: norm([unitName, processTitle, item.code, item.href].join(" ")),
-          });
-        }
-      }
-    }
-    return out;
-  };
-
-  const dedupeAndSort = (records) => {
     const seen = new Set();
     const unique = [];
-
-    for (const rec of records) {
-      const key = [rec.unitKey, rec.code, rec.typeKey, rec.url].join("|");
+    for (const rec of normalized) {
+      const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|");
       if (seen.has(key)) continue;
       seen.add(key);
       unique.push(rec);
     }
 
     return unique.sort((a, b) =>
-      a.unitName.localeCompare(b.unitName, "pt-BR") ||
+      a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") ||
       (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) ||
       (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) ||
       a.code.localeCompare(b.code, "pt-BR")
     );
+  };
+
+  const fromDataJson = (payload) => {
+    const raw = [];
+    for (const sheet of payload?.sheets || []) {
+      for (const entry of sheet.entries || []) {
+        if (entry.type !== "link") continue;
+        raw.push({ title: entry.title, url: entry.url, ps: entry.params?.ps, sheetName: sheet.name });
+      }
+    }
+    return normalizeLinksData(raw);
+  };
+
+  const fromPortalLinks = (units) => {
+    const raw = [];
+    for (const unit of Array.isArray(units) ? units : []) {
+      const unitHint = normalizeUnitName(unit.title || unit.key || unit.coursesKey || "");
+      for (const [blockKey, block] of Object.entries(unit.blocks || {})) {
+        for (const ln of block.links || []) {
+          const type = TYPE_LABELS[parseTypeKey(ln.type)] || "Processo";
+          const modality = MODALITY_LABELS[parseModalityKey(`${ln.modality || ""} ${blockKey}`)] || "Outro";
+          const title = `${ln.code || ""} ${String(ln.type || type).toUpperCase()} - ${unitHint} ${String(modality).toUpperCase()} - 2026/1`;
+          raw.push({ title, href: ln.href, code: ln.code, unitHint });
+        }
+      }
+    }
+    return normalizeLinksData(raw);
   };
 
   const buildQA = (records) => ({
@@ -259,56 +216,51 @@
 
   const renderGroups = () => {
     dom.groups.textContent = "";
-
     const visible = state.filtered.slice(0, state.renderCount);
-    const grouped = new Map();
 
+    const byUnit = new Map();
     for (const rec of visible) {
-      if (!grouped.has(rec.unitKey)) grouped.set(rec.unitKey, { unitName: rec.unitName, items: [] });
-      grouped.get(rec.unitKey).items.push(rec);
+      if (!byUnit.has(rec.unitKey)) byUnit.set(rec.unitKey, { unitCanonical: rec.unitCanonical, items: [] });
+      byUnit.get(rec.unitKey).items.push(rec);
     }
 
-    const entries = Array.from(grouped.entries()).sort((a, b) => a[1].unitName.localeCompare(b[1].unitName, "pt-BR"));
+    const units = Array.from(byUnit.values()).sort((a, b) => a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR"));
     const frag = document.createDocumentFragment();
 
-    entries.forEach(([unitKey, group], unitIndex) => {
+    units.forEach((group, idx) => {
       const card = document.createElement("article");
-      card.className = `unit-group ${unitIndex % 2 === 0 ? "unit-group--blue" : "unit-group--red"}`;
+      card.className = `unit-group ${idx % 2 === 0 ? "unit-group--blue" : "unit-group--red"}`;
 
-      const title = document.createElement("h2");
-      title.className = "unit-group__title";
-      title.textContent = group.unitName;
-      card.appendChild(title);
+      const h2 = document.createElement("h2");
+      h2.className = "unit-group__title";
+      h2.textContent = group.unitCanonical;
+      card.appendChild(h2);
 
-      const modalityGroups = new Map();
-      for (const item of group.items) {
-        if (!modalityGroups.has(item.modalityKey)) modalityGroups.set(item.modalityKey, []);
-        modalityGroups.get(item.modalityKey).push(item);
-      }
-
-      const orderKeys = Array.from(modalityGroups.keys()).sort((a, b) => (MODALITY_ORDER[a] ?? 9) - (MODALITY_ORDER[b] ?? 9));
       const listWrap = document.createElement("div");
       listWrap.className = "unit-group__list";
 
-      for (const mk of orderKeys) {
-        const sub = document.createElement("section");
-        sub.className = "modality-group";
+      const byModality = new Map();
+      for (const rec of group.items) {
+        if (!byModality.has(rec.modalityKey)) byModality.set(rec.modalityKey, []);
+        byModality.get(rec.modalityKey).push(rec);
+      }
 
-        const subTitle = document.createElement("h3");
-        subTitle.className = "modality-group__title";
-        subTitle.textContent = MODALITY_LABELS[mk] || MODALITY_LABELS.outro;
-        sub.appendChild(subTitle);
+      const modalityKeys = Array.from(byModality.keys()).sort((a, b) => (MODALITY_ORDER[a] ?? 9) - (MODALITY_ORDER[b] ?? 9));
 
-        const rows = modalityGroups
-          .get(mk)
+      for (const mKey of modalityKeys) {
+        const section = document.createElement("section");
+        section.className = "modality-group";
+
+        const h3 = document.createElement("h3");
+        h3.className = "modality-group__title";
+        h3.textContent = MODALITY_LABELS[mKey] || MODALITY_LABELS.outro;
+        section.appendChild(h3);
+
+        const rows = byModality.get(mKey)
           .slice()
           .sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR"));
 
-        rows.forEach((rec) => {
-          if (rec.dataWarning) {
-            console.warn(`[WARN] unidade divergente expected=${group.unitName} got=${rec.processTitle} code=${rec.code}`);
-          }
-
+        for (const rec of rows) {
           const row = document.createElement("div");
           row.className = "unit-row";
           if (rec.dataWarning) row.dataset.warning = "true";
@@ -338,10 +290,10 @@
           link.appendChild(text);
           row.appendChild(link);
           row.appendChild(meta);
-          sub.appendChild(row);
-        });
+          section.appendChild(row);
+        }
 
-        listWrap.appendChild(sub);
+        listWrap.appendChild(section);
       }
 
       card.appendChild(listWrap);
@@ -383,10 +335,8 @@
 
   const toCSV = (rows) => {
     const head = ["unidade", "modalidade", "ingresso", "codigo", "titulo", "url"];
-    const lines = rows.map((r) => [r.unitName, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
-    return [head, ...lines]
-      .map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(","))
-      .join("\n");
+    const lines = rows.map((r) => [r.unitCanonical, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
+    return [head, ...lines].map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(",")).join("\n");
   };
 
   const exportCSV = () => {
@@ -440,13 +390,13 @@
   };
 
   const loadRecords = async () => {
-    const fallback = dedupeAndSort(normalizeFromPortalLinks(window.PORTAL_LINKS));
+    const fallback = fromPortalLinks(window.PORTAL_LINKS);
 
     try {
       const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
       if (!res.ok) throw new Error("json fail");
       const payload = await res.json();
-      const fromJson = dedupeAndSort(normalizeFromDataJson(payload));
+      const fromJson = fromDataJson(payload);
       if (fromJson.length) {
         state.sourceLabel = `JSON bruto (${fromJson.length} registros)`;
         return fromJson;
@@ -463,14 +413,10 @@
     state.records = await loadRecords();
     state.qa = buildQA(state.records);
 
-    const unitMap = Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitName]));
+    const unitMap = Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitCanonical]));
     buildOptions(dom.unit, [...new Set(state.records.map((r) => r.unitKey))], unitMap);
     buildOptions(dom.modality, [...new Set(state.records.map((r) => r.modalityKey))], MODALITY_LABELS);
-    buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], {
-      vestibular: "Vestibular",
-      matricula: "Matrícula",
-      outro: "Outro",
-    });
+    buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], TYPE_LABELS);
 
     bindEvents();
     applyFilters();
