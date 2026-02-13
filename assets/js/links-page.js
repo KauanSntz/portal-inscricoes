@@ -67,6 +67,31 @@
     const normalized = String(theme || "").toLowerCase();
     containerEl.classList.add(normalized.includes("red") ? "theme-red" : "theme-blue");
   };
+  const toneKey = (value) =>
+    String(value || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const UNIT_TONE_MAP = Object.freeze({
+    sede: "blue",
+    leste: "red",
+    sul: "blue",
+    norte: "red",
+    compensa: "blue",
+    oeste: "blue",
+  });
+
+  const getUnitTone = (unitRef) => {
+    const key = toneKey(unitRef);
+    if (UNIT_TONE_MAP[key]) return UNIT_TONE_MAP[key];
+    if (!key) return "blue";
+    const hash = Array.from(key).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    return hash % 2 === 0 ? "blue" : "red";
+  };
 
   const parseTypeKey = (title) => {
     const t = norm(title);
@@ -339,10 +364,10 @@
 
     const frag = document.createDocumentFragment();
 
-    units.forEach((group, idx) => {
+    units.forEach((group) => {
       const card = document.createElement("article");
       card.className = "unit-group unit-block";
-      applyUnitTheme(card, idx % 2 === 0 ? "blue" : "red");
+      applyUnitTheme(card, getUnitTone(group.unitCanonical));
 
       const h2 = document.createElement("h2");
       h2.className = "unit-group__title";

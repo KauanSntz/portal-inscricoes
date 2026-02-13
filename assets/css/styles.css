@@ -41,8 +41,8 @@ html, body {
 body {
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--red-mid) 78%, #ffffff);
-  background: color-mix(in srgb, var(--red-soft) 10%, #ffffff);
+  color: rgba(0, 0, 0, 0.84);
+  background: color-mix(in srgb, var(--blue-soft) 20%, #ffffff);
 }
 
 body.modal-open {
@@ -161,7 +161,7 @@ select:focus-visible,
   padding: 0.75rem 0 1.5rem;
   text-align: center;
   font-size: 0.95rem;
-  color: color-mix(in srgb, var(--red-mid) 62%, #ffffff);
+  color: rgba(0, 0, 0, 0.62);
 }
 
 /* Portal */
@@ -206,10 +206,14 @@ select:focus-visible,
 
 .mod-title {
   margin: 0 0 0.65rem;
-  color: var(--accent);
-  border-left: 4px solid var(--accent);
-  padding-left: 0.6rem;
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.6rem;
+  background: var(--accent);
+  color: #ffffff;
   font-size: 1rem;
+  font-weight: 800;
 }
 
 .mod-content {
@@ -512,21 +516,17 @@ select {
 
 .modality-group__title {
   margin: 0 0 0.55rem;
-  color: var(--accent);
-  font-size: 1.04rem;
-  font-weight: 800;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-mid);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-size: 0.96rem;
+  font-weight: 800;
 }
 
-.modality-group__title::before {
-  content: "";
-  width: 0.4rem;
-  height: 1.05rem;
-  border-radius: 999px;
-  background: var(--accent);
-}
 
 .unit-row {
   border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
@@ -615,9 +615,9 @@ select {
 }
 
 .theme-red {
-  --accent: var(--red-mid);
+  --accent: var(--red);
   --accent-soft: var(--red-soft);
-  --accent-border: color-mix(in srgb, var(--red-mid) 25%, #ffffff);
+  --accent-border: color-mix(in srgb, var(--red) 25%, #ffffff);
 }
 
 

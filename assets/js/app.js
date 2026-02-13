@@ -83,6 +83,32 @@
     const normalized = String(theme || "").toLowerCase();
     containerEl.classList.add(normalized.includes("red") ? "theme-red" : "theme-blue");
   };
+  const toneKey = (value) =>
+    String(value || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const UNIT_TONE_MAP = Object.freeze({
+    sede: "blue",
+    leste: "red",
+    sul: "blue",
+    norte: "red",
+    compensa: "blue",
+    oeste: "blue",
+  });
+
+  const getUnitTone = (unitRef) => {
+    const key = toneKey(unitRef);
+    if (UNIT_TONE_MAP[key]) return UNIT_TONE_MAP[key];
+    if (!key) return "blue";
+    const hash = Array.from(key).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    return hash % 2 === 0 ? "blue" : "red";
+  };
+
   // -----------------------------
 // Scroll lock (impede scroll do fundo com modal aberto)
 // -----------------------------
@@ -157,7 +183,7 @@ const scrollLock = (() => {
           blocks: u.blocks || {},
         };
       });
-      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "blue" : "red" }));
+      return normalized;
     }
 
     // formato cru: { slug, titulo, modalidades:[{titulo, links:[...]}] }
@@ -194,7 +220,7 @@ const scrollLock = (() => {
       return { key: slug, coursesKey, title, theme, blocks };
     });
 
-    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "blue" : "red" }));
+    return normalized;
   };
 
   const normalizeTheme = (slugOrTheme) => {
@@ -208,7 +234,7 @@ const scrollLock = (() => {
     return "sede";
   };
 
-  const toneClassByUnitKey = (unit) => unit.toneClass || "blue";
+  const toneClassByUnitKey = (unit) => getUnitTone(unit?.coursesKey || unit?.key || unit?.title);
 
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
