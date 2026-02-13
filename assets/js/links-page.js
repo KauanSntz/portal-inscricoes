@@ -479,22 +479,6 @@
     renderMeta();
   };
 
-  const toCSV = (rows) => {
-    const head = ["unidade", "modalidade", "ingresso", "codigo", "titulo", "url"];
-    const lines = rows.map((r) => [r.unitCanonical, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
-    return [head, ...lines].map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(",")).join("\n");
-  };
-
-  const exportCSV = () => {
-    const blob = new Blob([toCSV(state.filtered)], { type: "text/csv;charset=utf-8" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `portal-links-${Date.now()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(a.href);
-  };
 
   const bindEvents = () => {
     document.addEventListener("click", (e) => {
@@ -513,7 +497,6 @@
         dom.type.value = "all";
         applyFilters();
       }
-      if (btn.dataset.action === "export-csv") exportCSV();
     });
 
     dom.query.addEventListener("input", debounce(() => {
