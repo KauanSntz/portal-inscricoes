@@ -7,42 +7,41 @@
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <h1>Central de Links — Fametro 2026/1</h1>
-    <p class="links-subtitle">Unidade → Modalidade → Tipo (Vestibular / Matrícula)</p>
-  </header>
+  <div class="top-stripe" aria-hidden="true"></div>
 
-  <main class="container links-page theme--sede">
-    <nav class="links-nav">
-      <a class="btn" href="./index.html">← Voltar para portal</a>
-    </nav>
+  <main class="container app-shell links-page theme--sede">
+    <header class="site-header site-header--inline">
+      <a class="btn" href="./index.html">← Voltar</a>
+      <div>
+        <h1>Central de Links — Fametro 2026/1</h1>
+        <p class="links-subtitle">Busca rápida por unidade, modalidade e tipo</p>
+      </div>
+    </header>
 
     <section class="links-controls" aria-label="Filtros de links">
-      <div class="links-controls-grid">
-        <label class="field">
-          <span>Buscar por código, URL ou texto</span>
-          <input id="filter-query" class="search-input" type="search" placeholder="Ex.: 3116, ead, vestibular" />
+      <div class="links-controls-grid links-controls-grid--inline">
+        <label class="field field--search">
+          <span class="sr-only">Buscar por código, URL ou texto</span>
+          <input id="filter-query" class="search-input" type="search" placeholder="🔎 Busca..." />
         </label>
 
         <label class="field">
-          <span>Unidade</span>
-          <select id="filter-unit"></select>
+          <span class="sr-only">Unidade</span>
+          <select id="filter-unit" aria-label="Filtrar por unidade"></select>
         </label>
 
         <label class="field">
-          <span>Modalidade</span>
-          <select id="filter-modality"></select>
+          <span class="sr-only">Modalidade</span>
+          <select id="filter-modality" aria-label="Filtrar por modalidade"></select>
         </label>
 
         <label class="field">
-          <span>Tipo</span>
-          <select id="filter-type"></select>
+          <span class="sr-only">Tipo</span>
+          <select id="filter-type" aria-label="Filtrar por tipo"></select>
         </label>
-      </div>
 
-      <div class="links-actions">
-        <button class="btn" type="button" data-action="reset-filters">Limpar filtros</button>
-        <button class="btn btn--accent" type="button" data-action="export-csv">Exportar CSV</button>
+        <button class="btn btn--ghost" type="button" data-action="reset-filters">Limpar filtros</button>
+        <button class="btn btn--accent" type="button" data-action="export-csv">⭳ Exportar CSV</button>
       </div>
 
       <div class="links-meta" aria-live="polite" id="links-meta"></div>
@@ -52,12 +51,11 @@
       <table class="links-table">
         <thead>
           <tr>
-            <th>Unidade</th>
-            <th>Modalidade</th>
-            <th>Tipo</th>
-            <th>Código</th>
-            <th>URL</th>
-            <th>Ações</th>
+            <th>UNIDADE / PROCESSO</th>
+            <th>MODALIDADE</th>
+            <th>TIPO</th>
+            <th>CÓDIGO</th>
+            <th>AÇÕES</th>
           </tr>
         </thead>
         <tbody id="links-tbody"></tbody>

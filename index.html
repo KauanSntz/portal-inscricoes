@@ -7,25 +7,25 @@
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <h1>Portal de Inscrições – Fametro 2026/1</h1>
-  </header>
+  <div class="top-stripe" aria-hidden="true"></div>
 
-  <main class="container">
-    <div class="global-search">
+  <main class="container app-shell">
+    <header class="site-header">
+      <h1>Portal de Inscrições — Fametro 2026/1</h1>
+      <p class="site-subtitle">Acesso rápido por unidade e modalidade</p>
+    </header>
+
+    <section class="toolbar" aria-label="Ações principais">
       <button
         class="btn btn-global-search"
         type="button"
         data-action="open-global-search"
         aria-label="Pesquisar cursos nas unidades"
       >
-        Pesquisar cursos nas unidades
+        🔎 Pesquisar cursos nas unidades
       </button>
-    </div>
-
-    <div class="global-search">
-      <a class="btn" href="./links.html">Abrir central de links</a>
-    </div>
+      <a class="btn btn--accent" href="./links.html">📋 Abrir central de links</a>
+    </section>
 
     <div id="app" aria-live="polite"></div>
   </main>

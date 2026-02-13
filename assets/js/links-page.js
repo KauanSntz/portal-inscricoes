@@ -237,17 +237,38 @@
     for (const rec of state.filtered.slice(0, state.renderCount)) {
       const tr = document.createElement("tr");
 
-      appendCell(tr, rec.unitName);
-      appendCell(tr, createPill(rec.modalityLabel));
+      const processCell = document.createElement("td");
+      processCell.className = "process-cell";
+      const unit = document.createElement("div");
+      unit.className = "process-unit";
+      unit.textContent = rec.unitName;
+
+      const process = document.createElement("div");
+      process.className = "process-title";
+      process.textContent = rec.modalityLabel;
+
+      const processLink = document.createElement("a");
+      processLink.className = "process-link";
+      processLink.href = rec.url || "#";
+      processLink.target = "_blank";
+      processLink.rel = "noopener noreferrer";
+      processLink.textContent = rec.url || rec.rawUrl || "URL inválida";
+      if (!rec.url) {
+        processLink.removeAttribute("href");
+        processLink.setAttribute("aria-disabled", "true");
+      }
+
+      processCell.appendChild(unit);
+      processCell.appendChild(process);
+      processCell.appendChild(processLink);
+      tr.appendChild(processCell);
+
+      appendCell(tr, createPill(rec.modalityKey === "outro" ? rec.modalityLabel : rec.modalityKey));
       appendCell(tr, createPill(rec.typeLabel));
 
       const strong = document.createElement("strong");
       strong.textContent = rec.code || "—";
       appendCell(tr, strong);
-
-      const code = document.createElement("code");
-      code.textContent = rec.url || rec.rawUrl || "URL inválida";
-      appendCell(tr, code);
 
       const actions = document.createElement("div");
       actions.className = "links-copy-actions";
@@ -257,7 +278,7 @@
       copyCode.type = "button";
       copyCode.dataset.action = "copy-code";
       copyCode.dataset.value = rec.code;
-      copyCode.textContent = "Copiar código";
+      copyCode.textContent = "Código";
       actions.appendChild(copyCode);
 
       const copyUrl = document.createElement("button");
@@ -265,7 +286,7 @@
       copyUrl.type = "button";
       copyUrl.dataset.action = "copy-url";
       copyUrl.dataset.value = rec.url || rec.rawUrl;
-      copyUrl.textContent = "Copiar link";
+      copyUrl.textContent = "Link";
       actions.appendChild(copyUrl);
 
       if (rec.url) {
