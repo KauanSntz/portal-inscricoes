@@ -998,7 +998,6 @@ body{
 .result-course,
 .result-unit,
 .course-name,
-.mod-title,
 .unit-title{ color: var(--p-blue-1); }
 
 .btn,
@@ -1250,4 +1249,23 @@ body{
 @media (max-width: 480px){
   .app-nav{ overflow-x:auto; white-space:nowrap; flex-wrap:nowrap; }
   .app-nav .btn{ flex:0 0 auto; }
+}
+
+
+/* Central de Links: accent herdado por bloco/unidade (sem hardcode azul) */
+.unit-block.is-blue{ --accent: var(--p-blue-1, #2897f4); --unit-tone: var(--accent); }
+.unit-block.is-red{ --accent: var(--p-red-1, #ee0e0e); --unit-tone: var(--accent); }
+
+.unit-block{
+  border-color: color-mix(in srgb, var(--accent) 45%, #ffffff);
+}
+.unit-block .unit-group__title,
+.unit-block .modality-group__title,
+.unit-block .process-link-title,
+.unit-block .process-code,
+.unit-block .process-text{
+  color: var(--accent);
+}
+.unit-block .modality-group{
+  border-top-color: color-mix(in srgb, var(--accent) 25%, #ffffff);
 }

@@ -162,11 +162,14 @@
       recoveredFromTitle: 0,
       unresolvedUnit: 0,
       inconsistencies: [],
+      bauruRawCount: 0,
+      bauruCanonicalCount: 0,
     };
 
     const normalized = rawItems.map((item) => {
       const title = String(item.title || "");
       const code = codeFromTitle(title, item.code || item.ps || "");
+      if (norm(title).includes("bauru")) audit.bauruRawCount += 1;
 
       const baseUnitRaw = item.unitHint || "";
       let unitCanonical = normalizeUnitCanonical(baseUnitRaw);
@@ -185,6 +188,8 @@
         audit.unresolvedUnit += 1;
         console.warn(`[WARN] unidade nao identificada code=${code} title=${title}`);
       }
+
+      if (unitCanonical === "BAURU") audit.bauruCanonicalCount += 1;
 
       const typeKey = parseTypeKey(title || item.type || "");
       const modalityKey = parseModalityKey(title || item.modality || "");
@@ -242,6 +247,8 @@
       aliasChanged: audit.aliasChanged,
       recoveredFromTitle: audit.recoveredFromTitle,
       unresolvedUnit: audit.unresolvedUnit,
+      bauruRawCount: audit.bauruRawCount,
+      bauruCanonicalCount: audit.bauruCanonicalCount,
       topInconsistencies: audit.topInconsistencies,
     });
 
@@ -324,7 +331,7 @@
 
     units.forEach((group, idx) => {
       const card = document.createElement("article");
-      card.className = `unit-group ${idx % 2 === 0 ? "unit-group--blue" : "unit-group--red"}`;
+      card.className = `unit-group unit-block ${idx % 2 === 0 ? "unit-group--blue is-blue" : "unit-group--red is-red"}`;
 
       const h2 = document.createElement("h2");
       h2.className = "unit-group__title";
@@ -417,6 +424,7 @@
       <li>Alias aplicados (ex.: "leste presencial" → "leste"): <strong>${state.audit?.aliasChanged || 0}</strong></li>
       <li>Unidades recuperadas do título: <strong>${state.audit?.recoveredFromTitle || 0}</strong></li>
       <li>Itens em "UNIDADE NÃO IDENTIFICADA": <strong>${state.audit?.unresolvedUnit || 0}</strong></li>
+      <li>BAURU detectado no título: <strong>${state.audit?.bauruRawCount || 0}</strong> / canonical BAURU: <strong>${state.audit?.bauruCanonicalCount || 0}</strong></li>
       ${top ? `<li>Top inconsistências:<ul>${top}</ul></li>` : ""}
     `;
   };
