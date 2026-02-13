@@ -95,8 +95,11 @@
     let name = norm(rawUnit)
       .replace(/[—–]/g, "-")
       .replace(/([a-z])100%/gi, "$1 100%")
+      .replace(/bauru\s*\d+[)%(]*/gi, "bauru 100%")
       .replace(/\b2026\/1\b/gi, "")
+      .replace(/[^a-z0-9%\s-]/gi, " ")
       .replace(/\s*[-]\s*$/g, "")
+      .replace(/\s+/g, " ")
       .trim();
 
     // remove sufixos de modalidade repetidamente no final

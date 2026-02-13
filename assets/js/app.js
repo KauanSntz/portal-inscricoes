@@ -211,6 +211,8 @@ const scrollLock = (() => {
     return map[key] || "blue";
   };
 
+  const toneClassByUnitKey = (coursesKey) => (homeToneByUnit(coursesKey) === "red" ? "is-red" : "is-blue");
+
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
     const gt = norm(groupTitle);
@@ -255,7 +257,7 @@ const scrollLock = (() => {
   const renderUnit = (unit) => {
     const tone = homeToneByUnit(unit.coursesKey);
     const unitCard = el("section", {
-      class: `unit theme--${unit.theme} unit--home-${tone}`,
+      class: `unit ${tone === "red" ? "is-red" : "is-blue"}`,
       id: `unit-${unit.coursesKey}`,
       "data-unit-key": unit.coursesKey,
     });
@@ -270,7 +272,7 @@ const scrollLock = (() => {
           "data-action": "open-courses",
           "data-unit": unit.coursesKey,
           "data-title": unit.title,
-          "data-theme": unit.theme,
+          "data-theme": tone === "red" ? "is-red" : "is-blue",
         },
         [el("span", { text: "Pesquisar cursos" })]
       ),
@@ -333,8 +335,7 @@ const scrollLock = (() => {
 
     if (!url) {
       a.setAttribute("tabindex", "-1");
-      a.style.opacity = "0.6";
-      a.style.pointerEvents = "none";
+      a.classList.add("is-disabled");
     }
 
     return a;
@@ -347,7 +348,7 @@ const scrollLock = (() => {
     const unitMeta = new Map(
       units.map((u) => [
         u.coursesKey,
-        { title: u.title, theme: u.theme },
+        { title: u.title, toneClass: toneClassByUnitKey(u.coursesKey) },
       ])
     );
 
@@ -407,7 +408,7 @@ const scrollLock = (() => {
       isOpen: false,
       unitKey: "",
       unitTitle: "",
-      theme: "sede",
+      themeClass: "is-blue",
       tab: "presencial",
       query: "",
       turno: "Todos",
@@ -417,7 +418,7 @@ const scrollLock = (() => {
     const ensure = () => {
       if (overlay) return overlay;
 
-      overlay = el("div", { class: "modal-overlay theme--sede", role: "dialog", "aria-modal": "true" });
+      overlay = el("div", { class: "modal-overlay is-blue", role: "dialog", "aria-modal": "true" });
       const dialog = el("div", { class: "modal" });
 
       const head = el("div", { class: "modal-head" }, [
@@ -517,13 +518,13 @@ const scrollLock = (() => {
       state.isOpen = true;
       state.unitKey = unitKey;
       state.unitTitle = unitTitle;
-      state.theme = theme || "sede";
+      state.themeClass = theme || "is-blue";
       state.tab = "presencial";
       state.query = "";
       state.turno = "Todos";
 
       // aplica theme no overlay
-      overlay.className = `modal-overlay is-open theme--${state.theme}`;
+      overlay.className = `modal-overlay is-open ${state.themeClass}`;
 
       titleEl.textContent = `Cursos disponíveis — ${state.unitTitle}`;
 
@@ -681,7 +682,7 @@ const globalModal = (() => {
   const ensure = () => {
     if (overlay) return overlay;
 
-    overlay = el("div", { class: "modal-overlay theme--sede", role: "dialog", "aria-modal": "true" });
+    overlay = el("div", { class: "modal-overlay is-blue", role: "dialog", "aria-modal": "true" });
     const dialog = el("div", { class: "modal" });
 
     const head = el("div", { class: "modal-head" }, [
@@ -809,9 +810,9 @@ const globalModal = (() => {
         }));
 
       for (const u of orderedUnits) {
-        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), theme: "sede" };
+        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), toneClass: "is-blue" };
 
-        const row = el("div", { class: `result-row theme--${meta.theme}` });
+        const row = el("div", { class: `result-row ${meta.toneClass || "is-blue"}` });
 
         const left = el("div", { class: "result-left" });
         left.appendChild(el("div", { class: "result-unit", text: `Unidade ${meta.title}` }));
@@ -902,12 +903,6 @@ const globalModal = (() => {
     console.log("[debug] catalog:", Object.keys(courses.catalog || {}).length);
     console.log("[debug] availability indexed:", index.availability.size);
 
-    // check: themes valid
-    for (const u of units) {
-      if (!["sede","leste","sul","norte","compensa"].includes(u.theme)) {
-        console.warn("[debug] theme estranho:", u);
-      }
-    }
   };
 
   // -----------------------------
