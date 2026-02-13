@@ -7,6 +7,7 @@
   const CHUNK_SIZE = 120;
   const JSON_DATA_PATH = "./assets/data/portal_links_2026_1.json";
   const FIXED_HASH = "#/es/inscricoeswizard/dados-basicos";
+  const UNKNOWN_UNIT = "UNIDADE NAO IDENTIFICADA";
 
   const TYPE_LABELS = Object.freeze({ vestibular: "Vestibular", matricula: "Matrícula", outro: "Outro" });
   const MODALITY_LABELS = Object.freeze({ ead: "100% EAD", semipresencial: "Semipresencial", flex: "Flex", outro: "Outro" });
@@ -19,6 +20,7 @@
     renderCount: CHUNK_SIZE,
     sourceLabel: "",
     qa: null,
+    audit: null,
     filters: { query: "", unit: "all", modality: "all", type: "all" },
   };
 
@@ -39,7 +41,8 @@
       .trim()
       .toLowerCase()
       .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "");
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/\s+/g, " ");
 
   const normalizeWizardUrl = (href) => {
     try {
@@ -51,29 +54,13 @@
     }
   };
 
-  const normalizeUnitName = (rawName) => {
-    let name = norm(rawName)
-      .replace(/[—–]/g, "-")
-      .replace(/\b2026\/1\b/gi, "")
-      .replace(/\s*-\s*$/g, "")
-      .trim();
-
-    // remove sufixos de modalidade no final
-    const suffixes = [
-      /\s*100%\s*ead\s*$/i,
-      /\s*ead\s*$/i,
-      /\s*semipresencial\s*$/i,
-      /\s*semi[-\s]?flex\s*$/i,
-      /\s*flex\s*$/i,
-    ];
-
-    for (const rgx of suffixes) name = name.replace(rgx, "").trim();
-
-    return name
-      .replace(/\s+/g, " ")
-      .trim()
-      .toUpperCase();
-  };
+  const toTitle = (txt) =>
+    String(txt || "")
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map((w) => w[0].toUpperCase() + w.slice(1))
+      .join(" ");
 
   const parseTypeKey = (title) => {
     const t = norm(title);
@@ -84,8 +71,8 @@
 
   const parseModalityKey = (title) => {
     const t = norm(title);
-    if (t.includes("100% ead") || t.includes(" ead")) return "ead";
-    if (t.includes("semi-flex") || t.includes("semi flex") || t.includes(" flex")) return "flex";
+    if (t.includes("100% ead") || /\bead\b/.test(t)) return "ead";
+    if (t.includes("semi-flex") || t.includes("semi flex") || /\bflex\b/.test(t)) return "flex";
     if (t.includes("semipresencial")) return "semipresencial";
     return "outro";
   };
@@ -95,34 +82,102 @@
     return String(m?.[1] || fallback || "").trim();
   };
 
-  const unitFromTitle = (title) => {
-    const clean = String(title || "").replace(/^\s*\d+\s*/, "");
+  const unitFromTitleChunk = (title) => {
+    const clean = String(title || "").replace(/^\s*\d+\s*/, "").trim();
     const parts = clean.split(" - ").map((x) => x.trim()).filter(Boolean);
-    const candidate = parts[1] || "";
-    return normalizeUnitName(candidate);
+    return parts[1] || "";
   };
 
-  const processTitleFromTitle = (title, code) =>
-    String(title || "")
-      .replace(new RegExp(`^\\s*${code}\\s*`), "")
+  // Obrigatório
+  const normalizeUnitCanonical = (rawUnit) => {
+    let name = norm(rawUnit)
+      .replace(/[—–]/g, "-")
+      .replace(/\b2026\/1\b/gi, "")
+      .replace(/\s*[-]\s*$/g, "")
       .trim();
 
+    const suffixes = [
+      /\s+presencial\s*$/i,
+      /\s+hibrido\s*$/i,
+      /\s+ead\s*100%\s*$/i,
+      /\s+100%\s*ead\s*$/i,
+      /\s+ead\s*$/i,
+      /\s+100%\s*$/i,
+      /\s+semipresencial\s*$/i,
+      /\s+semi[-\s]?flex\s*$/i,
+      /\s+flex\s*$/i,
+    ];
+
+    for (const rgx of suffixes) name = name.replace(rgx, "").trim();
+
+    if (name === "manaus") name = "compensa";
+
+    name = name.replace(/\s+/g, " ").trim();
+    return name ? name.toUpperCase() : "";
+  };
+
+  // Obrigatório
+  const extractUnitFromTitle = (title) => {
+    const chunk = unitFromTitleChunk(title);
+    return normalizeUnitCanonical(chunk);
+  };
+
+  const processTitleFromTitle = (title, code) => String(title || "").replace(new RegExp(`^\\s*${code}\\s*`), "").trim();
+
+  const isInvalidCanonical = (unitCanonical) => {
+    const value = norm(unitCanonical);
+    return !value || value === "-" || value === "online" || value.length < 2;
+  };
+
+  const unitMentionedInProcess = (processTitle, unitCanonical) => {
+    const p = norm(processTitle);
+    const u = norm(unitCanonical);
+    if (!u) return false;
+    if (p.includes(u)) return true;
+    if (u === "compensa" && (p.includes("manaus") || p.includes("oeste") || p.includes("compensa"))) return true;
+    return false;
+  };
+
+  // Obrigatório
   const normalizeLinksData = (rawItems) => {
+    const audit = {
+      aliasChanged: 0,
+      recoveredFromTitle: 0,
+      unresolvedUnit: 0,
+      inconsistencies: [],
+    };
+
     const normalized = rawItems.map((item) => {
       const title = String(item.title || "");
       const code = codeFromTitle(title, item.code || item.ps || "");
+
+      const baseUnitRaw = item.unitHint || "";
+      let unitCanonical = normalizeUnitCanonical(baseUnitRaw);
+      if (baseUnitRaw && norm(baseUnitRaw) !== norm(unitCanonical)) audit.aliasChanged += 1;
+
+      if (isInvalidCanonical(unitCanonical)) {
+        const recovered = extractUnitFromTitle(title);
+        if (!isInvalidCanonical(recovered)) {
+          unitCanonical = recovered;
+          audit.recoveredFromTitle += 1;
+        }
+      }
+
+      if (isInvalidCanonical(unitCanonical)) {
+        unitCanonical = UNKNOWN_UNIT;
+        audit.unresolvedUnit += 1;
+        console.warn(`[WARN] unidade nao identificada code=${code} title=${title}`);
+      }
+
       const typeKey = parseTypeKey(title || item.type || "");
       const modalityKey = parseModalityKey(title || item.modality || "");
-      const unitCanonical = normalizeUnitName(item.unitHint || unitFromTitle(title));
-
       const processTitle = title
         ? processTitleFromTitle(title, code)
         : `${TYPE_LABELS[typeKey].toUpperCase()} - ${unitCanonical} ${MODALITY_LABELS[modalityKey].toUpperCase()} - 2026/1`;
 
-      const url = normalizeWizardUrl(item.url || item.href || "");
-      const dataWarning = !norm(processTitle).includes(norm(unitCanonical));
-
+      const dataWarning = !unitMentionedInProcess(processTitle, unitCanonical);
       if (dataWarning) {
+        audit.inconsistencies.push({ code, expected: unitCanonical, got: processTitle });
         console.warn(`[WARN] unidade divergente expected=${unitCanonical} got=${processTitle} code=${code}`);
       }
 
@@ -135,7 +190,7 @@
         modalityKey,
         modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
         processTitle,
-        url,
+        url: normalizeWizardUrl(item.url || item.href || ""),
         rawUrl: String(item.url || item.href || ""),
         dataWarning,
         searchable: norm([unitCanonical, processTitle, item.sheetName || "", item.url || item.href || ""].join(" ")),
@@ -151,12 +206,29 @@
       unique.push(rec);
     }
 
-    return unique.sort((a, b) =>
-      a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") ||
-      (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) ||
-      (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) ||
-      a.code.localeCompare(b.code, "pt-BR")
-    );
+    const sorted = unique.sort((a, b) => {
+      const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      const bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+      return (
+        a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") ||
+        (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) ||
+        (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) ||
+        a.code.localeCompare(b.code, "pt-BR")
+      );
+    });
+
+    audit.topInconsistencies = audit.inconsistencies.slice(0, 10);
+    state.audit = audit;
+
+    console.info("[AUDIT] normalizeLinksData", {
+      aliasChanged: audit.aliasChanged,
+      recoveredFromTitle: audit.recoveredFromTitle,
+      unresolvedUnit: audit.unresolvedUnit,
+      topInconsistencies: audit.topInconsistencies,
+    });
+
+    return sorted;
   };
 
   const fromDataJson = (payload) => {
@@ -173,7 +245,7 @@
   const fromPortalLinks = (units) => {
     const raw = [];
     for (const unit of Array.isArray(units) ? units : []) {
-      const unitHint = normalizeUnitName(unit.title || unit.key || unit.coursesKey || "");
+      const unitHint = normalizeUnitCanonical(unit.title || unit.key || unit.coursesKey || "");
       for (const [blockKey, block] of Object.entries(unit.blocks || {})) {
         for (const ln of block.links || []) {
           const type = TYPE_LABELS[parseTypeKey(ln.type)] || "Processo";
@@ -224,7 +296,13 @@
       byUnit.get(rec.unitKey).items.push(rec);
     }
 
-    const units = Array.from(byUnit.values()).sort((a, b) => a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR"));
+    const units = Array.from(byUnit.values()).sort((a, b) => {
+      const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      const bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR");
+    });
+
     const frag = document.createDocumentFragment();
 
     units.forEach((group, idx) => {
@@ -233,7 +311,7 @@
 
       const h2 = document.createElement("h2");
       h2.className = "unit-group__title";
-      h2.textContent = group.unitCanonical;
+      h2.textContent = group.unitCanonical === UNKNOWN_UNIT ? "UNIDADE NÃO IDENTIFICADA" : toTitle(group.unitCanonical);
       card.appendChild(h2);
 
       const listWrap = document.createElement("div");
@@ -310,11 +388,19 @@
   };
 
   const renderQA = () => {
+    const top = (state.audit?.topInconsistencies || [])
+      .map((x) => `<li><code>${x.code}</code> esperado: <strong>${x.expected}</strong></li>`)
+      .join("");
+
     dom.qaList.innerHTML = `
       <li>Total de links normalizados: <strong>${state.qa.total}</strong></li>
       <li>Links fora do padrão wizard: <strong>${state.qa.invalidUrls}</strong></li>
       <li>Códigos vazios: <strong>${state.qa.emptyCodes}</strong></li>
       <li>Divergências unidade ↔ título: <strong>${state.qa.warnings}</strong></li>
+      <li>Alias aplicados (ex.: "leste presencial" → "leste"): <strong>${state.audit?.aliasChanged || 0}</strong></li>
+      <li>Unidades recuperadas do título: <strong>${state.audit?.recoveredFromTitle || 0}</strong></li>
+      <li>Itens em "UNIDADE NÃO IDENTIFICADA": <strong>${state.audit?.unresolvedUnit || 0}</strong></li>
+      ${top ? `<li>Top inconsistências:<ul>${top}</ul></li>` : ""}
     `;
   };
 
@@ -413,7 +499,7 @@
     state.records = await loadRecords();
     state.qa = buildQA(state.records);
 
-    const unitMap = Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitCanonical]));
+    const unitMap = Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? "UNIDADE NÃO IDENTIFICADA" : toTitle(r.unitCanonical)]));
     buildOptions(dom.unit, [...new Set(state.records.map((r) => r.unitKey))], unitMap);
     buildOptions(dom.modality, [...new Set(state.records.map((r) => r.modalityKey))], MODALITY_LABELS);
     buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], TYPE_LABELS);
