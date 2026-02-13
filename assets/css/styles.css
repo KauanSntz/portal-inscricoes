@@ -250,8 +250,18 @@ select:focus-visible,
 }
 
 .link-code {
-  font-weight: 700;
-  color: var(--accent);
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
 }
 
 .link-type {
@@ -516,14 +526,8 @@ select {
 
 .modality-group__title {
   margin: 0 0 0.55rem;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: var(--surface-mid);
-  border: 1px solid var(--accent-border);
   color: var(--accent);
-  font-size: 0.96rem;
+  font-size: 1.02rem;
   font-weight: 800;
 }
 
