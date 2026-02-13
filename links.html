@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central de Links - Fametro 2026/1</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <div class="top-stripe" aria-hidden="true"></div>
+
+  <main class="container app-shell links-page theme-red">
+    <header class="site-header site-header--inline">
+      <div>
+        <h1>Central de Links — Fametro 2026/1</h1>
+        <p class="links-subtitle">Busca rápida por unidade, modalidade e tipo</p>
+      </div>
+    </header>
+
+    <nav class="app-nav" aria-label="Navegação principal">
+      <a class="btn btn--nav" href="./index.html">Portal</a>
+      <a class="btn btn--nav is-active" href="./links.html" aria-current="page">Central de Links</a>
+      <a class="btn btn--nav" href="./index.html">Pesquisar cursos</a>
+    </nav>
+
+    <section class="links-controls" aria-label="Filtros de links">
+      <div class="links-controls-grid links-controls-grid--inline">
+        <label class="field field--search">
+          <span class="sr-only">Buscar por código, URL ou texto</span>
+          <input id="filter-query" class="search-input" type="search" placeholder="🔎 Buscar..." />
+        </label>
+
+        <label class="field">
+          <span>Unidade</span>
+          <select id="filter-unit" aria-label="Filtrar por unidade"></select>
+        </label>
+
+        <label class="field">
+          <span>Modalidade</span>
+          <select id="filter-modality" aria-label="Filtrar por modalidade"></select>
+        </label>
+
+        <label class="field">
+          <span>Ingresso</span>
+          <select id="filter-type" aria-label="Filtrar por tipo"></select>
+        </label>
+
+        <button class="btn btn--ghost" type="button" data-action="reset-filters">Limpar filtros</button>
+        <a class="btn btn--accent" href="https://docs.google.com/spreadsheets/d/1nkWbb5GjX77gQBtUKnpKcO129znUOpBDRHccp6mLzpg/edit?gid=1579988913#gid=1579988913" target="_blank" rel="noopener noreferrer">Link oficial</a>
+      </div>
+
+      <div class="links-meta" aria-live="polite" id="links-meta"></div>
+    </section>
+
+    <section class="links-groups" id="links-groups" aria-label="Lista de links agrupada por unidade"></section>
+
+    <div id="links-empty" class="empty" hidden>Nenhum link encontrado para os filtros atuais.</div>
+    <button id="links-load-more" class="btn" type="button" hidden data-action="load-more">Carregar mais</button>
+
+    <section class="links-qa" aria-label="Resumo de validação">
+      <h2>Resumo QA</h2>
+      <ul id="qa-list"></ul>
+    </section>
+  </main>
+
+  <script defer src="./assets/js/links-data.js"></script>
+  <script defer src="./assets/js/links-page.js"></script>
+</body>
+</html>
