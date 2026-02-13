@@ -172,7 +172,7 @@ footer{
 
   font-size: 1.05rem;
   font-weight: 950;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: .3px;
   color: var(--accent);
 }

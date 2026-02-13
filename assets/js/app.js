@@ -20,8 +20,8 @@
       { key: "presencial", label: "Presencial" },
       { key: "hibrido", label: "Híbrido" },
       { key: "semipresencial", label: "Semipresencial" },
-      { key: "flex", label: "Semipresencial Flex" },
-      { key: "ead", label: "EAD (100% Online)" },
+      { key: "flex", label: "Flex" },
+      { key: "ead", label: "100% EAD" },
     ],
 
     // oeste no front -> compensa no back
@@ -278,9 +278,19 @@ const scrollLock = (() => {
     return unitCard;
   };
 
+  const formatModalityTitle = (title) => {
+    const t = norm(title);
+    if (t.includes("presencial") && !t.includes("semi") && !t.includes("hibrid")) return "Presencial";
+    if (t.includes("hibrid")) return "Híbrido";
+    if (t.includes("semipresencial") || (t.includes("semi") && !t.includes("flex"))) return "Semipresencial";
+    if (t.includes("flex")) return "Flex";
+    if (t.includes("ead") || t.includes("online")) return "100% EAD";
+    return title;
+  };
+
   const renderLinkBlock = (block, fallbackTitle) => {
     const wrap = el("div", { class: "mod-block" });
-    wrap.appendChild(el("h3", { class: "mod-title", text: block.title || fallbackTitle }));
+    wrap.appendChild(el("h3", { class: "mod-title", text: formatModalityTitle(block.title || fallbackTitle) }));
 
     const content = el("div", { class: "mod-content" });
     const links = Array.isArray(block.links) ? block.links : [];
