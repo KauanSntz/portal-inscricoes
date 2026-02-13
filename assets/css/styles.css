@@ -1191,3 +1191,63 @@ body{
 
 .unit--home-red .unit-title,
 .unit--home-red .btn-courses{ color: var(--p-red-2, #ee4242); border-color: var(--p-red-2, #ee4242); }
+
+/* Nav principal consistente */
+.app-nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.btn--nav{
+  background: var(--p-white, #fff);
+  border:1px solid var(--p-blue-2, #6cb6f4);
+  color: var(--p-blue-1, #2897f4);
+}
+.btn--nav.is-active,
+.btn--nav[aria-current="page"]{
+  background: var(--p-blue-1, #2897f4);
+  color: var(--p-white, #fff);
+  border-color: var(--p-blue-1, #2897f4);
+}
+
+/* Corrige títulos de modalidade seguindo cor da unidade */
+.unit .mod-title,
+.unit .unit-head,
+.unit .btn-courses,
+.unit .badge,
+.unit .tag{
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, #ffffff);
+}
+.unit .mod-title{ border-left-color: var(--accent); }
+
+/* mobile-first para tabs/chips/search */
+.modal-tabs{
+  overflow-x:auto;
+  flex-wrap:nowrap;
+  scrollbar-width:none;
+}
+.modal-tabs::-webkit-scrollbar{ display:none; }
+.modal-tabs .tab{ flex:0 0 auto; }
+
+.search-row{ align-items:stretch; }
+.search-row .search-input{ min-width: 0; }
+
+.chips{
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{ display:none; }
+.chips .chip{ flex:0 0 auto; }
+
+.course-price{
+  color: var(--muted);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 480px){
+  .app-nav{ overflow-x:auto; white-space:nowrap; flex-wrap:nowrap; }
+  .app-nav .btn{ flex:0 0 auto; }
+}

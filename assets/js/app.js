@@ -60,6 +60,14 @@
 
   const uniq = (arr) => Array.from(new Set(arr));
 
+  const debounce = (fn, ms = 150) => {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), ms);
+    };
+  };
+
   const safeExternalUrl = (href) => {
     try {
       const u = new URL(String(href), location.href);
@@ -122,7 +130,7 @@ const scrollLock = (() => {
     if (!window.COURSES || !window.COURSES.catalog || !window.COURSES.offers) {
       throw new Error("COURSES não encontrado (assets/js/courses-data.js).");
     }
-    return { linksRaw: window.PORTAL_LINKS, courses: window.COURSES };
+    return { linksRaw: window.PORTAL_LINKS, courses: window.COURSES, coursePrices: window.COURSE_PRICES || null };
   };
 
   // -----------------------------
@@ -372,6 +380,22 @@ const scrollLock = (() => {
     return { unitMeta, availability, searchable };
   };
 
+  const buildPriceIndex = (coursePrices) => {
+    if (!coursePrices || !Array.isArray(coursePrices.items)) return new Map();
+    const map = new Map();
+    for (const item of coursePrices.items) {
+      const k = `${item.courseId || ""}|${item.unitKey || ""}|${item.modalityKey || ""}`;
+      if (!k.startsWith("||")) map.set(k, item);
+    }
+    return map;
+  };
+
+  const getPrice = (priceIndex, courseId, unitKey, modalityKey) => {
+    if (!priceIndex || !priceIndex.size) return null;
+    const k = `${courseId || ""}|${unitKey || ""}|${modalityKey || ""}`;
+    return priceIndex.get(k) || null;
+  };
+
   // -----------------------------
   // Modal: cursos por unidade (DOM estável)
   // -----------------------------
@@ -415,10 +439,11 @@ const scrollLock = (() => {
         placeholder: "Pesquisar curso...",
       });
 
-      inputEl.addEventListener("input", () => {
+      const debouncedUnitSearch = debounce(() => {
         state.query = inputEl.value || "";
         updateCoursesView();
-      });
+      }, 150);
+      inputEl.addEventListener("input", debouncedUnitSearch);
 
       chipsEl = el("div", { class: "chips" });
 
@@ -624,7 +649,14 @@ const scrollLock = (() => {
 
         const card = el("div", { class: "course" }, [
           el("div", { class: "course-name", text: name }),
+          el("div", { class: "course-price", "data-slot": "price" }),
         ]);
+
+        const priceData = getPrice(window.__PRICE_INDEX__, item.id, state.unitKey, state.tab);
+        if (priceData && Number.isFinite(Number(priceData.price))) {
+          const slot = card.querySelector('[data-slot="price"]');
+          if (slot) slot.textContent = `Mensalidade: ${Number(priceData.price).toLocaleString('pt-BR', { style: 'currency', currency: (window.COURSE_PRICES?.currency || 'BRL') })}`;
+        }
 
         const badges = el("div", { class: "badges" });
         for (const t of item.turnos || []) badges.appendChild(el("span", { class: "badge", text: t }));
@@ -667,7 +699,7 @@ const globalModal = (() => {
       type: "search",
       placeholder: "Digite o nome do curso...",
     });
-    inputEl.addEventListener("input", updateResults);
+    inputEl.addEventListener("input", debounce(updateResults, 150));
 
     searchRow.appendChild(inputEl);
 
@@ -883,8 +915,10 @@ const globalModal = (() => {
   // -----------------------------
   const init = () => {
     try {
-      const { linksRaw, courses } = getDataOrThrow();
+      const { linksRaw, courses, coursePrices } = getDataOrThrow();
       const units = normalizeLinks(linksRaw);
+
+      window.__PRICE_INDEX__ = buildPriceIndex(coursePrices);
 
       // index global (1x)
       const idx = buildCourseIndex(courses, units);
