@@ -437,6 +437,10 @@ const scrollLock = (() => {
           loadUnitList();
           updateChips();
           updateCoursesView();
+          requestAnimationFrame(() => {
+           bodyEl.scrollTop = 0;
+}); 
+
         }
 
         if (action === "set-turno") {

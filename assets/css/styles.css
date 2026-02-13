@@ -486,20 +486,99 @@ body.modal-open{
 .btn-unit:focus-visible{ outline:none; box-shadow: var(--focus); }
 
 @media (max-width: 520px){
+
+  .modal-body{
+  position: relative;
+}
+
+.modal-body .search-row{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--surface);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+
   body{ padding: 12px; }
   header{ padding: 24px; border-radius: 14px; }
-  .unit{ padding: 18px; }
-  .modal-overlay{ padding: 12px; }
-  .course-grid{ grid-template-columns: 1fr; }
 
-  .modal-tabs{
-    flex-wrap: nowrap;
+  .unit{ padding: 18px; }
+
+  /* modal ocupa melhor a tela e evita cortes */
+  .modal-overlay{
+    padding: 10px;
+    align-items: flex-end; /* fica mais natural no mobile */
+  }
+
+  .modal{
+    width: 100%;
+    max-height: 92dvh;
+    border-radius: 16px;
+  }
+
+  .modal-head{ padding: 12px; }
+  .modal-title{
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+ .modal-tabs{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 por linha */
+    gap: 8px;
+    padding: 10px 12px;
+    overflow: visible; /* não corta nada */
+  }
+
+  .tab{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    padding: 9px 10px;
+    font-size: .92rem;
+  }
+
+  /* ✅ Filtro/busca: vira coluna */
+  .search-row{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-input{
+    width: 100%;
+    min-width: 0; /* importante p/ evitar overflow */
+  }
+
+  /* ✅ Chips: scroll horizontal (não quebra layout) */
+  .chips{
+    width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
-  .modal-tabs::-webkit-scrollbar{ display:none; }
+  .chips::-webkit-scrollbar{ display:none; }
+
+  .chip{
+    flex: 0 0 auto; 
+    white-space: nowrap;
+    padding: 8px 10px;
+    font-size: .9rem;
+  }
+
+  .course-grid{ grid-template-columns: 1fr; }
 }
+
+@media (max-width: 360px){
+  .tab{ font-size: .86rem; padding: 7px 9px; }
+  .chip{ font-size: .86rem; padding: 7px 9px; }
+}
+
 
 /* =========================
   Global search (botão do topo)
@@ -545,4 +624,10 @@ body.modal-open{
 .btn-global-search:focus-visible{
   outline: none;
   box-shadow: var(--focus), 0 14px 30px rgba(0,0,0,.12);
+}
+.modal-title{
+  min-width: 0;              /* permite encolher dentro do flex */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
