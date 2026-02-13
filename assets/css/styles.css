@@ -1269,3 +1269,21 @@ body{
 .unit-block .modality-group{
   border-top-color: color-mix(in srgb, var(--accent) 25%, #ffffff);
 }
+
+/* Home blocks: borda e subtítulo seguindo accent da unidade */
+.unit{
+  border-color: color-mix(in srgb, var(--accent) 45%, #ffffff);
+}
+.unit .mod-content{
+  border-color: color-mix(in srgb, var(--accent) 45%, #ffffff);
+}
+.unit .mod-title{
+  border-color: color-mix(in srgb, var(--accent) 35%, #ffffff);
+  border-left-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Central block border também segue accent */
+.unit-block{
+  border-color: color-mix(in srgb, var(--accent) 55%, #ffffff) !important;
+}

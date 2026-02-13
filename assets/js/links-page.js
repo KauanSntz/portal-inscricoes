@@ -94,6 +94,7 @@
   const normalizeUnitCanonical = (rawUnit) => {
     let name = norm(rawUnit)
       .replace(/[—–]/g, "-")
+      .replace(/([a-z])100%/gi, "$1 100%")
       .replace(/\b2026\/1\b/gi, "")
       .replace(/\s*[-]\s*$/g, "")
       .trim();
