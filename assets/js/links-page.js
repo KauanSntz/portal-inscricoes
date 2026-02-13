@@ -335,7 +335,7 @@
 
     units.forEach((group, idx) => {
       const card = document.createElement("article");
-      card.className = `unit-group unit-block ${idx % 2 === 0 ? "unit-group--blue theme-blue is-blue" : "unit-group--red theme-red is-red"}`;
+      card.className = `unit-group unit-block ${idx % 2 === 0 ? "theme-blue" : "theme-red"}`;
 
       const h2 = document.createElement("h2");
       h2.className = "unit-group__title";
@@ -389,7 +389,7 @@
 
           const meta = document.createElement("div");
           meta.className = "unit-row__meta";
-          meta.appendChild(createBadge(rec.modalityLabel, rec.typeKey === "matricula" ? "modality-matricula" : "modality-vestibular"));
+          meta.appendChild(createBadge(rec.modalityLabel, "modality"));
           meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
 
           link.appendChild(code);

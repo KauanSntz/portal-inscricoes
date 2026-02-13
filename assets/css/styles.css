@@ -497,8 +497,9 @@ select {
 
 .modality-group__title {
   margin: 0 0 0.45rem;
-  color: var(--accent);
+  color: color-mix(in srgb, var(--accent) 76%, #ffffff);
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .unit-row {
@@ -538,17 +539,31 @@ select {
 }
 
 .badge-chip--vestibular,
-.badge-chip--modality-vestibular {
-  border-color: var(--line-mid);
-  background: color-mix(in srgb, var(--accent-soft) 25%, #ffffff);
-  color: var(--accent);
+.badge-chip--matricula,
+.badge-chip--modality {
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
-.badge-chip--matricula,
-.badge-chip--modality-matricula {
+.badge-chip--vestibular {
   border-color: var(--accent);
   background: var(--accent);
   color: #ffffff;
+}
+
+.badge-chip--matricula {
+  border-color: var(--accent);
+  background: #ffffff;
+  color: var(--accent);
+}
+
+.badge-chip--modality {
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, #ffffff);
+  background: #ffffff;
+  color: color-mix(in srgb, var(--accent) 72%, #ffffff);
+  font-weight: 500;
 }
 
 .links-qa {
@@ -572,22 +587,22 @@ select {
 }
 
 /* Tone classes */
-.is-blue {
-  --accent: var(--blue);
-  --accent-soft: var(--blue-soft);
-}
-
-.is-red {
-  --accent: var(--red);
-  --accent-soft: var(--red-soft);
-}
-
 .theme-blue {
   --accent: var(--blue);
   --accent-soft: var(--blue-soft);
 }
 
 .theme-red {
+  --accent: var(--red);
+  --accent-soft: var(--red-soft);
+}
+
+.is-blue {
+  --accent: var(--blue);
+  --accent-soft: var(--blue-soft);
+}
+
+.is-red {
   --accent: var(--red);
   --accent-soft: var(--red-soft);
 }

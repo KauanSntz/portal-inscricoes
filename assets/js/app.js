@@ -151,7 +151,7 @@ const scrollLock = (() => {
           blocks: u.blocks || {},
         };
       });
-      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue is-blue" : "theme-red is-red" }));
+      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue" : "theme-red" }));
     }
 
     // formato cru: { slug, titulo, modalidades:[{titulo, links:[...]}] }
@@ -188,7 +188,7 @@ const scrollLock = (() => {
       return { key: slug, coursesKey, title, theme, blocks };
     });
 
-    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue is-blue" : "theme-red is-red" }));
+    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue" : "theme-red" }));
   };
 
   const normalizeTheme = (slugOrTheme) => {
@@ -202,7 +202,7 @@ const scrollLock = (() => {
     return "sede";
   };
 
-  const toneClassByUnitKey = (unit) => unit.toneClass || "theme-blue is-blue";
+  const toneClassByUnitKey = (unit) => unit.toneClass || "theme-blue";
 
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
@@ -399,7 +399,7 @@ const scrollLock = (() => {
       isOpen: false,
       unitKey: "",
       unitTitle: "",
-      themeClass: "is-blue",
+      themeClass: "theme-blue",
       tab: "presencial",
       query: "",
       turno: "Todos",
@@ -409,7 +409,7 @@ const scrollLock = (() => {
     const ensure = () => {
       if (overlay) return overlay;
 
-      overlay = el("div", { class: "modal-overlay is-blue", role: "dialog", "aria-modal": "true" });
+      overlay = el("div", { class: "modal-overlay theme-blue", role: "dialog", "aria-modal": "true" });
       const dialog = el("div", { class: "modal" });
 
       const head = el("div", { class: "modal-head" }, [
@@ -509,7 +509,7 @@ const scrollLock = (() => {
       state.isOpen = true;
       state.unitKey = unitKey;
       state.unitTitle = unitTitle;
-      state.themeClass = theme || "is-blue";
+      state.themeClass = theme || "theme-blue";
       state.tab = "presencial";
       state.query = "";
       state.turno = "Todos";
@@ -673,7 +673,7 @@ const globalModal = (() => {
   const ensure = () => {
     if (overlay) return overlay;
 
-    overlay = el("div", { class: "modal-overlay is-blue", role: "dialog", "aria-modal": "true" });
+    overlay = el("div", { class: "modal-overlay theme-blue", role: "dialog", "aria-modal": "true" });
     const dialog = el("div", { class: "modal" });
 
     const head = el("div", { class: "modal-head" }, [
@@ -801,9 +801,9 @@ const globalModal = (() => {
         }));
 
       for (const u of orderedUnits) {
-        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), toneClass: "is-blue" };
+        const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), toneClass: "theme-blue" };
 
-        const row = el("div", { class: `result-row ${meta.toneClass || "is-blue"}` });
+        const row = el("div", { class: `result-row ${meta.toneClass || "theme-blue"}` });
 
         const left = el("div", { class: "result-left" });
         left.appendChild(el("div", { class: "result-unit", text: `Unidade ${meta.title}` }));
