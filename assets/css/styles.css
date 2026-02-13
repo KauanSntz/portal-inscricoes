@@ -40,7 +40,7 @@ html, body {
 body {
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--red) 62%, var(--blue) 38%);
+  color: color-mix(in srgb, var(--blue) 82%, #ffffff);
   background: color-mix(in srgb, var(--blue-soft) 16%, #ffffff);
 }
 
@@ -69,17 +69,26 @@ a { color: inherit; }
 .site-header {
   display: grid;
   gap: 0.3rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, #ffffff);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent-soft) 20%, #ffffff),
+    #ffffff
+  );
 }
 
 .site-header h1 {
   margin: 0;
   font-size: clamp(1.45rem, 3vw, 2.2rem);
+  color: color-mix(in srgb, var(--accent) 88%, #ffffff);
 }
 
 .site-subtitle,
 .links-subtitle {
   margin: 0;
-  color: color-mix(in srgb, var(--blue) 55%, var(--red) 45%);
+  color: color-mix(in srgb, var(--accent) 70%, #ffffff);
 }
 
 .app-nav {
@@ -140,7 +149,7 @@ select:focus-visible,
   padding: 0.75rem 0 1.5rem;
   text-align: center;
   font-size: 0.95rem;
-  color: color-mix(in srgb, var(--blue) 56%, var(--red) 44%);
+  color: color-mix(in srgb, var(--blue) 60%, #ffffff);
 }
 
 /* Portal */
@@ -191,6 +200,13 @@ select:focus-visible,
   font-size: 1rem;
 }
 
+.mod-content {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent-soft) 15%, #ffffff);
+  padding: 0.55rem;
+}
+
 .link-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -234,7 +250,7 @@ select:focus-visible,
   border-radius: var(--radius-sm);
   padding: 0.9rem;
   text-align: center;
-  color: color-mix(in srgb, var(--blue) 50%, var(--red) 50%);
+  color: color-mix(in srgb, var(--accent) 70%, #ffffff);
 }
 
 .unit--flash {
@@ -280,13 +296,13 @@ select {
   border-radius: var(--radius-sm);
   padding: 0.64rem 0.72rem;
   background: #ffffff;
-  color: color-mix(in srgb, var(--blue) 56%, var(--red) 44%);
+  color: color-mix(in srgb, var(--accent) 68%, #ffffff);
 }
 
 .links-meta,
 .meta {
   margin-top: 0.65rem;
-  color: color-mix(in srgb, var(--blue) 56%, var(--red) 44%);
+  color: color-mix(in srgb, var(--accent) 62%, #ffffff);
 }
 
 /* Modal */
@@ -523,16 +539,16 @@ select {
 
 .badge-chip--vestibular,
 .badge-chip--modality-vestibular {
-  border-color: color-mix(in srgb, var(--blue) 36%, #ffffff);
-  background: color-mix(in srgb, var(--blue-soft) 30%, #ffffff);
-  color: var(--blue);
+  border-color: var(--line-mid);
+  background: color-mix(in srgb, var(--accent-soft) 25%, #ffffff);
+  color: var(--accent);
 }
 
 .badge-chip--matricula,
 .badge-chip--modality-matricula {
-  border-color: color-mix(in srgb, var(--red-mid) 44%, #ffffff);
-  background: color-mix(in srgb, var(--red-soft) 30%, #ffffff);
-  color: var(--red);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
 }
 
 .links-qa {
@@ -562,6 +578,16 @@ select {
 }
 
 .is-red {
+  --accent: var(--red);
+  --accent-soft: var(--red-soft);
+}
+
+.theme-blue {
+  --accent: var(--blue);
+  --accent-soft: var(--blue-soft);
+}
+
+.theme-red {
   --accent: var(--red);
   --accent-soft: var(--red-soft);
 }

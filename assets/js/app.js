@@ -139,7 +139,7 @@ const scrollLock = (() => {
   const normalizeLinks = (linksRaw) => {
     // já normalizado
     if (linksRaw[0] && linksRaw[0].blocks && linksRaw[0].title) {
-      return linksRaw.map((u) => {
+      const normalized = linksRaw.map((u) => {
         const slug = norm(u.key || u.slug || u.coursesKey || "");
         const theme = normalizeTheme(u.theme || slug);
         const coursesKey = CONFIG.COURSE_KEY_ALIAS[slug] || slug;
@@ -151,10 +151,11 @@ const scrollLock = (() => {
           blocks: u.blocks || {},
         };
       });
+      return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue is-blue" : "theme-red is-red" }));
     }
 
     // formato cru: { slug, titulo, modalidades:[{titulo, links:[...]}] }
-    return linksRaw.map((u) => {
+    const normalized = linksRaw.map((u) => {
       const slug = norm(u.slug || u.key || "");
       const theme = normalizeTheme(slug);
       const coursesKey = CONFIG.COURSE_KEY_ALIAS[slug] || slug;
@@ -186,6 +187,8 @@ const scrollLock = (() => {
 
       return { key: slug, coursesKey, title, theme, blocks };
     });
+
+    return normalized.map((u, idx) => ({ ...u, toneClass: idx % 2 === 0 ? "theme-blue is-blue" : "theme-red is-red" }));
   };
 
   const normalizeTheme = (slugOrTheme) => {
@@ -199,19 +202,7 @@ const scrollLock = (() => {
     return "sede";
   };
 
-  const homeToneByUnit = (coursesKey) => {
-    const key = norm(coursesKey);
-    const map = {
-      sede: "blue",
-      leste: "red",
-      sul: "blue",
-      norte: "red",
-      compensa: "blue",
-    };
-    return map[key] || "blue";
-  };
-
-  const toneClassByUnitKey = (coursesKey) => (homeToneByUnit(coursesKey) === "red" ? "is-red" : "is-blue");
+  const toneClassByUnitKey = (unit) => unit.toneClass || "theme-blue is-blue";
 
   const mapLinkModalityToKey = (modalidade, groupTitle = "") => {
     const m = norm(modalidade);
@@ -255,9 +246,9 @@ const scrollLock = (() => {
 
 
   const renderUnit = (unit) => {
-    const tone = homeToneByUnit(unit.coursesKey);
+    const toneClass = toneClassByUnitKey(unit);
     const unitCard = el("section", {
-      class: `unit ${tone === "red" ? "is-red" : "is-blue"}`,
+      class: `unit ${toneClass}`,
       id: `unit-${unit.coursesKey}`,
       "data-unit-key": unit.coursesKey,
     });
@@ -272,7 +263,7 @@ const scrollLock = (() => {
           "data-action": "open-courses",
           "data-unit": unit.coursesKey,
           "data-title": unit.title,
-          "data-theme": tone === "red" ? "is-red" : "is-blue",
+          "data-theme": toneClass,
         },
         [el("span", { text: "Pesquisar cursos" })]
       ),
@@ -348,7 +339,7 @@ const scrollLock = (() => {
     const unitMeta = new Map(
       units.map((u) => [
         u.coursesKey,
-        { title: u.title, toneClass: toneClassByUnitKey(u.coursesKey) },
+        { title: u.title, toneClass: toneClassByUnitKey(u) },
       ])
     );
 
