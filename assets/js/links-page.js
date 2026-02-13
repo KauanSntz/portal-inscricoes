@@ -6,40 +6,36 @@
 
   const CHUNK_SIZE = 120;
   const JSON_DATA_PATH = "./assets/data/portal_links_2026_1.json";
-  const TYPE_LABELS = {
+  const FIXED_HASH = "#/es/inscricoeswizard/dados-basicos";
+
+  const TYPE_LABELS = Object.freeze({
     vestibular: "Vestibular",
     matricula: "Matrícula",
     outro: "Outro",
-  };
+  });
 
-  const UNIT_ALIAS = {
-    oeste: "compensa",
-    compensa: "compensa",
-    "oeste compensa": "compensa",
-    "oeste - compensa": "compensa",
-  };
-
-  const MODALITY_LABELS = {
+  const MODALITY_LABELS = Object.freeze({
     presencial: "Presencial",
     hibrido: "Híbrido",
     semipresencial: "Semipresencial",
     flex: "Flex",
     ead: "EAD",
     outro: "Outro",
-  };
+  });
+
+  const UNIT_ALIAS = Object.freeze({
+    oeste: "compensa",
+    "oeste compensa": "compensa",
+    compensa: "compensa",
+  });
 
   const state = {
     records: [],
     filtered: [],
     renderCount: CHUNK_SIZE,
-    qa: null,
     sourceLabel: "",
-    filters: {
-      query: "",
-      unit: "all",
-      modality: "all",
-      type: "all",
-    },
+    qa: null,
+    filters: { query: "", unit: "all", modality: "all", type: "all" },
   };
 
   const dom = {
@@ -47,10 +43,10 @@
     meta: document.getElementById("links-meta"),
     empty: document.getElementById("links-empty"),
     loadMore: document.getElementById("links-load-more"),
+    query: document.getElementById("filter-query"),
     unit: document.getElementById("filter-unit"),
     modality: document.getElementById("filter-modality"),
     type: document.getElementById("filter-type"),
-    query: document.getElementById("filter-query"),
     qaList: document.getElementById("qa-list"),
   };
 
@@ -61,25 +57,25 @@
       .normalize("NFD")
       .replace(/\p{Diacritic}/gu, "");
 
-  const safeUrl = (url) => {
+  const normalizeWizardUrl = (href) => {
     try {
-      const parsed = new URL(String(url), location.href);
+      const parsed = new URL(String(href), location.href);
       if (!["http:", "https:"].includes(parsed.protocol)) return null;
-      return parsed.toString();
+      return `${parsed.origin}${parsed.pathname}${parsed.search}${FIXED_HASH}`;
     } catch {
       return null;
     }
   };
 
-  const parseType = (value) => {
-    const t = norm(value);
+  const parseType = (txt) => {
+    const t = norm(txt);
     if (t.includes("vestib")) return "vestibular";
     if (t.includes("matric")) return "matricula";
     return "outro";
   };
 
-  const parseModality = (value) => {
-    const t = norm(value);
+  const parseModality = (txt) => {
+    const t = norm(txt);
     if (t.includes("flex")) return "flex";
     if (t.includes("semi")) return "semipresencial";
     if (t.includes("hibrid")) return "hibrido";
@@ -88,8 +84,8 @@
     return "outro";
   };
 
-  const parseUnit = (value) => {
-    const key = norm(value).replace(/[—–]/g, "-").replace(/\s+/g, " ");
+  const unitKeyFromName = (unitName) => {
+    const key = norm(unitName).replace(/[—–-]/g, " ").replace(/\s+/g, " ").trim();
     return UNIT_ALIAS[key] || key;
   };
 
@@ -104,45 +100,89 @@
     return map[key] || String(key || "").toUpperCase();
   };
 
-  const removeCodePrefix = (title, code) => {
-    const cleanTitle = String(title || "").trim();
-    if (!code) return cleanTitle;
-    return cleanTitle.replace(new RegExp(`^${code}\\s*[-–—:]?\\s*`, "i"), "").trim();
+  const splitTitle = (fullTitle) => {
+    const raw = String(fullTitle || "").trim();
+    const code = String(raw.split(" ")[0] || "").replace(/\D/g, "");
+    const withoutCode = code ? raw.replace(new RegExp(`^${code}\\s*`), "") : raw;
+
+    const parts = withoutCode.split(" - ").map((x) => x.trim()).filter(Boolean);
+    const processPrefix = parts[0] || "Processo";
+    const unitAndMode = parts[1] || "";
+
+    const modePatterns = [
+      /\s+100%\s*EAD$/i,
+      /\s+SEMIPRESENCIAL\s+FLEX$/i,
+      /\s+SEMIPRESENCIAL$/i,
+      /\s+H[ÍI]BRIDO$/i,
+      /\s+PRESENCIAL$/i,
+      /\s+EAD$/i,
+      /\s+FLEX$/i,
+    ];
+
+    let unitName = unitAndMode || parts[2] || "OUTROS";
+    for (const rgx of modePatterns) unitName = unitName.replace(rgx, "").trim();
+    if (!unitName) unitName = "OUTROS";
+
+    const processTitle = withoutCode;
+    return { code, unitName, processTitle, processPrefix };
   };
 
-  const buildFallbackTitle = ({ typeLabel, unitName, modalityLabel }) =>
-    `${typeLabel} Online - ${unitName} ${modalityLabel} - 2026/1`;
+  const normalizeFromDataJson = (payload) => {
+    const out = [];
+    for (const sheet of payload?.sheets || []) {
+      for (const entry of sheet.entries || []) {
+        if (entry.type !== "link") continue;
+
+        const title = String(entry.title || "");
+        const split = splitTitle(title);
+        const unitKey = unitKeyFromName(split.unitName);
+        const unitName = humanUnit(unitKey) === unitKey.toUpperCase() ? split.unitName.toUpperCase() : humanUnit(unitKey);
+        const modalityKey = parseModality(title);
+        const typeKey = parseType(title);
+        const url = normalizeWizardUrl(entry.url);
+
+        out.push({
+          unitKey,
+          unitName,
+          code: split.code || String(entry.params?.ps || ""),
+          processTitle: split.processTitle,
+          modalityKey,
+          modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
+          typeKey,
+          typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
+          url,
+          rawUrl: String(entry.url || ""),
+          searchable: norm([split.unitName, split.processTitle, sheet.name, entry.url].join(" ")),
+        });
+      }
+    }
+    return out;
+  };
 
   const normalizeFromPortalLinks = (units) => {
     const out = [];
     for (const unit of Array.isArray(units) ? units : []) {
-      const unitKey = parseUnit(unit.coursesKey || unit.key || unit.title);
+      const unitKey = unitKeyFromName(unit.coursesKey || unit.key || unit.title);
       const unitName = humanUnit(unitKey);
-
       for (const [blockKey, block] of Object.entries(unit.blocks || {})) {
-        const links = Array.isArray(block?.links) ? block.links : [];
-        for (const item of links) {
-          const merged = `${item.modality || ""} ${blockKey}`;
-          const url = safeUrl(item.href);
+        for (const item of block.links || []) {
           const typeKey = parseType(item.type);
-          const typeLabel = item.type || TYPE_LABELS.outro;
-          const modalityKey = parseModality(merged);
-          const modalityLabel = MODALITY_LABELS[modalityKey] || block.title || item.modality || "Outro";
-          const code = String(item.code || "").trim();
-          const processTitle = buildFallbackTitle({ typeLabel, unitName, modalityLabel });
-
+          const modalityKey = parseModality(`${item.modality || ""} ${blockKey}`);
+          const typeLabel = item.type || TYPE_LABELS[typeKey] || TYPE_LABELS.outro;
+          const modalityLabel = MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro;
+          const processTitle = `${typeLabel.toUpperCase()} - ${unitName} ${modalityLabel.toUpperCase()} - 2026/1`;
           out.push({
             unitKey,
             unitName,
+            code: String(item.code || "").trim(),
+            processTitle,
             modalityKey,
             modalityLabel,
             typeKey,
-            typeLabel,
-            code,
-            processTitle,
-            url,
-            rawUrl: String(item.href || "").trim(),
-            searchable: norm([unitName, processTitle, item.modality, item.type, item.code, item.href].join(" ")),
+            typeLabel: TYPE_LABELS[typeKey] || typeLabel,
+            url: normalizeWizardUrl(item.href),
+            rawUrl: String(item.href || ""),
+            searchable: norm([unitName, processTitle, item.code, item.href].join(" ")),
           });
         }
       }
@@ -150,172 +190,106 @@
     return out;
   };
 
-  const extractUnitFromTitle = (title) => {
-    const text = norm(title);
-    const known = ["sede", "leste", "sul", "norte", "oeste", "compensa"];
-    for (const key of known) {
-      if (text.includes(key)) return parseUnit(key);
-    }
-    const match = text.match(/-\s*([a-z\s]+?)\s+(100%|ead|semipresencial|hibrido|presencial)/i);
-    if (match?.[1]) return parseUnit(match[1]);
-    return parseUnit("outros");
-  };
-
-  const normalizeFromDataJson = (payload) => {
-    const out = [];
-    const sheets = Array.isArray(payload?.sheets) ? payload.sheets : [];
-
-    for (const sheet of sheets) {
-      for (const entry of Array.isArray(sheet.entries) ? sheet.entries : []) {
-        if (entry.type !== "link") continue;
-
-        const fullTitle = String(entry.title || "");
-        const code = String(entry.params?.ps || fullTitle.split(" ")[0] || "").trim();
-        const processTitle = removeCodePrefix(fullTitle, code);
-        const typeKey = parseType(fullTitle);
-        const modalityKey = parseModality(fullTitle);
-        const unitKey = extractUnitFromTitle(fullTitle);
-        const unitName = humanUnit(unitKey);
-        const url = safeUrl(entry.url);
-
-        out.push({
-          unitKey,
-          unitName,
-          modalityKey,
-          modalityLabel: MODALITY_LABELS[modalityKey] || MODALITY_LABELS.outro,
-          typeKey,
-          typeLabel: TYPE_LABELS[typeKey] || TYPE_LABELS.outro,
-          code,
-          processTitle,
-          url,
-          rawUrl: String(entry.url || "").trim(),
-          searchable: norm([unitName, sheet.name, fullTitle, code, entry.url].join(" ")),
-        });
-      }
-    }
-
-    return out;
-  };
-
   const dedupeAndSort = (records) => {
-    const unique = [];
     const seen = new Set();
-
+    const unique = [];
     for (const rec of records) {
-      const key = [rec.unitKey, rec.modalityKey, rec.typeKey, rec.code, rec.rawUrl].join("|");
+      const key = [rec.unitKey, rec.code, rec.typeKey, rec.url].join("|");
       if (seen.has(key)) continue;
       seen.add(key);
       unique.push(rec);
     }
-
     return unique.sort((a, b) =>
       a.unitName.localeCompare(b.unitName, "pt-BR") ||
-      a.processTitle.localeCompare(b.processTitle, "pt-BR") ||
-      a.typeLabel.localeCompare(b.typeLabel, "pt-BR") ||
-      a.code.localeCompare(b.code, "pt-BR")
+      a.code.localeCompare(b.code, "pt-BR") ||
+      a.typeLabel.localeCompare(b.typeLabel, "pt-BR")
     );
   };
 
   const buildQA = (records) => {
-    const invalidUrls = records.filter((r) => !r.url).length;
-    const emptyCode = records.filter((r) => !r.code).length;
-    const duplicateCodes = (() => {
-      const counter = new Map();
-      for (const r of records) {
-        const key = r.code || "<vazio>";
-        counter.set(key, (counter.get(key) || 0) + 1);
-      }
-      return Array.from(counter.values()).filter((n) => n > 1).length;
-    })();
-
-    return { total: records.length, invalidUrls, emptyCode, duplicateCodes };
+    const invalidUrls = records.filter((x) => !x.url || !x.url.endsWith(FIXED_HASH)).length;
+    const emptyCodes = records.filter((x) => !x.code).length;
+    return { total: records.length, invalidUrls, emptyCodes };
   };
 
   const debounce = (fn, ms) => {
-    let timer = null;
+    let timer;
     return (...args) => {
       clearTimeout(timer);
       timer = setTimeout(() => fn(...args), ms);
     };
   };
 
-  const buildOptions = (select, values, labels = {}) => {
+  const buildOptions = (select, values, labels) => {
     select.textContent = "";
     select.appendChild(new Option("Todos", "all"));
     for (const value of values) select.appendChild(new Option(labels[value] || value, value));
   };
 
-  const createBadge = (text, variant) => {
+  const unitTone = (unitKey) => {
+    const tones = ["tone-red-1", "tone-red-2", "tone-red-3", "tone-blue-1", "tone-blue-2"];
+    let h = 0;
+    for (const ch of unitKey) h += ch.charCodeAt(0);
+    return tones[h % tones.length];
+  };
+
+  const createBadge = (text, kind) => {
     const span = document.createElement("span");
-    span.className = `badge-chip badge-chip--${variant}`;
+    span.className = `badge-chip badge-chip--${kind}`;
     span.textContent = text;
     return span;
   };
 
-  const getToneClass = (unitName) => {
-    const normalized = norm(unitName);
-    let hash = 0;
-    for (let i = 0; i < normalized.length; i += 1) hash += normalized.charCodeAt(i);
-    return `unit-tone-${(hash % 8) + 1}`;
-  };
-
-  const renderRows = () => {
+  const renderGroups = () => {
     dom.groups.textContent = "";
-    const frag = document.createDocumentFragment();
-
     const visible = state.filtered.slice(0, state.renderCount);
     const grouped = new Map();
 
-    for (const item of visible) {
-      const key = item.unitName;
-      if (!grouped.has(key)) grouped.set(key, []);
-      grouped.get(key).push(item);
+    for (const rec of visible) {
+      if (!grouped.has(rec.unitKey)) grouped.set(rec.unitKey, { unitName: rec.unitName, items: [] });
+      grouped.get(rec.unitKey).items.push(rec);
     }
 
-    for (const [unitName, items] of grouped.entries()) {
+    const frag = document.createDocumentFragment();
+    for (const [unitKey, group] of grouped.entries()) {
       const card = document.createElement("article");
-      card.className = `unit-group ${getToneClass(unitName)}`;
+      card.className = `unit-group ${unitTone(unitKey)}`;
 
-      const title = document.createElement("h2");
-      title.className = "unit-group__title";
-      title.textContent = unitName;
-      card.appendChild(title);
+      const h2 = document.createElement("h2");
+      h2.className = "unit-group__title";
+      h2.textContent = group.unitName;
+      card.appendChild(h2);
 
       const list = document.createElement("div");
       list.className = "unit-group__list";
 
-      for (const rec of items) {
+      for (const rec of group.items) {
         const row = document.createElement("div");
         row.className = "unit-row";
 
-        const main = document.createElement("div");
-        main.className = "unit-row__main";
-
-        const titleLine = rec.url ? document.createElement("a") : document.createElement("div");
-        titleLine.className = "process-link-title";
+        const main = document.createElement(rec.url ? "a" : "div");
+        main.className = "process-link-title";
         if (rec.url) {
-          titleLine.href = rec.url;
-          titleLine.target = "_blank";
-          titleLine.rel = "noopener noreferrer";
+          main.href = rec.url;
+          main.target = "_blank";
+          main.rel = "noopener noreferrer";
         }
 
         const code = document.createElement("span");
         code.className = "process-code";
         code.textContent = rec.code || "—";
 
-        const label = document.createElement("span");
-        label.className = "process-text";
-        label.textContent = rec.processTitle;
-
-        titleLine.appendChild(code);
-        titleLine.appendChild(label);
+        const text = document.createElement("span");
+        text.className = "process-text";
+        text.textContent = rec.processTitle;
 
         const meta = document.createElement("div");
         meta.className = "unit-row__meta";
         meta.appendChild(createBadge(rec.modalityLabel, "modality"));
         meta.appendChild(createBadge(rec.typeLabel, rec.typeKey === "matricula" ? "matricula" : "vestibular"));
 
-        main.appendChild(titleLine);
+        main.appendChild(code);
+        main.appendChild(text);
         row.appendChild(main);
         row.appendChild(meta);
         list.appendChild(row);
@@ -338,9 +312,8 @@
     if (!state.qa) return;
     dom.qaList.innerHTML = `
       <li>Total de links normalizados: <strong>${state.qa.total}</strong></li>
-      <li>URLs inválidas (sem http/https): <strong>${state.qa.invalidUrls}</strong></li>
-      <li>Códigos vazios: <strong>${state.qa.emptyCode}</strong></li>
-      <li>Códigos repetidos: <strong>${state.qa.duplicateCodes}</strong></li>
+      <li>Links inválidos ou fora do padrão wizard: <strong>${state.qa.invalidUrls}</strong></li>
+      <li>Códigos vazios: <strong>${state.qa.emptyCodes}</strong></li>
     `;
   };
 
@@ -355,40 +328,39 @@
     });
 
     state.renderCount = CHUNK_SIZE;
-    renderRows();
+    renderGroups();
     renderMeta();
   };
 
   const toCSV = (rows) => {
-    const header = ["unidade", "modalidade", "tipo", "codigo", "titulo", "url"];
+    const head = ["unidade", "modalidade", "tipo", "codigo", "titulo", "url"];
     const lines = rows.map((r) => [r.unitName, r.modalityLabel, r.typeLabel, r.code, r.processTitle, r.url || r.rawUrl]);
-    return [header, ...lines]
+    return [head, ...lines]
       .map((line) => line.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(","))
       .join("\n");
   };
 
   const exportCSV = () => {
     const blob = new Blob([toCSV(state.filtered)], { type: "text/csv;charset=utf-8" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `portal-links-${Date.now()}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(link.href);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `portal-links-${Date.now()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
   };
 
   const bindEvents = () => {
-    document.addEventListener("click", (event) => {
-      const trigger = event.target.closest("[data-action]");
-      if (!trigger) return;
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
 
-      if (trigger.dataset.action === "load-more") {
+      if (btn.dataset.action === "load-more") {
         state.renderCount += CHUNK_SIZE;
-        renderRows();
+        renderGroups();
       }
-
-      if (trigger.dataset.action === "reset-filters") {
+      if (btn.dataset.action === "reset-filters") {
         state.filters = { query: "", unit: "all", modality: "all", type: "all" };
         dom.query.value = "";
         dom.unit.value = "all";
@@ -396,66 +368,54 @@
         dom.type.value = "all";
         applyFilters();
       }
-
-      if (trigger.dataset.action === "export-csv") exportCSV();
+      if (btn.dataset.action === "export-csv") exportCSV();
     });
+
+    dom.query.addEventListener("input", debounce(() => {
+      state.filters.query = dom.query.value;
+      applyFilters();
+    }, 150));
 
     dom.unit.addEventListener("change", () => {
       state.filters.unit = dom.unit.value;
       applyFilters();
     });
-
     dom.modality.addEventListener("change", () => {
       state.filters.modality = dom.modality.value;
       applyFilters();
     });
-
     dom.type.addEventListener("change", () => {
       state.filters.type = dom.type.value;
       applyFilters();
     });
-
-    dom.query.addEventListener(
-      "input",
-      debounce(() => {
-        state.filters.query = dom.query.value;
-        applyFilters();
-      }, 150)
-    );
   };
 
   const loadRecords = async () => {
-    const fromWindow = dedupeAndSort(normalizeFromPortalLinks(window.PORTAL_LINKS));
-
+    const fallback = dedupeAndSort(normalizeFromPortalLinks(window.PORTAL_LINKS));
     try {
       const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
-      if (!res.ok) throw new Error("Falha ao ler JSON bruto.");
+      if (!res.ok) throw new Error("json fail");
       const payload = await res.json();
       const fromJson = dedupeAndSort(normalizeFromDataJson(payload));
-
-      if (fromJson.length > fromWindow.length) {
+      if (fromJson.length) {
         state.sourceLabel = `JSON bruto (${fromJson.length} registros)`;
         return fromJson;
       }
     } catch {
-      // fallback silencioso para links-data.js
+      // fallback
     }
 
-    state.sourceLabel = `links-data.js (${fromWindow.length} registros)`;
-    return fromWindow;
+    state.sourceLabel = `links-data.js (${fallback.length} registros)`;
+    return fallback;
   };
 
   const init = async () => {
     state.records = await loadRecords();
     state.qa = buildQA(state.records);
 
-    const units = [...new Set(state.records.map((r) => r.unitKey))];
-    const modalities = [...new Set(state.records.map((r) => r.modalityKey))];
-    const types = [...new Set(state.records.map((r) => r.typeKey))];
-
-    buildOptions(dom.unit, units, Object.fromEntries(units.map((u) => [u, humanUnit(u)])));
-    buildOptions(dom.modality, modalities, MODALITY_LABELS);
-    buildOptions(dom.type, types, TYPE_LABELS);
+    buildOptions(dom.unit, [...new Set(state.records.map((r) => r.unitKey))], Object.fromEntries(state.records.map((r) => [r.unitKey, r.unitName])));
+    buildOptions(dom.modality, [...new Set(state.records.map((r) => r.modalityKey))], MODALITY_LABELS);
+    buildOptions(dom.type, [...new Set(state.records.map((r) => r.typeKey))], TYPE_LABELS);
 
     bindEvents();
     applyFilters();

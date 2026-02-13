@@ -951,3 +951,121 @@ body{
   .process-text{ font-size:1rem; }
   .badge-chip{ font-size:.86rem; padding:6px 11px; }
 }
+
+/* =========================================================
+  Palette lock (allowed colors only)
+========================================================= */
+:root{
+  --p-red-1:#ee0e0e;
+  --p-red-2:#ee4242;
+  --p-red-3:#fd7b7b;
+  --p-blue-1:#2897f4;
+  --p-blue-2:#6cb6f4;
+  --p-white:#ffffff;
+}
+
+body{
+  background: var(--p-white);
+  color: var(--p-blue-1);
+}
+
+.top-stripe{
+  background: linear-gradient(90deg, var(--p-red-1) 0 34%, var(--p-red-2) 34% 67%, var(--p-blue-1) 67% 100%);
+}
+
+.site-header,
+.toolbar,
+.links-controls,
+.unit,
+.mod-content,
+.links-qa,
+.unit-group,
+.modal,
+.result-card,
+.course,
+.mod-title{
+  background: var(--p-white);
+  border-color: var(--p-blue-2);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--p-blue-2) 40%, var(--p-white));
+}
+
+.site-header h1,
+.site-subtitle,
+.links-subtitle,
+.meta,
+.links-meta,
+.site-footer,
+.result-course,
+.result-unit,
+.course-name,
+.mod-title,
+.unit-title{ color: var(--p-blue-1); }
+
+.btn,
+.tab,
+.chip,
+.search-input,
+.field select,
+.btn-global-search{
+  background: var(--p-white);
+  border-color: var(--p-blue-2);
+  color: var(--p-blue-1);
+}
+
+.btn--accent,
+.tab.is-active,
+.chip.is-active,
+.btn-unit,
+.badge,
+.tag{ 
+  background: var(--p-blue-1);
+  border-color: var(--p-blue-1);
+  color: var(--p-white);
+}
+
+.btn--ghost{ color: var(--p-blue-1); }
+
+.unit-head{ border-bottom-color: var(--p-blue-2); }
+
+/* unit tones with fixed palette */
+.tone-red-1,
+.unit-tone-1{ --unit-tone: var(--p-red-1); }
+.tone-red-2,
+.unit-tone-2{ --unit-tone: var(--p-red-2); }
+.tone-red-3,
+.unit-tone-3{ --unit-tone: var(--p-red-3); }
+.tone-blue-1,
+.unit-tone-4{ --unit-tone: var(--p-blue-1); }
+.tone-blue-2,
+.unit-tone-5{ --unit-tone: var(--p-blue-2); }
+
+.unit-group__title,
+.process-link-title,
+.process-code,
+.process-text{ color: var(--unit-tone); }
+.process-code{
+  border-color: var(--unit-tone);
+  background: color-mix(in srgb, var(--unit-tone) 20%, var(--p-white));
+}
+
+.badge-chip--modality{
+  color: var(--p-blue-1);
+  background: color-mix(in srgb, var(--p-blue-2) 45%, var(--p-white));
+  border-color: var(--p-blue-2);
+}
+.badge-chip--vestibular{
+  color: var(--p-white);
+  background: var(--p-blue-1);
+  border-color: var(--p-blue-1);
+}
+.badge-chip--matricula{
+  color: var(--p-white);
+  background: var(--p-red-2);
+  border-color: var(--p-red-2);
+}
+
+.empty{ color: var(--p-red-2); border-color: var(--p-red-3); }
+
+@media (max-width:980px){
+  body{ background: var(--p-white); }
+}
