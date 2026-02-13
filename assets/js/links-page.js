@@ -96,22 +96,37 @@
       .replace(/\s*[-]\s*$/g, "")
       .trim();
 
-    const suffixes = [
-      /\s+presencial\s*$/i,
-      /\s+hibrido\s*$/i,
-      /\s+ead\s*100%\s*$/i,
-      /\s+100%\s*ead\s*$/i,
-      /\s+ead\s*$/i,
-      /\s+100%\s*$/i,
-      /\s+semipresencial\s*$/i,
-      /\s+semi[-\s]?flex\s*$/i,
-      /\s+flex\s*$/i,
-    ];
+    // remove sufixos de modalidade repetidamente no final
+    const stripTail = () => {
+      const prev = name;
+      name = name
+        .replace(/\s+100%\s*ead\s*$/i, "")
+        .replace(/\s+ead\s*100%\s*$/i, "")
+        .replace(/\s+semi[-\s]?flex\s*$/i, "")
+        .replace(/\s+semi\s+flex\s*$/i, "")
+        .replace(/\s+semipresencial\s*$/i, "")
+        .replace(/\s+hibrido\s*$/i, "")
+        .replace(/\s+presencial\s*$/i, "")
+        .replace(/\s+ead\s*$/i, "")
+        .replace(/\s+flex\s*$/i, "")
+        .replace(/\s+100%\s*$/i, "")
+        .replace(/\s*[-]\s*$/g, "")
+        .trim();
+      return prev !== name;
+    };
 
-    for (const rgx of suffixes) name = name.replace(rgx, "").trim();
+    while (stripTail()) {
+      // loop até estabilizar (ex.: "ALTAMIRA SEMIPRESENCIAL FLEX" -> "ALTAMIRA")
+    }
 
-    if (name === "manaus") name = "compensa";
+    // aliases comuns / regra de negócio
+    const aliases = {
+      manaus: "compensa",
+      altmira: "altamira",
+      altrimira: "altamira",
+    };
 
+    name = aliases[name] || name;
     name = name.replace(/\s+/g, " ").trim();
     return name ? name.toUpperCase() : "";
   };
