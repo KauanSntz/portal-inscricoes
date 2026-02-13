@@ -36,7 +36,7 @@
       if (k === "class") node.className = v;
       else if (k === "text") node.textContent = String(v);
       else if (k.startsWith("data-")) node.setAttribute(k, String(v));
-      else if (k === "html") node.innerHTML = String(v); // use com cautela (não usamos com dados)
+      else if (k === "html") node.innerHTML = String(v);
       else node.setAttribute(k, String(v));
     }
     for (const c of children) node.appendChild(c);
@@ -53,7 +53,53 @@
     }
   };
 
-  const uniq = (arr) => Array.from(new Set(arr));
+  const uniqBy = (arr, keyFn) => {
+    const seen = new Set();
+    const out = [];
+    for (const item of arr) {
+      const k = keyFn(item);
+      if (seen.has(k)) continue;
+      seen.add(k);
+      out.push(item);
+    }
+    return out;
+  };
+
+  const normalizeText = (v) =>
+    String(v ?? "")
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const turnoKey = (t) => {
+    const n = normalizeText(t);
+    if (!n) return "";
+    if (n.startsWith("mat")) return "matutino";
+    if (n.startsWith("ves")) return "vespertino";
+    if (n.startsWith("not")) return "noturno";
+    if (n.startsWith("flex")) return "flex";
+    if (n.startsWith("onl")) return "online";
+    return n;
+  };
+
+  const canonicalTurnoLabel = (t) => {
+    const k = turnoKey(t);
+    if (k === "matutino") return "Matutino";
+    if (k === "vespertino") return "Vespertino";
+    if (k === "noturno") return "Noturno";
+    if (k === "flex") return "Flex";
+    if (k === "online") return "Online";
+    return String(t ?? "").trim();
+  };
+
+  const TURN_SORT = Object.freeze({
+    matutino: 1,
+    vespertino: 2,
+    noturno: 3,
+    flex: 4,
+    online: 5,
+  });
 
   // -----------------------------
   // Data validation
@@ -73,8 +119,9 @@
   // -----------------------------
   const renderApp = ({ links }) => {
     const root = document.getElementById(CONFIG.ROOT_ID);
-    root.textContent = "";
+    if (!root) return;
 
+    root.textContent = "";
     const frag = document.createDocumentFragment();
     for (const unit of links) frag.appendChild(renderUnit(unit));
     root.appendChild(frag);
@@ -112,7 +159,6 @@
 
   const renderLinkBlock = (block, fallbackTitle) => {
     const wrap = el("div", { class: "mod-block" });
-
     wrap.appendChild(el("h3", { class: "mod-title", text: block.title || fallbackTitle }));
 
     const content = el("div", { class: "mod-content" });
@@ -124,7 +170,7 @@
       return wrap;
     }
 
-    // valida: preferimos exatamente 2 links (vestibular/matrícula)
+    // preferimos exatamente 2 links (vestibular/matrícula)
     const two = links.slice(0, 2);
 
     const grid = el("div", { class: "link-grid" });
@@ -154,7 +200,6 @@
       a.style.opacity = "0.6";
       a.style.pointerEvents = "none";
     }
-
     return a;
   };
 
@@ -196,9 +241,37 @@
       dialog.appendChild(body);
       overlay.appendChild(dialog);
 
+      // clique fora fecha
       overlay.addEventListener("click", (e) => {
-        // clique fora fecha
-        if (e.target === overlay) close();
+        if (e.target === overlay) {
+          close();
+          return;
+        }
+
+        // Event delegation ESTÁVEL (não quebra em re-render)
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+
+        if (action === "close-modal") {
+          close();
+          return;
+        }
+
+        if (action === "set-tab") {
+          state.tab = btn.dataset.tab || "presencial";
+          state.query = "";
+          state.turnoFilter = "Todos";
+          render();
+          return;
+        }
+
+        if (action === "set-turno") {
+          state.turnoFilter = btn.dataset.turno || "Todos";
+          render();
+          return;
+        }
       });
 
       document.addEventListener("keydown", (e) => {
@@ -228,7 +301,7 @@
       modalEl.style.setProperty("--accent", accent);
 
       render();
-      // foco inicial
+
       const closeBtn = $('[data-action="close-modal"]', ov);
       closeBtn?.focus();
     };
@@ -238,7 +311,6 @@
       state.isOpen = false;
       overlay.classList.remove("is-open");
 
-      // limpa body (evita “modal fantasma” e zumbis)
       const body = $('[data-role="body"]', overlay);
       if (body) body.textContent = "";
 
@@ -252,30 +324,38 @@
       const titleEl = $('[data-role="title"]', overlay);
       titleEl.textContent = `Cursos disponíveis — ${state.unitTitle}`;
 
-      // tabs
+      // Tabs
       const tabsEl = $('[data-role="tabs"]', overlay);
       tabsEl.textContent = "";
       for (const t of CONFIG.COURSE_TABS) {
-        const b = el("button", {
-          class: `tab${t.key === state.tab ? " is-active" : ""}`,
-          type: "button",
-          "data-action": "set-tab",
-          "data-tab": t.key,
-        }, [el("span", { text: t.label })]);
-        tabsEl.appendChild(b);
+        tabsEl.appendChild(
+          el(
+            "button",
+            {
+              class: `tab${t.key === state.tab ? " is-active" : ""}`,
+              type: "button",
+              "data-action": "set-tab",
+              "data-tab": t.key,
+            },
+            [el("span", { text: t.label })]
+          )
+        );
       }
 
-      // body
+      // Body
       const body = $('[data-role="body"]', overlay);
       body.textContent = "";
 
-      const list = courses.offers?.[state.unitKey]?.[state.tab] || [];
-      if (!Array.isArray(list) || list.length === 0) {
+      const listRaw = courses.offers?.[state.unitKey]?.[state.tab] || [];
+      const list = Array.isArray(listRaw) ? listRaw : [];
+
+      if (list.length === 0) {
         body.appendChild(el("div", { class: "empty", text: CONFIG.EMPTY_TEXT }));
         return;
       }
 
       const searchRow = el("div", { class: "search-row" });
+
       const input = el("input", {
         class: "search-input",
         type: "search",
@@ -283,79 +363,76 @@
         value: state.query,
         "aria-label": "Pesquisar curso",
       });
+
       input.addEventListener("input", () => {
         state.query = input.value || "";
-        render(); // simples e previsível (lista não é gigante)
+        render();
       });
+
       searchRow.appendChild(input);
 
-      // chips apenas presencial/hibrido
+      // Chips apenas presencial/hibrido
       const showChips = state.tab === "presencial" || state.tab === "hibrido";
       if (showChips) {
-        const allTurnos = uniq(list.flatMap((x) => x.turnos || [])).sort((a, b) => a.localeCompare(b, "pt-BR"));
-        const chips = ["Todos", ...allTurnos];
+        const allTurnos = uniqBy(
+          list.flatMap((x) => (x.turnos || []).map(canonicalTurnoLabel)),
+          (t) => turnoKey(t)
+        )
+          .filter((t) => turnoKey(t))
+          .sort((a, b) => {
+            const ak = turnoKey(a);
+            const bk = turnoKey(b);
+            const ao = TURN_SORT[ak] ?? 999;
+            const bo = TURN_SORT[bk] ?? 999;
+            return ao - bo || a.localeCompare(b, "pt-BR");
+          });
 
         const chipsWrap = el("div", { class: "chips" });
-        for (const c of chips) {
-          const btn = el("button", {
-            class: `chip${c === state.turnoFilter ? " is-active" : ""}`,
-            type: "button",
-            "data-action": "set-turno",
-            "data-turno": c,
-          }, [el("span", { text: c })]);
-          chipsWrap.appendChild(btn);
-        }
+
+        const makeChip = (label) =>
+          el(
+            "button",
+            {
+              class: `chip${label === state.turnoFilter ? " is-active" : ""}`,
+              type: "button",
+              "data-action": "set-turno",
+              "data-turno": label,
+            },
+            [el("span", { text: label })]
+          );
+
+        chipsWrap.appendChild(makeChip("Todos"));
+        for (const t of allTurnos) chipsWrap.appendChild(makeChip(t));
+
         searchRow.appendChild(chipsWrap);
       }
 
       body.appendChild(searchRow);
 
       const filtered = applyCourseFilters(courses, list, state);
+
       body.appendChild(el("div", { class: "meta", text: `${filtered.length} curso(s) encontrado(s)` }));
 
       const grid = el("div", { class: "course-grid" });
       for (const item of filtered) grid.appendChild(renderCourseCard(courses, item));
       body.appendChild(grid);
-
-      // event delegation (tabs + chips)
-      // event delegation (tabs + chips)
-tabsEl.onclick = (e) => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
-
-  if (btn.dataset.action === "set-tab") {
-    state.tab = btn.dataset.tab || "presencial";
-    state.query = "";
-    state.turnoFilter = "Todos";
-    render();
-  }
-};
-
-body.onclick = (e) => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
-
-  if (btn.dataset.action === "set-turno") {
-    state.turnoFilter = btn.dataset.turno || "Todos";
-    render();
-  }
-};
-
+    };
 
     const applyCourseFilters = (courses, list, st) => {
-      const q = (st.query || "").trim().toLowerCase();
+      const q = normalizeText(st.query);
+
+      const filterTurnKey = st.turnoFilter === "Todos" ? "" : turnoKey(st.turnoFilter);
 
       return list.filter((x) => {
         const name = courses.catalog?.[x.id]?.name || x.id;
-        if (q && !name.toLowerCase().includes(q)) return false;
+        if (q && !normalizeText(name).includes(q)) return false;
 
         if (st.tab === "presencial" || st.tab === "hibrido") {
-          if (st.turnoFilter && st.turnoFilter !== "Todos") {
-            return (x.turnos || []).includes(st.turnoFilter);
+          if (filterTurnKey) {
+            const keys = (x.turnos || []).map(turnoKey);
+            return keys.includes(filterTurnKey);
           }
         }
-
-        // semipresencial/ead: sem filtro de turno
         return true;
       });
     };
@@ -367,7 +444,9 @@ body.onclick = (e) => {
       card.appendChild(el("div", { class: "course-name", text: name }));
 
       const badges = el("div", { class: "badges" });
-      for (const t of (item.turnos || [])) badges.appendChild(el("span", { class: "badge", text: t }));
+      for (const t of item.turnos || []) {
+        badges.appendChild(el("span", { class: "badge", text: canonicalTurnoLabel(t) }));
+      }
       card.appendChild(badges);
 
       return card;
@@ -385,25 +464,18 @@ body.onclick = (e) => {
       if (!btn) return;
 
       const action = btn.dataset.action;
-      if (action === "open-courses") {
-        const { links } = getDataOrThrow();
-        const unitKey = btn.dataset.unit;
-        const unitTitle = btn.dataset.title;
-        const theme = btn.dataset.theme;
+      if (action !== "open-courses") return;
 
-        // pega accent do CSS (por theme) de forma robusta
-        const fake = document.createElement("div");
-        fake.className = `unit unit--${theme}`;
-        document.body.appendChild(fake);
-        const accent = getComputedStyle(fake).getPropertyValue("--accent").trim() || "#2563eb";
-        fake.remove();
+      const unitKey = btn.dataset.unit;
+      const unitTitle = btn.dataset.title;
+      const theme = btn.dataset.theme;
 
-        modal.open({ unitKey, unitTitle, theme, accent });
-      }
+      // pega accent do próprio card (sem criar elemento fake)
+      const unitSection = btn.closest(".unit");
+      const accent =
+        (unitSection && getComputedStyle(unitSection).getPropertyValue("--accent").trim()) || "#2563eb";
 
-      if (action === "close-modal") {
-        modal.close();
-      }
+      modal.open({ unitKey, unitTitle, theme, accent });
     });
   };
 
@@ -415,35 +487,33 @@ body.onclick = (e) => {
 
     const { links, courses } = getDataOrThrow();
 
-    // 1) Links: cada bloco deve ter 0 ou >=2, e quando >=2, validamos URL
+    // Links: cada bloco deve ter 0 ou >=2, e quando >=2, validamos URL
     for (const u of links) {
       for (const blk of Object.values(u.blocks || {})) {
         const arr = Array.isArray(blk.links) ? blk.links : [];
         if (arr.length !== 0 && arr.length < 2) {
-          console.warn("[links] bloco com 1 link (incompleto):", u.key, blk.title);
+          console.warn("[links] bloco com 1 link (incompleto):", u.coursesKey, blk.title);
         }
         for (const ln of arr) {
-          if (!safeExternalUrl(ln.href)) console.warn("[links] url inválida:", u.key, blk.title, ln);
+          if (!safeExternalUrl(ln.href)) console.warn("[links] url inválida:", u.coursesKey, blk.title, ln);
         }
       }
     }
 
-    // 2) Courses: unidade e modalidades existem
+    // Courses: presença de unidades
     const mustUnits = ["sede", "leste", "sul", "norte", "compensa"];
     for (const k of mustUnits) {
       if (!courses.offers[k]) console.error("[courses] unidade faltando:", k);
     }
 
-    // 3) Performance (dados grandes)
+    // Perf: simulação 10k
     const t0 = performance.now();
     const big = [];
     const ids = Object.keys(courses.catalog);
     for (let i = 0; i < 10000; i++) {
       big.push({ id: ids[i % ids.length], turnos: ["Matutino", "Noturno"] });
     }
-    // filtra (simula render)
-    const q = "a";
-    const out = big.filter((x) => (courses.catalog[x.id]?.name || "").toLowerCase().includes(q));
+    const out = big.filter((x) => normalizeText(courses.catalog[x.id]?.name).includes("a"));
     const t1 = performance.now();
     console.log("[debug] perf filter 10k:", Math.round(t1 - t0), "ms | hits:", out.length);
   };
@@ -460,6 +530,7 @@ body.onclick = (e) => {
     } catch (err) {
       console.error(err);
       const root = document.getElementById(CONFIG.ROOT_ID);
+      if (!root) return;
       root.textContent = "";
       root.appendChild(el("div", { class: "empty", text: `Erro: ${err.message}` }));
     }
