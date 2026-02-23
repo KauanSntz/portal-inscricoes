@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diário de Estudos | Professor</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="page-header between">
+      <div>
+        <h1>Dashboard do Professor</h1>
+        <p class="muted" id="teacher-greeting"></p>
+      </div>
+      <button id="logout-btn" class="btn" type="button">Sair</button>
+    </header>
+
+    <section class="grid grid-2">
+      <article class="card">
+        <h2>Lista de alunos</h2>
+        <div id="student-list" class="list"></div>
+      </article>
+
+      <article class="card">
+        <h2>Registros do aluno selecionado</h2>
+        <div id="selected-student-logs" class="list">
+          <p class="muted">Selecione um aluno para visualizar os registros.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid grid-2">
+      <article class="card">
+        <h2>Baixa frequência</h2>
+        <p class="muted">Menos de 3 registros nos últimos 7 dias.</p>
+        <div id="low-frequency-list" class="list"></div>
+      </article>
+
+      <article class="card">
+        <h2>Principais dificuldades</h2>
+        <p class="muted">Últimos 20 registros.</p>
+        <div id="recent-difficulties-list" class="list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/guards.js"></script>
+  <script src="./assets/js/professor.js"></script>
+</body>
+</html>

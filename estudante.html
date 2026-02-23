@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diário de Estudos | Estudante</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="page-header between">
+      <div>
+        <h1>Dashboard do Estudante</h1>
+        <p class="muted" id="student-greeting"></p>
+      </div>
+      <button id="logout-btn" class="btn" type="button">Sair</button>
+    </header>
+
+    <section class="card">
+      <div class="action-row">
+        <button id="open-new-log" class="btn btn-primary" type="button">Novo Registro</button>
+        <button id="open-history" class="btn" type="button">Ver Histórico</button>
+      </div>
+    </section>
+
+    <section id="new-log-section" class="card hidden">
+      <h2>Novo Registro</h2>
+      <form id="studylog-form" class="form-grid">
+        <div>
+          <label for="log-date">Data</label>
+          <input id="log-date" type="date" required />
+        </div>
+        <div>
+          <label for="log-discipline">Disciplina</label>
+          <input id="log-discipline" type="text" required />
+        </div>
+        <div>
+          <label for="log-content">Conteúdo estudado</label>
+          <textarea id="log-content" required></textarea>
+        </div>
+        <div>
+          <label for="log-time">Tempo dedicado (minutos)</label>
+          <input id="log-time" type="number" min="1" required />
+        </div>
+        <div>
+          <label for="log-difficulties">Dificuldades encontradas</label>
+          <textarea id="log-difficulties" required></textarea>
+        </div>
+        <div>
+          <label for="log-next-steps">Próximos passos</label>
+          <textarea id="log-next-steps" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <p id="save-feedback" class="feedback"></p>
+      </form>
+    </section>
+
+    <section id="history-section" class="card hidden">
+      <h2>Histórico</h2>
+      <div id="history-list" class="list"></div>
+    </section>
+  </main>
+
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/guards.js"></script>
+  <script src="./assets/js/estudante.js"></script>
+</body>
+</html>

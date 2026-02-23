@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diário de Estudos | Login</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="page-header">
+      <h1>Diário de Estudos</h1>
+      <p class="muted">Organize seus estudos com acompanhamento por perfil.</p>
+    </header>
+
+    <section class="grid grid-2">
+      <article class="card">
+        <h2>Entrar</h2>
+        <form id="login-form" class="form-grid">
+          <div>
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" required />
+          </div>
+          <div>
+            <label for="login-password">Senha</label>
+            <input id="login-password" type="password" required />
+          </div>
+          <button class="btn btn-primary" type="submit">Entrar</button>
+        </form>
+      </article>
+
+      <article class="card">
+        <h2>Cadastrar</h2>
+        <form id="register-form" class="form-grid">
+          <div>
+            <label for="register-name">Nome</label>
+            <input id="register-name" type="text" required />
+          </div>
+          <div>
+            <label for="register-email">Email</label>
+            <input id="register-email" type="email" required />
+          </div>
+          <div>
+            <label for="register-password">Senha</label>
+            <input id="register-password" type="password" required />
+          </div>
+          <div>
+            <label for="register-role">Perfil</label>
+            <select id="register-role" required>
+              <option value="estudante">estudante</option>
+              <option value="professor">professor</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" type="submit">Cadastrar</button>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/guards.js"></script>
+  <script src="./assets/js/login.js"></script>
+</body>
+</html>
