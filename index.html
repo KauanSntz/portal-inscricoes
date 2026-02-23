@@ -3,41 +3,650 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal de Inscrições - Fametro 2026/1</title>
-  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <title>Diário de Estudos</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --panel: #ffffff;
+      --text: #1f1f1f;
+      --muted: #666;
+      --line: #ddd;
+      --accent: #111;
+      --danger: #8b0000;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .container {
+      width: min(960px, 92vw);
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      background: #fff;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    button.danger {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .actions > * {
+      flex: 1 1 160px;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fafafa;
+    }
+
+    .student-button {
+      text-align: left;
+      background: #fff;
+    }
+  </style>
 </head>
-
 <body>
-  <header class="site-header">
-    <h1>Portal de Inscrições – Fametro 2026/1</h1>
-  </header>
+  <main class="container">
+    <h1>Diário de Estudos</h1>
+    <p class="muted">Login/cadastro e dashboards por perfil: Estudante e Professor.</p>
 
-  <<div class="global-search">
-  <button
-    class="btn btn-global-search"
-    type="button"
-    data-action="open-global-search"
-    aria-label="Pesquisar cursos             nas unidades"
-  >
-    Pesquisar cursos nas unidades
-  </button>
-</div>
+    <section id="auth-page" class="grid grid-2">
+      <div class="card">
+        <h2>Entrar</h2>
+        <form id="login-form" class="grid">
+          <div>
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" required />
+          </div>
+          <div>
+            <label for="login-password">Senha</label>
+            <input id="login-password" type="password" required />
+          </div>
+          <button class="primary" type="submit">Entrar</button>
+        </form>
+      </div>
 
+      <div class="card">
+        <h2>Cadastrar</h2>
+        <form id="register-form" class="grid">
+          <div>
+            <label for="register-name">Nome</label>
+            <input id="register-name" type="text" required />
+          </div>
+          <div>
+            <label for="register-email">Email</label>
+            <input id="register-email" type="email" required />
+          </div>
+          <div>
+            <label for="register-password">Senha</label>
+            <input id="register-password" type="password" required />
+          </div>
+          <div>
+            <label for="register-role">Perfil</label>
+            <select id="register-role" required>
+              <option value="estudante">estudante</option>
+              <option value="professor">professor</option>
+            </select>
+          </div>
+          <button class="primary" type="submit">Cadastrar</button>
+        </form>
+      </div>
+    </section>
 
-    </div>
+    <section id="student-page" class="hidden">
+      <div class="card">
+        <h2>Dashboard do Estudante</h2>
+        <p class="muted" id="student-welcome"></p>
+        <div class="actions">
+          <button id="show-new-log" class="primary" type="button">Novo Registro</button>
+          <button id="show-history" type="button">Ver Histórico</button>
+          <button id="student-logout" type="button">Sair</button>
+        </div>
+      </div>
 
-    <!-- ✅ Apenas 1 root -->
-    <div id="app" aria-live="polite"></div>
+      <div id="new-log-section" class="card hidden">
+        <h3>Novo Registro</h3>
+        <form id="studylog-form" class="grid">
+          <div>
+            <label for="log-date">Data</label>
+            <input id="log-date" type="date" required />
+          </div>
+          <div>
+            <label for="log-discipline">Disciplina</label>
+            <input id="log-discipline" type="text" required />
+          </div>
+          <div>
+            <label for="log-content">Conteúdo estudado</label>
+            <textarea id="log-content" required></textarea>
+          </div>
+          <div>
+            <label for="log-time">Tempo dedicado (minutos)</label>
+            <input id="log-time" type="number" min="1" required />
+          </div>
+          <div>
+            <label for="log-difficulties">Dificuldades encontradas</label>
+            <textarea id="log-difficulties" required></textarea>
+          </div>
+          <button class="primary" type="submit">Salvar</button>
+          <div id="save-message" class="message"></div>
+        </form>
+      </div>
+
+      <div id="history-section" class="card hidden">
+        <h3>Histórico</h3>
+        <div id="history-list" class="list"></div>
+      </div>
+    </section>
+
+    <section id="professor-page" class="hidden">
+      <div class="card">
+        <h2>Dashboard do Professor</h2>
+        <p class="muted" id="professor-welcome"></p>
+        <div class="actions">
+          <button id="professor-logout" type="button">Sair</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Lista de alunos</h3>
+        <div id="student-list" class="list"></div>
+      </div>
+
+      <div class="card">
+        <h3>Registros do aluno selecionado</h3>
+        <div id="selected-student-logs" class="list muted">Selecione um aluno para ver os registros.</div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Baixa frequência</h3>
+          <p class="muted">Alunos com menos de 3 registros nos últimos 7 dias.</p>
+          <div id="low-frequency" class="list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Principais dificuldades</h3>
+          <p class="muted">Dificuldades mais recentes (últimos 20 registros).</p>
+          <div id="recent-difficulties" class="list"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <p>© 2026 Nawk & Bentes – Todos os direitos reservados</p>
-  </footer>
+  <script>
+    const DB_KEYS = {
+      users: 'de_users',
+      logs: 'de_logs',
+      session: 'de_session'
+    };
 
-  <!-- Ordem importa (defer mantém a ordem) -->
-  <script defer src="./assets/js/links-data.js"></script>
-  <script defer src="./assets/js/courses-data.js"></script>
-  <script defer src="./assets/js/legacy.js"></script>
-  <script defer src="./assets/js/app.js"></script>
+    const roles = {
+      student: 'estudante',
+      teacher: 'professor'
+    };
+
+    const byId = (id) => document.getElementById(id);
+
+    const state = {
+      currentUser: null,
+      selectedStudentId: null
+    };
+
+    function readDB(key) {
+      return JSON.parse(localStorage.getItem(key) || '[]');
+    }
+
+    function writeDB(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function getUsers() {
+      return readDB(DB_KEYS.users);
+    }
+
+    function setUsers(users) {
+      writeDB(DB_KEYS.users, users);
+    }
+
+    function getLogs() {
+      return readDB(DB_KEYS.logs);
+    }
+
+    function setLogs(logs) {
+      writeDB(DB_KEYS.logs, logs);
+    }
+
+    function getSession() {
+      const raw = localStorage.getItem(DB_KEYS.session);
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    function setSession(userId) {
+      localStorage.setItem(DB_KEYS.session, JSON.stringify({ userId }));
+    }
+
+    function clearSession() {
+      localStorage.removeItem(DB_KEYS.session);
+    }
+
+    function currentUser() {
+      const session = getSession();
+      if (!session) return null;
+      return getUsers().find((u) => u.id === session.userId) || null;
+    }
+
+    function hideAllPages() {
+      byId('auth-page').classList.add('hidden');
+      byId('student-page').classList.add('hidden');
+      byId('professor-page').classList.add('hidden');
+    }
+
+    function navigateProtected(route) {
+      const user = currentUser();
+      if (!user) {
+        showAuthPage();
+        return;
+      }
+
+      if (route === 'student' && user.role !== roles.student) {
+        showProfessorPage(user);
+        return;
+      }
+
+      if (route === 'teacher' && user.role !== roles.teacher) {
+        showStudentPage(user);
+        return;
+      }
+
+      if (route === 'student') showStudentPage(user);
+      if (route === 'teacher') showProfessorPage(user);
+    }
+
+    function showAuthPage() {
+      hideAllPages();
+      byId('auth-page').classList.remove('hidden');
+      state.currentUser = null;
+      state.selectedStudentId = null;
+    }
+
+    function showStudentPage(user) {
+      hideAllPages();
+      byId('student-page').classList.remove('hidden');
+      byId('student-welcome').textContent = `Olá, ${user.name} (${user.role})`;
+      state.currentUser = user;
+      byId('new-log-section').classList.add('hidden');
+      byId('history-section').classList.add('hidden');
+      byId('save-message').textContent = '';
+    }
+
+    function showProfessorPage(user) {
+      hideAllPages();
+      byId('professor-page').classList.remove('hidden');
+      byId('professor-welcome').textContent = `Olá, ${user.name} (${user.role})`;
+      state.currentUser = user;
+      renderProfessorData();
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + 'T00:00:00');
+      return date.toLocaleDateString('pt-BR');
+    }
+
+    function renderStudentHistory() {
+      const user = currentUser();
+      if (!user || user.role !== roles.student) return;
+
+      const list = byId('history-list');
+      const logs = getLogs()
+        .filter((log) => log.studentId === user.id)
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+      if (!logs.length) {
+        list.innerHTML = '<div class="item muted">Sem registros ainda.</div>';
+        return;
+      }
+
+      list.innerHTML = logs.map((log) => `
+        <div class="item">
+          <div class="item-head">
+            <strong>${formatDate(log.date)} - ${log.discipline}</strong>
+            <button class="danger" data-delete-id="${log.id}" type="button">Excluir</button>
+          </div>
+          <div>Tempo: ${log.time_minutes} min</div>
+          <div>Dificuldades: ${log.difficulties}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderProfessorData() {
+      const user = currentUser();
+      if (!user || user.role !== roles.teacher) return;
+
+      const users = getUsers().filter((u) => u.role === roles.student);
+      const logs = getLogs();
+
+      const studentList = byId('student-list');
+      if (!users.length) {
+        studentList.innerHTML = '<div class="item muted">Nenhum aluno cadastrado.</div>';
+      } else {
+        studentList.innerHTML = users.map((student) => `
+          <button class="item student-button" data-student-id="${student.id}" type="button">
+            <strong>${student.name}</strong><br />
+            <span class="muted">${student.email}</span>
+          </button>
+        `).join('');
+      }
+
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      const lowFrequency = users.filter((student) => {
+        const recentCount = logs.filter((log) => {
+          const logDate = new Date(log.date + 'T00:00:00');
+          return log.studentId === student.id && logDate >= sevenDaysAgo;
+        }).length;
+        return recentCount < 3;
+      });
+
+      byId('low-frequency').innerHTML = lowFrequency.length
+        ? lowFrequency.map((s) => `<div class="item"><strong>${s.name}</strong> <span class="pill">baixa frequência</span></div>`).join('')
+        : '<div class="item muted">Nenhum aluno em baixa frequência.</div>';
+
+      const recentDifficulties = logs
+        .slice()
+        .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+        .slice(0, 20)
+        .filter((l) => l.difficulties && l.difficulties.trim());
+
+      byId('recent-difficulties').innerHTML = recentDifficulties.length
+        ? recentDifficulties.map((log) => {
+          const student = users.find((s) => s.id === log.studentId);
+          return `<div class="item"><strong>${student ? student.name : 'Aluno'}</strong>: ${log.difficulties}</div>`;
+        }).join('')
+        : '<div class="item muted">Sem dificuldades registradas.</div>';
+    }
+
+    function renderSelectedStudentLogs(studentId) {
+      const user = currentUser();
+      if (!user || user.role !== roles.teacher) return;
+
+      const students = getUsers().filter((u) => u.role === roles.student);
+      const student = students.find((s) => s.id === studentId);
+      const target = byId('selected-student-logs');
+
+      if (!student) {
+        target.innerHTML = 'Selecione um aluno para ver os registros.';
+        return;
+      }
+
+      const logs = getLogs()
+        .filter((l) => l.studentId === student.id)
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+      if (!logs.length) {
+        target.innerHTML = `<div class="item muted">${student.name} ainda não possui registros.</div>`;
+        return;
+      }
+
+      target.innerHTML = logs.map((log) => `
+        <div class="item">
+          <strong>${formatDate(log.date)} - ${log.discipline}</strong>
+          <div>Tempo: ${log.time_minutes} min</div>
+          <div>Conteúdo: ${log.content}</div>
+          <div>Dificuldades: ${log.difficulties}</div>
+        </div>
+      `).join('');
+    }
+
+    byId('register-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = byId('register-name').value.trim();
+      const email = byId('register-email').value.trim().toLowerCase();
+      const password = byId('register-password').value;
+      const role = byId('register-role').value;
+
+      const users = getUsers();
+      const exists = users.some((u) => u.email === email);
+      if (exists) {
+        alert('Email já cadastrado.');
+        return;
+      }
+
+      users.push({
+        id: crypto.randomUUID(),
+        name,
+        email,
+        password,
+        role
+      });
+      setUsers(users);
+      event.target.reset();
+      alert('Cadastro realizado com sucesso. Agora faça login.');
+    });
+
+    byId('login-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const email = byId('login-email').value.trim().toLowerCase();
+      const password = byId('login-password').value;
+      const user = getUsers().find((u) => u.email === email && u.password === password);
+
+      if (!user) {
+        alert('Credenciais inválidas.');
+        return;
+      }
+
+      setSession(user.id);
+      if (user.role === roles.student) {
+        showStudentPage(user);
+      } else {
+        showProfessorPage(user);
+      }
+    });
+
+    byId('show-new-log').addEventListener('click', () => {
+      navigateProtected('student');
+      byId('new-log-section').classList.remove('hidden');
+    });
+
+    byId('show-history').addEventListener('click', () => {
+      navigateProtected('student');
+      byId('history-section').classList.remove('hidden');
+      renderStudentHistory();
+    });
+
+    byId('studylog-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const user = currentUser();
+      if (!user || user.role !== roles.student) {
+        showAuthPage();
+        return;
+      }
+
+      const logs = getLogs();
+      logs.push({
+        id: crypto.randomUUID(),
+        studentId: user.id,
+        date: byId('log-date').value,
+        discipline: byId('log-discipline').value.trim(),
+        content: byId('log-content').value.trim(),
+        time_minutes: Number(byId('log-time').value),
+        difficulties: byId('log-difficulties').value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      setLogs(logs);
+
+      byId('save-message').textContent = 'Salvo';
+      event.target.reset();
+      renderStudentHistory();
+    });
+
+    byId('history-list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-delete-id]');
+      if (!button) return;
+
+      const user = currentUser();
+      if (!user || user.role !== roles.student) {
+        showAuthPage();
+        return;
+      }
+
+      const logId = button.dataset.deleteId;
+      const logs = getLogs();
+      const log = logs.find((l) => l.id === logId);
+      if (!log || log.studentId !== user.id) {
+        alert('Acesso negado para excluir este registro.');
+        return;
+      }
+
+      setLogs(logs.filter((l) => l.id !== logId));
+      renderStudentHistory();
+    });
+
+    byId('student-list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-student-id]');
+      if (!button) return;
+      const user = currentUser();
+      if (!user || user.role !== roles.teacher) {
+        showAuthPage();
+        return;
+      }
+      state.selectedStudentId = button.dataset.studentId;
+      renderSelectedStudentLogs(state.selectedStudentId);
+    });
+
+    byId('student-logout').addEventListener('click', () => {
+      clearSession();
+      showAuthPage();
+    });
+
+    byId('professor-logout').addEventListener('click', () => {
+      clearSession();
+      showAuthPage();
+    });
+
+    (function init() {
+      const user = currentUser();
+      if (!user) {
+        showAuthPage();
+        return;
+      }
+      if (user.role === roles.student) {
+        showStudentPage(user);
+      } else {
+        showProfessorPage(user);
+      }
+    })();
+  </script>
 </body>
 </html>
