@@ -116,9 +116,23 @@
   };
 
   const unitFromTitleChunk = (title) => {
-    const clean = String(title || "").replace(/^\s*\d+\s*/, "").trim();
-    const parts = clean.split(" - ").map((x) => x.trim()).filter(Boolean);
-    return parts[1] || "";
+    const raw = String(title || "").trim();
+    if (!raw) return "";
+
+    const dashedParts = raw
+      .replace(/^\s*\d+\s*/, "")
+      .split(" - ")
+      .map((x) => x.trim())
+      .filter(Boolean);
+
+    if (dashedParts[1]) return dashedParts[1];
+
+    return raw
+      .replace(/^\s*\d+\s*/i, "")
+      .replace(/^\s*(vestibular|matricula|matrícula)\s+online\s+/i, "")
+      .replace(/^\s*(vestibular|matricula|matrícula)\s+/i, "")
+      .replace(/\s*[-–—]?\s*2026\/1\s*$/i, "")
+      .trim();
   };
 
   // Obrigatório
@@ -127,7 +141,7 @@
       .replace(/[—–]/g, "-")
       .replace(/([a-z])100%/gi, "$1 100%")
       .replace(/bauru\s*\d+[)%(]*/gi, "bauru 100%")
-      .replace(/\b2026\/1\b/gi, "")
+      .replace(/\s*2026\/1\b/gi, "")
       .replace(/[^a-z0-9%\s-]/gi, " ")
       .replace(/\s*[-]\s*$/g, "")
       .replace(/\s+/g, " ")
@@ -520,6 +534,42 @@
 
   const loadRecords = async () => {
     const fallback = fromPortalLinks(window.PORTAL_LINKS);
+    const portalUnitKeys = new Set(fallback.map((r) => r.unitKey));
+
+    const sortRecords = (records) =>
+      records.slice().sort((a, b) => {
+        const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+        const bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+        if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+        return (
+          a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") ||
+          (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) ||
+          (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) ||
+          a.code.localeCompare(b.code, "pt-BR")
+        );
+      });
+
+    const mergePreferPortal = (jsonRecords) => {
+      const seen = new Set();
+      const out = [];
+
+      for (const rec of fallback) {
+        const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|");
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(rec);
+      }
+
+      for (const rec of jsonRecords) {
+        if (portalUnitKeys.has(rec.unitKey)) continue;
+        const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|");
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(rec);
+      }
+
+      return sortRecords(out);
+    };
 
     try {
       const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
@@ -527,8 +577,9 @@
       const payload = await res.json();
       const fromJson = fromDataJson(payload);
       if (fromJson.length) {
-        state.sourceLabel = `JSON bruto (${fromJson.length} registros)`;
-        return fromJson;
+        const merged = mergePreferPortal(fromJson);
+        state.sourceLabel = `JSON + PORTAL_LINKS (preferência para unidades da home, ${merged.length} registros)`;
+        return merged;
       }
     } catch {
       // fallback
