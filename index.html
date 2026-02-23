@@ -6,35 +6,28 @@
   <title>Portal de Inscrições - Fametro 2026/1</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
-
 <body>
-  <header class="site-header">
-    <h1>Portal de Inscrições – Fametro 2026/1</h1>
-  </header>
+  <div class="top-stripe" aria-hidden="true"></div>
 
-  <<div class="global-search">
-  <button
-    class="btn btn-global-search"
-    type="button"
-    data-action="open-global-search"
-    aria-label="Pesquisar cursos             nas unidades"
-  >
-    Pesquisar cursos nas unidades
-  </button>
-</div>
+  <main class="container app-shell theme-blue">
+    <header class="site-header">
+      <h1>Portal de Inscrições — Fametro 2026/1</h1>
+      <p class="site-subtitle">Acesso rápido por unidade e modalidade</p>
+    </header>
 
+    <nav class="app-nav" aria-label="Navegação principal">
+      <a class="btn btn--nav is-active" href="./index.html" aria-current="page">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Central de Links</a>
+      <button class="btn btn--nav" type="button" data-action="open-global-search">Pesquisar cursos</button>
+    </nav>
 
-    </div>
-
-    <!-- ✅ Apenas 1 root -->
     <div id="app" aria-live="polite"></div>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 Nawk & Bentes – Todos os direitos reservados</p>
+    <p>© 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
   </footer>
 
-  <!-- Ordem importa (defer mantém a ordem) -->
   <script defer src="./assets/js/links-data.js"></script>
   <script defer src="./assets/js/courses-data.js"></script>
   <script defer src="./assets/js/legacy.js"></script>
