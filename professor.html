@@ -7,47 +7,46 @@
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
-  <main class="container">
-    <header class="page-header between">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand-icon small"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5C3.5 5.67 4.17 5 5 5h6c1.05 0 2.07.37 2.88 1.03L15 7v11l-.76-.61A4.6 4.6 0 0 0 11.38 16H5a1.5 1.5 0 0 1-1.5-1.5v-8Z" stroke="currentColor" stroke-width="1.8"/><path d="M20.5 6.5c0-.83-.67-1.5-1.5-1.5h-6c-1.05 0-2.07.37-2.88 1.03L9 7v11l.76-.61A4.6 4.6 0 0 1 12.62 16H19a1.5 1.5 0 0 0 1.5-1.5v-8Z" stroke="currentColor" stroke-width="1.8"/></svg></div>
       <div>
-        <h1>Dashboard do Professor</h1>
-        <p class="muted" id="teacher-greeting"></p>
+        <h2>Diário de Estudos</h2>
+        <p id="hello-prof"></p>
       </div>
-      <button id="logout-btn" class="btn" type="button">Sair</button>
-    </header>
+    </div>
+    <button id="logout-btn" class="icon-btn"><svg viewBox="0 0 24 24" fill="none"><path d="M10 16v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2" stroke="currentColor" stroke-width="1.8"/><path d="M15 12H3m0 0 3-3m-3 3 3 3" stroke="currentColor" stroke-width="1.8"/></svg>Sair</button>
+  </header>
 
-    <section class="grid grid-2">
-      <article class="card">
-        <h2>Lista de alunos</h2>
-        <div id="student-list" class="list"></div>
-      </article>
-
-      <article class="card">
-        <h2>Registros do aluno selecionado</h2>
-        <div id="selected-student-logs" class="list">
-          <p class="muted">Selecione um aluno para visualizar os registros.</p>
-        </div>
-      </article>
+  <main class="container">
+    <section class="metrics three">
+      <article class="metric-card"><strong id="m-students">0</strong><span>Alunos</span></article>
+      <article class="metric-card"><strong id="m-logs">0</strong><span>Registros</span></article>
+      <article class="metric-card"><strong id="m-low" class="danger">0</strong><span>Baixa frequência</span></article>
     </section>
 
-    <section class="grid grid-2">
-      <article class="card">
-        <h2>Baixa frequência</h2>
-        <p class="muted">Menos de 3 registros nos últimos 7 dias.</p>
-        <div id="low-frequency-list" class="list"></div>
-      </article>
+    <section class="low-banner">
+      <h3>Baixa Frequência <small>(&lt;3 registros nos últimos 7 dias)</small></h3>
+      <div id="low-chips" class="chips"></div>
+    </section>
 
-      <article class="card">
-        <h2>Principais dificuldades</h2>
-        <p class="muted">Últimos 20 registros.</p>
-        <div id="recent-difficulties-list" class="list"></div>
-      </article>
+    <section>
+      <h3 class="section-title">Alunos</h3>
+      <div id="students-accordion" class="accordion"></div>
+    </section>
+
+    <section>
+      <h3 class="section-title">Dificuldades Recentes</h3>
+      <div id="recent-difficulties" class="history-list"></div>
     </section>
   </main>
+
+  <div id="toast-root"></div>
 
   <script src="./assets/js/storage.js"></script>
   <script src="./assets/js/auth.js"></script>
   <script src="./assets/js/guards.js"></script>
+  <script src="./assets/js/ui.js"></script>
   <script src="./assets/js/professor.js"></script>
 </body>
 </html>

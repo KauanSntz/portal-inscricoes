@@ -1,11 +1,7 @@
 (function () {
-  function redirectByRole(role) {
-    if (role === 'estudante') {
-      window.location.href = './estudante.html';
-      return;
-    }
-    window.location.href = './professor.html';
-  }
+  const redirectToRoleHome = (role) => {
+    window.location.href = role === Auth.roles.professor ? './professor.html' : './estudante.html';
+  };
 
   function requireAuth() {
     const user = Auth.getCurrentUser();
@@ -16,36 +12,30 @@
     return user;
   }
 
-  function guardLoginPage() {
+  function guardLoginLikePage() {
     const user = Auth.getCurrentUser();
-    if (user) redirectByRole(user.role);
+    if (user) redirectToRoleHome(user.role);
   }
 
   function guardStudentPage() {
     const user = requireAuth();
     if (!user) return null;
-    if (user.role !== 'estudante') {
-      redirectByRole(user.role);
+    if (user.role !== Auth.roles.estudante) {
+      redirectToRoleHome(user.role);
       return null;
     }
     return user;
   }
 
-  function guardTeacherPage() {
+  function guardProfessorPage() {
     const user = requireAuth();
     if (!user) return null;
-    if (user.role !== 'professor') {
-      redirectByRole(user.role);
+    if (user.role !== Auth.roles.professor) {
+      redirectToRoleHome(user.role);
       return null;
     }
     return user;
   }
 
-  window.Guards = {
-    redirectByRole,
-    requireAuth,
-    guardLoginPage,
-    guardStudentPage,
-    guardTeacherPage
-  };
+  window.Guards = { redirectToRoleHome, requireAuth, guardLoginLikePage, guardStudentPage, guardProfessorPage };
 })();

@@ -1,55 +1,30 @@
 (function () {
-  function findUserByEmail(email) {
-    return StorageDB.getUsers().find((user) => user.email === email.toLowerCase()) || null;
-  }
+  const roles = { estudante: 'estudante', professor: 'professor' };
 
-  function getCurrentUser() {
-    const session = StorageDB.getSession();
-    if (!session || !session.userId) return null;
-    return StorageDB.getUsers().find((u) => u.id === session.userId) || null;
-  }
+  const normalizeEmail = (email) => email.trim().toLowerCase();
+  const getCurrentUser = () => {
+    const session = DB.getSession();
+    if (!session?.userId) return null;
+    return DB.getUsers().find((u) => u.id === session.userId) || null;
+  };
 
-  function registerUser(payload) {
-    const name = payload.name.trim();
-    const email = payload.email.trim().toLowerCase();
-    const password = payload.password;
-    const role = payload.role;
-
-    if (!name || !email || !password || !role) {
-      return { ok: false, message: 'Preencha todos os campos.' };
-    }
-
-    if (findUserByEmail(email)) {
-      return { ok: false, message: 'Email já cadastrado.' };
-    }
-
-    const users = StorageDB.getUsers();
-    users.push({ id: StorageDB.uid(), name, email, password, role });
-    StorageDB.saveUsers(users);
+  function register({ name, email, password, role }) {
+    if (!name?.trim() || !email?.trim() || !password?.trim() || !role) return { ok: false, message: 'Preencha todos os campos.' };
+    const users = DB.getUsers();
+    if (users.some((u) => u.email === normalizeEmail(email))) return { ok: false, message: 'Email já cadastrado.' };
+    users.push({ id: DB.uid(), name: name.trim(), email: normalizeEmail(email), password: password.trim(), role });
+    DB.setUsers(users);
     return { ok: true };
   }
 
-  function login(email, password) {
-    const user = StorageDB.getUsers().find(
-      (u) => u.email === email.trim().toLowerCase() && u.password === password
-    );
-
-    if (!user) {
-      return { ok: false, message: 'Credenciais inválidas.' };
-    }
-
-    StorageDB.saveSession({ userId: user.id });
+  function login({ email, password }) {
+    const user = DB.getUsers().find((u) => u.email === normalizeEmail(email) && u.password === password);
+    if (!user) return { ok: false, message: 'Credenciais inválidas.' };
+    DB.setSession({ userId: user.id });
     return { ok: true, user };
   }
 
-  function logout() {
-    StorageDB.clearSession();
-  }
+  function logout() { DB.clearSession(); }
 
-  window.Auth = {
-    getCurrentUser,
-    registerUser,
-    login,
-    logout
-  };
+  window.Auth = { roles, getCurrentUser, register, login, logout };
 })();

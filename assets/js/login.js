@@ -1,40 +1,17 @@
 (function () {
-  StorageDB.seedDemoData();
-  Guards.guardLoginPage();
+  DB.seed();
+  Guards.guardLoginLikePage();
 
-  const loginForm = document.getElementById('login-form');
-  const registerForm = document.getElementById('register-form');
-
-  registerForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const result = Auth.registerUser({
-      name: document.getElementById('register-name').value,
-      email: document.getElementById('register-email').value,
-      password: document.getElementById('register-password').value,
-      role: document.getElementById('register-role').value
+  document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const result = Auth.login({
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
     });
-
     if (!result.ok) {
-      alert(result.message);
+      UI.toast(result.message);
       return;
     }
-
-    registerForm.reset();
-    alert('Cadastro realizado com sucesso.');
-  });
-
-  loginForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const result = Auth.login(
-      document.getElementById('login-email').value,
-      document.getElementById('login-password').value
-    );
-
-    if (!result.ok) {
-      alert(result.message);
-      return;
-    }
-
-    Guards.redirectByRole(result.user.role);
+    Guards.redirectToRoleHome(result.user.role);
   });
 })();

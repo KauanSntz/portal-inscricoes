@@ -1,111 +1,99 @@
 (function () {
-  StorageDB.seedDemoData();
+  DB.seed();
   const currentUser = Guards.guardStudentPage();
   if (!currentUser) return;
 
-  const greeting = document.getElementById('student-greeting');
-  const newLogSection = document.getElementById('new-log-section');
-  const historySection = document.getElementById('history-section');
+  const helloEl = document.getElementById('hello-user');
+  const metricCount = document.getElementById('metric-count');
+  const metricTime = document.getElementById('metric-time');
   const historyList = document.getElementById('history-list');
-  const feedback = document.getElementById('save-feedback');
+  const modal = document.getElementById('studylog-modal');
   const form = document.getElementById('studylog-form');
 
-  greeting.textContent = `Olá, ${currentUser.name} (estudante)`;
+  helloEl.textContent = `Olá, ${currentUser.name}`;
 
-  function formatDate(value) {
-    const date = new Date(`${value}T00:00:00`);
-    return date.toLocaleDateString('pt-BR');
+  const ownLogs = () => DB.getStudyLogs().filter((l) => l.studentId === currentUser.id).sort((a, b) => b.date.localeCompare(a.date));
+
+  function renderMetrics(logs) {
+    metricCount.textContent = String(logs.length);
+    const total = logs.reduce((acc, log) => acc + Number(log.time_minutes || 0), 0);
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    metricTime.textContent = `${h}h${m}m`;
+  }
+
+  function emptyCard() {
+    return `<article class="log-card empty-card"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5C3.5 5.67 4.17 5 5 5h6c1.05 0 2.07.37 2.88 1.03L15 7v11l-.76-.61A4.6 4.6 0 0 0 11.38 16H5a1.5 1.5 0 0 1-1.5-1.5v-8Z" stroke="currentColor" stroke-width="1.8"/><path d="M20.5 6.5c0-.83-.67-1.5-1.5-1.5h-6c-1.05 0-2.07.37-2.88 1.03L9 7v11l.76-.61A4.6 4.6 0 0 1 12.62 16H19a1.5 1.5 0 0 0 1.5-1.5v-8Z" stroke="currentColor" stroke-width="1.8"/></svg><p>Nenhum registro ainda. Comece a estudar!</p></article>`;
   }
 
   function renderHistory() {
-    const logs = StorageDB.getStudyLogs()
-      .filter((log) => log.studentId === currentUser.id)
-      .sort((a, b) => b.date.localeCompare(a.date));
+    const logs = ownLogs();
+    renderMetrics(logs);
 
     if (!logs.length) {
-      historyList.innerHTML = '<div class="list-item"><p class="muted">Sem registros ainda.</p></div>';
+      historyList.innerHTML = emptyCard();
       return;
     }
 
-    historyList.innerHTML = logs
-      .map(
-        (log) => `
-      <div class="list-item">
-        <div class="item-header">
-          <strong>${formatDate(log.date)} · ${log.discipline}</strong>
-          <button class="btn btn-danger" data-delete-id="${log.id}" type="button">Excluir</button>
+    historyList.innerHTML = logs.map((log) => `
+      <article class="log-card">
+        <div class="log-top">
+          <span class="pill">${log.discipline}</span>
+          <span>${UI.fmtDateLong(log.date)}</span>
+          <span>${log.time_minutes}min</span>
+          <button class="delete-btn" type="button" data-del="${log.id}"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6m4-6v6M7 7l1 13h8l1-13M9 7l1-2h4l1 2" stroke="currentColor" stroke-width="1.8"/></svg></button>
         </div>
-        <div>Tempo: ${log.time_minutes} min</div>
-        <div>Dificuldades: ${log.difficulties}</div>
-        <div>Próximos passos: ${log.next_steps}</div>
-      </div>`
-      )
-      .join('');
+        <p class="log-content">${log.content}</p>
+        <p class="log-difficulty">Dificuldade: ${log.difficulties}</p>
+      </article>
+    `).join('');
   }
 
-  document.getElementById('open-new-log').addEventListener('click', function () {
-    newLogSection.classList.remove('hidden');
-  });
+  document.getElementById('logout-btn').addEventListener('click', () => { Auth.logout(); window.location.href = './login.html'; });
+  document.getElementById('open-modal').addEventListener('click', () => modal.classList.remove('hidden'));
+  document.getElementById('close-modal').addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
 
-  document.getElementById('open-history').addEventListener('click', function () {
-    historySection.classList.remove('hidden');
-    renderHistory();
-  });
-
-  document.getElementById('logout-btn').addEventListener('click', function () {
-    Auth.logout();
-    window.location.href = './login.html';
-  });
-
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
     const payload = {
-      id: StorageDB.uid(),
+      id: DB.uid(),
       studentId: currentUser.id,
       date: document.getElementById('log-date').value,
       discipline: document.getElementById('log-discipline').value.trim(),
       content: document.getElementById('log-content').value.trim(),
       time_minutes: Number(document.getElementById('log-time').value),
-      difficulties: document.getElementById('log-difficulties').value.trim(),
-      next_steps: document.getElementById('log-next-steps').value.trim()
+      difficulties: document.getElementById('log-difficulties').value.trim()
     };
 
-    if (
-      !payload.date ||
-      !payload.discipline ||
-      !payload.content ||
-      !payload.time_minutes ||
-      !payload.difficulties ||
-      !payload.next_steps
-    ) {
-      feedback.textContent = 'Preencha todos os campos.';
+    if (!payload.date || !payload.discipline || !payload.content || !payload.time_minutes || !payload.difficulties) {
+      UI.toast('Preencha todos os campos.');
       return;
     }
 
-    const logs = StorageDB.getStudyLogs();
+    const logs = DB.getStudyLogs();
     logs.push(payload);
-    StorageDB.saveStudyLogs(logs);
-
-    feedback.textContent = 'Salvo';
+    DB.setStudyLogs(logs);
     form.reset();
+    modal.classList.add('hidden');
+    UI.toast('Registro salvo!');
     renderHistory();
   });
 
-  historyList.addEventListener('click', function (event) {
-    const button = event.target.closest('[data-delete-id]');
-    if (!button) return;
-
-    const logId = button.dataset.deleteId;
-    const logs = StorageDB.getStudyLogs();
-    const target = logs.find((log) => log.id === logId);
-
+  historyList.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-del]');
+    if (!btn) return;
+    const logId = btn.dataset.del;
+    const logs = DB.getStudyLogs();
+    const target = logs.find((l) => l.id === logId);
     if (!target || target.studentId !== currentUser.id) {
-      alert('Você só pode excluir seus próprios registros.');
+      UI.toast('Acesso negado.');
       return;
     }
-
-    StorageDB.saveStudyLogs(logs.filter((log) => log.id !== logId));
+    DB.setStudyLogs(logs.filter((l) => l.id !== logId));
     renderHistory();
+    UI.toast('Registro excluído.');
   });
+
+  renderHistory();
 })();

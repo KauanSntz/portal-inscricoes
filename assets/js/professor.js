@@ -1,146 +1,94 @@
 (function () {
-  StorageDB.seedDemoData();
-  const currentUser = Guards.guardTeacherPage();
+  DB.seed();
+  const currentUser = Guards.guardProfessorPage();
   if (!currentUser) return;
 
-  document.getElementById('teacher-greeting').textContent = `Olá, ${currentUser.name} (professor)`;
+  document.getElementById('hello-prof').textContent = `Prof. ${currentUser.name}`;
 
-  const studentList = document.getElementById('student-list');
-  const selectedStudentLogs = document.getElementById('selected-student-logs');
-  const lowFrequencyList = document.getElementById('low-frequency-list');
-  const recentDifficultiesList = document.getElementById('recent-difficulties-list');
+  const mStudents = document.getElementById('m-students');
+  const mLogs = document.getElementById('m-logs');
+  const mLow = document.getElementById('m-low');
+  const lowChips = document.getElementById('low-chips');
+  const accordion = document.getElementById('students-accordion');
+  const recentEl = document.getElementById('recent-difficulties');
 
-  function formatDate(value) {
-    const date = new Date(`${value}T00:00:00`);
-    return date.toLocaleDateString('pt-BR');
-  }
-
-  function getStudents() {
-    return StorageDB.getUsers().filter((user) => user.role === 'estudante');
-  }
-
-  function getLogsByStudent(studentId) {
-    return StorageDB.getStudyLogs()
-      .filter((log) => log.studentId === studentId)
-      .sort((a, b) => b.date.localeCompare(a.date));
-  }
-
-  function renderStudents() {
-    const students = getStudents();
-    if (!students.length) {
-      studentList.innerHTML = '<div class="list-item"><p class="muted">Sem alunos cadastrados.</p></div>';
-      return;
-    }
-
-    studentList.innerHTML = students
-      .map(
-        (student) => `
-      <button class="btn list-item student-trigger" data-student-id="${student.id}" type="button">
-        <strong>${student.name}</strong><br>
-        <span class="muted">${student.email}</span>
-      </button>`
-      )
-      .join('');
-  }
-
-  function renderStudentLogs(studentId) {
-    const students = getStudents();
-    const student = students.find((item) => item.id === studentId);
-    if (!student) {
-      selectedStudentLogs.innerHTML = '<p class="muted">Aluno não encontrado.</p>';
-      return;
-    }
-
-    const logs = getLogsByStudent(student.id);
-    if (!logs.length) {
-      selectedStudentLogs.innerHTML = `<div class="list-item"><p class="muted">${student.name} ainda não possui registros.</p></div>`;
-      return;
-    }
-
-    selectedStudentLogs.innerHTML = logs
-      .map(
-        (log) => `
-      <div class="list-item">
-        <strong>${formatDate(log.date)} · ${log.discipline}</strong>
-        <div>Tempo: ${log.time_minutes} min</div>
-        <div>Conteúdo: ${log.content}</div>
-        <div>Dificuldades: ${log.difficulties}</div>
-        <div>Próximos passos: ${log.next_steps}</div>
-      </div>`
-      )
-      .join('');
-  }
-
-  function renderLowFrequency() {
-    const students = getStudents();
-    const logs = StorageDB.getStudyLogs();
+  const students = () => DB.getUsers().filter((u) => u.role === 'estudante');
+  const logs = () => DB.getStudyLogs();
+  const logsByStudent = (id) => logs().filter((l) => l.studentId === id).sort((a, b) => b.date.localeCompare(a.date));
+  const countLast7Days = (studentId) => {
     const start = new Date();
     start.setDate(start.getDate() - 7);
+    return logs().filter((l) => l.studentId === studentId && new Date(`${l.date}T00:00:00`) >= start).length;
+  };
 
-    const flagged = students.filter((student) => {
-      const count = logs.filter((log) => {
-        const when = new Date(`${log.date}T00:00:00`);
-        return log.studentId === student.id && when >= start;
-      }).length;
-      return count < 3;
-    });
+  function renderMetrics() {
+    const s = students();
+    const allLogs = logs();
+    const low = s.filter((stu) => countLast7Days(stu.id) < 3);
+    mStudents.textContent = s.length;
+    mLogs.textContent = allLogs.length;
+    mLow.textContent = low.length;
 
-    if (!flagged.length) {
-      lowFrequencyList.innerHTML = '<div class="list-item"><p class="muted">Nenhum aluno em baixa frequência.</p></div>';
+    if (!low.length) {
+      lowChips.innerHTML = '<span class="chip">Nenhum aluno</span>';
+    } else {
+      lowChips.innerHTML = low.map((stu) => `<span class="chip">${stu.name} (${countLast7Days(stu.id)})</span>`).join('');
+    }
+  }
+
+  function renderAccordion() {
+    const s = students();
+    if (!s.length) {
+      accordion.innerHTML = '<article class="log-card">Sem alunos cadastrados.</article>';
       return;
     }
 
-    lowFrequencyList.innerHTML = flagged
-      .map(
-        (student) => `
-      <div class="list-item">
-        <strong>${student.name}</strong>
-        <span class="pill">baixa frequência</span>
-      </div>`
-      )
-      .join('');
+    accordion.innerHTML = s.map((stu) => {
+      const list = logsByStudent(stu.id);
+      const renderedLogs = list.length
+        ? list.map((log) => `<article class="log-card"><div class="log-top"><span class="pill">${log.discipline}</span><span>${UI.fmtDateLong(log.date)}</span><span>${log.time_minutes}min</span></div><p class="log-content">${log.content}</p><p class="log-difficulty">${log.difficulties}</p></article>`).join('')
+        : '<article class="log-card">Sem registros.</article>';
+      return `
+        <article class="accordion-item" data-acc="${stu.id}">
+          <div class="acc-head">
+            <div class="acc-left">
+              <span class="avatar">${stu.name.charAt(0).toUpperCase()}</span>
+              <div>
+                <div class="acc-name">${stu.name}</div>
+                <div class="acc-sub">${list.length} registros</div>
+              </div>
+            </div>
+            <span>⌄</span>
+          </div>
+          <div class="acc-body">${renderedLogs}</div>
+        </article>
+      `;
+    }).join('');
   }
 
   function renderRecentDifficulties() {
-    const students = getStudents();
-    const studentById = Object.fromEntries(students.map((s) => [s.id, s.name]));
-    const logs = StorageDB.getStudyLogs()
-      .slice()
-      .sort((a, b) => {
-        const ad = `${a.date} ${a.id}`;
-        const bd = `${b.date} ${b.id}`;
-        return bd.localeCompare(ad);
-      })
-      .slice(0, 20)
-      .filter((log) => log.difficulties && log.difficulties.trim());
-
-    if (!logs.length) {
-      recentDifficultiesList.innerHTML = '<div class="list-item"><p class="muted">Sem dificuldades registradas.</p></div>';
+    const mapNames = Object.fromEntries(students().map((s) => [s.id, s.name]));
+    const recent = logs().slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 20);
+    if (!recent.length) {
+      recentEl.innerHTML = '<article class="log-card">Sem dificuldades recentes.</article>';
       return;
     }
-
-    recentDifficultiesList.innerHTML = logs
-      .map(
-        (log) => `
-      <div class="list-item">
-        <strong>${studentById[log.studentId] || 'Aluno'}</strong>: ${log.difficulties}
-      </div>`
-      )
-      .join('');
+    recentEl.innerHTML = recent.map((log) => `
+      <article class="log-card">
+        <div class="log-top">${mapNames[log.studentId] || 'Aluno'} • ${log.discipline} • ${UI.fmtDateShort(log.date)}</div>
+        <p class="log-content">${log.difficulties}</p>
+      </article>
+    `).join('');
   }
 
-  document.getElementById('logout-btn').addEventListener('click', function () {
-    Auth.logout();
-    window.location.href = './login.html';
+  document.getElementById('logout-btn').addEventListener('click', () => { Auth.logout(); window.location.href = './login.html'; });
+  accordion.addEventListener('click', (e) => {
+    const head = e.target.closest('.acc-head');
+    if (!head) return;
+    head.parentElement.classList.toggle('open');
   });
 
-  studentList.addEventListener('click', function (event) {
-    const button = event.target.closest('[data-student-id]');
-    if (!button) return;
-    renderStudentLogs(button.dataset.studentId);
-  });
-
-  renderStudents();
-  renderLowFrequency();
+  renderMetrics();
+  renderAccordion();
   renderRecentDifficulties();
 })();
