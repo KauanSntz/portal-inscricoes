@@ -187,6 +187,12 @@ select:focus-visible,
   flex-wrap: wrap;
 }
 
+.unit-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .unit-title {
   margin: 0;
   font-size: clamp(1.15rem, 2.2vw, 1.55rem);
@@ -480,6 +486,50 @@ select {
 .result-unit {
   font-weight: 700;
   color: var(--accent);
+}
+
+.prices-modal .modal-body {
+  gap: 0.85rem;
+}
+
+.prices-filter-row {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.prices-filter-title {
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.prices-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.price-card {
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.price-card__title {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+.price-line {
+  margin: 0;
+  color: color-mix(in srgb, var(--accent) 82%, #ffffff);
+}
+
+.price-copy-btn {
+  justify-self: end;
+  margin-top: 0.3rem;
 }
 
 /* Central links */

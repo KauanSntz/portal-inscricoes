@@ -29,6 +29,7 @@
 
     // limite de cursos no modal global
     GLOBAL_LIMIT: 20,
+    PRICES_DATA_PATH: "./assets/data/course_prices_2026_1.json",
 
     DEBUG: new URLSearchParams(location.search).has("debug"),
   });
@@ -67,6 +68,9 @@
       timer = setTimeout(() => fn(...args), ms);
     };
   };
+
+  const moneyFmt = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  const formatCents = (cents) => moneyFmt.format((Number(cents) || 0) / 100);
 
   const safeExternalUrl = (href) => {
     try {
@@ -108,6 +112,36 @@
     const hash = Array.from(key).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
     return hash % 2 === 0 ? "blue" : "red";
   };
+
+  const PRICE_UNIT_OPTIONS = Object.freeze([
+    { key: "manaus", label: "Manaus" },
+    { key: "compensa", label: "Compensa" },
+    { key: "para", label: "Pará" },
+    { key: "polos_proprios", label: "Polos Próprios" },
+  ]);
+
+  const PRICE_MODALITY_OPTIONS = Object.freeze([
+    { key: "presencial", label: "Presencial" },
+    { key: "semipresencial", label: "Semipresencial" },
+    { key: "ead", label: "EAD" },
+    { key: "hibrido", label: "Híbrido" },
+  ]);
+
+  const PRICE_PLAN_OPTIONS = Object.freeze([
+    { key: "enem_vestibular", label: "ENEM/Vestibular" },
+    { key: "transfer_portador", label: "Portador/Transferência" },
+  ]);
+
+  const PRICE_UNIT_BY_PORTAL = Object.freeze({
+    sede: "manaus",
+    compensa: "compensa",
+    oeste: "compensa",
+    leste: "para",
+    sul: "para",
+    norte: "polos_proprios",
+  });
+
+  const resolvePriceUnitKey = (portalUnitKey) => PRICE_UNIT_BY_PORTAL[norm(portalUnitKey)] || "manaus";
 
   // -----------------------------
 // Scroll lock (impede scroll do fundo com modal aberto)
@@ -287,8 +321,7 @@ const scrollLock = (() => {
 
     applyUnitTheme(unitCard, toneClass);
 
-    const head = el("div", { class: "unit-head" }, [
-      el("h2", { class: "unit-title", text: unit.title }),
+    const headActions = el("div", { class: "unit-actions" }, [
       el(
         "button",
         {
@@ -301,7 +334,21 @@ const scrollLock = (() => {
         },
         [el("span", { text: "Pesquisar cursos" })]
       ),
+      el(
+        "button",
+        {
+          class: "btn btn-courses",
+          type: "button",
+          "data-action": "open-prices",
+          "data-unit": unit.coursesKey,
+          "data-title": unit.title,
+          "data-theme": toneClass,
+        },
+        [el("span", { text: "Pesquisar preços" })]
+      ),
     ]);
+
+    const head = el("div", { class: "unit-head" }, [el("h2", { class: "unit-title", text: unit.title }), headActions]);
 
     unitCard.appendChild(head);
 
@@ -878,6 +925,309 @@ const globalModal = (() => {
   return { open, close };
 })();
 
+  // -----------------------------
+  // Prices data loader (1x)
+  // -----------------------------
+  let pricesDataPromise = null;
+
+  const loadPricesOnce = async () => {
+    if (!pricesDataPromise) {
+      pricesDataPromise = fetch(CONFIG.PRICES_DATA_PATH, { cache: "no-store" })
+        .then((res) => {
+          if (!res.ok) throw new Error("Falha ao carregar tabela de preços");
+          return res.json();
+        })
+        .then((payload) => ({
+          ...payload,
+          records: Array.isArray(payload?.records) ? payload.records : [],
+        }));
+    }
+    return pricesDataPromise;
+  };
+
+  const copyText = async (text) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch {
+      // fallback below
+    }
+
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    return ok;
+  };
+
+  const pricesModal = (() => {
+    let overlay, titleEl, inputEl, unitSelectEl, modChipsEl, planChipsEl, listEl, emptyEl;
+    let isOpen = false;
+    let lastFocus = null;
+
+    const state = {
+      unitKey: "manaus",
+      modalityKey: "presencial",
+      planKey: "enem_vestibular",
+      query: "",
+      unitLabel: "Manaus",
+      themeClass: "blue",
+      recordsView: [],
+      data: null,
+    };
+
+    const filteredRecords = () => {
+      const source = state.data?.records || [];
+      const scoped = source.filter((r) =>
+        r.modalityKey === state.modalityKey &&
+        r.planKey === state.planKey &&
+        (r.unitKey === state.unitKey || r.unitKey === "__all__")
+      );
+
+      const byCourse = new Map();
+      for (const rec of scoped) {
+        const current = byCourse.get(rec.courseId);
+        if (!current) {
+          byCourse.set(rec.courseId, rec);
+          continue;
+        }
+        if (current.unitKey === "__all__" && rec.unitKey === state.unitKey) {
+          byCourse.set(rec.courseId, rec);
+        }
+      }
+
+      const q = norm(state.query);
+      return Array.from(byCourse.values())
+        .filter((r) => !q || norm(r.courseName).includes(q) || norm(r.courseId).includes(q))
+        .sort((a, b) => String(a.courseName || "").localeCompare(String(b.courseName || ""), "pt-BR"));
+    };
+
+    const buildCopyMessage = (rec) => {
+      const modalityLabel = PRICE_MODALITY_OPTIONS.find((m) => m.key === rec.modalityKey)?.label || rec.modalityKey;
+      const planLabel = PRICE_PLAN_OPTIONS.find((p) => p.key === rec.planKey)?.label || rec.planKey;
+      const p10 = rec.bolsaPontualidadeCents?.p10;
+
+      return [
+        `🎓 ${rec.courseName} — ${modalityLabel} (${planLabel})`,
+        `Curso de ${rec.courseName} – Modalidade ${modalityLabel} (${state.unitLabel})`,
+        `Valor integral: ${formatCents(rec.integralCents)}`,
+        `Com bolsa de estudos: ${formatCents(rec.bolsaCents)} (mensalidade)`,
+        `Valor com 10% de desconto pontualidade: ${formatCents(p10)}`,
+      ].join("\n");
+    };
+
+    const renderModalityChips = () => {
+      modChipsEl.textContent = "";
+      for (const item of PRICE_MODALITY_OPTIONS) {
+        modChipsEl.appendChild(el("button", {
+          class: `chip${item.key === state.modalityKey ? " is-active" : ""}`,
+          type: "button",
+          "data-action": "set-price-modality",
+          "data-key": item.key,
+          text: item.label,
+        }));
+      }
+    };
+
+    const renderPlanChips = () => {
+      planChipsEl.textContent = "";
+      for (const item of PRICE_PLAN_OPTIONS) {
+        planChipsEl.appendChild(el("button", {
+          class: `chip${item.key === state.planKey ? " is-active" : ""}`,
+          type: "button",
+          "data-action": "set-price-plan",
+          "data-key": item.key,
+          text: item.label,
+        }));
+      }
+    };
+
+    const renderList = () => {
+      listEl.textContent = "";
+      const records = filteredRecords();
+      state.recordsView = records;
+
+      if (!records.length) {
+        emptyEl.style.display = "block";
+        emptyEl.textContent = "Nenhum preço encontrado";
+        return;
+      }
+
+      emptyEl.style.display = "none";
+
+      for (const rec of records) {
+        const p10 = rec.bolsaPontualidadeCents?.p10;
+        if (!Number.isFinite(Number(rec.integralCents)) || !Number.isFinite(Number(rec.bolsaCents)) || !Number.isFinite(Number(p10))) continue;
+
+        const card = el("article", { class: "price-card" });
+        card.appendChild(el("h4", { class: "price-card__title", text: rec.courseName }));
+        card.appendChild(el("p", { class: "price-line", text: `Integral: ${formatCents(rec.integralCents)}` }));
+        card.appendChild(el("p", { class: "price-line", text: `Com bolsa: ${formatCents(rec.bolsaCents)} (mensalidade)` }));
+        card.appendChild(el("p", { class: "price-line", text: `Com pontualidade: ${formatCents(p10)}` }));
+
+        const copyBtn = el("button", {
+          class: "btn btn--accent price-copy-btn",
+          type: "button",
+          "data-action": "copy-price-msg",
+          "data-course-id": rec.courseId,
+          text: "Copiar mensagem",
+        });
+
+        card.appendChild(copyBtn);
+        listEl.appendChild(card);
+      }
+    };
+
+    const ensure = () => {
+      if (overlay) return overlay;
+
+      overlay = el("div", { class: "modal-overlay", role: "dialog", "aria-modal": "true" });
+      applyUnitTheme(overlay, "blue");
+      const dialog = el("div", { class: "modal prices-modal" });
+
+      const head = el("div", { class: "modal-head" }, [
+        (titleEl = el("div", { class: "modal-title" })),
+        el("button", { class: "modal-close", type: "button", "data-action": "close-prices-modal", "aria-label": "Fechar" }, [
+          el("span", { text: "×" }),
+        ]),
+      ]);
+
+      const body = el("div", { class: "modal-body" });
+      inputEl = el("input", { class: "search-input", type: "search", placeholder: "Pesquisar curso..." });
+      inputEl.addEventListener("input", debounce(() => {
+        state.query = inputEl.value || "";
+        renderList();
+      }, 150));
+
+      const unitRow = el("div", { class: "prices-filter-row" }, [
+        el("label", { class: "field" }, [
+          el("span", { text: "Unidade" }),
+          (unitSelectEl = el("select", { "aria-label": "Filtrar unidade" })),
+        ]),
+      ]);
+
+      const modWrap = el("div", { class: "prices-filter-row" }, [
+        el("strong", { class: "prices-filter-title", text: "Modalidade" }),
+        (modChipsEl = el("div", { class: "chips" })),
+      ]);
+
+      const planWrap = el("div", { class: "prices-filter-row" }, [
+        el("strong", { class: "prices-filter-title", text: "Ingresso/Plano" }),
+        (planChipsEl = el("div", { class: "chips" })),
+      ]);
+
+      listEl = el("div", { class: "prices-list" });
+      emptyEl = el("div", { class: "empty" });
+
+      body.appendChild(inputEl);
+      body.appendChild(unitRow);
+      body.appendChild(modWrap);
+      body.appendChild(planWrap);
+      body.appendChild(listEl);
+      body.appendChild(emptyEl);
+
+      dialog.appendChild(head);
+      dialog.appendChild(body);
+      overlay.appendChild(dialog);
+
+      overlay.addEventListener("click", async (e) => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) {
+          if (e.target === overlay) close();
+          return;
+        }
+
+        const action = btn.dataset.action;
+        if (action === "close-prices-modal") {
+          close();
+          return;
+        }
+        if (action === "set-price-modality") {
+          state.modalityKey = btn.dataset.key || state.modalityKey;
+          renderModalityChips();
+          renderList();
+          return;
+        }
+        if (action === "set-price-plan") {
+          state.planKey = btn.dataset.key || state.planKey;
+          renderPlanChips();
+          renderList();
+          return;
+        }
+        if (action === "copy-price-msg") {
+          const rec = state.recordsView.find((r) => r.courseId === btn.dataset.courseId);
+          if (!rec) return;
+          const copied = await copyText(buildCopyMessage(rec));
+          if (copied) {
+            const old = btn.textContent;
+            btn.textContent = "Copiado!";
+            setTimeout(() => (btn.textContent = old), 1000);
+          }
+        }
+      });
+
+      unitSelectEl.addEventListener("change", () => {
+        state.unitKey = unitSelectEl.value;
+        state.unitLabel = PRICE_UNIT_OPTIONS.find((u) => u.key === state.unitKey)?.label || "Manaus";
+        renderList();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!isOpen) return;
+        if (e.key === "Escape") close();
+      });
+
+      document.body.appendChild(overlay);
+      return overlay;
+    };
+
+    const open = async ({ unitKey, unitTitle, theme }) => {
+      lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      ensure();
+      scrollLock.lock();
+
+      state.data = await loadPricesOnce();
+      state.unitKey = resolvePriceUnitKey(unitKey);
+      state.unitLabel = PRICE_UNIT_OPTIONS.find((u) => u.key === state.unitKey)?.label || "Manaus";
+      state.themeClass = theme || "blue";
+      state.modalityKey = "presencial";
+      state.planKey = "enem_vestibular";
+      state.query = "";
+
+      overlay.className = "modal-overlay is-open";
+      applyUnitTheme(overlay, state.themeClass);
+
+      titleEl.textContent = `Preços disponíveis — ${unitTitle}`;
+
+      unitSelectEl.textContent = "";
+      for (const opt of PRICE_UNIT_OPTIONS) unitSelectEl.appendChild(new Option(opt.label, opt.key));
+      unitSelectEl.value = state.unitKey;
+
+      inputEl.value = "";
+      renderModalityChips();
+      renderPlanChips();
+      renderList();
+      isOpen = true;
+    };
+
+    const close = () => {
+      if (!overlay || !isOpen) return;
+      isOpen = false;
+      overlay.classList.remove("is-open");
+      scrollLock.unlock();
+      if (lastFocus) lastFocus.focus();
+    };
+
+    return { open, close };
+  })();
+
 
   // -----------------------------
   // Scroll to unit
@@ -908,6 +1258,15 @@ const globalModal = (() => {
 
       if (action === "open-courses") {
         unitModal.open({
+          unitKey: btn.dataset.unit,
+          unitTitle: btn.dataset.title,
+          theme: btn.dataset.theme,
+        });
+        return;
+      }
+
+      if (action === "open-prices") {
+        pricesModal.open({
           unitKey: btn.dataset.unit,
           unitTitle: btn.dataset.title,
           theme: btn.dataset.theme,
