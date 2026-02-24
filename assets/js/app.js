@@ -29,7 +29,7 @@
 
     // limite de cursos no modal global
     GLOBAL_LIMIT: 20,
-    PRICES_DATA_PATH: "./assets/data/course_prices_2026_1.json",
+    PRICES_DATA_PATH: "./assets/data/course_prices_2026_1_updated.json",
 
     DEBUG: new URLSearchParams(location.search).has("debug"),
   });
@@ -320,8 +320,8 @@ const scrollLock = (() => {
     });
 
     applyUnitTheme(unitCard, toneClass);
-
-    const headActions = el("div", { class: "unit-actions" }, [
+    const head = el("div", { class: "unit-head" }, [
+      el("h2", { class: "unit-title", text: unit.title }),
       el(
         "button",
         {
@@ -334,21 +334,7 @@ const scrollLock = (() => {
         },
         [el("span", { text: "Pesquisar cursos" })]
       ),
-      el(
-        "button",
-        {
-          class: "btn btn-courses",
-          type: "button",
-          "data-action": "open-prices",
-          "data-unit": unit.coursesKey,
-          "data-title": unit.title,
-          "data-theme": toneClass,
-        },
-        [el("span", { text: "Pesquisar preços" })]
-      ),
     ]);
-
-    const head = el("div", { class: "unit-head" }, [el("h2", { class: "unit-title", text: unit.title }), headActions]);
 
     unitCard.appendChild(head);
 
@@ -1176,6 +1162,7 @@ const globalModal = (() => {
       unitSelectEl.addEventListener("change", () => {
         state.unitKey = unitSelectEl.value;
         state.unitLabel = PRICE_UNIT_OPTIONS.find((u) => u.key === state.unitKey)?.label || "Manaus";
+        titleEl.textContent = `Preços disponíveis — ${state.unitLabel}`;
         renderList();
       });
 
@@ -1204,7 +1191,7 @@ const globalModal = (() => {
       overlay.className = "modal-overlay is-open";
       applyUnitTheme(overlay, state.themeClass);
 
-      titleEl.textContent = `Preços disponíveis — ${unitTitle}`;
+      titleEl.textContent = `Preços disponíveis — ${state.unitLabel}`;
 
       unitSelectEl.textContent = "";
       for (const opt of PRICE_UNIT_OPTIONS) unitSelectEl.appendChild(new Option(opt.label, opt.key));
@@ -1265,11 +1252,11 @@ const globalModal = (() => {
         return;
       }
 
-      if (action === "open-prices") {
+      if (action === "open-prices-menu") {
         pricesModal.open({
-          unitKey: btn.dataset.unit,
-          unitTitle: btn.dataset.title,
-          theme: btn.dataset.theme,
+          unitKey: "sede",
+          unitTitle: "Manaus",
+          theme: "blue",
         });
         return;
       }
@@ -1309,6 +1296,12 @@ const globalModal = (() => {
 
       renderApp({ units });
       bindEvents(idx);
+
+      const params = new URLSearchParams(location.search);
+      if (params.get("openPrices") === "1") {
+        pricesModal.open({ unitKey: "sede", unitTitle: "Manaus", theme: "blue" });
+      }
+
       runDiagnostics(units, courses, idx);
     } catch (err) {
       console.error(err);

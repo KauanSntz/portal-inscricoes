@@ -187,11 +187,6 @@ select:focus-visible,
   flex-wrap: wrap;
 }
 
-.unit-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
 
 .unit-title {
   margin: 0;

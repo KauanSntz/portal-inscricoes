@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-02-24T16:10:21.536895+00:00",
+  "currency": "BRL",
+  "units": {
+    "manaus": { "label": "Manaus" },
+    "compensa": { "label": "Compensa" },
+    "para": { "label": "Pará" },
+    "polos_proprios": { "label": "Polos Próprios" },
+    "__all__": { "label": "Tabela Geral" }
+  },
+  "modalities": {
+    "presencial": { "label": "Presencial" },
+    "hibrido": { "label": "Híbrido" },
+    "semipresencial": { "label": "Semipresencial" },
+    "ead": { "label": "EAD" }
+  },
+  "plans": {
+    "enem_vestibular": {
+      "label": "ENEM/Vestibular",
+      "ingressTypes": ["enem", "vestibular_online"]
+    },
+    "transfer_portador": {
+      "label": "Portador/Transferência",
+      "ingressTypes": ["portador_diploma", "transferencia_externa"]
+    }
+  },
+  "punctualityProfiles": {
+    "p10": { "percent": 10, "label": "Pontualidade 10%" },
+    "p15": { "percent": 15, "label": "Pontualidade 15% (não usar no front agora)" }
+  },
+  "records": [
+    {
+      "unitKey": "__all__",
+      "modalityKey": "ead",
+      "planKey": "enem_vestibular",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 50800,
+      "bolsaCents": 25445,
+      "bolsaPontualidadeCents": { "p10": 22900, "p15": null }
+    },
+    {
+      "unitKey": "__all__",
+      "modalityKey": "ead",
+      "planKey": "transfer_portador",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 50800,
+      "bolsaCents": 27900,
+      "bolsaPontualidadeCents": { "p10": 25110, "p15": null }
+    },
+    {
+      "unitKey": "__all__",
+      "modalityKey": "semipresencial",
+      "planKey": "enem_vestibular",
+      "courseId": "psicologia",
+      "courseName": "Psicologia",
+      "integralCents": 130754,
+      "bolsaCents": 65482,
+      "bolsaPontualidadeCents": { "p10": 58933, "p15": null }
+    },
+    {
+      "unitKey": "__all__",
+      "modalityKey": "hibrido",
+      "planKey": "enem_vestibular",
+      "courseId": "enfermagem",
+      "courseName": "Enfermagem",
+      "integralCents": 105290,
+      "bolsaCents": 44222,
+      "bolsaPontualidadeCents": { "p10": 39800, "p15": null }
+    },
+    {
+      "unitKey": "__all__",
+      "modalityKey": "hibrido",
+      "planKey": "transfer_portador",
+      "courseId": "enfermagem",
+      "courseName": "Enfermagem",
+      "integralCents": 105290,
+      "bolsaCents": 47381,
+      "bolsaPontualidadeCents": { "p10": 42642, "p15": null }
+    },
+    {
+      "unitKey": "manaus",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 123262,
+      "bolsaCents": 54778,
+      "bolsaPontualidadeCents": { "p10": 49300, "p15": null }
+    },
+    {
+      "unitKey": "manaus",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "direito-manaus",
+      "courseName": "Direito - Manaus",
+      "integralCents": 251328,
+      "bolsaCents": 116666,
+      "bolsaPontualidadeCents": { "p10": 105000, "p15": 99166 }
+    },
+    {
+      "unitKey": "manaus",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "direito-manaus",
+      "courseName": "Direito - Manaus",
+      "integralCents": 251328,
+      "bolsaCents": 113098,
+      "bolsaPontualidadeCents": { "p10": 101788, "p15": 96133 }
+    },
+    {
+      "unitKey": "manaus",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 123262,
+      "bolsaCents": 55468,
+      "bolsaPontualidadeCents": { "p10": 49921, "p15": null }
+    },
+    {
+      "unitKey": "compensa",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 123262,
+      "bolsaCents": 46778,
+      "bolsaPontualidadeCents": { "p10": 42100, "p15": null }
+    },
+    {
+      "unitKey": "compensa",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 123262,
+      "bolsaCents": 43142,
+      "bolsaPontualidadeCents": { "p10": 38828, "p15": null }
+    },
+    {
+      "unitKey": "compensa",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "direito",
+      "courseName": "Direito",
+      "integralCents": 251328,
+      "bolsaCents": 74795,
+      "bolsaPontualidadeCents": { "p10": 67316, "p15": null }
+    },
+    {
+      "unitKey": "compensa",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "direito",
+      "courseName": "Direito",
+      "integralCents": 251328,
+      "bolsaCents": 74795,
+      "bolsaPontualidadeCents": { "p10": 67316, "p15": null }
+    },
+    {
+      "unitKey": "para",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "administracao-5-12",
+      "courseName": "Administração 5,12%",
+      "integralCents": 122215,
+      "bolsaCents": 54312,
+      "bolsaPontualidadeCents": { "p10": 48881, "p15": null }
+    },
+    {
+      "unitKey": "para",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 122215,
+      "bolsaCents": 54997,
+      "bolsaPontualidadeCents": { "p10": 49497, "p15": null }
+    },
+    {
+      "unitKey": "para",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "psicologia-5-37",
+      "courseName": "Psicologia*** 5,37%",
+      "integralCents": 130754,
+      "bolsaCents": 65482,
+      "bolsaPontualidadeCents": { "p10": 58933, "p15": null }
+    },
+    {
+      "unitKey": "polos_proprios",
+      "modalityKey": "presencial",
+      "planKey": "enem_vestibular",
+      "courseId": "administracao-5-12",
+      "courseName": "Administração 5,12%",
+      "integralCents": 100448,
+      "bolsaCents": 50224,
+      "bolsaPontualidadeCents": { "p10": 45202, "p15": null }
+    },
+    {
+      "unitKey": "polos_proprios",
+      "modalityKey": "presencial",
+      "planKey": "transfer_portador",
+      "courseId": "administracao",
+      "courseName": "Administração",
+      "integralCents": 100448,
+      "bolsaCents": 45202,
+      "bolsaPontualidadeCents": { "p10": 40681, "p15": null }
+    }
+  ]
+}
