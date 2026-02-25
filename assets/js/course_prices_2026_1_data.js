@@ -3381,7 +3381,8 @@
   const aliases = Object.freeze({
     "gestao-seguranca-privada": "gestao-de-seguranca-privada",
     "gestao-de-recursos-humanos": "gestao-de-rh",
-    "direito-manaus": "direito"
+    "direito-manaus": "direito",
+    "ciencias-da-computacao": "ciencia-da-computacao"
   });
 
   records.forEach((record) => {
