@@ -737,10 +737,10 @@
     "planKey": "enem_vestibular",
     "courseId": "administracao",
     "courseName": "Administração",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 60926,
+    "bolsaCents": 36556,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 32900,
       "p15": null
     }
   },
@@ -750,10 +750,10 @@
     "planKey": "enem_vestibular",
     "courseId": "analise-e-desenvolvimento-de-sistemas",
     "courseName": "Análise e Desenvolvimento de Sistemas",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 70889,
+    "bolsaCents": 35445,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 31900,
       "p15": null
     }
   },
@@ -763,10 +763,10 @@
     "planKey": "enem_vestibular",
     "courseId": "ciencias-contabeis",
     "courseName": "Ciências Contábeis",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 60926,
+    "bolsaCents": 36556,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 32900,
       "p15": null
     }
   },
@@ -828,10 +828,10 @@
     "planKey": "enem_vestibular",
     "courseId": "pedagogia",
     "courseName": "Pedagogia",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 59272,
+    "bolsaCents": 35444,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 31900,
       "p15": null
     }
   },
@@ -841,10 +841,10 @@
     "planKey": "enem_vestibular",
     "courseId": "servico-social",
     "courseName": "Serviço Social",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 58854,
+    "bolsaCents": 37667,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 33900,
       "p15": null
     }
   },
@@ -958,10 +958,10 @@
     "planKey": "transfer_portador",
     "courseId": "administracao",
     "courseName": "Administração",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 60926,
+    "bolsaCents": 27417,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 24675,
       "p15": null
     }
   },
@@ -971,10 +971,10 @@
     "planKey": "transfer_portador",
     "courseId": "analise-e-desenvolvimento-de-sistemas",
     "courseName": "Análise e Desenvolvimento de Sistemas",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 70889,
+    "bolsaCents": 31900,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 28710,
       "p15": null
     }
   },
@@ -984,10 +984,10 @@
     "planKey": "transfer_portador",
     "courseId": "ciencias-contabeis",
     "courseName": "Ciências Contábeis",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 60926,
+    "bolsaCents": 27417,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 24675,
       "p15": null
     }
   },
@@ -1049,10 +1049,10 @@
     "planKey": "transfer_portador",
     "courseId": "pedagogia",
     "courseName": "Pedagogia",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 59272,
+    "bolsaCents": 26672,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 24005,
       "p15": null
     }
   },
@@ -1075,10 +1075,10 @@
     "planKey": "transfer_portador",
     "courseId": "servico-social",
     "courseName": "Serviço Social",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 58854,
+    "bolsaCents": 26484,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 23836,
       "p15": null
     }
   },
@@ -1641,10 +1641,10 @@
     "courseId": "direito",
     "courseName": "Direito - Manaus",
     "integralCents": 251328,
-    "bolsaCents": 100578,
+    "bolsaCents": 116666,
     "bolsaPontualidadeCents": {
-      "p10": 90520,
-      "p15": null
+      "p10": 105000,
+      "p15": 99166
     }
   },
   {
@@ -1667,10 +1667,10 @@
     "courseId": "enfermagem",
     "courseName": "Enfermagem",
     "integralCents": 156083,
-    "bolsaCents": 69452,
+    "bolsaCents": 77667,
     "bolsaPontualidadeCents": {
-      "p10": 62507,
-      "p15": null
+      "p10": 69900,
+      "p15": 66017
     }
   },
   {
@@ -1692,10 +1692,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-civil",
     "courseName": "Engenharia Civil",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 70000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 63000,
       "p15": null
     }
   },
@@ -1783,10 +1783,10 @@
     "planKey": "enem_vestibular",
     "courseId": "farmacia",
     "courseName": "Farmácia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 136328,
+    "bolsaCents": 64333,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 57900,
       "p15": null
     }
   },
@@ -1796,11 +1796,11 @@
     "planKey": "enem_vestibular",
     "courseId": "fisioterapia",
     "courseName": "Fisioterapia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 150889,
+    "bolsaCents": 75445,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
-      "p15": null
+      "p10": 67900,
+      "p15": 64128
     }
   },
   {
@@ -2328,12 +2328,12 @@
     "modalityKey": "presencial",
     "planKey": "transfer_portador",
     "courseId": "direito",
-    "courseName": "Direito - Capital Manaus",
+    "courseName": "Direito - Manaus",
     "integralCents": 251328,
     "bolsaCents": 113098,
     "bolsaPontualidadeCents": {
       "p10": 101788,
-      "p15": null
+      "p15": 96133
     }
   },
   {
@@ -2359,7 +2359,7 @@
     "bolsaCents": 70237,
     "bolsaPontualidadeCents": {
       "p10": 63214,
-      "p15": null
+      "p15": 59702
     }
   },
   {
@@ -2381,10 +2381,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-civil",
     "courseName": "Engenharia Civil",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 63714,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 57342,
       "p15": null
     }
   },
@@ -2472,10 +2472,10 @@
     "planKey": "transfer_portador",
     "courseId": "farmacia",
     "courseName": "Farmácia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 136328,
+    "bolsaCents": 61348,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 55213,
       "p15": null
     }
   },
@@ -2485,11 +2485,11 @@
     "planKey": "transfer_portador",
     "courseId": "fisioterapia",
     "courseName": "Fisioterapia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 150889,
+    "bolsaCents": 67900,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
-      "p15": null
+      "p10": 61110,
+      "p15": 57715
     }
   },
   {
