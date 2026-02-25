@@ -1,9 +1,9 @@
 :root {
   --blue: #2897f4;
   --blue-soft: #6cb6f4;
-  --red: #ee0e0e;
-  --red-soft: #fd7b7b;
-  --red-mid: #ee4242;
+  --red: #F5403D;
+  --red-soft: #f88b89;
+  --red-mid: #F5403D;
   --white: #ffffff;
 
   --space-1: 0.5rem;
@@ -42,14 +42,22 @@ body {
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.84);
-  background: color-mix(in srgb, var(--blue-soft) 20%, #ffffff);
+  background: #eef6ff;
 }
 
 body.modal-open {
   overflow: hidden;
 }
 
-a { color: inherit; }
+a { color: inherit;
+  transition: opacity 180ms ease, text-decoration-color 180ms ease;
+}
+
+a:hover {
+  opacity: 0.92;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
 
 .theme-blue,
 .theme-red {
@@ -122,7 +130,7 @@ a { color: inherit; }
   font: inherit;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
 }
 
 .btn:hover,
@@ -131,6 +139,8 @@ a { color: inherit; }
 .btn-unit:hover {
   border-color: var(--accent);
   background: var(--surface-soft);
+  transform: scale(1.04);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .btn:focus-visible,
@@ -176,6 +186,12 @@ select:focus-visible,
   border-radius: var(--radius-lg);
   padding: clamp(0.875rem, 2vw, 1.3rem);
   box-shadow: var(--shadow-sm);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.unit:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .unit-head {
@@ -243,6 +259,8 @@ select:focus-visible,
 .link-card:hover {
   border-color: var(--accent);
   background: var(--surface-soft);
+  transform: scale(1.04);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .link-card.is-disabled {
@@ -435,6 +453,13 @@ select {
   border-radius: var(--radius-md);
   background: #ffffff;
   padding: 0.75rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.course:hover,
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .course-name,
@@ -442,10 +467,6 @@ select {
   font-weight: 700;
 }
 
-.course-price {
-  color: color-mix(in srgb, var(--accent) 90%, #ffffff);
-  font-size: 0.92rem;
-}
 
 .badges,
 .result-tags {
@@ -483,49 +504,6 @@ select {
   color: var(--accent);
 }
 
-.prices-modal .modal-body {
-  gap: 0.85rem;
-}
-
-.prices-filter-row {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.prices-filter-title {
-  color: var(--accent);
-  font-size: 0.9rem;
-}
-
-.prices-list {
-  display: grid;
-  gap: 0.7rem;
-}
-
-.price-card {
-  border: 1px solid var(--accent-border);
-  border-radius: var(--radius-md);
-  background: #ffffff;
-  padding: 0.75rem;
-  display: grid;
-  gap: 0.3rem;
-}
-
-.price-card__title {
-  margin: 0;
-  color: var(--accent);
-  font-size: 1.05rem;
-}
-
-.price-line {
-  margin: 0;
-  color: color-mix(in srgb, var(--accent) 82%, #ffffff);
-}
-
-.price-copy-btn {
-  justify-self: end;
-  margin-top: 0.3rem;
-}
 
 /* Central links */
 .links-page .site-header {
@@ -716,3 +694,10 @@ select {
   .modal-overlay { padding: 0.6rem; }
   .modal { max-height: min(96dvh, 96vh); }
 }
+
+/* Cores das Unidades e seus subtítulos */
+.sede h2, .sede .subtitulo-modalidade{color:#2563eb;border-color:#2563eb}
+.leste h2, .leste .subtitulo-modalidade{color:#059669;border-color:#059669}
+.sul h2, .sul .subtitulo-modalidade{color:#dc2626;border-color:#dc2626}
+.norte h2, .norte .subtitulo-modalidade{color:#7c3aed;border-color:#7c3aed}
+.oeste h2, .oeste .subtitulo-modalidade{color:#14b8a6;border-color:#14b8a6}
