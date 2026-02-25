@@ -761,6 +761,19 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
+    "courseId": "biomedicina",
+    "courseName": "Biomedicina",
+    "integralCents": 88667,
+    "bolsaCents": 44334,
+    "bolsaPontualidadeCents": {
+      "p10": 39900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
     "courseId": "ciencias-contabeis",
     "courseName": "Ciências Contábeis",
     "integralCents": 60926,
@@ -774,12 +787,25 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
+    "courseId": "educacao-fisica-bacharelado",
+    "courseName": "Educação Física (Bacharelado)",
+    "integralCents": 75333,
+    "bolsaCents": 37667,
+    "bolsaPontualidadeCents": {
+      "p10": 33900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
     "courseId": "educacao-fisica-licenciatura",
     "courseName": "Educação Física (Licenciatura)",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "integralCents": 75333,
+    "bolsaCents": 37667,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 33900,
       "p15": null
     }
   },
@@ -787,12 +813,12 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
-    "courseId": "gestao-de-rh",
-    "courseName": "Gestão de Recursos Humanos",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "courseId": "engenharia-civil",
+    "courseName": "Engenharia Civil",
+    "integralCents": 112667,
+    "bolsaCents": 44333,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 39900,
       "p15": null
     }
   },
@@ -800,12 +826,12 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
-    "courseId": "gestao-de-seguranca-privada",
-    "courseName": "Gestão de Segurança Privada",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "courseId": "engenharia-de-software",
+    "courseName": "Engenharia de Software",
+    "integralCents": 112667,
+    "bolsaCents": 44333,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 39900,
       "p15": null
     }
   },
@@ -813,12 +839,77 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
-    "courseId": "marketing",
-    "courseName": "Marketing",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
+    "courseId": "engenharia-eletrica",
+    "courseName": "Engenharia Elétrica",
+    "integralCents": 112667,
+    "bolsaCents": 44333,
     "bolsaPontualidadeCents": {
-      "p10": 24626,
+      "p10": 39900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
+    "courseId": "farmacia",
+    "courseName": "Farmácia",
+    "integralCents": 98519,
+    "bolsaCents": 44333,
+    "bolsaPontualidadeCents": {
+      "p10": 39900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
+    "courseId": "fisioterapia",
+    "courseName": "Fisioterapia",
+    "integralCents": 88667,
+    "bolsaCents": 44333,
+    "bolsaPontualidadeCents": {
+      "p10": 39900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
+    "courseId": "letras",
+    "courseName": "Letras",
+    "integralCents": 59272,
+    "bolsaCents": 35444,
+    "bolsaPontualidadeCents": {
+      "p10": 31900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
+    "courseId": "logistica",
+    "courseName": "Logística",
+    "integralCents": 65874,
+    "bolsaCents": 27667,
+    "bolsaPontualidadeCents": {
+      "p10": 24900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
+    "courseId": "nutricao",
+    "courseName": "Nutrição",
+    "integralCents": 105556,
+    "bolsaCents": 44333,
+    "bolsaPontualidadeCents": {
+      "p10": 39900,
       "p15": null
     }
   },
@@ -839,116 +930,25 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "enem_vestibular",
+    "courseId": "psicopedagogia",
+    "courseName": "Psicopedagogia",
+    "integralCents": 59272,
+    "bolsaCents": 35444,
+    "bolsaPontualidadeCents": {
+      "p10": 31900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "enem_vestibular",
     "courseId": "servico-social",
     "courseName": "Serviço Social",
     "integralCents": 58854,
     "bolsaCents": 37667,
     "bolsaPontualidadeCents": {
       "p10": 33900,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-big-data-e-inteligencia-analitica",
-    "courseName": "Tecnologia em Big Data e Inteligência Analítica",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-ciencia-de-dados",
-    "courseName": "Tecnologia em Ciência de Dados",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-desenvolvimento-full-stack",
-    "courseName": "Tecnologia em Desenvolvimento Full Stack",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-inteligencia-artificial",
-    "courseName": "Tecnologia em Inteligência Artificial",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-internet-das-coisas",
-    "courseName": "Tecnologia em Internet das Coisas",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologia-em-jogos-digitais",
-    "courseName": "Tecnologia em Jogos Digitais",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "tecnologo-gestao-da-seguranca-e-defesa-cibernetica",
-    "courseName": "Tecnólogo Gestão da Segurança e Defesa Cibernética",
-    "integralCents": 95000,
-    "bolsaCents": 33188,
-    "bolsaPontualidadeCents": {
-      "p10": 29869,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "enem_vestibular",
-    "courseId": "turismo",
-    "courseName": "Turismo",
-    "integralCents": 78400,
-    "bolsaCents": 27362,
-    "bolsaPontualidadeCents": {
-      "p10": 24626,
       "p15": null
     }
   },
@@ -982,6 +982,19 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
+    "courseId": "biomedicina",
+    "courseName": "Biomedicina",
+    "integralCents": 88667,
+    "bolsaCents": 39900,
+    "bolsaPontualidadeCents": {
+      "p10": 35910,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
     "courseId": "ciencias-contabeis",
     "courseName": "Ciências Contábeis",
     "integralCents": 60926,
@@ -995,12 +1008,25 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
+    "courseId": "educacao-fisica-bacharelado",
+    "courseName": "Educação Física (Bacharelado)",
+    "integralCents": 75333,
+    "bolsaCents": 33900,
+    "bolsaPontualidadeCents": {
+      "p10": 30510,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
     "courseId": "educacao-fisica-licenciatura",
     "courseName": "Educação Física (Licenciatura)",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "integralCents": 75333,
+    "bolsaCents": 33900,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 30510,
       "p15": null
     }
   },
@@ -1008,12 +1034,12 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
-    "courseId": "gestao-de-rh",
-    "courseName": "Gestão de Recursos Humanos",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "courseId": "enfermagem",
+    "courseName": "Enfermagem",
+    "integralCents": 88667,
+    "bolsaCents": 39900,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 35910,
       "p15": null
     }
   },
@@ -1021,12 +1047,12 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
-    "courseId": "gestao-de-seguranca-privada",
-    "courseName": "Gestão de Segurança Privada",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "courseId": "engenharia-civil",
+    "courseName": "Engenharia Civil",
+    "integralCents": 112607,
+    "bolsaCents": 50673,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 45606,
       "p15": null
     }
   },
@@ -1034,12 +1060,103 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
-    "courseId": "marketing",
-    "courseName": "Marketing",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
+    "courseId": "engenharia-de-software",
+    "courseName": "Engenharia de Software",
+    "integralCents": 112607,
+    "bolsaCents": 50673,
     "bolsaPontualidadeCents": {
-      "p10": 27090,
+      "p10": 45606,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "engenharia-eletrica",
+    "courseName": "Engenharia Elétrica",
+    "integralCents": 112607,
+    "bolsaCents": 50673,
+    "bolsaPontualidadeCents": {
+      "p10": 45606,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "estetica-e-cosmetica",
+    "courseName": "Estética e Cosmética",
+    "integralCents": 75333,
+    "bolsaCents": 33900,
+    "bolsaPontualidadeCents": {
+      "p10": 30510,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "farmacia",
+    "courseName": "Farmácia",
+    "integralCents": 98519,
+    "bolsaCents": 44334,
+    "bolsaPontualidadeCents": {
+      "p10": 39900,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "fisioterapia",
+    "courseName": "Fisioterapia",
+    "integralCents": 88667,
+    "bolsaCents": 39900,
+    "bolsaPontualidadeCents": {
+      "p10": 35910,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "letras",
+    "courseName": "Letras",
+    "integralCents": 59272,
+    "bolsaCents": 26672,
+    "bolsaPontualidadeCents": {
+      "p10": 24005,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "logistica",
+    "courseName": "Logística",
+    "integralCents": 65874,
+    "bolsaCents": 29643,
+    "bolsaPontualidadeCents": {
+      "p10": 26679,
+      "p15": null
+    }
+  },
+  {
+    "unitKey": "__all__",
+    "modalityKey": "semipresencial",
+    "planKey": "transfer_portador",
+    "courseId": "nutricao",
+    "courseName": "Nutrição",
+    "integralCents": 105556,
+    "bolsaCents": 47500,
+    "bolsaPontualidadeCents": {
+      "p10": 42750,
       "p15": null
     }
   },
@@ -1060,129 +1177,12 @@
     "unitKey": "__all__",
     "modalityKey": "semipresencial",
     "planKey": "transfer_portador",
-    "courseId": "seguranca-publica",
-    "courseName": "Segurança Pública",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
-    "bolsaPontualidadeCents": {
-      "p10": 27090,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
     "courseId": "servico-social",
     "courseName": "Serviço Social",
     "integralCents": 58854,
     "bolsaCents": 26484,
     "bolsaPontualidadeCents": {
       "p10": 23836,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-big-data-e-inteligencia-analitica",
-    "courseName": "Tecnologia em Big Data e Inteligência Analítica",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-ciencia-de-dados",
-    "courseName": "Tecnologia em Ciência de Dados",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-desenvolvimento-full-stack",
-    "courseName": "Tecnologia em Desenvolvimento Full Stack",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-inteligencia-artificial",
-    "courseName": "Tecnologia em Inteligência Artificial",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-internet-das-coisas",
-    "courseName": "Tecnologia em Internet das Coisas",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologia-em-jogos-digitais",
-    "courseName": "Tecnologia em Jogos Digitais",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "tecnologo-gestao-da-seguranca-e-defesa-cibernetica",
-    "courseName": "Tecnólogo Gestão da Segurança e Defesa Cibernética",
-    "integralCents": 95000,
-    "bolsaCents": 36500,
-    "bolsaPontualidadeCents": {
-      "p10": 32850,
-      "p15": null
-    }
-  },
-  {
-    "unitKey": "__all__",
-    "modalityKey": "semipresencial",
-    "planKey": "transfer_portador",
-    "courseId": "turismo",
-    "courseName": "Turismo",
-    "integralCents": 78400,
-    "bolsaCents": 30100,
-    "bolsaPontualidadeCents": {
-      "p10": 27090,
       "p15": null
     }
   },
@@ -1679,10 +1679,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-ambiental",
     "courseName": "Engenharia Ambiental e Energias Renováveis",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 129704,
+    "bolsaCents": 61000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 54900,
       "p15": null
     }
   },
@@ -1705,10 +1705,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-da-computacao",
     "courseName": "Engenharia da Computação",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 146667,
+    "bolsaCents": 73334,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 66000,
       "p15": null
     }
   },
@@ -1718,10 +1718,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-de-producao",
     "courseName": "Engenharia de Produção",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 70000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 63000,
       "p15": null
     }
   },
@@ -1731,10 +1731,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-de-software",
     "courseName": "Engenharia de Software",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 146667,
+    "bolsaCents": 73334,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 66000,
       "p15": null
     }
   },
@@ -1744,10 +1744,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-eletrica",
     "courseName": "Engenharia Elétrica",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 70000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 63000,
       "p15": null
     }
   },
@@ -1757,10 +1757,10 @@
     "planKey": "enem_vestibular",
     "courseId": "engenharia-mecanica",
     "courseName": "Engenharia Mecânica",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 140000,
+    "bolsaCents": 70000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 63000,
       "p15": null
     }
   },
@@ -1809,10 +1809,10 @@
     "planKey": "enem_vestibular",
     "courseId": "fonoaudiologia",
     "courseName": "Fonoaudiologia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 116595,
+    "bolsaCents": 54333,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 48900,
       "p15": null
     }
   },
@@ -1978,10 +1978,10 @@
     "planKey": "enem_vestibular",
     "courseId": "nutricao",
     "courseName": "Nutrição",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 126322,
+    "bolsaCents": 58778,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 52900,
       "p15": null
     }
   },
@@ -2368,10 +2368,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-ambiental",
     "courseName": "Engenharia Ambiental e Energias Renováveis",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 129704,
+    "bolsaCents": 58367,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 52530,
       "p15": null
     }
   },
@@ -2394,10 +2394,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-da-computacao",
     "courseName": "Engenharia da Computação",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 146667,
+    "bolsaCents": 66000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 59400,
       "p15": null
     }
   },
@@ -2407,10 +2407,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-de-producao",
     "courseName": "Engenharia de Produção",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 63714,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 57342,
       "p15": null
     }
   },
@@ -2420,10 +2420,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-de-software",
     "courseName": "Engenharia de Software",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 146667,
+    "bolsaCents": 66000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 59400,
       "p15": null
     }
   },
@@ -2433,10 +2433,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-eletrica",
     "courseName": "Engenharia Elétrica",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 141586,
+    "bolsaCents": 63714,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 57342,
       "p15": null
     }
   },
@@ -2446,10 +2446,10 @@
     "planKey": "transfer_portador",
     "courseId": "engenharia-mecanica",
     "courseName": "Engenharia Mecânica",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 140000,
+    "bolsaCents": 63000,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 56700,
       "p15": null
     }
   },
@@ -2498,10 +2498,10 @@
     "planKey": "transfer_portador",
     "courseId": "fonoaudiologia",
     "courseName": "Fonoaudiologia",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 116595,
+    "bolsaCents": 52468,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 47221,
       "p15": null
     }
   },
@@ -2667,10 +2667,10 @@
     "planKey": "transfer_portador",
     "courseId": "nutricao",
     "courseName": "Nutrição",
-    "integralCents": 138600,
-    "bolsaCents": 62370,
+    "integralCents": 126322,
+    "bolsaCents": 56845,
     "bolsaPontualidadeCents": {
-      "p10": 56133,
+      "p10": 51160,
       "p15": null
     }
   },
