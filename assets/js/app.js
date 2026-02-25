@@ -281,7 +281,7 @@ const scrollLock = (() => {
   const renderUnit = (unit) => {
     const toneClass = toneClassByUnitKey(unit);
     const unitCard = el("section", {
-      class: "unit",
+      class: `unit ${unit.key || unit.coursesKey || ""}`,
       id: `unit-${unit.coursesKey}`,
       "data-unit-key": unit.coursesKey,
     });
@@ -325,7 +325,7 @@ const scrollLock = (() => {
 
   const renderLinkBlock = (block, fallbackTitle) => {
     const wrap = el("div", { class: "mod-block" });
-    wrap.appendChild(el("h3", { class: "mod-title", text: formatModalityTitle(block.title || fallbackTitle) }));
+    wrap.appendChild(el("h3", { class: "mod-title subtitulo-modalidade", text: formatModalityTitle(block.title || fallbackTitle) }));
 
     const content = el("div", { class: "mod-content" });
     const links = Array.isArray(block.links) ? block.links : [];

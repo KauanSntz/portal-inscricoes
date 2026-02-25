@@ -695,9 +695,42 @@ select {
   .modal { max-height: min(96dvh, 96vh); }
 }
 
+
+/* Tema por unidade no Portal (bloco inteiro) */
+.unit.sede { --accent:#2563eb; --accent-soft:#60a5fa; --accent-border: color-mix(in srgb, #2563eb 35%, #ffffff); }
+.unit.leste { --accent:#059669; --accent-soft:#34d399; --accent-border: color-mix(in srgb, #059669 35%, #ffffff); }
+.unit.sul { --accent:#dc2626; --accent-soft:#f87171; --accent-border: color-mix(in srgb, #dc2626 35%, #ffffff); }
+.unit.norte { --accent:#7c3aed; --accent-soft:#a78bfa; --accent-border: color-mix(in srgb, #7c3aed 35%, #ffffff); }
+.unit.oeste { --accent:#f59e0b; --accent-soft:#fbbf24; --accent-border: color-mix(in srgb, #f59e0b 35%, #ffffff); }
+
+.unit .subtitulo-modalidade {
+  border: 1px solid var(--accent);
+}
+
+.unit .link-card {
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 78%, #000000);
+  color: #ffffff;
+}
+
+.unit .link-card:hover {
+  background: color-mix(in srgb, var(--accent) 86%, #000000);
+  border-color: color-mix(in srgb, var(--accent) 65%, #000000);
+}
+
+.unit .link-type,
+.unit .link-mod {
+  color: #ffffff;
+}
+
+.unit .link-code {
+  background: color-mix(in srgb, var(--accent) 70%, #000000);
+  border-color: color-mix(in srgb, var(--accent) 70%, #000000);
+}
+
 /* Cores das Unidades e seus subtítulos */
 .sede h2, .sede .subtitulo-modalidade{color:#2563eb;border-color:#2563eb}
 .leste h2, .leste .subtitulo-modalidade{color:#059669;border-color:#059669}
 .sul h2, .sul .subtitulo-modalidade{color:#dc2626;border-color:#dc2626}
 .norte h2, .norte .subtitulo-modalidade{color:#7c3aed;border-color:#7c3aed}
-.oeste h2, .oeste .subtitulo-modalidade{color:#14b8a6;border-color:#14b8a6}
+.oeste h2, .oeste .subtitulo-modalidade{color:#f59e0b;border-color:#f59e0b}
