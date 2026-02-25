@@ -29,7 +29,6 @@
 
     // limite de cursos no modal global
     GLOBAL_LIMIT: 20,
-    PRICES_DATA_PATH: "./assets/data/course_prices_2026_1_updated.json",
 
     DEBUG: new URLSearchParams(location.search).has("debug"),
   });
@@ -918,15 +917,16 @@ const globalModal = (() => {
 
   const loadPricesOnce = async () => {
     if (!pricesDataPromise) {
-      pricesDataPromise = fetch(CONFIG.PRICES_DATA_PATH, { cache: "no-store" })
-        .then((res) => {
-          if (!res.ok) throw new Error("Falha ao carregar tabela de preços");
-          return res.json();
-        })
-        .then((payload) => ({
+      pricesDataPromise = Promise.resolve().then(() => {
+        const payload = window.COURSE_PRICES_2026_1;
+        if (!payload || !Array.isArray(payload.records)) {
+          throw new Error("COURSE_PRICES_2026_1 não encontrado. Verifique assets/js/course_prices_2026_1_data.js");
+        }
+        return {
           ...payload,
-          records: Array.isArray(payload?.records) ? payload.records : [],
-        }));
+          records: payload.records,
+        };
+      });
     }
     return pricesDataPromise;
   };
