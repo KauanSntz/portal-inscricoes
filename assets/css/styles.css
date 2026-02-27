@@ -739,3 +739,106 @@ select {
 .unit .mod-title.subtitulo-modalidade {
   color: #ffffff;
 }
+
+/* Prices modal visual refinement */
+.prices-overlay {
+  background: rgba(15, 23, 42, 0.44);
+}
+
+.prices-modal {
+  width: min(1460px, 98vw);
+  max-height: min(94dvh, 94vh);
+  border: 1px solid #bfdbfe;
+  box-shadow: 0 24px 50px rgba(30, 64, 175, 0.2);
+}
+
+.prices-head {
+  border-bottom: 1px solid #dbeafe;
+  padding: 1rem 1.35rem;
+}
+
+.prices-title {
+  color: #1d6ed8;
+  font-size: clamp(1.45rem, 2vw, 2.05rem);
+  font-weight: 800;
+}
+
+.prices-close {
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  line-height: 1;
+  border-color: #93c5fd;
+  color: #60a5fa;
+}
+
+.prices-body {
+  gap: 1rem;
+  padding: 1rem 1.35rem 1.35rem;
+}
+
+.prices-filters-grid {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+}
+
+.prices-field {
+  border-color: #93c5fd;
+  color: #2563eb;
+  border-radius: 1rem;
+  font-size: 1.02rem;
+  min-height: 3.7rem;
+  padding-inline: 1.1rem;
+}
+
+.prices-grid {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 0.95rem;
+}
+
+.prices-card {
+  border-color: #93c5fd;
+  border-radius: 1.4rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+}
+
+.prices-course {
+  color: #0b4ba8;
+  font-size: 1.22rem;
+  margin-bottom: 0.2rem;
+}
+
+.prices-meta {
+  margin-top: 0.2rem;
+  color: #172554;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.prices-copy-btn {
+  margin-top: 0.8rem;
+  min-height: 2.9rem;
+  padding-inline: 1.2rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, #2f82ef, #1169dd);
+  border: 1px solid #0c56b8;
+  color: #ffffff;
+}
+
+.prices-copy-btn:hover {
+  background: linear-gradient(180deg, #226fdd, #0f59bd);
+}
+
+.prices-empty {
+  border: 1px dashed #93c5fd;
+  border-radius: 1rem;
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+@media (max-width: 920px) {
+  .prices-filters-grid,
+  .prices-grid {
+    grid-template-columns: 1fr;
+  }
+}

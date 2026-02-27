@@ -993,13 +993,13 @@ const globalModal = (() => {
 
       emptyEl.hidden = true;
       for (const record of state.recordsView) {
-        const card = el("article", { class: "result-card" });
-        card.appendChild(el("div", { class: "result-course", text: record.courseName }));
-        card.appendChild(el("div", { class: "meta", text: `Integral: ${formatCents(record.integralCents)}` }));
-        card.appendChild(el("div", { class: "meta", text: `Bolsa: ${formatCents(record.bolsaCents)}` }));
-        card.appendChild(el("div", { class: "meta", text: `Bolsa + Pontualidade: ${formatCents(record?.bolsaPontualidadeCents?.p10)}` }));
+        const card = el("article", { class: "result-card prices-card" });
+        card.appendChild(el("div", { class: "result-course prices-course", text: record.courseName }));
+        card.appendChild(el("div", { class: "meta prices-meta", text: `Integral: ${formatCents(record.integralCents)}` }));
+        card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa: ${formatCents(record.bolsaCents)}` }));
+        card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa + Pontualidade: ${formatCents(record?.bolsaPontualidadeCents?.p10)}` }));
 
-        const copyBtn = el("button", { class: "btn-unit", type: "button", text: "Copiar mensagem" });
+        const copyBtn = el("button", { class: "btn-unit prices-copy-btn", type: "button", text: "Copiar mensagem" });
         copyBtn.addEventListener("click", async () => {
           const ok = await copyText(buildCopyMessage(record));
           copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
@@ -1024,36 +1024,36 @@ const globalModal = (() => {
     const ensure = () => {
       if (overlay) return;
 
-      overlay = el("div", { class: "modal-overlay", "data-modal": "prices", "aria-hidden": "true" });
-      const modal = el("div", { class: "modal", role: "dialog", "aria-modal": "true", "aria-label": "Pesquisar preços" });
-      const head = el("div", { class: "modal-head" });
-      titleEl = el("div", { class: "modal-title", text: "Pesquisar preços" });
-      const closeBtn = el("button", { class: "modal-close", type: "button", "aria-label": "Fechar", text: "×" });
+      overlay = el("div", { class: "modal-overlay prices-overlay", "data-modal": "prices", "aria-hidden": "true" });
+      const modal = el("div", { class: "modal prices-modal", role: "dialog", "aria-modal": "true", "aria-label": "Pesquisar preços" });
+      const head = el("div", { class: "modal-head prices-head" });
+      titleEl = el("div", { class: "modal-title prices-title", text: "Pesquisar preços" });
+      const closeBtn = el("button", { class: "modal-close prices-close", type: "button", "aria-label": "Fechar", text: "×" });
       closeBtn.addEventListener("click", () => close());
       head.appendChild(titleEl);
       head.appendChild(closeBtn);
 
-      const body = el("div", { class: "modal-body" });
-      const controls = el("div", { class: "links-controls-grid" });
+      const body = el("div", { class: "modal-body prices-body" });
+      const controls = el("div", { class: "links-controls-grid prices-filters-grid" });
 
-      unitSelectEl = el("select", { "aria-label": "Unidade" });
+      unitSelectEl = el("select", { class: "prices-field", "aria-label": "Unidade" });
       for (const opt of PRICE_UNIT_OPTIONS) unitSelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
 
-      modalitySelectEl = el("select", { "aria-label": "Modalidade" });
+      modalitySelectEl = el("select", { class: "prices-field", "aria-label": "Modalidade" });
       for (const opt of PRICE_MODALITY_OPTIONS) modalitySelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
 
-      planSelectEl = el("select", { "aria-label": "Plano" });
+      planSelectEl = el("select", { class: "prices-field", "aria-label": "Plano" });
       for (const opt of PRICE_PLAN_OPTIONS) planSelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
 
-      inputEl = el("input", { class: "search-input", type: "search", placeholder: "Buscar curso...", "aria-label": "Buscar curso" });
+      inputEl = el("input", { class: "search-input prices-field", type: "search", placeholder: "Buscar curso...", "aria-label": "Buscar curso" });
 
       controls.appendChild(unitSelectEl);
       controls.appendChild(modalitySelectEl);
       controls.appendChild(planSelectEl);
       controls.appendChild(inputEl);
 
-      listEl = el("div", { class: "course-grid" });
-      emptyEl = el("div", { class: "empty", text: "Carregando..." });
+      listEl = el("div", { class: "course-grid prices-grid" });
+      emptyEl = el("div", { class: "empty prices-empty", text: "Carregando..." });
 
       body.appendChild(controls);
       body.appendChild(emptyEl);
