@@ -30,36 +30,36 @@
         presencial: {
           title: "Presencial",
           links: [
-            makeLink("3115", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3115#/es/inscricoeswizard"),
-            makeLink("3120", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3120#/es/inscricoeswizard"),
+            makeLink("3115", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3115#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3120", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3120#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         hibrido: {
           title: "Híbrido",
           links: [
-            makeLink("3118", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3118#/es/inscricoeswizard"),
-            makeLink("3123", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3123#/es/inscricoeswizard"),
+            makeLink("3118", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3118#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3123", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3123#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         semipresencial: {
           title: "Semipresencial",
           links: [
-            makeLink("3117", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard"),
-            makeLink("3122", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard"),
+            makeLink("3117", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3122", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         flex: {
           title: "Semipresencial Flex",
           links: [
-            makeLink("3119", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard"),
-            makeLink("3124", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard"),
+            makeLink("3119", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3124", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         ead: {
           title: "EAD (100% Online)",
           links: [
-            makeLink("3116", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard"),
-            makeLink("3121", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard"),
+            makeLink("3116", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3121", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard/dados-basicos"),
           ],
         },
       },
@@ -74,36 +74,36 @@
         presencial: {
           title: "Presencial",
           links: [
-            makeLink("3125", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3125#/es/inscricoeswizard"),
-            makeLink("3131", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3131#/es/inscricoeswizard"),
+            makeLink("3125", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3125#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3131", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3131#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         hibrido: {
           title: "Híbrido",
           links: [
-            makeLink("3128", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3128#/es/inscricoeswizard"),
-            makeLink("3134", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3134#/es/inscricoeswizard"),
+            makeLink("3128", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3128#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3134", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3134#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         semipresencial: {
           title: "Semipresencial",
           links: [
-            makeLink("3127", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3127#/es/inscricoeswizard"),
-            makeLink("3133", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3133#/es/inscricoeswizard"),
+            makeLink("3127", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3127#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3133", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3133#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         flex: {
           title: "Semipresencial Flex",
           links: [
-            makeLink("3130", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3130#/es/inscricoeswizard"),
-            makeLink("3135", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3135#/es/inscricoeswizard"),
+            makeLink("3130", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3130#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3135", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3135#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         ead: {
           title: "EAD (100% Online)",
           links: [
-            makeLink("3126", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3126#/es/inscricoeswizard"),
-            makeLink("3132", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3132#/es/inscricoeswizard"),
+            makeLink("3126", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3126#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3132", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3132#/es/inscricoeswizard/dados-basicos"),
           ],
         },
       },
@@ -118,36 +118,36 @@
         presencial: {
           title: "Presencial",
           links: [
-            makeLink("3136", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3136#/es/inscricoeswizard"),
-            makeLink("3141", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3141#/es/inscricoeswizard"),
+            makeLink("3136", "Vestibular Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3136#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3141", "Matrícula Online", "Presencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3141#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         hibrido: {
           title: "Híbrido",
           links: [
-            makeLink("3139", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3139#/es/inscricoeswizard"),
-            makeLink("3144", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3144#/es/inscricoeswizard"),
+            makeLink("3139", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3139#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3144", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3144#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         semipresencial: {
           title: "Semipresencial",
           links: [
-            makeLink("3138", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3138#/es/inscricoeswizard"),
-            makeLink("3143", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3143#/es/inscricoeswizard"),
+            makeLink("3138", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3138#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3143", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3143#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         flex: {
           title: "Semipresencial Flex",
           links: [
-            makeLink("3140", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3140#/es/inscricoeswizard"),
-            makeLink("3145", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3145#/es/inscricoeswizard"),
+            makeLink("3140", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3140#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3145", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3145#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         ead: {
           title: "EAD (100% Online)",
           links: [
-            makeLink("3137", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3137#/es/inscricoeswizard"),
-            makeLink("3142", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3142#/es/inscricoeswizard"),
+            makeLink("3137", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3137#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3142", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3142#/es/inscricoeswizard/dados-basicos"),
           ],
         },
       },
@@ -169,29 +169,29 @@
         hibrido: {
           title: "Híbrido",
           links: [
-            makeLink("3148", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3148#/es/inscricoeswizard"),
-            makeLink("3152", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3152#/es/inscricoeswizard"),
+            makeLink("3148", "Vestibular Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3148#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3152", "Matrícula Online", "Híbrido", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3152#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         semipresencial: {
           title: "Semipresencial",
           links: [
-            makeLink("3147", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3147#/es/inscricoeswizard"),
-            makeLink("3151", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3151#/es/inscricoeswizard"),
+            makeLink("3147", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3147#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3151", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3151#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         flex: {
           title: "Semipresencial Flex",
           links: [
-            makeLink("3149", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3149#/es/inscricoeswizard"),
-            makeLink("3153", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3153#/es/inscricoeswizard"),
+            makeLink("3149", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3149#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3153", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3153#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         ead: {
           title: "EAD (100% Online)",
           links: [
-            makeLink("3146", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3146#/es/inscricoeswizard"),
-            makeLink("3150", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3150#/es/inscricoeswizard"),
+            makeLink("3146", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3146#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3150", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3150#/es/inscricoeswizard/dados-basicos"),
           ],
         },
       },
@@ -215,22 +215,22 @@
         semipresencial: {
           title: "Semipresencial",
           links: [
-            makeLink("3117", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard"),
-            makeLink("3122", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard"),
+            makeLink("3117", "Vestibular Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3122", "Matrícula Online", "Semipresencial", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         flex: {
           title: "Semipresencial Flex",
           links: [
-            makeLink("3119", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard"),
-            makeLink("3124", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard"),
+            makeLink("3119", "Vestibular Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3124", "Matrícula Online", "Semi Flex", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard/dados-basicos"),
           ],
         },
         ead: {
           title: "EAD (100% Online)",
           links: [
-            makeLink("3116", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard"),
-            makeLink("3121", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard"),
+            makeLink("3116", "Vestibular Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard/dados-basicos"),
+            makeLink("3121", "Matrícula Online", "100% EAD", "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard/dados-basicos"),
           ],
         },
       },
