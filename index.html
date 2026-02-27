@@ -9,17 +9,25 @@
 <body>
   <div class="top-stripe" aria-hidden="true"></div>
 
-  <main class="container app-shell theme-blue">
+  <main class="container app-shell">
     <header class="site-header">
       <h1>Portal de Inscrições — Fametro 2026/1</h1>
       <p class="site-subtitle">Acesso rápido por unidade e modalidade</p>
     </header>
 
     <nav class="app-nav" aria-label="Navegação principal">
-      <a class="btn btn--nav is-active" href="./index.html" aria-current="page">Portal</a>
-      <a class="btn btn--nav" href="./links.html">Central de Links</a>
-      <button class="btn btn--nav" type="button" data-action="open-global-search">Pesquisar cursos</button>
-      <button class="btn btn--nav" type="button" data-action="open-prices-menu">Pesquisar preços</button>
+      <div class="nav-left">
+        <a class="btn btn--nav is-active" href="./index.html" aria-current="page">Portal</a>
+        <a class="btn btn--nav" href="./links.html">Central de Links</a>
+        <button class="btn btn--nav" type="button" data-action="open-global-search">Pesquisar cursos</button>
+        <button class="btn btn--nav" type="button" data-action="open-prices-menu">Pesquisar preços</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+          <span class="mode-text">Modo</span>
+          <span class="mode-icon">🌙</span>
+        </button>
+      </div>
     </nav>
 
     <div id="app" aria-live="polite"></div>
@@ -29,10 +37,13 @@
     <p>© 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
   </footer>
 
-  <script defer src="./assets/js/links-data.js"></script>
-  <script defer src="./assets/js/courses-data.js"></script>
-  <script defer src="./assets/js/legacy.js"></script>
+  <!-- Scripts -->
+  <script defer src="./assets/data/links-data.js"></script>
+  <script defer src="./assets/data/courses-data.js"></script>
   <script defer src="./assets/data/course_prices_2026_1_data.js"></script>
+  <script defer src="./assets/js/legacy.js"></script>
+  <script defer src="./assets/js/dark-mode.js"></script>
+  <script defer src="./assets/js/modals-shared.js"></script>
   <script defer src="./assets/js/app.js"></script>
 </body>
 </html>
