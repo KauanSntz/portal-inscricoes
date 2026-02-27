@@ -951,17 +951,17 @@ const globalModal = (() => {
     };
 
     const filteredRecords = () => {
-      if (!Array.isArray(state.data?.records)) return [];
-      const q = norm(state.query);
-      return state.data.records.filter((r) => {
-        if (r.unitKey !== state.unitKey) return false;
-        if (r.modalityKey !== state.modalityKey) return false;
-        if (r.planKey !== state.planKey) return false;
-        if (!q) return true;
-        return norm(r.courseName).includes(q) || norm(r.courseId).includes(q);
-      });
-    };
-
+  if (!Array.isArray(state.data?.records)) return [];
+  const q = norm(state.query);
+  return state.data.records.filter((r) => {
+    // Aceita se a unitKey for a selecionada OU for "__all__"
+    if (r.unitKey !== state.unitKey && r.unitKey !== '__all__') return false;
+    if (r.modalityKey !== state.modalityKey) return false;
+    if (r.planKey !== state.planKey) return false;
+    if (!q) return true;
+    return norm(r.courseName).includes(q) || norm(r.courseId).includes(q);
+  });
+};
     const buildCopyMessage = (record) => {
       const p10 = record?.bolsaPontualidadeCents?.p10;
       const modalityLabel = state.data?.modalities?.[state.modalityKey]?.label || PRICE_MODALITY_OPTIONS.find((x) => x.key === state.modalityKey)?.label || state.modalityKey;
