@@ -109,6 +109,77 @@
     return hash % 2 === 0 ? "blue" : "red";
   };
 
+  const PRICE_UNIT_OPTIONS = Object.freeze([
+    { key: "manaus", label: "Manaus" },
+    { key: "compensa", label: "Compensa" },
+    { key: "para", label: "Pará" },
+    { key: "polos_proprios", label: "Polos Próprios" },
+  ]);
+
+  const PRICE_MODALITY_OPTIONS = Object.freeze([
+    { key: "presencial", label: "Presencial" },
+    { key: "semipresencial", label: "Semipresencial" },
+    { key: "ead", label: "EAD" },
+    { key: "hibrido", label: "Híbrido" },
+  ]);
+
+  const PRICE_PLAN_OPTIONS = Object.freeze([
+    { key: "enem_vestibular", label: "ENEM/Vestibular" },
+    { key: "transfer_portador", label: "Portador/Transferência" },
+  ]);
+
+  const PRICE_UNIT_BY_PORTAL = Object.freeze({
+    sede: "manaus",
+    compensa: "compensa",
+    oeste: "compensa",
+    leste: "para",
+    sul: "para",
+    norte: "polos_proprios",
+  });
+
+  const resolvePriceUnitKey = (portalUnitKey) => PRICE_UNIT_BY_PORTAL[norm(portalUnitKey)] || "manaus";
+
+  let pricesDataPromise = null;
+  const loadPricesOnce = async () => {
+    if (!pricesDataPromise) {
+      pricesDataPromise = Promise.resolve().then(() => {
+        const payload = window.COURSE_PRICES_2026_1;
+        if (!payload || !Array.isArray(payload.records)) {
+          return { records: [] };
+        }
+        return {
+          ...payload,
+          records: payload.records,
+        };
+      });
+    }
+    return pricesDataPromise;
+  };
+
+  const copyText = async (text) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch {
+      // fallback
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    return ok;
+  };
+
+  const moneyFmt = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  const formatCents = (cents) => moneyFmt.format((Number(cents) || 0) / 100);
+
 
   // -----------------------------
 // Scroll lock (impede scroll do fundo com modal aberto)
@@ -856,6 +927,192 @@ const globalModal = (() => {
   return { open, close };
 })();
 
+  const pricesModal = (() => {
+    let overlay;
+    let titleEl;
+    let inputEl;
+    let unitSelectEl;
+    let modalitySelectEl;
+    let planSelectEl;
+    let listEl;
+    let emptyEl;
+    let isOpen = false;
+    let lastFocus = null;
+
+    const state = {
+      unitKey: "manaus",
+      modalityKey: "presencial",
+      planKey: "enem_vestibular",
+      query: "",
+      unitLabel: "Manaus",
+      themeClass: "blue",
+      recordsView: [],
+      data: null,
+    };
+
+    const filteredRecords = () => {
+      if (!Array.isArray(state.data?.records)) return [];
+      const q = norm(state.query);
+      return state.data.records.filter((r) => {
+        if (r.unitKey !== state.unitKey) return false;
+        if (r.modalityKey !== state.modalityKey) return false;
+        if (r.planKey !== state.planKey) return false;
+        if (!q) return true;
+        return norm(r.courseName).includes(q) || norm(r.courseId).includes(q);
+      });
+    };
+
+    const buildCopyMessage = (record) => {
+      const p10 = record?.bolsaPontualidadeCents?.p10;
+      return [
+        `Curso: ${record.courseName}`,
+        `Unidade: ${state.unitLabel}`,
+        `Modalidade: ${PRICE_MODALITY_OPTIONS.find((x) => x.key === state.modalityKey)?.label || state.modalityKey}`,
+        `Plano: ${PRICE_PLAN_OPTIONS.find((x) => x.key === state.planKey)?.label || state.planKey}`,
+        `Integral: ${formatCents(record.integralCents)}`,
+        `Bolsa: ${formatCents(record.bolsaCents)}`,
+        `Bolsa + Pontualidade: ${p10 == null ? "-" : formatCents(p10)}`,
+      ].join("\n");
+    };
+
+    const renderList = () => {
+      state.recordsView = filteredRecords();
+      listEl.textContent = "";
+
+      if (!state.data || !Array.isArray(state.data.records) || !state.data.records.length) {
+        emptyEl.hidden = false;
+        emptyEl.textContent = "Base de preços carregada, aguardando JSON final para preenchimento completo.";
+        return;
+      }
+
+      if (!state.recordsView.length) {
+        emptyEl.hidden = false;
+        emptyEl.textContent = "Nenhum preço encontrado para os filtros selecionados.";
+        return;
+      }
+
+      emptyEl.hidden = true;
+      for (const record of state.recordsView) {
+        const card = el("article", { class: "result-card" });
+        card.appendChild(el("div", { class: "result-course", text: record.courseName }));
+        card.appendChild(el("div", { class: "meta", text: `Integral: ${formatCents(record.integralCents)}` }));
+        card.appendChild(el("div", { class: "meta", text: `Bolsa: ${formatCents(record.bolsaCents)}` }));
+        card.appendChild(el("div", { class: "meta", text: `Bolsa + Pontualidade: ${formatCents(record?.bolsaPontualidadeCents?.p10)}` }));
+
+        const copyBtn = el("button", { class: "btn-unit", type: "button", text: "Copiar mensagem" });
+        copyBtn.addEventListener("click", async () => {
+          const ok = await copyText(buildCopyMessage(record));
+          copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
+          setTimeout(() => {
+            copyBtn.textContent = "Copiar mensagem";
+          }, 1200);
+        });
+        card.appendChild(copyBtn);
+        listEl.appendChild(card);
+      }
+    };
+
+    const updateFilters = () => {
+      state.unitKey = unitSelectEl.value;
+      state.modalityKey = modalitySelectEl.value;
+      state.planKey = planSelectEl.value;
+      state.query = inputEl.value;
+      state.unitLabel = PRICE_UNIT_OPTIONS.find((x) => x.key === state.unitKey)?.label || state.unitLabel;
+      renderList();
+    };
+
+    const ensure = () => {
+      if (overlay) return;
+
+      overlay = el("div", { class: "modal-overlay", "data-modal": "prices", "aria-hidden": "true" });
+      const modal = el("div", { class: "modal", role: "dialog", "aria-modal": "true", "aria-label": "Pesquisar preços" });
+      const head = el("div", { class: "modal-head" });
+      titleEl = el("div", { class: "modal-title", text: "Pesquisar preços" });
+      const closeBtn = el("button", { class: "modal-close", type: "button", "aria-label": "Fechar", text: "×" });
+      closeBtn.addEventListener("click", () => close());
+      head.appendChild(titleEl);
+      head.appendChild(closeBtn);
+
+      const body = el("div", { class: "modal-body" });
+      const controls = el("div", { class: "links-controls-grid" });
+
+      unitSelectEl = el("select", { "aria-label": "Unidade" });
+      for (const opt of PRICE_UNIT_OPTIONS) unitSelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
+
+      modalitySelectEl = el("select", { "aria-label": "Modalidade" });
+      for (const opt of PRICE_MODALITY_OPTIONS) modalitySelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
+
+      planSelectEl = el("select", { "aria-label": "Plano" });
+      for (const opt of PRICE_PLAN_OPTIONS) planSelectEl.appendChild(el("option", { value: opt.key, text: opt.label }));
+
+      inputEl = el("input", { class: "search-input", type: "search", placeholder: "Buscar curso...", "aria-label": "Buscar curso" });
+
+      controls.appendChild(unitSelectEl);
+      controls.appendChild(modalitySelectEl);
+      controls.appendChild(planSelectEl);
+      controls.appendChild(inputEl);
+
+      listEl = el("div", { class: "course-grid" });
+      emptyEl = el("div", { class: "empty", text: "Carregando..." });
+
+      body.appendChild(controls);
+      body.appendChild(emptyEl);
+      body.appendChild(listEl);
+      modal.appendChild(head);
+      modal.appendChild(body);
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) close();
+      });
+
+      unitSelectEl.addEventListener("change", updateFilters);
+      modalitySelectEl.addEventListener("change", updateFilters);
+      planSelectEl.addEventListener("change", updateFilters);
+      inputEl.addEventListener("input", debounce(updateFilters, 120));
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && isOpen) close();
+      });
+    };
+
+    const open = async ({ unitKey = "sede", unitTitle = "Manaus", theme = "blue" } = {}) => {
+      ensure();
+      lastFocus = document.activeElement;
+
+      state.unitKey = resolvePriceUnitKey(unitKey);
+      state.unitLabel = unitTitle;
+      state.themeClass = theme;
+
+      titleEl.textContent = `Pesquisar preços — ${state.unitLabel}`;
+      unitSelectEl.value = state.unitKey;
+      modalitySelectEl.value = state.modalityKey;
+      planSelectEl.value = state.planKey;
+      inputEl.value = state.query;
+
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      isOpen = true;
+      scrollLock.lock();
+
+      state.data = await loadPricesOnce();
+      renderList();
+      inputEl.focus();
+    };
+
+    const close = () => {
+      if (!overlay || !isOpen) return;
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      isOpen = false;
+      scrollLock.unlock();
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    };
+
+    return { open, close };
+  })();
+
 
   // -----------------------------
   // Scroll to unit
@@ -897,6 +1154,14 @@ const globalModal = (() => {
         globalModal.open(courseIndex);
         return;
       }
+
+      if (action === "open-prices-menu") {
+        pricesModal.open({
+          unitKey: "sede",
+          unitTitle: "Manaus",
+          theme: "blue",
+        });
+      }
     });
   };
 
@@ -927,6 +1192,11 @@ const globalModal = (() => {
 
       renderApp({ units });
       bindEvents(idx);
+
+      const params = new URLSearchParams(location.search);
+      if (params.get("openPrices") === "1") {
+        pricesModal.open({ unitKey: "sede", unitTitle: "Manaus", theme: "blue" });
+      }
 
 
       runDiagnostics(units, courses, idx);
