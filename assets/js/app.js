@@ -964,15 +964,23 @@ const globalModal = (() => {
 
     const buildCopyMessage = (record) => {
       const p10 = record?.bolsaPontualidadeCents?.p10;
-      return [
-        `Curso: ${record.courseName}`,
-        `Unidade: ${state.unitLabel}`,
-        `Modalidade: ${PRICE_MODALITY_OPTIONS.find((x) => x.key === state.modalityKey)?.label || state.modalityKey}`,
-        `Plano: ${PRICE_PLAN_OPTIONS.find((x) => x.key === state.planKey)?.label || state.planKey}`,
-        `Integral: ${formatCents(record.integralCents)}`,
-        `Bolsa: ${formatCents(record.bolsaCents)}`,
-        `Bolsa + Pontualidade: ${p10 == null ? "-" : formatCents(p10)}`,
-      ].join("\n");
+      const modalityLabel = state.data?.modalities?.[state.modalityKey]?.label || PRICE_MODALITY_OPTIONS.find((x) => x.key === state.modalityKey)?.label || state.modalityKey;
+      const planLabel = state.data?.plans?.[state.planKey]?.label || PRICE_PLAN_OPTIONS.find((x) => x.key === state.planKey)?.label || state.planKey;
+      const unitLabel = state.data?.units?.[state.unitKey]?.label || state.unitLabel || "Tabela Geral";
+
+      const lines = [
+        `🎓 ${record.courseName} - ${modalityLabel} (${planLabel})`,
+        `Curso de ${record.courseName} – Modalidade ${modalityLabel} (${unitLabel})`,
+        `Valor integral: ${formatCents(record.integralCents)}`,
+        `Com bolsa de estudos: ${formatCents(record.bolsaCents)} (mensalidade)`,
+      ];
+
+      if (p10 != null) {
+        lines.push(`Valor com 10% de desconto pontualidade: ${formatCents(p10)}`);
+      }
+
+      lines.push("", "O desconto de pontualidade é adicionado caso você pague até o dia 5 de todo mês, somando assim +10% de desconto à sua bolsa.");
+      return lines.join("\n");
     };
 
     const renderList = () => {
@@ -997,7 +1005,9 @@ const globalModal = (() => {
         card.appendChild(el("div", { class: "result-course prices-course", text: record.courseName }));
         card.appendChild(el("div", { class: "meta prices-meta", text: `Integral: ${formatCents(record.integralCents)}` }));
         card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa: ${formatCents(record.bolsaCents)}` }));
-        card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa + Pontualidade: ${formatCents(record?.bolsaPontualidadeCents?.p10)}` }));
+        if (record?.bolsaPontualidadeCents?.p10 != null) {
+          card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}` }));
+        }
 
         const copyBtn = el("button", { class: "btn-unit prices-copy-btn", type: "button", text: "Copiar mensagem" });
         copyBtn.addEventListener("click", async () => {
@@ -1017,7 +1027,7 @@ const globalModal = (() => {
       state.modalityKey = modalitySelectEl.value;
       state.planKey = planSelectEl.value;
       state.query = inputEl.value;
-      state.unitLabel = PRICE_UNIT_OPTIONS.find((x) => x.key === state.unitKey)?.label || state.unitLabel;
+      state.unitLabel = state.data?.units?.[state.unitKey]?.label || PRICE_UNIT_OPTIONS.find((x) => x.key === state.unitKey)?.label || state.unitLabel;
       renderList();
     };
 
@@ -1097,6 +1107,7 @@ const globalModal = (() => {
       scrollLock.lock();
 
       state.data = await loadPricesOnce();
+      state.unitLabel = state.data?.units?.[state.unitKey]?.label || state.unitLabel;
       renderList();
       inputEl.focus();
     };
