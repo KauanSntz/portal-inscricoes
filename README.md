@@ -10,7 +10,7 @@ Portal de inscrições para a Faculdade Fametro (semestre 2026/1) e sistema inte
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades 
 
 ### 🏠 Página Inicial (`portal.html`)
 - Lista de unidades (SEDE, LESTE, SUL, NORTE, OESTE)
