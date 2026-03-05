@@ -1,0 +1,27 @@
+// auth.js (apenas para atualizar a interface)
+(() => {
+  "use strict";
+
+  auth.onAuthStateChanged((user) => {
+    const ticketsLink = document.getElementById('tickets-link');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if (user) {
+      // Usuário logado: mostra link de tickets e botão sair
+      if (ticketsLink) ticketsLink.style.display = 'inline-block';
+      if (logoutBtn) logoutBtn.style.display = 'inline-block';
+
+      // Aqui você pode também carregar o badge de tickets
+      if (ticketsLink) {
+        const badge = document.getElementById('tickets-badge');
+        if (badge) {
+          // Atualizar badge com contagem (pode ser feito via listener)
+        }
+      }
+    } else {
+      // Não deve acontecer porque as páginas redirecionam, mas por segurança
+      if (ticketsLink) ticketsLink.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+    }
+  });
+})();

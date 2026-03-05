@@ -1,0 +1,4058 @@
+[
+  {
+    "unidade": "SEDE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SEDE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SEDE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SEDE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SEDE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SEDE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SEDE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3126",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3126#/es/inscricoeswizard",
+    "descricao": "3126 VESTIBULAR ONLINE - LESTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3127",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3127#/es/inscricoeswizard",
+    "descricao": "3127 VESTIBULAR ONLINE - LESTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3130",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3130#/es/inscricoeswizard",
+    "descricao": "3130 VESTIBULAR ONLINE - LESTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3132",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3132#/es/inscricoeswizard",
+    "descricao": "3132 MATRÍCULA ONLINE - LESTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3133",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3133#/es/inscricoeswizard",
+    "descricao": "3133 MATRÍCULA ONLINE - LESTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3135",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3135#/es/inscricoeswizard",
+    "descricao": "3135 MATRÍCULA ONLINE - LESTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3137",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3137#/es/inscricoeswizard",
+    "descricao": "3137 VESTIBULAR ONLINE - SUL 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3138",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3138#/es/inscricoeswizard",
+    "descricao": "3138 VESTIBULAR ONLINE - SUL SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3140",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3140#/es/inscricoeswizard",
+    "descricao": "3140 VESTIBULAR ONLINE - SUL SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3142",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3142#/es/inscricoeswizard",
+    "descricao": "3142 MATRÍCULA ONLINE - SUL 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3143",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3143#/es/inscricoeswizard",
+    "descricao": "3143 MATRÍCULA ONLINE - SUL SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3145",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3145#/es/inscricoeswizard",
+    "descricao": "3145 MATRÍCULA ONLINE - SUL SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3146",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3146#/es/inscricoeswizard",
+    "descricao": "3146 VESTIBULAR ONLINE - NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3147",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3147#/es/inscricoeswizard",
+    "descricao": "3147 VESTIBULAR ONLINE - NORTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3149",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3149#/es/inscricoeswizard",
+    "descricao": "3149 VESTIBULAR ONLINE - NORTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3150",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3150#/es/inscricoeswizard",
+    "descricao": "3150 MATRÍCULA ONLINE - NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3151",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3151#/es/inscricoeswizard",
+    "descricao": "3151 MATRÍCULA ONLINE - NORTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3153",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3153#/es/inscricoeswizard",
+    "descricao": "3153 MATRÍCULA ONLINE - NORTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3115",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3115#/es/inscricoeswizard",
+    "descricao": "3115 VESTIBULAR ONLINE - SEDE PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Hibrido",
+    "tipo": "vestibular",
+    "codigo": "3118",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3118#/es/inscricoeswizard",
+    "descricao": "3118 VESTIBULAR ONLINE - SEDE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3120",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3120#/es/inscricoeswizard",
+    "descricao": "3120 MATRÍCULA ONLINE - SEDE PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SEDE",
+    "modalidade": "Hibrido",
+    "tipo": "matricula",
+    "codigo": "3123",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3123#/es/inscricoeswizard",
+    "descricao": "3123 MATRÍCULA ONLINE - SEDE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3125",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3125#/es/inscricoeswizard",
+    "descricao": "3125 VESTIBULAR ONLINE - LESTE PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Hibrido",
+    "tipo": "vestibular",
+    "codigo": "3128",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3128#/es/inscricoeswizard",
+    "descricao": "3128 VESTIBULAR ONLINE - LESTE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3131",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3131#/es/inscricoeswizard",
+    "descricao": "3131 MATRÍCULA ONLINE - LESTE PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "LESTE",
+    "modalidade": "Hibrido",
+    "tipo": "matricula",
+    "codigo": "3134",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3134#/es/inscricoeswizard",
+    "descricao": "3134 MATRÍCULA ONLINE - LESTE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3136",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3136#/es/inscricoeswizard",
+    "descricao": "3136 VESTIBULAR ONLINE - SUL PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Hibrido",
+    "tipo": "vestibular",
+    "codigo": "3139",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3139#/es/inscricoeswizard",
+    "descricao": "3139 VESTIBULAR ONLINE - SUL HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3141",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3141#/es/inscricoeswizard",
+    "descricao": "3141 MATRÍCULA ONLINE - SUL PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SUL",
+    "modalidade": "Hibrido",
+    "tipo": "matricula",
+    "codigo": "3144",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3144#/es/inscricoeswizard",
+    "descricao": "3144 MATRÍCULA ONLINE - SUL HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "Hibrido",
+    "tipo": "vestibular",
+    "codigo": "3148",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3148#/es/inscricoeswizard",
+    "descricao": "3148 VESTIBULAR ONLINE - NORTE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "NORTE",
+    "modalidade": "Hibrido",
+    "tipo": "matricula",
+    "codigo": "3152",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3152#/es/inscricoeswizard",
+    "descricao": "3152 MATRÍCULA ONLINE - NORTE HÍBRIDO - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3154",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3154#/es/inscricoeswizard",
+    "descricao": "3154 VESTIBULAR ONLINE - BOA VISTA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3155",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3155#/es/inscricoeswizard",
+    "descricao": "3155 VESTIBULAR ONLINE - BOA VISTA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3156",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3156#/es/inscricoeswizard",
+    "descricao": "3156 VESTIBULAR ONLINE - BOA VISTA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3157",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3157#/es/inscricoeswizard",
+    "descricao": "3157 MATRÍCULA ONLINE - BOA VISTA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3158",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3158#/es/inscricoeswizard",
+    "descricao": "3158 MATRÍCULA ONLINE - BOA VISTA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3159",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=14&ps=3159#/es/inscricoeswizard",
+    "descricao": "3159 MATRÍCULA ONLINE - BOA VISTA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3161",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3161#/es/inscricoeswizard",
+    "descricao": "3161 VESTIBULAR ONLINE - COARI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3162",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3162#/es/inscricoeswizard",
+    "descricao": "3162 VESTIBULAR ONLINE - COARI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3163",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3163#/es/inscricoeswizard",
+    "descricao": "3163 VESTIBULAR ONLINE - COARI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3164",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3164#/es/inscricoeswizard",
+    "descricao": "3164 MATRÍCULA ONLINE - COARI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3165",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3165#/es/inscricoeswizard",
+    "descricao": "3165 MATRÍCULA ONLINE - COARI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3166",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3166#/es/inscricoeswizard",
+    "descricao": "3166 MATRÍCULA ONLINE - COARI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3169",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3169#/es/inscricoeswizard",
+    "descricao": "3169 VESTIBULAR ONLINE - ITACOATIARA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3170",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3170#/es/inscricoeswizard",
+    "descricao": "3170 VESTIBULAR ONLINE - ITACOATIARA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3171",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3171#/es/inscricoeswizard",
+    "descricao": "3171 VESTIBULAR ONLINE - ITACOATIARA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3173",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=3&ps=3173#/es/inscricoeswizard",
+    "descricao": "3173 MATRÍCULA ONLINE - ITACOATIARA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3174",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=3&ps=3174#/es/inscricoeswizard",
+    "descricao": "3174 MATRÍCULA ONLINE - ITACOATIARA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3175",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=3&ps=3175#/es/inscricoeswizard",
+    "descricao": "3175 MATRÍCULA ONLINE - ITACOATIARA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3176",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3176#/es/inscricoeswizard",
+    "descricao": "3176 VESTIBULAR ONLINE - MANACAPURU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3177",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3177#/es/inscricoeswizard",
+    "descricao": "3177 VESTIBULAR ONLINE - MANACAPURU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3178",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3178#/es/inscricoeswizard",
+    "descricao": "3178 VESTIBULAR ONLINE - MANACAPURU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3179",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3179#/es/inscricoeswizard",
+    "descricao": "3179 MATRÍCULA ONLINE - MANACAPURU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3180",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3180#/es/inscricoeswizard",
+    "descricao": "3180 MATRÍCULA ONLINE - MANACAPURU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3181",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=2&ps=3181#/es/inscricoeswizard",
+    "descricao": "3181 MATRÍCULA ONLINE - MANACAPURU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3182",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3182#/es/inscricoeswizard",
+    "descricao": "3182 VESTIBULAR ONLINE - MANOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3183",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3183#/es/inscricoeswizard",
+    "descricao": "3183 VESTIBULAR ONLINE - MANOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3184",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3184#/es/inscricoeswizard",
+    "descricao": "3184 VESTIBULAR ONLINE - MANOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3185",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3185#/es/inscricoeswizard",
+    "descricao": "3185 MATRÍCULA ONLINE - MANOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3186",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3186#/es/inscricoeswizard",
+    "descricao": "3186 MATRÍCULA ONLINE - MANOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANOA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3187",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3187#/es/inscricoeswizard",
+    "descricao": "3187 MATRÍCULA ONLINE - MANOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3189",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3189#/es/inscricoeswizard",
+    "descricao": "3189 VESTIBULAR ONLINE - PARINTINS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3190",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3190#/es/inscricoeswizard",
+    "descricao": "3190 VESTIBULAR ONLINE - PARINTINS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3191",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3191#/es/inscricoeswizard",
+    "descricao": "3191 VESTIBULAR ONLINE - PARINTINS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3193",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3193#/es/inscricoeswizard",
+    "descricao": "3193 MATRÍCULA ONLINE - PARINTINS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3194",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3194#/es/inscricoeswizard",
+    "descricao": "3194 MATRÍCULA ONLINE - PARINTINS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3195",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3195#/es/inscricoeswizard",
+    "descricao": "3195 MATRÍCULA ONLINE - PARINTINS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3198",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3198#/es/inscricoeswizard",
+    "descricao": "3198 VESTIBULAR ONLINE - SANTARÉM 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3199",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3199#/es/inscricoeswizard",
+    "descricao": "3199 VESTIBULAR ONLINE - SANTARÉM SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3200",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3200#/es/inscricoeswizard",
+    "descricao": "3200 VESTIBULAR ONLINE - SANTARÉM SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3201",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3201#/es/inscricoeswizard",
+    "descricao": "3201 MATRÍCULA ONLINE - SANTARÉM 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3202",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3202#/es/inscricoeswizard",
+    "descricao": "3202 MATRÍCULA ONLINE - SANTARÉM SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTARÉM",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3203",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3203#/es/inscricoeswizard",
+    "descricao": "3203 MATRÍCULA ONLINE - SANTARÉM SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3204",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3204#/es/inscricoeswizard",
+    "descricao": "3204 VESTIBULAR ONLINE - TABATINGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3205",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3205#/es/inscricoeswizard",
+    "descricao": "3205 VESTIBULAR ONLINE - TABATINGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3206",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3206#/es/inscricoeswizard",
+    "descricao": "3206 VESTIBULAR ONLINE - TABATINGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3207",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3207#/es/inscricoeswizard",
+    "descricao": "3207 MATRÍCULA ONLINE - TABATINGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3208",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3208#/es/inscricoeswizard",
+    "descricao": "3208 MATRÍCULA ONLINE - TABATINGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TABATINGA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3209",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=7&ps=3209#/es/inscricoeswizard",
+    "descricao": "3209 MATRÍCULA ONLINE - TABATINGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3211",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3211#/es/inscricoeswizard",
+    "descricao": "3211 VESTIBULAR ONLINE - TEFÉ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3212",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3212#/es/inscricoeswizard",
+    "descricao": "3212 VESTIBULAR ONLINE - TEFÉ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3213",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3213#/es/inscricoeswizard",
+    "descricao": "3213 VESTIBULAR ONLINE - TEFÉ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3214",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3214#/es/inscricoeswizard",
+    "descricao": "3214 MATRÍCULA ONLINE - TEFÉ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3216",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3216#/es/inscricoeswizard",
+    "descricao": "3216 MATRÍCULA ONLINE - TEFÉ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3217",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3217#/es/inscricoeswizard",
+    "descricao": "3217 MATRÍCULA ONLINE - TEFÉ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3160",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3160#/es/inscricoeswizard",
+    "descricao": "3160 VESTIBULAR ONLINE - COARI PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "COARI",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3167",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=5&ps=3167#/es/inscricoeswizard",
+    "descricao": "3167 MATRÍCULA ONLINE - COARI PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3168",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=3&ps=3168#/es/inscricoeswizard",
+    "descricao": "3168 VESTIBULAR ONLINE - ITACOATIARA PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITACOATIARA",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3172",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=3&ps=3172#/es/inscricoeswizard",
+    "descricao": "3172 MATRÍCULA ONLINE - ITACOATIARA PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "55",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=4&f=1&ps=55#/es/inscricoeswizard",
+    "descricao": "55 VESTIBULAR ONLINE - MANACAPURU PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANACAPURU",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "56",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=4&f=1&ps=56#/es/inscricoeswizard",
+    "descricao": "56 MATRÍCULA ONLINE - MANACAPURU PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3188",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3188#/es/inscricoeswizard",
+    "descricao": "3188 VESTIBULAR ONLINE - PARINTINS PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARINTINS",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3192",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=6&ps=3192#/es/inscricoeswizard",
+    "descricao": "3192 MATRÍCULA ONLINE - PARINTINS PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARÁ",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3196",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3196#/es/inscricoeswizard",
+    "descricao": "3196 VESTIBULAR ONLINE - PARÁ PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PARÁ",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3197",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=10&ps=3197#/es/inscricoeswizard",
+    "descricao": "3197 MATRÍCULA ONLINE - PARÁ PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "3210",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3210#/es/inscricoeswizard",
+    "descricao": "3210 VESTIBULAR ONLINE - TEFÉ PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TEFÉ",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "3215",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=4&ps=3215#/es/inscricoeswizard",
+    "descricao": "3215 MATRÍCULA ONLINE - TEFÉ PRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3218",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3218#/es/inscricoeswizard",
+    "descricao": "3218 VESTIBULAR ONLINE - ANORI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3219",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3219#/es/inscricoeswizard",
+    "descricao": "3219 VESTIBULAR ONLINE - ANORI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3220",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3220#/es/inscricoeswizard",
+    "descricao": "3220 VESTIBULAR ONLINE - ANORI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3221",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3221#/es/inscricoeswizard",
+    "descricao": "3221 MATRÍCULA ONLINE - ANORI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3222",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3222#/es/inscricoeswizard",
+    "descricao": "3222 MATRÍCULA ONLINE - ANORI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANORI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3223",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3223#/es/inscricoeswizard",
+    "descricao": "3223 MATRÍCULA ONLINE - ANORI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3224",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3224#/es/inscricoeswizard",
+    "descricao": "3224 VESTIBULAR ONLINE - AUTAZES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3225",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3225#/es/inscricoeswizard",
+    "descricao": "3225 VESTIBULAR ONLINE - AUTAZES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3226",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3226#/es/inscricoeswizard",
+    "descricao": "3226 VESTIBULAR ONLINE - AUTAZES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3227",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3227#/es/inscricoeswizard",
+    "descricao": "3227 MATRÍCULA ONLINE - AUTAZES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3228",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3228#/es/inscricoeswizard",
+    "descricao": "3228 MATRÍCULA ONLINE - AUTAZES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "AUTAZES",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3229",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3229#/es/inscricoeswizard",
+    "descricao": "3229 MATRÍCULA ONLINE - AUTAZES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3230",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3230#/es/inscricoeswizard",
+    "descricao": "3230 VESTIBULAR ONLINE - BARREIRINHA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3231",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3231#/es/inscricoeswizard",
+    "descricao": "3231 VESTIBULAR ONLINE - BARREIRINHA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3232",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3232#/es/inscricoeswizard",
+    "descricao": "3232 VESTIBULAR ONLINE - BARREIRINHA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3233",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3233#/es/inscricoeswizard",
+    "descricao": "3233 MATRÍCULA ONLINE - BARREIRINHA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3234",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3234#/es/inscricoeswizard",
+    "descricao": "3234 MATRÍCULA ONLINE - BARREIRINHA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BARREIRINHA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3235",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3235#/es/inscricoeswizard",
+    "descricao": "3235 MATRÍCULA ONLINE - BARREIRINHA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3236",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3236#/es/inscricoeswizard",
+    "descricao": "3236 VESTIBULAR ONLINE - BERURI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3237",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3237#/es/inscricoeswizard",
+    "descricao": "3237 VESTIBULAR ONLINE - BERURI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3238",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3238#/es/inscricoeswizard",
+    "descricao": "3238 VESTIBULAR ONLINE - BERURI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3239",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3239#/es/inscricoeswizard",
+    "descricao": "3239 MATRÍCULA ONLINE - BERURI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3240",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3240#/es/inscricoeswizard",
+    "descricao": "3240 MATRÍCULA ONLINE - BERURI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BERURI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3241",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3241#/es/inscricoeswizard",
+    "descricao": "3241 MATRÍCULA ONLINE - BERURI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3242",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3242#/es/inscricoeswizard",
+    "descricao": "3242 VESTIBULAR ONLINE - BOA VISTA DO RAMOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3243",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3243#/es/inscricoeswizard",
+    "descricao": "3243 VESTIBULAR ONLINE - BOA VISTA DO RAMOS SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3244",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3244#/es/inscricoeswizard",
+    "descricao": "3244 VESTIBULAR ONLINE - BOA VISTA DO RAMOS SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3245",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3245#/es/inscricoeswizard",
+    "descricao": "3245 MATRÍCULA ONLINE - BOA VISTA DO RAMOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3246",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3246#/es/inscricoeswizard",
+    "descricao": "3246 MATRÍCULA ONLINE - BOA VISTA DO RAMOS SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "BOA VISTA DO RAMOS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3247",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3247#/es/inscricoeswizard",
+    "descricao": "3247 MATRÍCULA ONLINE - BOA VISTA DO RAMOS SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3248",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3248#/es/inscricoeswizard",
+    "descricao": "3248 VESTIBULAR ONLINE - BOCA DO ACRE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3249",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3249#/es/inscricoeswizard",
+    "descricao": "3249 VESTIBULAR ONLINE - BOCA DO ACRE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3250",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3250#/es/inscricoeswizard",
+    "descricao": "3250 VESTIBULAR ONLINE - BOCA DO ACRE SEMIPRESENCIAL FLEX 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3251",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3251#/es/inscricoeswizard",
+    "descricao": "3251 MATRÍCULA ONLINE - BOCA DO ACRE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3252",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3252#/es/inscricoeswizard",
+    "descricao": "3252 MATRÍCULA ONLINE - BOCA DO ACRE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BOCA DO ACRE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3253",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3253#/es/inscricoeswizard",
+    "descricao": "3253 MATRÍCULA ONLINE - BOCA DO ACRE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3254",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3254#/es/inscricoeswizard",
+    "descricao": "3254 VESTIBULAR ONLINE - CAAPIRANGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3255",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3255#/es/inscricoeswizard",
+    "descricao": "3255 VESTIBULAR ONLINE - CAAPIRANGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3256",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3256#/es/inscricoeswizard",
+    "descricao": "3256 VESTIBULAR ONLINE - CAAPIRANGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3257",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3257#/es/inscricoeswizard",
+    "descricao": "3257 MATRÍCULA ONLINE - CAAPIRANGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3258",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3258#/es/inscricoeswizard",
+    "descricao": "3258 MATRÍCULA ONLINE - CAAPIRANGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAAPIRANGA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3259",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3259#/es/inscricoeswizard",
+    "descricao": "3259 MATRÍCULA ONLINE - CAAPIRANGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3260",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3260#/es/inscricoeswizard",
+    "descricao": "3260 VESTIBULAR ONLINE - CAREIRO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3261",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3261#/es/inscricoeswizard",
+    "descricao": "3261 VESTIBULAR ONLINE - CAREIRO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3262",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3262#/es/inscricoeswizard",
+    "descricao": "3262 VESTIBULAR ONLINE - CAREIRO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3263",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3263#/es/inscricoeswizard",
+    "descricao": "3263 MATRÍCULA ONLINE - CAREIRO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3264",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3264#/es/inscricoeswizard",
+    "descricao": "3264 MATRÍCULA ONLINE - CAREIRO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAREIRO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3265",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3265#/es/inscricoeswizard",
+    "descricao": "3265 MATRÍCULA ONLINE - CAREIRO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3266",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3266#/es/inscricoeswizard",
+    "descricao": "3266 VESTIBULAR ONLINE - CODAJÁS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3267",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3267#/es/inscricoeswizard",
+    "descricao": "3267 VESTIBULAR ONLINE - CODAJÁS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3268",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3268#/es/inscricoeswizard",
+    "descricao": "3268 VESTIBULAR ONLINE - CODAJÁS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3269",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3269#/es/inscricoeswizard",
+    "descricao": "3269 MATRÍCULA ONLINE - CODAJÁS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3270",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3270#/es/inscricoeswizard",
+    "descricao": "3270 MATRÍCULA ONLINE - CODAJÁS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CODAJÁS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3271",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3271#/es/inscricoeswizard",
+    "descricao": "3271 MATRÍCULA ONLINE - CODAJÁS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3272",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3272#/es/inscricoeswizard",
+    "descricao": "3272 VESTIBULAR ONLINE - FONTE BOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3273",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3273#/es/inscricoeswizard",
+    "descricao": "3273 VESTIBULAR ONLINE - FONTE BOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3274",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3274#/es/inscricoeswizard",
+    "descricao": "3274 VESTIBULAR ONLINE - FONTE BOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3275",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3275#/es/inscricoeswizard",
+    "descricao": "3275 MATRÍCULA ONLINE - FONTE BOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3276",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3276#/es/inscricoeswizard",
+    "descricao": "3276 MATRÍCULA ONLINE - FONTE BOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FONTE BOA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3277",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3277#/es/inscricoeswizard",
+    "descricao": "3277 MATRÍCULA ONLINE - FONTE BOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3278",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3278#/es/inscricoeswizard",
+    "descricao": "3278 VESTIBULAR ONLINE - IRANDUBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3279",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3279#/es/inscricoeswizard",
+    "descricao": "3279 VESTIBULAR ONLINE - IRANDUBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3280",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3280#/es/inscricoeswizard",
+    "descricao": "3280 VESTIBULAR ONLINE - IRANDUBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3281",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3281#/es/inscricoeswizard",
+    "descricao": "3281 MATRÍCULA ONLINE - IRANDUBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3282",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3282#/es/inscricoeswizard",
+    "descricao": "3282 MATRÍCULA ONLINE - IRANDUBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "IRANDUBA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3283",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3283#/es/inscricoeswizard",
+    "descricao": "3283 MATRÍCULA ONLINE - IRANDUBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3284",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3284#/es/inscricoeswizard",
+    "descricao": "3284 VESTIBULAR ONLINE - MANAQUIRI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3285",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3285#/es/inscricoeswizard",
+    "descricao": "3285 VESTIBULAR ONLINE - MANAQUIRI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3286",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3286#/es/inscricoeswizard",
+    "descricao": "3286 VESTIBULAR ONLINE - MANAQUIRI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3287",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3287#/es/inscricoeswizard",
+    "descricao": "3287 MATRÍCULA ONLINE - MANAQUIRI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3288",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3288#/es/inscricoeswizard",
+    "descricao": "3288 MATRÍCULA ONLINE - MANAQUIRI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANAQUIRI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3289",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3289#/es/inscricoeswizard",
+    "descricao": "3289 MATRÍCULA ONLINE - MANAQUIRI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3290",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3290#/es/inscricoeswizard",
+    "descricao": "3290 VESTIBULAR ONLINE - MANICORÉ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3291",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3291#/es/inscricoeswizard",
+    "descricao": "3291 VESTIBULAR ONLINE - MANICORÉ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3292",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3292#/es/inscricoeswizard",
+    "descricao": "3292 VESTIBULAR ONLINE - MANICORÉ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3293",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3293#/es/inscricoeswizard",
+    "descricao": "3293 MATRÍCULA ONLINE - MANICORÉ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3294",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3294#/es/inscricoeswizard",
+    "descricao": "3294 MATRÍCULA ONLINE - MANICORÉ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MANICORÉ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3295",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3295#/es/inscricoeswizard",
+    "descricao": "3295 MATRÍCULA ONLINE - MANICORÉ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3296",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3296#/es/inscricoeswizard",
+    "descricao": "3296 VESTIBULAR ONLINE - MAUÉS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3297",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3297#/es/inscricoeswizard",
+    "descricao": "3297 VESTIBULAR ONLINE - MAUÉS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3298",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3298#/es/inscricoeswizard",
+    "descricao": "3298 VESTIBULAR ONLINE - MAUÉS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3299",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3299#/es/inscricoeswizard",
+    "descricao": "3299 MATRÍCULA ONLINE - MAUÉS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3300",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3300#/es/inscricoeswizard",
+    "descricao": "3300 MATRÍCULA ONLINE - MAUÉS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MAUÉS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3301",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3301#/es/inscricoeswizard",
+    "descricao": "3301 MATRÍCULA ONLINE - MAUÉS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3302",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3302#/es/inscricoeswizard",
+    "descricao": "3302 VESTIBULAR ONLINE - NOVA OLINDA DO NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3303",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3303#/es/inscricoeswizard",
+    "descricao": "3303 VESTIBULAR ONLINE NOVA OLINDA DO NORTE SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3304",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3304#/es/inscricoeswizard",
+    "descricao": "3304 VESTIBULAR ONLINE - NOVA OLINDA DO NORTE SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3305",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3305#/es/inscricoeswizard",
+    "descricao": "3305 MATRÍCULA ONLINE - NOVA OLINDA DO NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3306",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3306#/es/inscricoeswizard",
+    "descricao": "3306 MATRÍCULA ONLINE NOVA OLINDA DO NORTE SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "NOVA OLINDA DO NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3307",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3307#/es/inscricoeswizard",
+    "descricao": "3307 MATRÍCULA ONLINE - NOVA OLINDA DO NORTE SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3308",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3308#/es/inscricoeswizard",
+    "descricao": "3308 VESTIBULAR ONLINE - NOVO AIRÃO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3309",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3309#/es/inscricoeswizard",
+    "descricao": "3309 VESTIBULAR ONLINE - NOVO AIRÃO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3310",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3310#/es/inscricoeswizard",
+    "descricao": "3310 VESTIBULAR ONLINE - NOVO AIRÃO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3311",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3311#/es/inscricoeswizard",
+    "descricao": "3311 MATRÍCULA ONLINE - NOVO AIRÃO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3312",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3312#/es/inscricoeswizard",
+    "descricao": "3312 MATRÍCULA ONLINE - NOVO AIRÃO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO AIRÃO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3313",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3313#/es/inscricoeswizard",
+    "descricao": "3313 MATRÍCULA ONLINE - NOVO AIRÃO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3314",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3314#/es/inscricoeswizard",
+    "descricao": "3314 VESTIBULAR ONLINE - NOVO ARIPUANÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3315",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3315#/es/inscricoeswizard",
+    "descricao": "3315 VESTIBULAR ONLINE - NOVO ARIPUANÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3316",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3316#/es/inscricoeswizard",
+    "descricao": "3316 VESTIBULAR ONLINE - NOVO ARIPUANÃ SEMIPRESENCIAL FLEX 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3317",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3317#/es/inscricoeswizard",
+    "descricao": "3317 MATRÍCULA ONLINE - NOVO ARIPUANÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3318",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3318#/es/inscricoeswizard",
+    "descricao": "3318 MATRÍCULA ONLINE - NOVO ARIPUANÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO ARIPUANÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3319",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3319#/es/inscricoeswizard",
+    "descricao": "3319 MATRÍCULA ONLINE - NOVO ARIPUANÃ SEMIPRESENCIAL FLEX 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3320",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3320#/es/inscricoeswizard",
+    "descricao": "3320 VESTIBULAR ONLINE - ÓBIDOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3321",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3321#/es/inscricoeswizard",
+    "descricao": "3321 VESTIBULAR ONLINE - ÓBIDOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3322",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3322#/es/inscricoeswizard",
+    "descricao": "3322 VESTIBULAR ONLINE - ÓBIDOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3323",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3323#/es/inscricoeswizard",
+    "descricao": "3323 MATRÍCULA ONLINE - ÓBIDOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3324",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3324#/es/inscricoeswizard",
+    "descricao": "3324 MATRÍCULA ONLINE - ÓBIDOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ÓBIDOS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3325",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3325#/es/inscricoeswizard",
+    "descricao": "3325 MATRÍCULA ONLINE - ÓBIDOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3326",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3326#/es/inscricoeswizard",
+    "descricao": "3326 VESTIBULAR ONLINE - ORIXIMINÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3327",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3327#/es/inscricoeswizard",
+    "descricao": "3327 VESTIBULAR ONLINE - ORIXIMINÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3328",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3328#/es/inscricoeswizard",
+    "descricao": "3328 VESTIBULAR ONLINE - ORIXIMINÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3329",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3329#/es/inscricoeswizard",
+    "descricao": "3329 MATRÍCULA ONLINE - ORIXIMINÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3330",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3330#/es/inscricoeswizard",
+    "descricao": "3330 MATRÍCULA ONLINE - ORIXIMINÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ORIXIMINÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3331",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3331#/es/inscricoeswizard",
+    "descricao": "3331 MATRÍCULA ONLINE - ORIXIMINÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3332",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3332#/es/inscricoeswizard",
+    "descricao": "3332 VESTIBULAR ONLINE - PRESIDENTE FIGUEIREDO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3333",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3333#/es/inscricoeswizard",
+    "descricao": "3333 VESTIBULAR ONLINE PRESIDENTE FIGUEIREDO SEMIPRESENCIAL2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3334",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3334#/es/inscricoeswizard",
+    "descricao": "3334 VESTIBULAR ONLINE - PRESIDENTE FIGUEIREDO SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3335",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3335#/es/inscricoeswizard",
+    "descricao": "3335 MATRÍCULA ONLINE - PRESIDENTE FIGUEIREDO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3336",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3336#/es/inscricoeswizard",
+    "descricao": "3336 MATRÍCULA ONLINE PRESIDENTE FIGUEIREDO SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "PRESIDENTE FIGUEIREDO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3337",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3337#/es/inscricoeswizard",
+    "descricao": "3337 MATRÍCULA ONLINE - PRESIDENTE FIGUEIREDO SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3338",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3338#/es/inscricoeswizard",
+    "descricao": "3338 VESTIBULAR ONLINE - RIO PRETO DA EVA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3339",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3339#/es/inscricoeswizard",
+    "descricao": "3339 VESTIBULAR ONLINE - RIO PRETO DA EVA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3340",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3340#/es/inscricoeswizard",
+    "descricao": "3340 VESTIBULAR ONLINE RIO PRETO DA EVA SEMI-FLEX 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3341",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3341#/es/inscricoeswizard",
+    "descricao": "3341 MATRÍCULA ONLINE - RIO PRETO DA EVA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3342",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3342#/es/inscricoeswizard",
+    "descricao": "3342 MATRÍCULA ONLINE - RIO PRETO DA EVA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "RIO PRETO DA EVA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3343",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3343#/es/inscricoeswizard",
+    "descricao": "3343 MATRÍCULA ONLINE RIO PRETO DA EVA SEMI-FLEX 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3344",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3344#/es/inscricoeswizard",
+    "descricao": "3344 VESTIBULAR ONLINE - SANTO ANTÔNIO DO IÇÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3345",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3345#/es/inscricoeswizard",
+    "descricao": "3345 VESTIBULAR ONLINE SANTO ANTÔNIO DO IÇÁ SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3346",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3346#/es/inscricoeswizard",
+    "descricao": "3346 VESTIBULAR ONLINE - SANTO ANTÔNIO DO IÇÁ SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3347",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3347#/es/inscricoeswizard",
+    "descricao": "3347 MATRÍCULA ONLINE - SANTO ANTÔNIO DO IÇÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3348",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3348#/es/inscricoeswizard",
+    "descricao": "3348 MATRÍCULA ONLINE SANTO ANTÔNIO DO IÇÁ SEMIPRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "SANTO ANTÔNIO DO IÇÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3349",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3349#/es/inscricoeswizard",
+    "descricao": "3349 MATRÍCULA ONLINE - SANTO ANTÔNIO DO IÇÁ SEMI-FLEX - 2026/1"
+  },
+  {
+    "unidade": "TAPAUÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3350",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3350#/es/inscricoeswizard",
+    "descricao": "3350 VESTIBULAR ONLINE - TAPAUÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TAPAUÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3352",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3352#/es/inscricoeswizard",
+    "descricao": "3352 VESTIBULAR ONLINE - TAPAUÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TAPAUÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3353",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3353#/es/inscricoeswizard",
+    "descricao": "3353 MATRÍCULA ONLINE - TAPAUÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TAPAUÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3354",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3354#/es/inscricoeswizard",
+    "descricao": "3354 MATRÍCULA ONLINE - TAPAUÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TAPAUÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3355",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3355#/es/inscricoeswizard",
+    "descricao": "3355 MATRÍCULA ONLINE - TAPAUÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3356",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3356#/es/inscricoeswizard",
+    "descricao": "3356 VESTIBULAR ONLINE - TERRA SANTA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3357",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3357#/es/inscricoeswizard",
+    "descricao": "3357 VESTIBULAR ONLINE - TERRA SANTA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3358",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3358#/es/inscricoeswizard",
+    "descricao": "3358 VESTIBULAR ONLINE - TERRA SANTA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3359",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3359#/es/inscricoeswizard",
+    "descricao": "3359 MATRÍCULA ONLINE - TERRA SANTA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3360",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3360#/es/inscricoeswizard",
+    "descricao": "3360 MATRÍCULA ONLINE - TERRA SANTA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TERRA SANTA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3361",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3361#/es/inscricoeswizard",
+    "descricao": "3361 MATRÍCULA ONLINE - TERRA SANTA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3362",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3362#/es/inscricoeswizard",
+    "descricao": "3362 VESTIBULAR ONLINE - URUCARÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3363",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3363#/es/inscricoeswizard",
+    "descricao": "3363 VESTIBULAR ONLINE - URUCARÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3364",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3364#/es/inscricoeswizard",
+    "descricao": "3364 VESTIBULAR ONLINE - URUCARÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3365",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3365#/es/inscricoeswizard",
+    "descricao": "3365 MATRÍCULA ONLINE - URUCARÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3366",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3366#/es/inscricoeswizard",
+    "descricao": "3366 MATRÍCULA ONLINE - URUCARÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "URUCARÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3367",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=15&ps=3367#/es/inscricoeswizard",
+    "descricao": "3367 MATRÍCULA ONLINE - URUCARÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ANAPÚ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ANAPÚ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ANAPÚ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ANAPÚ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ANAPÚ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ANAPÚ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ANAPÚ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - BENJAMIN CONSTANT 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - BENJAMIN CONSTANT 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - BENJAMIN CONSTANT SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - BENJAMIN CONSTANT SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - BENJAMIN CONSTANT SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BENJAMIN CONSTANT",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - BENJAMIN CONSTANT SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ALTAMIRA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ALTAMIRA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ALTAMIRA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ALTAMIRA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ALTAMIRA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ALTAMIRA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ALTAMIRA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - AMATURÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - AMATURÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - AMATURÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - AMATURÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - AMATURÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "AMATURÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - AMATURÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - APUÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - APUÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - APUÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - APUÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - APUÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "APUÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - APUÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ATALAIA DO NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ATALAIA DO NORTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ATALAIA DO NORTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ATALAIA DO NORTE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ATALAIA DO NORTE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ATALAIA DO NORTE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ATALAIA DO NORTE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - BARCELOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - BARCELOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - BARCELOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - BARCELOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - BARCELOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BARCELOS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - BARCELOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - BAURU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - BAURU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - BAURU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - BAURU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - BAURU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BAURU",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - BAURU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - BORBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - BORBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - BORBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - BORBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - BORBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "BORBA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - BORBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - CAMPINA GRANDE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - CAMPINA GRANDE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - CAMPINA GRANDE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - CAMPINA GRANDE 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - CAMPINA GRANDE SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAMPINA GRANDE",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - CAMPINA GRANDE SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - CAMPOS DOS GOYTACAZES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - CAMPOS DOS GOYTACAZES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - CAMPOS DOS GOYTACAZES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - CAMPOS DOS GOYTACAZES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - CAMPOS DOS GOYTACAZES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CAMPOS DOS GOYTACAZES",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - CAMPOS DOS GOYTACAZES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - CANUTAMA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - CANUTAMA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - CANUTAMA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - CANUTAMA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - CANUTAMA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CANUTAMA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - CANUTAMA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - DIADEMA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - DIADEMA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - DIADEMA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - DIADEMA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - DIADEMA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "DIADEMA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - DIADEMA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - DOURADOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - DOURADOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - DOURADOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - DOURADOS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - DOURADOS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "DOURADOS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - DOURADOS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - FARO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - FARO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - FARO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - FARO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - FARO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FARO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - FARO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - FORTALEZA - JOAQUIM TÁVORA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - FORTALEZA - JOAQUIM TÁVORA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - FORTALEZA - JOAQUIM TÁVORA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - FORTALEZA - JOAQUIM TÁVORA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - FORTALEZA - JOAQUIM TÁVORA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "FORTALEZA - JOAQUIM TÁVORA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - FORTALEZA - JOAQUIM TÁVORA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - HUMAITÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - HUMAITÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - HUMAITÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - HUMAITÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - HUMAITÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "HUMAITÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - HUMAITÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - IAÇU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - IAÇU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - IAÇU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - IAÇU 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - IAÇU SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "IAÇU",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - IAÇU SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ITAJUBÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ITAJUBÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ITAJUBÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ITAJUBÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ITAJUBÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAJUBÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ITAJUBÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ITAMARATI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ITAMARATI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ITAMARATI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ITAMARATI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ITAMARATI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAMARATI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ITAMARATI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ITAPIRANGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ITAPIRANGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ITAPIRANGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ITAPIRANGA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ITAPIRANGA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAPIRANGA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ITAPIRANGA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - JAPURÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - JAPURÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - JAPURÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - JAPURÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - JAPURÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JAPURÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - JAPURÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - JAÚ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - JAÚ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - JAÚ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - JAÚ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - JAÚ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JAÚ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - JAÚ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - JOÃO PESSOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - JOÃO PESSOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - JOÃO PESSOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - JOÃO PESSOA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - JOÃO PESSOA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JOÃO PESSOA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - JOÃO PESSOA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - JURUTI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - JURUTI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - JURUTI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - JURUTI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - JURUTI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JURUTI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - JURUTI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - JUTAÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - JUTAÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - JUTAÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - JUTAÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - JUTAÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "JUTAÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - JUTAÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - COMPENSA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - COMPENSA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - COMPENSA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - COMPENSA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - COMPENSA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "COMPENSA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - COMPENSA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - MARAÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - MARAÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - MARAÃ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - MARAÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - MARAÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "MARAÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - MARAÃ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - NHAMUNDÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - NHAMUNDÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - NHAMUNDÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - NHAMUNDÁ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - NHAMUNDÁ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NHAMUNDÁ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - NHAMUNDÁ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - NOVO REMANSO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - NOVO REMANSO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - NOVO REMANSO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - NOVO REMANSO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - NOVO REMANSO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "NOVO REMANSO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - NOVO REMANSO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - PAUINÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - PAUINÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - PAUINÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - PAUINÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - PAUINÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PAUINÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - PAUINÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - PORTO DE MOZ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - PORTO DE MOZ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - PORTO DE MOZ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - PORTO DE MOZ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - PORTO DE MOZ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "PORTO DE MOZ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - PORTO DE MOZ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SANTA ISABEL DO RIO NEGRO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SANTA ISABEL DO RIO NEGRO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SANTA ISABEL DO RIO NEGRO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SANTA ISABEL DO RIO NEGRO 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SANTA ISABEL DO RIO NEGRO SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTA ISABEL DO RIO NEGRO",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SANTA ISABEL DO RIO NEGRO SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SANTANA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SANTANA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SANTANA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SANTANA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SANTANA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SANTANA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SANTANA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SÃO GABRIEL DA CACHOEIRA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SÃO GABRIEL DA CACHOEIRA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SÃO GABRIEL DA CACHOEIRA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SÃO GABRIEL DA CACHOEIRA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SÃO GABRIEL DA CACHOEIRA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO GABRIEL DA CACHOEIRA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SÃO GABRIEL DA CACHOEIRA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SÃO PAULO DE OLIVENÇA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SÃO PAULO DE OLIVENÇA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SÃO PAULO DE OLIVENÇA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SÃO PAULO DE OLIVENÇA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SÃO PAULO DE OLIVENÇA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO PAULO DE OLIVENÇA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SÃO PAULO DE OLIVENÇA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SÃO SEBASTIÃO DO UATUMÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SÃO SEBASTIÃO DO UATUMÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SÃO SEBASTIÃO DO UATUMÃ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SÃO SEBASTIÃO DO UATUMÃ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SÃO SEBASTIÃO DO UATUMÃ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SÃO SEBASTIÃO DO UATUMÃ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SÃO SEBASTIÃO DO UATUMÃ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - SILVES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - SILVES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - SILVES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - SILVES 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - SILVES SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "SILVES",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - SILVES SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - TONANTINS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - TONANTINS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - TONANTINS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - TONANTINS 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - TONANTINS SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "TONANTINS",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - TONANTINS SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - URUCURITUBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - URUCURITUBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - URUCURITUBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - URUCURITUBA 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - URUCURITUBA SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "URUCURITUBA",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - URUCURITUBA SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - CARAUARI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - CARAUARI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - CARAUARI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - CARAUARI 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - CARAUARI SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "CARAUARI",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - CARAUARI SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "EAD",
+    "tipo": "vestibular",
+    "codigo": "3116",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3116#/es/inscricoeswizard",
+    "descricao": "3116 VESTIBULAR ONLINE - ITAJAÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "vestibular",
+    "codigo": "3117",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3117#/es/inscricoeswizard",
+    "descricao": "3117 VESTIBULAR ONLINE - ITAJAÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "vestibular",
+    "codigo": "3119",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3119#/es/inscricoeswizard",
+    "descricao": "3119 VESTIBULAR ONLINE - ITAJAÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "EAD",
+    "tipo": "matricula",
+    "codigo": "3121",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3121#/es/inscricoeswizard",
+    "descricao": "3121 MATRÍCULA ONLINE - ITAJAÍ 100% EAD - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "Semipresencial",
+    "tipo": "matricula",
+    "codigo": "3122",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3122#/es/inscricoeswizard",
+    "descricao": "3122 MATRÍCULA ONLINE - ITAJAÍ SEMIPRESENCIAL - 2026/1"
+  },
+  {
+    "unidade": "ITAJAÍ",
+    "modalidade": "SemiFlex",
+    "tipo": "matricula",
+    "codigo": "3124",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=3124#/es/inscricoeswizard",
+    "descricao": "3124 MATRÍCULA ONLINE - ITAJAÍ SEMIPRESENCIAL FLEX - 2026/1"
+  },
+  {
+    "unidade": "FATEC - ZONA NORTE",
+    "modalidade": "Presencial",
+    "tipo": "matricula",
+    "codigo": "325",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML//web//app/Edu/PortalProcessoSeletivo/?c=3&f=1&ps=325#/es/inscricoeswizard/dados-basicos",
+    "descricao": "325 MATRÍCULA ONLINE - NORTE PRESENCIAL 2026/1"
+  },
+  {
+    "unidade": "FATEC - ZONA NORTE",
+    "modalidade": "Presencial",
+    "tipo": "vestibular",
+    "codigo": "326",
+    "url": "https://inscricao.fametro.edu.br/FrameHTML//web//app/Edu/PortalProcessoSeletivo/?c=3&f=1&ps=326#/es/inscricoeswizard/dados-basicos",
+    "descricao": "326 VESTIBULAR ONLINE - NORTE PRESENCIAL - 2026/1"
+  }
+]

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Gerenciar Usuários</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <div class="top-stripe" aria-hidden="true"></div>
+
+  <main class="container app-shell">
+    <!-- HEADER com menu hambúrguer -->
+    <header class="site-header">
+      <div class="header-row">
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+        <div>
+          <h1>Gerenciar Usuários</h1>
+          <p class="site-subtitle">Apenas super administradores</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- MENU LATERAL -->
+    <div class="side-menu" id="sideMenu">
+      <div class="side-menu-header">
+        <button class="menu-close" id="menuClose">✕</button>
+      </div>
+      <nav class="side-menu-nav">
+        <a class="menu-link" href="./portal.html">Portal</a>
+        <a class="menu-link" href="./links.html">Central de Links</a>
+        <button class="menu-link" type="button" data-action="open-global-search">Pesquisar cursos</button>
+        <button class="menu-link" type="button" data-action="open-prices-menu">Pesquisar preços</button>
+
+        <!-- Submenu Informações -->
+        <div class="menu-item-with-submenu">
+          <button class="menu-link submenu-toggle">
+            Informações <span class="arrow">▼</span>
+          </button>
+          <div class="submenu">
+            <button class="menu-link submenu-link" data-action="open-setores">Setores</button>
+            <button class="menu-link submenu-link" data-action="open-coordenadores">Coordenação</button>
+          </div>
+        </div>
+
+        <!-- Submenu Tema -->
+        <div class="menu-item-with-submenu">
+          <button class="menu-link submenu-toggle">
+            Tema <span class="arrow">▼</span>
+          </button>
+          <div class="submenu">
+            <button class="menu-link submenu-link theme-option" data-theme="blue">Padrão</button>
+            <button class="menu-link submenu-link theme-option" data-theme="pink">Rosa</button>
+            <button class="menu-link submenu-link theme-option" data-theme="red">Vermelho</button>
+            <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
+            <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
+            <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
+          </div>
+        </div>
+
+        <a class="menu-link" href="./tickets.html" id="tickets-link" style="display:none;">
+          Tickets 
+          <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
+          <span id="tickets-andamento-badge" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+        </a>
+
+        <!-- Botão Sair -->
+        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
+
+        <!-- PERFIL DO USUÁRIO -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+          <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <span class="user-email" id="user-email"></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- NAVEGAÇÃO SUPERIOR -->
+    <nav class="app-nav" aria-label="Navegação principal">
+      <div class="nav-left">
+        <a class="btn btn--nav" href="./portal.html">Portal</a>
+        <a class="btn btn--nav" href="./links.html">Central de Links</a>
+        <a class="btn btn--nav" href="./tickets.html">Tickets</a>
+        <a class="btn btn--nav is-active" href="./admin-users.html">Admin</a>
+        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+          <span class="mode-text">Modo</span>
+          <span class="mode-icon">🌙</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Lista de usuários -->
+    <div id="users-list" class="links-groups"></div>
+    <div id="users-empty" class="empty" hidden>Nenhum usuário encontrado.</div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
+      authDomain: "portal-inscricoes-tickets.firebaseapp.com",
+      projectId: "portal-inscricoes-tickets",
+      storageBucket: "portal-inscricoes-tickets.firebasestorage.app",
+      messagingSenderId: "364717584125",
+      appId: "1:364717584125:web:d7099acf6391325c7cd894",
+      measurementId: "G-DW1WGEE9FS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => console.log('✅ Persistência LOCAL definida em admin'))
+      .catch(error => console.error('❌ Erro na persistência:', error));
+
+    let currentUser = null;
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = './index.html';
+        return;
+      }
+
+      try {
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (!doc.exists) {
+          alert('Perfil não encontrado.');
+          auth.signOut();
+          window.location.href = './index.html';
+          return;
+        }
+
+        currentUser = { uid: user.uid, ...doc.data() };
+
+        if (currentUser.tipo !== 'super_admin') {
+          alert('Acesso negado.');
+          window.location.href = './portal.html';
+          return;
+        }
+
+        // Mostrar botões de logout e perfil
+        const logoutBtnNav = document.getElementById('logout-btn-nav');
+        const logoutBtnMenu = document.getElementById('logout-btn-menu');
+        if (logoutBtnNav) logoutBtnNav.style.display = 'inline-block';
+        if (logoutBtnMenu) logoutBtnMenu.style.display = 'inline-block';
+
+        // Preencher perfil
+        const userProfile = document.getElementById('user-profile');
+        const userNameSpan = document.getElementById('user-name');
+        const userEmailSpan = document.getElementById('user-email');
+        if (userProfile && userNameSpan && userEmailSpan) {
+          userNameSpan.textContent = currentUser.nome || 'Usuário';
+          userEmailSpan.textContent = currentUser.email || '';
+          userProfile.style.display = 'flex';
+        }
+
+        carregarUsuarios();
+      } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        window.location.href = './index.html';
+      }
+    });
+
+    async function carregarUsuarios() {
+      const snapshot = await db.collection('users').get();
+      const users = [];
+      snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+      renderUsers(users);
+    }
+
+    function renderUsers(users) {
+      const container = document.getElementById('users-list');
+      const empty = document.getElementById('users-empty');
+      container.innerHTML = '';
+      if (users.length === 0) {
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      users.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+      users.forEach(user => {
+        const isSelf = user.id === currentUser.uid;
+        const card = document.createElement('article');
+        card.className = 'unit-block';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="unit-group__title" style="margin-bottom:0;">${user.nome || 'Sem nome'}</h3>
+            <span class="badge" style="background:${user.tipo === 'super_admin' ? '#7c3aed' : user.tipo === 'admin' ? '#2563eb' : '#6b7280'}">${user.tipo || 'comum'}</span>
+          </div>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>UID:</strong> <code>${user.id}</code></p>
+          <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
+            <select class="search-input" id="select-${user.id}" style="width:auto;" ${isSelf ? 'disabled' : ''}>
+              <option value="comum" ${user.tipo === 'comum' ? 'selected' : ''}>Comum</option>
+              <option value="admin" ${user.tipo === 'admin' ? 'selected' : ''}>Admin</option>
+              <option value="super_admin" ${user.tipo === 'super_admin' ? 'selected' : ''}>Super Admin</option>
+            </select>
+            <button class="btn" onclick="alterarTipo('${user.id}')" ${isSelf ? 'disabled' : ''}>Salvar</button>
+            ${isSelf ? '<span style="color: #dc2626; font-size:0.8rem;">(você)</span>' : ''}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.alterarTipo = async (uid) => {
+      const select = document.getElementById(`select-${uid}`);
+      const novoTipo = select.value;
+      if (!confirm(`Tem certeza que deseja alterar o tipo deste usuário para "${novoTipo}"?`)) return;
+      try {
+        await db.collection('users').doc(uid).update({ tipo: novoTipo });
+        alert('Tipo alterado com sucesso!');
+        carregarUsuarios();
+      } catch (error) {
+        alert('Erro ao alterar tipo: ' + error.message);
+      }
+    };
+
+    window.logout = () => {
+      auth.signOut().then(() => {
+        window.location.href = './index.html';
+      });
+    };
+  </script>
+
+  <!-- Scripts -->
+  <script src="./assets/js/menu.js"></script>
+  <script src="./assets/js/dark-mode.js"></script>
+  <script src="./assets/js/notificacoes.js"></script>
+</body>
+</html>

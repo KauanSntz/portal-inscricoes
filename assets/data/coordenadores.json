@@ -1,0 +1,360 @@
+[
+  {
+    "unidade": "Sede",
+    "coordenador": "Aline Mary",
+    "cursos": [
+      "Análise e Desenvolvimento de Sistemas",
+      "Sistema de Informação",
+      "Engenharia de Software"
+    ],
+    "contato": "92 9112-9847",
+    "email": "aline.melo@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "André Fernandes",
+    "cursos": [
+      "Design Gráfico"
+    ],
+    "contato": "99355-7151",
+    "email": "andre.souza@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Elizandro Aparecido",
+    "cursos": [
+      "Pedagogia"
+    ],
+    "contato": "",
+    "email": "elizandro.santos@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Fabricio de Amorim Rodrigues",
+    "cursos": [
+      "Engenharia Civil"
+    ],
+    "contato": "92 8156-0300",
+    "email": "fabricio.rodrigues@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Jose Roberto Lira Pinto Jr",
+    "cursos": [
+      "Administração",
+      "Recursos Humanos",
+      "Gestão da Qualidade",
+      "Marketing",
+      "Logística"
+    ],
+    "contato": "98853-0819",
+    "email": "coord.gestoes@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Leila Ronize",
+    "cursos": [
+      "Jornalismo"
+    ],
+    "contato": "98146-4672",
+    "email": "leila.moraes@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Livia da Silva Oliveira",
+    "cursos": [
+      "Engenharia Ambiental",
+      "Engenharia Elétrica",
+      "Engenharia Mecânica",
+      "Engenharia de Produção"
+    ],
+    "contato": "99613-0461",
+    "email": "livia.oliveira@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Pablo Augusto da Paz Elleres",
+    "cursos": [
+      "Engenharia da Computação"
+    ],
+    "contato": "92 9351-3031",
+    "email": "pablo.elleres@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Winston Teixeira",
+    "cursos": [
+      "Direito"
+    ],
+    "contato": "92 8221-9836",
+    "email": "winston.teixeira@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Thamyris Souza",
+    "cursos": [
+      "Serviço Social"
+    ],
+    "contato": "991685148",
+    "email": "thamirys.silva@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ulli Toledo",
+    "cursos": [
+      "Arquitetura e Urbanismo"
+    ],
+    "contato": "98191-5646",
+    "email": "ulli.toledo@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Zuila Paulino",
+    "cursos": [
+      "Ciências Contábeis"
+    ],
+    "contato": "98273-0572",
+    "email": "zuila.cavalcante@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Wellington Mota Gama",
+    "cursos": [
+      "Biomedicina"
+    ],
+    "contato": "99311-8080",
+    "email": "coord.biomedicina@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Kamila da Costa Barros",
+    "cursos": [
+      "Estética e Cosmética"
+    ],
+    "contato": "98827-0628",
+    "email": "coord.estetica@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Márcia Martins",
+    "cursos": [
+      "Gastronomia"
+    ],
+    "contato": "98197-6313",
+    "email": "coord.gastronomia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Genilda de Oliveira Cascaes",
+    "cursos": [
+      "Radiologia"
+    ],
+    "contato": "99309-8931",
+    "email": "coord.radiologia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Cinamor Pessoa",
+    "cursos": [
+      "Segurança do Trabalho"
+    ],
+    "contato": "98474-5056",
+    "email": "coord.segtrab@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ticiana Boh da Costa",
+    "cursos": [
+      "Educação Física"
+    ],
+    "contato": "98129-5453",
+    "email": "coord.edfisica@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Karine Comb",
+    "cursos": [
+      "Enfermagem"
+    ],
+    "contato": "99275-6272",
+    "email": "coord.enfermagem@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Jonathas Wellington",
+    "cursos": [
+      "Farmácia"
+    ],
+    "contato": "99233-3944",
+    "email": "coord.farmacia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ilkenison Pinheiro Queiroz",
+    "cursos": [
+      "Fisioterapia"
+    ],
+    "contato": "98848-4745",
+    "email": "coord.fisioterapia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Mario Henrique Falcao Mouzinho",
+    "cursos": [
+      "Fonoaudiologia"
+    ],
+    "contato": "98211-2860",
+    "email": "coord.fonoaudiologia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Marina Brolio",
+    "cursos": [
+      "Medicina Veterinária"
+    ],
+    "contato": "98406-5672",
+    "email": "coord.medveterinaria@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ana Rita Gaia",
+    "cursos": [
+      "Nutrição"
+    ],
+    "contato": "98203-3043",
+    "email": "coord.nutricao@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Karina Barbosa",
+    "cursos": [
+      "Odontologia"
+    ],
+    "contato": "98247-8357",
+    "email": "coord.odontologia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Estephania de Lima Oliveira",
+    "cursos": [
+      "Psicologia"
+    ],
+    "contato": "98542-1939",
+    "email": "coord.psicologia@fametro.edu.br"
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ilkenison Pinheiro Queiroz",
+    "cursos": [
+      "Terapia Ocupacional"
+    ],
+    "contato": "98848-4745",
+    "email": null
+  },
+  {
+    "unidade": "Sede",
+    "coordenador": "Ilkenison Pinheiro Queiroz",
+    "cursos": [
+      "Quiropraxia"
+    ],
+    "contato": "98848-4745",
+    "email": null
+  },
+  {
+    "unidade": "Zona Leste",
+    "coordenador": "Rejane Flores da Costa",
+    "cursos": [
+      "Administração",
+      "Recursos Humanos",
+      "Gestão da Qualidade",
+      "Marketing",
+      "Logística"
+    ],
+    "contato": "99243-8226",
+    "email": "rejane.costa@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Leste",
+    "coordenador": "Ana Rosa L Celicio",
+    "cursos": [
+      "Sistema de Informação",
+      "Design Gráfico",
+      "Engenharia Elétrica"
+    ],
+    "contato": "98460-0081",
+    "email": "anarosa.celicio@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Leste",
+    "coordenador": "Ana Cristina Cruz Pinto",
+    "cursos": [
+      "Pedagogia"
+    ],
+    "contato": "(92)98222-4957",
+    "email": "ana.cruz@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Leste",
+    "coordenador": "Mauro Augusto Ponce de Leão Braga",
+    "cursos": [
+      "Direito"
+    ],
+    "contato": "92 99199-8715",
+    "email": "mauro.braga@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Norte",
+    "coordenador": "Ygor Leite",
+    "cursos": [
+      "Administração",
+      "Ciências Contábeis",
+      "Recursos Humanos",
+      "Gestão da Qualidade",
+      "Logística"
+    ],
+    "contato": "98188-8207",
+    "email": "coordenacao.zn@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Norte",
+    "coordenador": "Eduardo Gorge",
+    "cursos": [
+      "Direito"
+    ],
+    "contato": "92 8165-7748",
+    "email": "eduardo.junior@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Norte",
+    "coordenador": "João Luiz",
+    "cursos": [
+      "Pedagogia"
+    ],
+    "contato": "92 9292-1780",
+    "email": "joao.nascimento@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Sul",
+    "coordenador": "Mônica Nazaré Picanço Dias",
+    "cursos": [
+      "Direito"
+    ],
+    "contato": "92 8124-0019",
+    "email": "monica.dias@fametro.edu.br"
+  },
+  {
+    "unidade": "Zona Sul",
+    "coordenador": "Rosy Jane Holanda de Souza",
+    "cursos": [
+      "Administração",
+      "Logística",
+      "Marketing",
+      "Ciências Contábeis",
+      "Recursos Humanos",
+      "Engenharia Mecânica",
+      "Pedagogia"
+    ],
+    "contato": "092 99154 0210",
+    "email": "rosy.souza@fametro.edu.br"
+  }
+]
