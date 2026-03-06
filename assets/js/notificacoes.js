@@ -53,6 +53,9 @@
     audio.play().catch(e => console.log('⚠️ Autoplay bloqueado:', e));
   }
 
+  // Referência para a registration do service worker
+  let swRegistration = null;
+
   // Função principal de verificação
   async function verificarNotificacoes(user) {
     if (!user) return;
@@ -61,7 +64,6 @@
     const db = firebase.firestore();
 
     // ========== 1. Verificar novos tickets ABERTOS (para admins) ==========
-    // Busca o tipo do usuário
     const userDoc = await db.collection('users').doc(user.uid).get();
     const userTipo = userDoc.data()?.tipo;
 
@@ -69,26 +71,30 @@
       const abertosSnap = await db.collection('tickets')
         .where('status', '==', 'aberto')
         .orderBy('criadoEm', 'desc')
-        .limit(5) // busca os últimos 5 para evitar muitas leituras
+        .limit(5)
         .get();
 
       abertosSnap.forEach(doc => {
         const ticketId = doc.id;
 
-        // Se ainda não notificamos este ticket
         if (!notificadosAbertos.has(ticketId)) {
           notificadosAbertos.add(ticketId);
 
-          // Exibe notificação
-          new Notification('🎫 Novo Ticket Aberto', {
-            body: `Ticket #${ticketId.slice(0,6)} - ${doc.data().problema.substring(0,50)}...`,
-            icon: '/assets/icons/icon-192x192.png', // opcional
-            silent: false
-          });
+          // Usa showNotification se disponível, senão fallback para Notification
+          if (swRegistration) {
+            swRegistration.showNotification('🎫 Novo Ticket Aberto', {
+              body: `Ticket #${ticketId.slice(0,6)} - ${doc.data().problema.substring(0,50)}...`,
+              silent: false,
+              tag: ticketId
+            });
+          } else {
+            new Notification('🎫 Novo Ticket Aberto', {
+              body: `Ticket #${ticketId.slice(0,6)} - ${doc.data().problema.substring(0,50)}...`,
+              silent: false
+            });
+          }
 
-          // Toca o som
           tocarSom();
-
           console.log('🔔 Notificação de abertura enviada', ticketId);
         }
       });
@@ -108,14 +114,20 @@
       if (!notificadosConcluidos.has(ticketId)) {
         notificadosConcluidos.add(ticketId);
 
-        new Notification('✅ Ticket Concluído', {
-          body: `Seu ticket #${ticketId.slice(0,6)} foi resolvido.`,
-          icon: '/assets/icons/icon-192x192.png',
-          silent: false
-        });
+        if (swRegistration) {
+          swRegistration.showNotification('✅ Ticket Concluído', {
+            body: `Seu ticket #${ticketId.slice(0,6)} foi resolvido.`,
+            silent: false,
+            tag: ticketId
+          });
+        } else {
+          new Notification('✅ Ticket Concluído', {
+            body: `Seu ticket #${ticketId.slice(0,6)} foi resolvido.`,
+            silent: false
+          });
+        }
 
         tocarSom();
-
         console.log('🔔 Notificação de conclusão enviada', ticketId);
       }
     });
@@ -144,8 +156,15 @@
 
     // Registrar Service Worker (se ainda não registrado)
     try {
-      const registration = await navigator.serviceWorker.register('./js/service-worker.js');
-      console.log('✅ Service Worker registrado', registration);
+      // Tenta obter registrações existentes
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      if (registrations.length > 0) {
+        swRegistration = registrations[0];
+        console.log('✅ Service Worker já está ativo', swRegistration);
+      } else {
+        swRegistration = await navigator.serviceWorker.register('./service-worker.js');
+        console.log('✅ Service Worker registrado', swRegistration);
+      }
     } catch (err) {
       console.error('❌ Erro ao registrar Service Worker:', err);
     }

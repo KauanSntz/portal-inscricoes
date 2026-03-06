@@ -333,21 +333,51 @@
       }
     });
 
-    function mostrarNotificacao(mensagem, sucesso = true) {
-      const notificacao = document.getElementById('notificacao');
-      if (!notificacao) return;
-      notificacao.textContent = mensagem;
-      notificacao.style.backgroundColor = sucesso ? '#10b981' : '#dc2626';
-      notificacao.style.display = 'block';
-      setTimeout(() => {
-        notificacao.style.opacity = '0';
-        setTimeout(() => {
-          notificacao.style.display = 'none';
-          notificacao.style.opacity = '1';
-        }, 300);
-      }, 2000);
-    }
+    // === FUNÇÃO PRINCIPAL DE CARREGAR TICKETS COM TEMPO REAL ===
+function carregarTickets() {
+  if (!currentUser) return;
+  console.log('📡 Escutando tickets para status:', currentStatus);
 
+  // Cancela listener anterior se existir
+  if (ticketsListener) {
+    ticketsListener();
+    ticketsListener = null;
+  }
+
+  let query;
+
+  if (currentUser.tipo === 'comum') {
+    query = db.collection('tickets')
+      .where('status', '==', currentStatus)
+      .where('criadoPor', '==', currentUser.uid);
+  } else {
+    if (currentStatus === 'em_andamento') {
+      query = db.collection('tickets')
+        .where('status', '==', currentStatus)
+        .where('iniciadoPor', '==', currentUser.uid);
+    } else {
+      query = db.collection('tickets')
+        .where('status', '==', currentStatus);
+    }
+  }
+
+  query = query.orderBy('criadoEm', 'desc');
+
+  ticketsListener = query.onSnapshot((snapshot) => {
+    const tickets = [];
+    snapshot.forEach(doc => tickets.push({ id: doc.id, ...doc.data() }));
+    renderTickets(tickets);
+    atualizarBadges(tickets);
+  }, (error) => {
+    console.error('Erro no snapshot:', error);
+    if (error.code === 'failed-precondition') {
+      mostrarNotificacao('Índice necessário. Verifique o console para o link.', false);
+    } else {
+      mostrarNotificacao('Erro ao carregar tickets.', false);
+    }
+  });
+}
+    //COPIAR CPF
     window.copiarCPF = (cpf) => {
       navigator.clipboard.writeText(cpf).then(() => {
         mostrarNotificacao('✅ CPF copiado!');
