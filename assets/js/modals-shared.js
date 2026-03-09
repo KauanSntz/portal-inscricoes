@@ -800,6 +800,324 @@
     }
   );
 
+  // ==================== MODAL DE CURSOS TÉCNICOS ====================
+const cursosTecnicosModal = (() => {
+  let overlay, titleEl, searchInput, turnoSelect, duracaoSelect, listEl, emptyEl, backBtn, filtersRow;
+  let isOpen = false, lastFocus = null;
+  let data = [];
+  let currentView = 'units'; // 'units' ou 'courses'
+  let currentUnit = null;
+  let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+
+  const loadData = async () => {
+    try {
+      const response = await fetch('./assets/data/cursos_tecnicos.json');
+      if (!response.ok) throw new Error('Erro ao carregar dados');
+      data = await response.json();
+    } catch (error) {
+      console.error('Erro ao carregar cursos técnicos:', error);
+      data = [];
+    }
+  };
+
+  const getUniqueDuracoes = () => {
+    const duracoes = new Set();
+    data.forEach(u => u.cursos.forEach(c => duracoes.add(c.duracao)));
+    return Array.from(duracoes).sort();
+  };
+
+  const renderUnits = (filterText = '') => {
+    const q = window.norm(filterText);
+    const filtered = data.filter(u => {
+      if (!q) return true;
+      return window.norm(u.unidade).includes(q) || u.cursos.some(c => window.norm(c.nome).includes(q));
+    });
+
+    listEl.innerHTML = '';
+
+    if (!filtered.length) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = 'Nenhuma unidade encontrada.';
+      return;
+    }
+
+    emptyEl.hidden = true;
+    filtered.forEach(u => {
+      const card = document.createElement('article');
+      card.className = 'info-card unidade-card';
+      card.innerHTML = `
+        <h3 class="unidade-nome">${u.unidade}</h3>
+        <p class="unidade-endereco">${u.endereco}</p>
+      `;
+      card.addEventListener('click', () => showCourses(u));
+      listEl.appendChild(card);
+    });
+  };
+
+  const renderCourses = () => {
+    if (!currentUnit) return;
+
+    let cursos = currentUnit.cursos;
+
+    const q = window.norm(currentFilter.text);
+    if (q) {
+      cursos = cursos.filter(c => window.norm(c.nome).includes(q));
+    }
+    if (currentFilter.turno !== 'todos') {
+      cursos = cursos.filter(c => c.turnos.includes(currentFilter.turno));
+    }
+    if (currentFilter.duracao !== 'todos') {
+      cursos = cursos.filter(c => c.duracao === currentFilter.duracao);
+    }
+
+    listEl.innerHTML = '';
+
+    if (!cursos.length) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = 'Nenhum curso encontrado.';
+      return;
+    }
+
+    emptyEl.hidden = true;
+    cursos.forEach(curso => {
+      const card = document.createElement('article');
+      card.className = 'info-card curso-card';
+
+      const header = document.createElement('div');
+      header.className = 'curso-header';
+      header.innerHTML = `
+        <h4 class="curso-nome">${curso.nome}</h4>
+        <span class="curso-duracao-badge">${curso.duracao}</span>
+      `;
+      card.appendChild(header);
+
+      const valoresDiv = document.createElement('div');
+      valoresDiv.className = 'curso-valores';
+      
+      const primeira = document.createElement('div');
+      primeira.className = 'primeira-mensalidade';
+      primeira.textContent = `1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}`;
+      valoresDiv.appendChild(primeira);
+
+      Object.entries(curso.valores).forEach(([turno, valor]) => {
+        const turnoDiv = document.createElement('div');
+        turnoDiv.className = 'curso-turno';
+        turnoDiv.textContent = `${turno}: R$ ${valor.toFixed(2)}`;
+        valoresDiv.appendChild(turnoDiv);
+      });
+      card.appendChild(valoresDiv);
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'info-copy-btn';
+      copyBtn.textContent = 'Copiar mensagem';
+      copyBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const turnosStr = Object.entries(curso.valores)
+          .map(([t, v]) => `  • ${t}: R$ ${v.toFixed(2)}`)
+          .join('\n');
+        const mensagem = `🎓 *Curso Técnico em ${curso.nome}* - Unidade ${currentUnit.unidade}\n` +
+          `📍 Endereço: ${currentUnit.endereco}\n` +
+          `⏱️ Duração: ${curso.duracao}\n` +
+          `📅 Turnos disponíveis: ${curso.turnos.join(', ')}\n\n` +
+          `💰 *Valores*:\n` +
+          `- 1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}\n` +
+          `- A partir da 2ª:\n${turnosStr}`;
+        const ok = await copyText(mensagem);
+        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+        setTimeout(() => copyBtn.textContent = 'Copiar mensagem', 1200);
+      });
+      card.appendChild(copyBtn);
+
+      listEl.appendChild(card);
+    });
+  };
+
+  const updateView = () => {
+    if (currentView === 'units') {
+      titleEl.textContent = 'Cursos Técnicos - Unidades';
+      searchInput.placeholder = 'Buscar unidade ou curso...';
+      filtersRow.style.display = 'none';
+      backBtn.style.display = 'none';
+      renderUnits(searchInput.value);
+    } else {
+      titleEl.textContent = `Cursos - ${currentUnit.unidade}`;
+      searchInput.placeholder = 'Buscar curso...';
+      filtersRow.style.display = 'flex';
+      backBtn.style.display = 'inline-block';
+      renderCourses();
+    }
+  };
+
+  const showCourses = (unit) => {
+    currentUnit = unit;
+    currentView = 'courses';
+    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+  };
+
+  const goBack = () => {
+    currentView = 'units';
+    currentUnit = null;
+    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+  };
+
+  const ensure = () => {
+    if (overlay) return overlay;
+
+    overlay = document.createElement('div');
+    overlay.className = 'modal-overlay info-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal info-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Cursos Técnicos');
+
+    const head = document.createElement('div');
+    head.className = 'modal-head info-head';
+    titleEl = document.createElement('div');
+    titleEl.className = 'modal-title info-title';
+    titleEl.textContent = 'Cursos Técnicos - Unidades';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close info-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Fechar');
+    closeBtn.textContent = '×';
+    closeBtn.addEventListener('click', close);
+    
+    head.appendChild(titleEl);
+    head.appendChild(closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'modal-body info-body';
+
+    const searchRow = document.createElement('div');
+    searchRow.className = 'search-row info-search-row';
+    searchInput = document.createElement('input');
+    searchInput.className = 'search-input info-search';
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Buscar unidade ou curso...';
+    searchInput.addEventListener('input', debounce(() => {
+      if (currentView === 'units') {
+        renderUnits(searchInput.value);
+      } else {
+        currentFilter.text = searchInput.value;
+        renderCourses();
+      }
+    }, 200));
+    searchRow.appendChild(searchInput);
+
+    filtersRow = document.createElement('div');
+    filtersRow.className = 'filters-row';
+    filtersRow.style.display = 'none';
+
+    turnoSelect = document.createElement('select');
+    turnoSelect.className = 'search-input filter-select';
+    turnoSelect.innerHTML = `
+      <option value="todos">Todos os turnos</option>
+      <option value="matutino">Matutino</option>
+      <option value="vespertino">Vespertino</option>
+      <option value="noturno">Noturno</option>
+      <option value="sabado">Sábado</option>
+    `;
+    turnoSelect.addEventListener('change', () => {
+      currentFilter.turno = turnoSelect.value;
+      renderCourses();
+    });
+
+    duracaoSelect = document.createElement('select');
+    duracaoSelect.className = 'search-input filter-select';
+
+    backBtn = document.createElement('button');
+    backBtn.className = 'btn back-btn';
+    backBtn.textContent = '← Voltar';
+    backBtn.style.display = 'none';
+    backBtn.addEventListener('click', goBack);
+
+    filtersRow.appendChild(turnoSelect);
+    filtersRow.appendChild(duracaoSelect);
+    filtersRow.appendChild(backBtn);
+
+    listEl = document.createElement('div');
+    listEl.className = 'info-grid';
+
+    emptyEl = document.createElement('div');
+    emptyEl.className = 'empty info-empty';
+    emptyEl.textContent = 'Carregando...';
+
+    body.appendChild(searchRow);
+    body.appendChild(filtersRow);
+    body.appendChild(listEl);
+    body.appendChild(emptyEl);
+    modal.appendChild(head);
+    modal.appendChild(body);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) close();
+    });
+
+    return overlay;
+  };
+
+  const open = async () => {
+    ensure();
+    lastFocus = document.activeElement;
+    await loadData();
+
+    const duracoes = getUniqueDuracoes();
+    duracaoSelect.innerHTML = '<option value="todos">Todas as durações</option>';
+    duracoes.forEach(d => {
+      const option = document.createElement('option');
+      option.value = d;
+      option.textContent = d;
+      duracaoSelect.appendChild(option);
+    });
+
+    currentView = 'units';
+    currentUnit = null;
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    isOpen = true;
+    scrollLock.lock();
+    searchInput.focus();
+  };
+
+  const close = () => {
+    if (!overlay || !isOpen) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    isOpen = false;
+    scrollLock.unlock();
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  };
+
+  return { open, close };
+})();
+
+// Expor globalmente (adicione esta linha junto com os outros exports)
+window.cursosTecnicosModal = cursosTecnicosModal; 
+window.cursosTecnicosModal = cursosTecnicosModal;
+
   // ==================== MODAL DE COORDENAÇÃO ====================
 const coordenadoresModal = createInfoModal(
   'coordenadores-modal',
@@ -854,17 +1172,23 @@ const coordenadoresModal = createInfoModal(
   }
 );
 
-  // Expor globalmente
-  window.globalModal = globalModal;
-  window.pricesModal = pricesModal;
-  window.setoresModal = setoresModal;
-  window.coordenadoresModal = coordenadoresModal;
+ // Expor globalmente
+window.globalModal = globalModal;
+window.pricesModal = pricesModal;
+window.setoresModal = setoresModal;
+window.coordenadoresModal = coordenadoresModal;
+window.cursosTecnicosModal = cursosTecnicosModal;
 
   // Listener global para os botões de pesquisa
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     const action = btn.dataset.action;
+
+    if (action === 'open-cursos-tecnicos') {
+  e.preventDefault();
+  if (window.cursosTecnicosModal) window.cursosTecnicosModal.open();
+}
 
     if (action === 'open-global-search') {
       e.preventDefault();
@@ -876,4 +1200,24 @@ const coordenadoresModal = createInfoModal(
       if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
     }
   });
+
+  document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  console.log('Clique em ação:', action); // Log para depuração
+
+  if (action === 'open-global-search') {
+    e.preventDefault();
+    if (window.globalModal) window.globalModal.open();
+    else console.error('globalModal não encontrado');
+  }
+
+  if (action === 'open-prices-menu') {
+    e.preventDefault();
+    if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
+    else console.error('pricesModal não encontrado');
+  }
+});
+
 })();

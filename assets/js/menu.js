@@ -15,6 +15,21 @@
     document.body.style.overflow = 'hidden';
   }
 
+  // Fecha o menu ao clicar fora dele
+document.addEventListener('click', (e) => {
+  const sideMenu = document.getElementById('sideMenu');
+  const menuToggle = document.getElementById('menuToggle');
+  
+  if (!sideMenu || !menuToggle) return;
+  
+  // Se o menu estiver aberto e o clique NÃO foi no menu nem no botão de abrir
+  if (sideMenu.classList.contains('is-open') && 
+      !sideMenu.contains(e.target) && 
+      !menuToggle.contains(e.target)) {
+    closeMenu();
+  }
+});
+
   function closeMenu() {
     sideMenu.classList.remove('is-open');
     menuOverlay.classList.remove('is-open');
@@ -86,6 +101,18 @@
       }
     });
   });
+
+  // Listener específico para o botão de Cursos Técnicos (os outros são tratados globalmente)
+const cursosTecnicosBtn = document.querySelector('.menu-link[data-action="open-cursos-tecnicos"]');
+if (cursosTecnicosBtn) {
+  cursosTecnicosBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (window.cursosTecnicosModal) {
+      window.cursosTecnicosModal.open();
+      closeMenu();
+    }
+  });
+}
 
   // Elementos que NÃO fecham o menu
   const keepOpenSelectors = [
