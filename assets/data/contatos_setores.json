@@ -15,17 +15,21 @@
     "tipo": "whatsapp"
   },
   {
+    "setor": "Clínicas Fametro",
+    "telefone": "(92) 98646-1141"
+  },
+  {
     "setor": "CLÍNICAS ODONTO",
     "telefone": "(92) 9 8466-1018",
     "tipo": "whatsapp"
   },
   {
-    "setor": "COBRAMEX",
+    "setor": "COBRAFIX",
     "telefone": "(92) 9 8465-1033",
     "tipo": "whatsapp"
   },
   {
-    "setor": "EIAE TECNICO",
+    "setor": "EJA TECNICO",
     "telefone": "(92) 9 8008-0009",
     "tipo": "whatsapp"
   },
@@ -35,7 +39,7 @@
     "tipo": "whatsapp"
   },
   {
-    "setor": "CORO. POS",
+    "setor": "COORD. PÓS",
     "telefone": "(92) 9 8429-5139",
     "tipo": "whatsapp"
   },
@@ -55,12 +59,12 @@
     "tipo": "whatsapp"
   },
   {
-    "setor": "ALUNO COMP DISPILINA EAD",
+    "setor": "ALUNO COM DISCIPLINA EAD",
     "telefone": "(92) 9 8466-0347",
     "tipo": "whatsapp"
   },
   {
-    "setor": "SECAD COMPENSIA",
+    "setor": "SECAD COMPENSA",
     "telefone": "(92) 9 8455-7537",
     "tipo": "whatsapp"
   },

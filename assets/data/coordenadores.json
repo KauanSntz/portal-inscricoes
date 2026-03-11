@@ -343,6 +343,17 @@
     "email": "monica.dias@fametro.edu.br"
   },
   {
+    "setor": "Direção Jurídica - Telefone 1",
+    "telefone": "(092) 2101-1013",
+    "email": "juridico@fametro.edu.br"
+  },
+  {
+    "setor": "Direção Jurídica - Telefone 2",
+    "telefone": "(092) 98403-2186",
+    "email": "juridico@fametro.edu.br"
+  },
+
+  {
     "unidade": "Zona Sul",
     "coordenador": "Rosy Jane Holanda de Souza",
     "cursos": [

@@ -6,15 +6,15 @@
       {
         "nome": "Enfermagem",
         "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 310, "noturno": 330 },
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 310, "noturno": 330 },
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
@@ -69,341 +69,501 @@
     ]
   },
   {
-    "unidade": "Nova Cidade",
+    "unidade": "Leste",
+    "endereco": "Autaz Mirim, Manaus - AM",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Análises Clínicas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Computação Gráfica",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Contabilidade",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cozinha",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Edificações",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estradas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Farmácia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Gastronomia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Massoterapia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Recursos Humanos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Órteses e Próteses",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Norte",
     "endereco": "Av. Margarita, 05 - Cidade Nova, Manaus - AM, 69097-207",
     "cursos": [
       {
         "nome": "Enfermagem",
         "duracao": "24 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Análises Clínicas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Computação Gráfica",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cuidados em Idosos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Contabilidade",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cozinha",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrônica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estradas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrotécnica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Farmácia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Gastronomia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Recursos Humanos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Refrigeração e Climatização",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Órteses e Próteses",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       }
     ]
   },
   {
-    "unidade": "Chapada",
+    "unidade": "Sede",
     "endereco": "Av. Constantino Nery, 3470 - Chapada, Manaus - AM",
     "cursos": [
       {
         "nome": "Enfermagem",
         "duracao": "24 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Análises Clínicas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Computação Gráfica",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cuidados em Idosos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Contabilidade",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cozinha",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrônica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estradas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrotécnica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Farmácia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Gastronomia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Recursos Humanos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Refrigeração e Climatização",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Órteses e Próteses",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
         "primeiraMensalidade": 59.99
       }
     ]
   },
   {
-    "unidade": "Cachoeirinha",
+    "unidade": "Sul",
     "endereco": "Prof. Ernani Simão, N.1160 - Cachoeirinha, Manaus - AM, 69065-060",
     "cursos": [
       {
         "nome": "Enfermagem",
         "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 310, "noturno": 330 },
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 310, "noturno": 330 },
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       },
       {
@@ -544,6 +704,731 @@
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Compensa",
+    "endereco": "Av. Brasil, Compensa, Manaus - AM",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Análises Clínicas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Computação Gráfica",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Contabilidade",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cozinha",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Edificações",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estradas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Farmácia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Gastronomia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Massoterapia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Recursos Humanos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Órteses e Próteses",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Manacapuru",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Tabatinga",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Automação Industrial",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Itacoatiara",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Parintins",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Massoterapia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Coari",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Massoterapia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Edificações",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Análises Clínicas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Computação Gráfica",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Contabilidade",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cozinha",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estradas",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Farmácia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Gastronomia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Recursos Humanos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Órteses e Próteses",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Tefé",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Radiologia",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Massoterapia",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Segurança do Trabalho",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Edificações",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Informática",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Guia de Turismo",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Logística",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Santarém",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Automação Industrial",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Boa Vista",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Eletrotécnica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Cuidados em Idosos",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Refrigeração e Climatização",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Eletrônica",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Automação Industrial",
+        "duracao": "18 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      }
+    ]
+  },
+  {
+    "unidade": "Fortaleza",
+    "endereco": "",
+    "cursos": [
+      {
+        "nome": "Estética",
+        "duracao": "12 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
+        "primeiraMensalidade": 59.99
+      },
+      {
+        "nome": "Enfermagem",
+        "duracao": "24 meses",
+        "turnos": ["matutino", "vespertino", "noturno"],
+        "valores": { "matutino": 310, "vespertino": 260, "noturno": 330 },
         "primeiraMensalidade": 59.99
       }
     ]
