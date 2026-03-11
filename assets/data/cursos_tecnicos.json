@@ -8,72 +8,63 @@
         "duracao": "24 meses",
         "turnos": ["matutino", "noturno"],
         "valores": { "matutino": 310, "noturno": 330 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "noturno"],
         "valores": { "matutino": 310, "noturno": 330 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado pela FAMETROTEC"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em laboratório"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado pela FAMETROTEC"
+        "primeiraMensalidade": 59.99
       }
     ]
   },
@@ -86,176 +77,154 @@
         "duracao": "24 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Obrigatório em hospitais parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Análises Clínicas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Práticas em laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Computação Gráfica",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cuidados em Idosos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Instituições de longa permanência"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Contabilidade",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cozinha",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Práticas em cozinha industrial"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrônica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estradas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrotécnica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Indústrias parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Farmácia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Farmácias conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Gastronomia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Restaurantes parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Visitas técnicas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos integradores"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Recursos Humanos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Empresas parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Refrigeração e Climatização",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Empresas do setor"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Órteses e Próteses",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas e hospitais"
+        "primeiraMensalidade": 59.99
       }
     ]
   },
@@ -268,176 +237,154 @@
         "duracao": "24 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Obrigatório em hospitais parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 370, "vespertino": 320, "noturno": 390 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Análises Clínicas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Práticas em laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Computação Gráfica",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cuidados em Idosos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Instituições de longa permanência"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Contabilidade",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cozinha",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Práticas em cozinha industrial"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrônica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estradas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrotécnica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Indústrias parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Farmácia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Farmácias conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Gastronomia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Restaurantes parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Visitas técnicas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Projetos integradores"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Recursos Humanos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Empresas parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Refrigeração e Climatização",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Empresas do setor"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Órteses e Próteses",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 350, "vespertino": 310, "noturno": 370 },
-        "primeiraMensalidade": 69.99,
-        "estagio": "Clínicas e hospitais"
+        "primeiraMensalidade": 59.99
       }
     ]
   },
@@ -450,814 +397,154 @@
         "duracao": "24 meses",
         "turnos": ["matutino", "noturno"],
         "valores": { "matutino": 310, "noturno": 330 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Radiologia",
         "duracao": "18 meses",
         "turnos": ["matutino", "noturno"],
         "valores": { "matutino": 310, "noturno": 330 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Análises Clínicas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Computação Gráfica",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cuidados em Idosos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Instituições de longa permanência"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Contabilidade",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Cozinha",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em cozinha industrial"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Edificações",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrônica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Laboratórios"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estradas",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Eletrotécnica",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Indústrias parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Estética",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Farmácia",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Farmácias conveniadas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Gastronomia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Restaurantes parceiros"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Guia de Turismo",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Informática",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Logística",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Massoterapia",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Recursos Humanos",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Empresas parceiras"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Refrigeração e Climatização",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Empresas do setor"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Segurança do Trabalho",
         "duracao": "12 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
+        "primeiraMensalidade": 59.99
       },
       {
         "nome": "Órteses e Próteses",
         "duracao": "18 meses",
         "turnos": ["matutino", "vespertino", "noturno"],
         "valores": { "matutino": 290, "vespertino": 250, "noturno": 310 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas e hospitais"
-      }
-    ]
-  },
-  {
-    "unidade": "Coari",
-    "endereco": "Coari - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Radiologia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
-      },
-      {
-        "nome": "Análises Clínicas",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em laboratórios"
-      },
-      {
-        "nome": "Computação Gráfica",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
-      },
-      {
-        "nome": "Cuidados em Idosos",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Instituições de longa permanência"
-      },
-      {
-        "nome": "Contabilidade",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Cozinha",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em cozinha industrial"
-      },
-      {
-        "nome": "Edificações",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
-      },
-      {
-        "nome": "Eletrônica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Laboratórios"
-      },
-      {
-        "nome": "Estradas",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo"
-      },
-      {
-        "nome": "Eletrotécnica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Indústrias parceiras"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Farmácia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Farmácias conveniadas"
-      },
-      {
-        "nome": "Gastronomia",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Restaurantes parceiros"
-      },
-      {
-        "nome": "Guia de Turismo",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
-      },
-      {
-        "nome": "Informática",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
-      },
-      {
-        "nome": "Logística",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Massoterapia",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Recursos Humanos",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Empresas parceiras"
-      },
-      {
-        "nome": "Refrigeração e Climatização",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Empresas do setor"
-      },
-      {
-        "nome": "Segurança do Trabalho",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Órteses e Próteses",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas e hospitais"
-      }
-    ]
-  },
-  {
-    "unidade": "Tefé",
-    "endereco": "Tefé - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Radiologia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
-      },
-      {
-        "nome": "Massoterapia",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em clínicas escola"
-      },
-      {
-        "nome": "Segurança do Trabalho",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Edificações",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos práticos"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Informática",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
-      },
-      {
-        "nome": "Guia de Turismo",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
-      },
-      {
-        "nome": "Logística",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      }
-    ]
-  },
-  {
-    "unidade": "Parintins",
-    "endereco": "Parintins - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Radiologia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
-      },
-      {
-        "nome": "Segurança do Trabalho",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Massoterapia",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Práticas em clínicas escola"
-      },
-      {
-        "nome": "Informática",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
-      },
-      {
-        "nome": "Guia de Turismo",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
-      },
-      {
-        "nome": "Logística",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      }
-    ]
-  },
-  {
-    "unidade": "Itacoatiara",
-    "endereco": "Itacoatiara - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Radiologia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
-      },
-      {
-        "nome": "Segurança do Trabalho",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Informática",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
-      },
-      {
-        "nome": "Guia de Turismo",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
-      },
-      {
-        "nome": "Logística",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      }
-    ]
-  },
-  {
-    "unidade": "Tabatinga",
-    "endereco": "Tabatinga - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 270, "noturno": 270 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Eletrotécnica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      },
-      {
-        "nome": "Cuidados em Idosos",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Instituições de longa permanência"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Refrigeração e Climatização",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Empresas do setor"
-      },
-      {
-        "nome": "Eletrônica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Laboratórios"
-      },
-      {
-        "nome": "Automação Industrial",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      }
-    ]
-  },
-  {
-    "unidade": "Manacapuru",
-    "endereco": "Manacapuru - AM",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Radiologia",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 280, "vespertino": 280, "noturno": 280 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Obrigatório em clínicas conveniadas"
-      },
-      {
-        "nome": "Segurança do Trabalho",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      },
-      {
-        "nome": "Informática",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Projetos integradores"
-      },
-      {
-        "nome": "Guia de Turismo",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Visitas técnicas"
-      },
-      {
-        "nome": "Logística",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "vespertino", "noturno"],
-        "valores": { "matutino": 260, "vespertino": 260, "noturno": 260 },
-        "primeiraMensalidade": 59.99,
-        "estagio": "Campo disponibilizado"
-      }
-    ]
-  },
-  {
-    "unidade": "Santarém",
-    "endereco": "Santarém - PA",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 270, "noturno": 270 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Eletrotécnica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      },
-      {
-        "nome": "Cuidados em Idosos",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Instituições de longa permanência"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Refrigeração e Climatização",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Empresas do setor"
-      },
-      {
-        "nome": "Eletrônica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Laboratórios"
-      },
-      {
-        "nome": "Automação Industrial",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      }
-    ]
-  },
-  {
-    "unidade": "Boa Vista",
-    "endereco": "Boa Vista - RR",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 270, "noturno": 270 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Eletrotécnica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      },
-      {
-        "nome": "Cuidados em Idosos",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Instituições de longa permanência"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Clínicas escola"
-      },
-      {
-        "nome": "Refrigeração e Climatização",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Empresas do setor"
-      },
-      {
-        "nome": "Eletrônica",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Laboratórios"
-      },
-      {
-        "nome": "Automação Industrial",
-        "duracao": "18 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Indústrias parceiras"
-      }
-    ]
-  },
-  {
-    "unidade": "Fortaleza",
-    "endereco": "Fortaleza - CE",
-    "cursos": [
-      {
-        "nome": "Enfermagem",
-        "duracao": "24 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 270, "noturno": 270 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Obrigatório em hospitais parceiros"
-      },
-      {
-        "nome": "Estética",
-        "duracao": "12 meses",
-        "turnos": ["matutino", "noturno"],
-        "valores": { "matutino": 250, "noturno": 250 },
-        "primeiraMensalidade": 49.99,
-        "estagio": "Clínicas escola"
+        "primeiraMensalidade": 59.99
       }
     ]
   }
