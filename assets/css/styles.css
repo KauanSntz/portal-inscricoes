@@ -1842,4 +1842,7 @@ body.dark-mode .info-card:hover,
 body.dark-mode .unidade-card:hover,
 body.dark-mode .curso-card:hover {
   box-shadow: 0 0 0 2px var(--accent), 0 6px 16px rgba(0, 0, 0, 0.3);
+
+  /* ===== RODAPÉ CENTRALIZADO ===== */
+
 }

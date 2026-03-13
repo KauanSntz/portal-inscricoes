@@ -187,16 +187,23 @@
                 <option value="EAD">EAD</option>
               </select>
             </div>
+            <!-- ALTERAÇÃO: campo de problema com as novas opções -->
             <div class="field">
               <span>Problema</span>
               <select id="problema-select" class="search-input" required>
                 <option value="">Selecione uma opção...</option>
-                <option value="Aprovar inscrição Enem">Aprovar inscrição Enem</option>
-                <option value="Cancelar Inscrição">Cancelar Inscrição</option>
-                <option value="Consultar responsável pela inscrição">Consultar responsável pela inscrição</option>
+                <option value="cancelar_inscricao">Cancelar Inscrição</option>
+                <option value="aprovar_inscricao_enem">Aprovar inscrição Enem</option>
+                <option value="consultar_responsavel">Consultar responsável pela inscrição</option>
+                <option value="aprovar_vestibular">Aprovar vestibular</option>
+                <option value="emitir_contrato">Emitir contrato</option>
+                <option value="consultar_boleto">Consultar boleto pendente</option>
+                <option value="verificar_prova">Verificar se o candidato fez a prova</option>
+                <option value="cancelar_inscricao_aprovada">Cancelar inscrição aprovada</option>
                 <option value="outro">Outro (especifique)</option>
               </select>
               <textarea id="problema-outro" class="search-input" rows="3" placeholder="Descreva o problema..." style="display:none; margin-top:0.5rem;"></textarea>
+              <textarea id="motivo" class="search-input" rows="3" placeholder="Informe o motivo..." style="display:none; margin-top:0.5rem;"></textarea>
             </div>
             <!-- Campo de resolução -->
             <div class="field" id="resolucao-field" style="display:none;">
@@ -264,6 +271,33 @@
     let currentStatus = 'aberto';
     let authResolved = false;
     let redirectTimeout = null;
+
+    // ALTERAÇÃO: configuração dos problemas
+    const PROBLEMAS_CONFIG = {
+      cancelar_inscricao: { nome: "Cancelar Inscrição", super: false, precisaMotivo: true },
+      aprovar_inscricao_enem: { nome: "Aprovar inscrição Enem", super: false, precisaMotivo: false },
+      consultar_responsavel: { nome: "Consultar responsável pela inscrição", super: false, precisaMotivo: false },
+      aprovar_vestibular: { nome: "Aprovar vestibular", super: true, precisaMotivo: false },
+      emitir_contrato: { nome: "Emitir contrato", super: true, precisaMotivo: false },
+      consultar_boleto: { nome: "Consultar boleto pendente", super: true, precisaMotivo: false },
+      verificar_prova: { nome: "Verificar se o candidato fez a prova", super: true, precisaMotivo: false },
+      cancelar_inscricao_aprovada: { nome: "Cancelar inscrição aprovada", super: true, precisaMotivo: true },
+      outro: { nome: "Outro", super: false, precisaMotivo: false }
+    };
+
+    const TEXTO_PARA_VALOR = {
+      "Cancelar Inscrição": "cancelar_inscricao",
+      "Aprovar inscrição Enem": "aprovar_inscricao_enem",
+      "Consultar responsável pela inscrição": "consultar_responsavel",
+      "Aprovar vestibular": "aprovar_vestibular",
+      "Emitir contrato": "emitir_contrato",
+      "Consultar boleto pendente": "consultar_boleto",
+      "Verificar se o candidato fez a prova": "verificar_prova",
+      "Cancelar inscrição aprovada": "cancelar_inscricao_aprovada"
+    };
+
+    // Flag para listener
+    let ticketsListener = null;
 
     auth.onAuthStateChanged(async (user) => {
       console.log('🔍 tickets: onAuthStateChanged', user ? `Usuário: ${user.email}` : 'Nenhum usuário');
@@ -334,50 +368,55 @@
     });
 
     // === FUNÇÃO PRINCIPAL DE CARREGAR TICKETS COM TEMPO REAL ===
-function carregarTickets() {
-  if (!currentUser) return;
-  console.log('📡 Escutando tickets para status:', currentStatus);
+    function carregarTickets() {
+      if (!currentUser) return;
+      console.log('📡 Escutando tickets para status:', currentStatus);
 
-  // Cancela listener anterior se existir
-  if (ticketsListener) {
-    ticketsListener();
-    ticketsListener = null;
-  }
+      if (ticketsListener) {
+        ticketsListener();
+        ticketsListener = null;
+      }
 
-  let query;
+      let query = db.collection('tickets');
 
-  if (currentUser.tipo === 'comum') {
-    query = db.collection('tickets')
-      .where('status', '==', currentStatus)
-      .where('criadoPor', '==', currentUser.uid);
-  } else {
-    if (currentStatus === 'em_andamento') {
-      query = db.collection('tickets')
-        .where('status', '==', currentStatus)
-        .where('iniciadoPor', '==', currentUser.uid);
-    } else {
-      query = db.collection('tickets')
-        .where('status', '==', currentStatus);
+      // Filtro baseado no tipo de usuário
+      if (currentUser.tipo === 'comum') {
+        // Usuário comum: só vê seus próprios tickets
+        query = query.where('criadoPor', '==', currentUser.uid);
+      } else if (currentUser.tipo === 'super_admin') {
+        // Super admin vê todos
+        // sem filtro adicional
+      } else {
+        // Admin comum: vê apenas tickets não-super
+        query = query.where('superTicket', '==', false);
+      }
+
+      // Filtro por status
+      query = query.where('status', '==', currentStatus);
+
+      // Se for admin comum e status em_andamento, filtrar por responsável
+      if (currentUser.tipo === 'admin' && currentStatus === 'em_andamento') {
+        query = query.where('iniciadoPor', '==', currentUser.uid);
+      }
+
+      query = query.orderBy('criadoEm', 'desc');
+
+      ticketsListener = query.onSnapshot((snapshot) => {
+        const tickets = [];
+        snapshot.forEach(doc => tickets.push({ id: doc.id, ...doc.data() }));
+        renderTickets(tickets);
+        atualizarBadges(tickets);
+      }, (error) => {
+        console.error('Erro no snapshot:', error);
+        if (error.code === 'failed-precondition') {
+          mostrarNotificacao('Índice necessário. Verifique o console para o link.', false);
+        } else {
+          mostrarNotificacao('Erro ao carregar tickets.', false);
+        }
+      });
     }
-  }
 
-  query = query.orderBy('criadoEm', 'desc');
-
-  ticketsListener = query.onSnapshot((snapshot) => {
-    const tickets = [];
-    snapshot.forEach(doc => tickets.push({ id: doc.id, ...doc.data() }));
-    renderTickets(tickets);
-    atualizarBadges(tickets);
-  }, (error) => {
-    console.error('Erro no snapshot:', error);
-    if (error.code === 'failed-precondition') {
-      mostrarNotificacao('Índice necessário. Verifique o console para o link.', false);
-    } else {
-      mostrarNotificacao('Erro ao carregar tickets.', false);
-    }
-  });
-}
-    //COPIAR CPF
+    // Função de cópia de CPF
     window.copiarCPF = (cpf) => {
       navigator.clipboard.writeText(cpf).then(() => {
         mostrarNotificacao('✅ CPF copiado!');
@@ -421,46 +460,382 @@ function carregarTickets() {
       if (e.target === confirmModal) fecharConfirmacao();
     });
 
-    // === FUNÇÃO PRINCIPAL DE CARREGAR TICKETS ===
-    function carregarTickets() {
-      if (!currentUser) return;
-      console.log('Carregando tickets para status:', currentStatus);
+    // Função de notificação
+    function mostrarNotificacao(mensagem, sucesso = true) {
+      const notif = document.getElementById('notificacao');
+      notif.textContent = mensagem;
+      notif.style.backgroundColor = sucesso ? '#10b981' : '#ef4444';
+      notif.style.display = 'block';
+      setTimeout(() => {
+        notif.style.display = 'none';
+      }, 3000);
+    }
 
-      let query;
+    // Setup do listener do select problema
+    function setupProblemaListener() {
+      const problemaSelect = document.getElementById('problema-select');
+      const problemaOutro = document.getElementById('problema-outro');
+      const motivoField = document.getElementById('motivo');
 
-      if (currentUser.tipo === 'comum') {
-        // Usuário comum: vê apenas tickets que ele criou
-        query = db.collection('tickets')
-          .where('status', '==', currentStatus)
-          .where('criadoPor', '==', currentUser.uid);
-      } else {
-        // Admin/superadmin: se for em_andamento, filtra por responsável; senão, todos
-        if (currentStatus === 'em_andamento') {
-          query = db.collection('tickets')
-            .where('status', '==', currentStatus)
-            .where('iniciadoPor', '==', currentUser.uid);
-        } else {
-          query = db.collection('tickets')
-            .where('status', '==', currentStatus);
-        }
-      }
+      if (problemaSelect && problemaOutro && motivoField) {
+        problemaSelect.addEventListener('change', function() {
+          const valor = this.value;
+          const config = PROBLEMAS_CONFIG[valor];
+          // Esconder ambos
+          problemaOutro.style.display = 'none';
+          motivoField.style.display = 'none';
+          problemaOutro.required = false;
+          motivoField.required = false;
 
-      query.orderBy('criadoEm', 'desc').get()
-        .then(snapshot => {
-          const tickets = [];
-          snapshot.forEach(doc => tickets.push({ id: doc.id, ...doc.data() }));
-          renderTickets(tickets);
-          atualizarBadges(tickets);
-        })
-        .catch(error => {
-          console.error('Erro na query:', error);
-          if (error.code === 'failed-precondition') {
-            mostrarNotificacao('Índice necessário. Verifique o console para o link.', false);
-          } else {
-            mostrarNotificacao('Erro ao carregar tickets.', false);
+          if (valor === 'outro') {
+            problemaOutro.style.display = 'block';
+            problemaOutro.required = true;
+          } else if (config && config.precisaMotivo) {
+            motivoField.style.display = 'block';
+            motivoField.required = true;
           }
         });
+      }
     }
+
+    document.addEventListener('DOMContentLoaded', setupProblemaListener);
+
+    // Função para habilitar/desabilitar campos do modal
+    function setModalFieldsState(editable) {
+      const campos = ['cpf-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'motivo', 'resolucao'];
+      campos.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = !editable;
+      });
+      const saveBtn = document.getElementById('save-ticket');
+      if (saveBtn) saveBtn.style.display = editable ? 'inline-block' : 'none';
+    }
+
+    // Abrir modal para novo ticket
+    document.getElementById('new-ticket-btn').addEventListener('click', () => {
+      document.getElementById('ticket-id').value = '';
+      document.getElementById('cpf-aluno').value = '';
+      document.getElementById('unidade').value = '';
+      document.getElementById('modalidade').value = '';
+      document.getElementById('problema-select').value = '';
+      document.getElementById('problema-outro').value = '';
+      document.getElementById('motivo').value = '';
+      document.getElementById('problema-outro').style.display = 'none';
+      document.getElementById('motivo').style.display = 'none';
+      document.getElementById('resolucao').value = '';
+      document.getElementById('resolucao-field').style.display = 'none';
+      document.getElementById('resolucao-obrigatoria').style.display = 'none';
+      document.getElementById('modal-title').textContent = 'Novo Ticket';
+      setModalFieldsState(true);
+      document.getElementById('ticket-modal').style.display = 'flex';
+    });
+
+    // Ver detalhes de um ticket existente
+    window.verTicket = async (id) => {
+      try {
+        const doc = await db.collection('tickets').doc(id).get();
+        if (!doc.exists) return;
+        const t = doc.data();
+        document.getElementById('ticket-id').value = id;
+        document.getElementById('cpf-aluno').value = t.cpfAluno;
+        document.getElementById('unidade').value = t.unidade;
+        document.getElementById('modalidade').value = t.modalidade;
+
+        const problemaSelect = document.getElementById('problema-select');
+        const problemaOutro = document.getElementById('problema-outro');
+        const motivoField = document.getElementById('motivo');
+
+        const problemaTexto = t.problema;
+        const valor = TEXTO_PARA_VALOR[problemaTexto] || 'outro';
+        problemaSelect.value = valor;
+
+        problemaOutro.style.display = 'none';
+        motivoField.style.display = 'none';
+        problemaOutro.required = false;
+        motivoField.required = false;
+
+        if (valor === 'outro') {
+          problemaOutro.value = problemaTexto;
+          problemaOutro.style.display = 'block';
+        } else {
+          const config = PROBLEMAS_CONFIG[valor];
+          if (config && config.precisaMotivo) {
+            motivoField.value = t.motivo || '';
+            motivoField.style.display = 'block';
+          }
+        }
+
+        document.getElementById('resolucao').value = t.resolucao || '';
+
+        const isAdmin = currentUser.tipo !== 'comum';
+        const isResponsavel = (t.iniciadoPor === currentUser.uid) || (currentUser.tipo === 'super_admin');
+
+        if (isAdmin) {
+          document.getElementById('resolucao-field').style.display = 'block';
+          if (isResponsavel && t.status === 'em_andamento') {
+            document.getElementById('modal-title').textContent = 'Concluir Ticket';
+            setModalFieldsState(true);
+            document.getElementById('resolucao-obrigatoria').style.display = 'block';
+          } else {
+            document.getElementById('modal-title').textContent = isResponsavel ? 'Detalhes do Ticket' : 'Detalhes do Ticket (Apenas Visualização)';
+            setModalFieldsState(false);
+            document.getElementById('resolucao-obrigatoria').style.display = 'none';
+          }
+        } else {
+          document.getElementById('resolucao-field').style.display = 'none';
+          document.getElementById('modal-title').textContent = 'Detalhes do Ticket';
+          setModalFieldsState(false);
+        }
+        document.getElementById('ticket-modal').style.display = 'flex';
+      } catch (error) {
+        console.error('Erro ao carregar ticket:', error);
+        mostrarNotificacao('Erro ao carregar ticket.', false);
+      }
+    };
+
+    // Salvar ticket (criar ou concluir)
+    document.getElementById('ticket-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('ticket-id').value;
+      const cpf = document.getElementById('cpf-aluno').value;
+      const unidade = document.getElementById('unidade').value;
+      const modalidade = document.getElementById('modalidade').value;
+
+      const problemaSelect = document.getElementById('problema-select');
+      const problemaOutro = document.getElementById('problema-outro');
+      const motivoField = document.getElementById('motivo');
+      const resolucao = document.getElementById('resolucao').value.trim();
+
+      if (id) {
+        // Ticket existente: conclusão
+        if (currentUser.tipo === 'comum') {
+          mostrarNotificacao('Você não tem permissão para concluir tickets.', false);
+          return;
+        }
+
+        const docAtual = await db.collection('tickets').doc(id).get();
+        if (!docAtual.exists) return;
+        const t = docAtual.data();
+
+        // Verifica permissão para super ticket
+        if (t.superTicket && currentUser.tipo !== 'super_admin') {
+          mostrarNotificacao('Apenas super administradores podem concluir este ticket.', false);
+          return;
+        }
+
+        if (t.iniciadoPor !== currentUser.uid && currentUser.tipo !== 'super_admin') {
+          mostrarNotificacao('Apenas o responsável pode concluir este ticket.', false);
+          return;
+        }
+
+        if (t.status !== 'em_andamento') {
+          mostrarNotificacao('Este ticket não está em andamento.', false);
+          return;
+        }
+
+        if (!resolucao) {
+          mostrarNotificacao('A resolução é obrigatória para concluir o ticket.', false);
+          return;
+        }
+
+        try {
+          await db.collection('tickets').doc(id).update({
+            status: 'concluido',
+            resolucao: resolucao,
+            concluidoPor: currentUser.uid,
+            concluidoEm: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          console.log('Ticket concluído:', id);
+          fecharModal();
+          carregarTickets();
+          mostrarNotificacao('Ticket concluído com sucesso!');
+        } catch (error) {
+          console.error('Erro ao concluir ticket:', error);
+          mostrarNotificacao('Erro ao concluir: ' + error.message, false);
+        }
+      } else {
+        // Criação de novo ticket
+        const problemaValor = problemaSelect.value;
+        let problemaTexto;
+        let superTicket = false;
+        let motivo = '';
+
+        if (problemaValor === 'outro') {
+          problemaTexto = problemaOutro.value.trim();
+          if (!problemaTexto) {
+            mostrarNotificacao('Por favor, descreva o problema.', false);
+            return;
+          }
+          superTicket = false;
+        } else {
+          const config = PROBLEMAS_CONFIG[problemaValor];
+          if (!config) {
+            mostrarNotificacao('Problema inválido.', false);
+            return;
+          }
+          problemaTexto = config.nome;
+          superTicket = config.super;
+          if (config.precisaMotivo) {
+            motivo = motivoField.value.trim();
+            if (!motivo) {
+              mostrarNotificacao('Por favor, informe o motivo.', false);
+              return;
+            }
+          }
+        }
+
+        try {
+          const novo = {
+            cpfAluno: cpf,
+            unidade: unidade,
+            modalidade: modalidade,
+            problema: problemaTexto,
+            motivo: motivo,
+            superTicket: superTicket,
+            status: 'aberto',
+            criadoPor: currentUser.uid,
+            nomeCriador: currentUser.nome || 'Usuário',
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          await db.collection('tickets').add(novo);
+          console.log('Ticket criado:', novo);
+          fecharModal();
+          carregarTickets();
+          mostrarNotificacao('Ticket criado com sucesso!');
+        } catch (error) {
+          console.error('Erro ao criar ticket:', error);
+          mostrarNotificacao('Erro ao criar: ' + error.message, false);
+        }
+      }
+    });
+
+    // Funções de ação com verificação de superTicket
+    window.iniciarTicket = async (id) => {
+      try {
+        const doc = await db.collection('tickets').doc(id).get();
+        if (!doc.exists) return;
+        const t = doc.data();
+
+        // Verificar permissão para super ticket
+        if (t.superTicket && currentUser.tipo !== 'super_admin') {
+          mostrarNotificacao('Apenas super administradores podem iniciar este ticket.', false);
+          return;
+        }
+
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        const nomeIniciador = userDoc.exists ? userDoc.data().nome : 'Admin';
+
+        await db.collection('tickets').doc(id).update({
+          status: 'em_andamento',
+          iniciadoPor: currentUser.uid,
+          nomeIniciador: nomeIniciador,
+          iniciadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('Ticket iniciado:', id);
+        carregarTickets();
+        mostrarNotificacao('Ticket iniciado com sucesso!');
+      } catch (error) {
+        console.error('Erro ao iniciar ticket:', error);
+        mostrarNotificacao('Erro ao iniciar: ' + error.message, false);
+      }
+    };
+
+    window.concluirTicket = (id) => {
+      db.collection('tickets').doc(id).get().then(doc => {
+        if (!doc.exists) return;
+        const t = doc.data();
+
+        if (t.superTicket && currentUser.tipo !== 'super_admin') {
+          mostrarNotificacao('Apenas super administradores podem concluir este ticket.', false);
+          return;
+        }
+        if (t.iniciadoPor !== currentUser.uid && currentUser.tipo !== 'super_admin') {
+          mostrarNotificacao('Apenas o responsável pode concluir este ticket.', false);
+          return;
+        }
+        verTicket(id);
+      }).catch(error => {
+        console.error('Erro ao verificar ticket:', error);
+        mostrarNotificacao('Erro ao verificar permissão.', false);
+      });
+    };
+
+    window.reabrirTicket = (id) => {
+      mostrarConfirmacao('Tem certeza que deseja reabrir este ticket?', (confirmado) => {
+        if (confirmado) {
+          db.collection('tickets').doc(id).get().then(doc => {
+            if (!doc.exists) return;
+            const t = doc.data();
+            if (t.superTicket && currentUser.tipo !== 'super_admin') {
+              mostrarNotificacao('Apenas super administradores podem reabrir este ticket.', false);
+              return;
+            }
+            db.collection('tickets').doc(id).update({
+              status: 'aberto',
+              resolucao: '',
+              iniciadoPor: null,
+              nomeIniciador: null,
+              iniciadoEm: null,
+              reabertoPor: currentUser.uid,
+              reabertoEm: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+              console.log('Ticket reaberto:', id);
+              carregarTickets();
+              mostrarNotificacao('Ticket reaberto!');
+            }).catch(error => {
+              console.error('Erro ao reabrir ticket:', error);
+              mostrarNotificacao('Erro ao reabrir: ' + error.message, false);
+            });
+          });
+        }
+      });
+    };
+
+    window.devolverTicket = (id) => {
+      mostrarConfirmacao('Devolver este ticket para a fila de abertos?', (confirmado) => {
+        if (confirmado) {
+          db.collection('tickets').doc(id).get().then(doc => {
+            if (!doc.exists) return;
+            const t = doc.data();
+            if (t.superTicket && currentUser.tipo !== 'super_admin') {
+              mostrarNotificacao('Apenas super administradores podem devolver este ticket.', false);
+              return;
+            }
+            db.collection('tickets').doc(id).update({
+              status: 'aberto',
+              iniciadoPor: null,
+              nomeIniciador: null,
+              iniciadoEm: null
+            }).then(() => {
+              console.log('Ticket devolvido:', id);
+              carregarTickets();
+              mostrarNotificacao('Ticket devolvido!');
+            }).catch(error => {
+              console.error('Erro ao devolver ticket:', error);
+              mostrarNotificacao('Erro ao devolver: ' + error.message, false);
+            });
+          });
+        }
+      });
+    };
+
+    function fecharModal() {
+      document.getElementById('ticket-modal').style.display = 'none';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', fecharModal);
+    document.getElementById('cancel-modal').addEventListener('click', fecharModal);
+
+    // Trocar abas
+    document.querySelectorAll('.tab[data-status]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+        currentStatus = tab.dataset.status;
+        carregarTickets();
+      });
+    });
 
     function atualizarBadges(tickets) {
       const badgeAbertos = document.getElementById('tickets-badge');
@@ -510,6 +885,9 @@ function carregarTickets() {
         let statusText = t.status;
         if (t.status === 'em_andamento') statusText = 'Em andamento';
 
+        // Verificar se pode mostrar botões (considerando superTicket)
+        const podeAgir = currentUser.tipo !== 'comum' && (currentUser.tipo === 'super_admin' || !t.superTicket);
+
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3 class="unit-group__title" style="margin-bottom:0;">Ticket #${t.id.slice(0,6)}</h3>
@@ -523,304 +901,19 @@ function carregarTickets() {
           <p><strong>Criado por:</strong> ${t.nomeCriador || 'Desconhecido'}</p>
           ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${t.nomeIniciador || t.iniciadoPor}</p>` : ''}
           <p><strong>Problema:</strong> ${t.problema}</p>
+          ${t.motivo ? `<p><strong>Motivo:</strong> ${t.motivo}</p>` : ''}
           ${t.resolucao ? `<p><strong>Resolução:</strong> ${t.resolucao}</p>` : ''}
           <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
             <button class="btn" onclick="verTicket('${t.id}')">Ver detalhes</button>
-            ${(currentUser.tipo !== 'comum' && t.status === 'aberto') ? `<button class="btn btn--accent" onclick="iniciarTicket('${t.id}')">Iniciar</button>` : ''}
-            ${(currentUser.tipo !== 'comum' && t.status === 'em_andamento') ? `<button class="btn btn--accent" onclick="concluirTicket('${t.id}')">Concluir</button>` : ''}
-            ${(currentUser.tipo !== 'comum' && t.status === 'concluido') ? `<button class="btn" onclick="reabrirTicket('${t.id}')">Reabrir</button>` : ''}
-            ${(currentUser.tipo !== 'comum' && t.status === 'em_andamento') ? `<button class="btn" onclick="devolverTicket('${t.id}')">Devolver</button>` : ''}
+            ${(podeAgir && t.status === 'aberto') ? `<button class="btn btn--accent" onclick="iniciarTicket('${t.id}')">Iniciar</button>` : ''}
+            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn btn--accent" onclick="concluirTicket('${t.id}')">Concluir</button>` : ''}
+            ${(podeAgir && t.status === 'concluido') ? `<button class="btn" onclick="reabrirTicket('${t.id}')">Reabrir</button>` : ''}
+            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn" onclick="devolverTicket('${t.id}')">Devolver</button>` : ''}
           </div>
         `;
         container.appendChild(card);
       });
     }
-
-    // Lógica para mostrar/ocultar campo "outro" no problema
-    function setupProblemaListener() {
-      const problemaSelect = document.getElementById('problema-select');
-      const problemaOutro = document.getElementById('problema-outro');
-      if (problemaSelect && problemaOutro) {
-        problemaSelect.addEventListener('change', function() {
-          if (this.value === 'outro') {
-            problemaOutro.style.display = 'block';
-            problemaOutro.required = true;
-          } else {
-            problemaOutro.style.display = 'none';
-            problemaOutro.required = false;
-          }
-        });
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', setupProblemaListener);
-
-    // Função para habilitar/desabilitar campos do modal
-    function setModalFieldsState(editable) {
-      const campos = ['cpf-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'resolucao'];
-      campos.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.disabled = !editable;
-      });
-      const saveBtn = document.getElementById('save-ticket');
-      if (saveBtn) saveBtn.style.display = editable ? 'inline-block' : 'none';
-    }
-
-    // Abrir modal para novo ticket
-    document.getElementById('new-ticket-btn').addEventListener('click', () => {
-      document.getElementById('ticket-id').value = '';
-      document.getElementById('cpf-aluno').value = '';
-      document.getElementById('unidade').value = '';
-      document.getElementById('modalidade').value = '';
-      document.getElementById('problema-select').value = '';
-      document.getElementById('problema-outro').value = '';
-      document.getElementById('problema-outro').style.display = 'none';
-      document.getElementById('resolucao').value = '';
-      document.getElementById('resolucao-field').style.display = 'none';
-      document.getElementById('resolucao-obrigatoria').style.display = 'none';
-      document.getElementById('modal-title').textContent = 'Novo Ticket';
-      setModalFieldsState(true);
-      document.getElementById('ticket-modal').style.display = 'flex';
-    });
-
-    // Ver detalhes de um ticket existente
-    window.verTicket = async (id) => {
-      try {
-        const doc = await db.collection('tickets').doc(id).get();
-        if (!doc.exists) return;
-        const t = doc.data();
-        document.getElementById('ticket-id').value = id;
-        document.getElementById('cpf-aluno').value = t.cpfAluno;
-        document.getElementById('unidade').value = t.unidade;
-        document.getElementById('modalidade').value = t.modalidade;
-
-        const problemaSelect = document.getElementById('problema-select');
-        const problemaOutro = document.getElementById('problema-outro');
-        const opcoes = ['Aprovar inscrição Enem', 'Cancelar Inscrição', 'Consultar responsável pela inscrição'];
-        if (opcoes.includes(t.problema)) {
-          problemaSelect.value = t.problema;
-          problemaOutro.style.display = 'none';
-          problemaOutro.value = '';
-        } else {
-          problemaSelect.value = 'outro';
-          problemaOutro.style.display = 'block';
-          problemaOutro.value = t.problema;
-        }
-
-        document.getElementById('resolucao').value = t.resolucao || '';
-
-        const isAdmin = currentUser.tipo !== 'comum';
-        const isResponsavel = (t.iniciadoPor === currentUser.uid) || (currentUser.tipo === 'super_admin');
-
-        if (isAdmin) {
-          document.getElementById('resolucao-field').style.display = 'block';
-          // Define título e estado dos campos baseado na permissão
-          if (isResponsavel && t.status === 'em_andamento') {
-            document.getElementById('modal-title').textContent = 'Concluir Ticket';
-            setModalFieldsState(true); // Habilita edição
-            document.getElementById('resolucao-obrigatoria').style.display = 'block';
-          } else {
-            document.getElementById('modal-title').textContent = isResponsavel ? 'Detalhes do Ticket' : 'Detalhes do Ticket (Apenas Visualização)';
-            setModalFieldsState(false); // Desabilita edição
-            document.getElementById('resolucao-obrigatoria').style.display = 'none';
-          }
-        } else {
-          document.getElementById('resolucao-field').style.display = 'none';
-          document.getElementById('modal-title').textContent = 'Detalhes do Ticket';
-          setModalFieldsState(false);
-        }
-        document.getElementById('ticket-modal').style.display = 'flex';
-      } catch (error) {
-        console.error('Erro ao carregar ticket:', error);
-        mostrarNotificacao('Erro ao carregar ticket.', false);
-      }
-    };
-
-    // Salvar ticket (criar ou concluir)
-    document.getElementById('ticket-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const id = document.getElementById('ticket-id').value;
-      const cpf = document.getElementById('cpf-aluno').value;
-      const unidade = document.getElementById('unidade').value;
-      const modalidade = document.getElementById('modalidade').value;
-
-      const problemaSelect = document.getElementById('problema-select');
-      const problemaOutro = document.getElementById('problema-outro');
-      let problema = problemaSelect.value;
-      if (problema === 'outro') {
-        problema = problemaOutro.value.trim();
-        if (!problema) {
-          mostrarNotificacao('Por favor, descreva o problema.', false);
-          return;
-        }
-      }
-
-      const resolucao = document.getElementById('resolucao').value.trim();
-
-      if (id) {
-        // Ticket existente: conclusão
-        if (currentUser.tipo === 'comum') {
-          mostrarNotificacao('Você não tem permissão para concluir tickets.', false);
-          return;
-        }
-
-        const docAtual = await db.collection('tickets').doc(id).get();
-        if (!docAtual.exists) return;
-        const t = docAtual.data();
-
-        // Verifica se é responsável ou super_admin
-        if (t.iniciadoPor !== currentUser.uid && currentUser.tipo !== 'super_admin') {
-          mostrarNotificacao('Apenas o responsável pode concluir este ticket.', false);
-          return;
-        }
-
-        if (t.status !== 'em_andamento') {
-          mostrarNotificacao('Este ticket não está em andamento.', false);
-          return;
-        }
-
-        if (!resolucao) {
-          mostrarNotificacao('A resolução é obrigatória para concluir o ticket.', false);
-          return;
-        }
-
-        try {
-          await db.collection('tickets').doc(id).update({
-            status: 'concluido',
-            resolucao: resolucao,
-            concluidoPor: currentUser.uid,
-            concluidoEm: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          console.log('Ticket concluído:', id);
-          fecharModal();
-          carregarTickets();
-          mostrarNotificacao('Ticket concluído com sucesso!');
-        } catch (error) {
-          console.error('Erro ao concluir ticket:', error);
-          mostrarNotificacao('Erro ao concluir: ' + error.message, false);
-        }
-      } else {
-        // Criação de novo ticket
-        try {
-          const novo = {
-            cpfAluno: cpf,
-            unidade: unidade,
-            modalidade: modalidade,
-            problema: problema,
-            status: 'aberto',
-            criadoPor: currentUser.uid,
-            nomeCriador: currentUser.nome || 'Usuário',
-            criadoEm: firebase.firestore.FieldValue.serverTimestamp()
-          };
-          await db.collection('tickets').add(novo);
-          console.log('Ticket criado:', novo);
-          fecharModal();
-          carregarTickets();
-          mostrarNotificacao('Ticket criado com sucesso!');
-        } catch (error) {
-          console.error('Erro ao criar ticket:', error);
-          mostrarNotificacao('Erro ao criar: ' + error.message, false);
-        }
-      }
-    });
-
-    // Função para iniciar um ticket
-    window.iniciarTicket = async (id) => {
-      try {
-        const userDoc = await db.collection('users').doc(currentUser.uid).get();
-        const nomeIniciador = userDoc.exists ? userDoc.data().nome : 'Admin';
-
-        await db.collection('tickets').doc(id).update({
-          status: 'em_andamento',
-          iniciadoPor: currentUser.uid,
-          nomeIniciador: nomeIniciador,
-          iniciadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        console.log('Ticket iniciado:', id);
-        carregarTickets();
-        mostrarNotificacao('Ticket iniciado com sucesso!');
-      } catch (error) {
-        console.error('Erro ao iniciar ticket:', error);
-        mostrarNotificacao('Erro ao iniciar: ' + error.message, false);
-      }
-    };
-
-    // Função concluirTicket (acionada pelo botão na lista)
-    window.concluirTicket = (id) => {
-      db.collection('tickets').doc(id).get().then(doc => {
-        if (!doc.exists) return;
-        const t = doc.data();
-        if (t.iniciadoPor !== currentUser.uid && currentUser.tipo !== 'super_admin') {
-          mostrarNotificacao('Apenas o responsável pode concluir este ticket.', false);
-          return;
-        }
-        verTicket(id);
-      }).catch(error => {
-        console.error('Erro ao verificar ticket:', error);
-        mostrarNotificacao('Erro ao verificar permissão.', false);
-      });
-    };
-
-    window.reabrirTicket = (id) => {
-      mostrarConfirmacao('Tem certeza que deseja reabrir este ticket?', (confirmado) => {
-        if (confirmado) {
-          db.collection('tickets').doc(id).update({
-            status: 'aberto',
-            resolucao: '',
-            iniciadoPor: null,
-            nomeIniciador: null,
-            iniciadoEm: null,
-            reabertoPor: currentUser.uid,
-            reabertoEm: firebase.firestore.FieldValue.serverTimestamp()
-          }).then(() => {
-            console.log('Ticket reaberto:', id);
-            carregarTickets();
-            mostrarNotificacao('Ticket reaberto!');
-          }).catch(error => {
-            console.error('Erro ao reabrir ticket:', error);
-            mostrarNotificacao('Erro ao reabrir: ' + error.message, false);
-          });
-        }
-      });
-    };
-
-    window.devolverTicket = (id) => {
-      mostrarConfirmacao('Devolver este ticket para a fila de abertos?', (confirmado) => {
-        if (confirmado) {
-          db.collection('tickets').doc(id).update({
-            status: 'aberto',
-            iniciadoPor: null,
-            nomeIniciador: null,
-            iniciadoEm: null
-          }).then(() => {
-            console.log('Ticket devolvido:', id);
-            carregarTickets();
-            mostrarNotificacao('Ticket devolvido!');
-          }).catch(error => {
-            console.error('Erro ao devolver ticket:', error);
-            mostrarNotificacao('Erro ao devolver: ' + error.message, false);
-          });
-        }
-      });
-    };
-
-    function fecharModal() {
-      document.getElementById('ticket-modal').style.display = 'none';
-    }
-
-    document.getElementById('modal-close').addEventListener('click', fecharModal);
-    document.getElementById('cancel-modal').addEventListener('click', fecharModal);
-
-    // Trocar abas
-    document.querySelectorAll('.tab[data-status]').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('is-active'));
-        tab.classList.add('is-active');
-        currentStatus = tab.dataset.status;
-        carregarTickets();
-      });
-    });
 
     window.logout = () => {
       auth.signOut().then(() => {

@@ -16,9 +16,7 @@
     </header>
 
     <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <!-- Sem links internos aqui, apenas modo escuro -->
-      </div>
+      <div class="nav-left"></div>
       <div class="nav-right">
         <button class="btn btn--nav" type="button" id="dark-mode-toggle">
           <span class="mode-text">Modo</span>
@@ -27,7 +25,7 @@
       </div>
     </nav>
 
-    <!-- Área de login/registro com largura aumentada e altura mínima fixa -->
+    <!-- Área de login/registro -->
     <div class="links-controls" style="max-width: 450px; margin: 0 auto; min-height: 380px;">
       <!-- Formulário de Login -->
       <form id="login-form">
@@ -41,11 +39,17 @@
           <input type="password" id="password" class="search-input" required>
         </div>
         <button type="submit" class="btn btn--accent" style="width:100%;">Entrar</button>
-      </form>
+        
+        <!-- Link esqueci minha senha -->
+        <div style="text-align: right; margin-top: 0.5rem;">
+          <a href="#" id="forgot-password">Esqueci minha senha</a>
+        </div>
 
-      <p style="margin-top:1rem; text-align:center;">
-        Não tem conta? <a href="#" id="show-register">Registrar</a>
-      </p>
+        <!-- Link para registrar (aparece apenas no login) -->
+        <p style="margin-top:1rem; text-align:center;">
+          Não tem conta? <a href="#" id="show-register">Registrar</a>
+        </p>
+      </form>
 
       <!-- Formulário de Registro -->
       <form id="register-form" style="display:none; margin-top:1rem;">
@@ -62,13 +66,17 @@
           <span>Senha</span>
           <input type="password" id="reg-password" class="search-input" required>
         </div>
+        <div class="field">
+          <span>Confirmar Senha</span>
+          <input type="password" id="reg-confirm-password" class="search-input" required>
+        </div>
         <button type="submit" class="btn btn--accent">Registrar</button>
-        <p style="margin-top:0.5rem;">
+        <p style="margin-top:0.5rem; text-align:center;">
           <a href="#" id="show-login">Voltar para login</a>
         </p>
       </form>
 
-      <!-- Mensagem de erro -->
+      <!-- Mensagem de erro/sucesso -->
       <div id="login-message"></div>
     </div>
   </main>
@@ -112,9 +120,19 @@
     const registerForm = document.getElementById('register-form');
     const showRegister = document.getElementById('show-register');
     const showLogin = document.getElementById('show-login');
+    const forgotPasswordLink = document.getElementById('forgot-password');
     const messageDiv = document.getElementById('login-message');
 
-    // Função para traduzir erros do Firebase
+    // Função para exibir mensagens
+    function showMessage(text, isSuccess = false) {
+      messageDiv.textContent = text;
+      messageDiv.style.display = 'flex';
+      messageDiv.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
+      messageDiv.style.color = isSuccess ? '#155724' : '#721c24';
+      messageDiv.style.border = isSuccess ? '1px solid #c3e6cb' : '1px solid #f5c6cb';
+    }
+
+    // Tradução de erros do Firebase
     function traduzirErroFirebase(errorCode) {
       const erros = {
         'auth/invalid-email': 'E-mail inválido.',
@@ -122,10 +140,10 @@
         'auth/user-not-found': 'Usuário não encontrado.',
         'auth/wrong-password': 'Senha incorreta.',
         'auth/invalid-login-credentials': 'E-mail ou senha incorretos.',
-        'auth/email-already-in-use': 'Este e-mail já existe',
-        'auth/weak-password': 'Senha muito curta.',
+        'auth/email-already-in-use': 'Este e-mail já está em uso.',
+        'auth/weak-password': 'Senha muito curta (mínimo 6 caracteres).',
         'auth/network-request-failed': 'Verifique sua internet.',
-        'auth/too-many-requests': 'Muitas tentativas.',
+        'auth/too-many-requests': 'Muitas tentativas. Tente mais tarde.',
         'auth/popup-closed-by-user': 'Login cancelado.',
         'auth/cancelled-popup-request': 'Operação cancelada.',
         'auth/internal-error': 'Erro interno. Tente novamente.'
@@ -133,75 +151,92 @@
       return erros[errorCode] || `Erro desconhecido: ${errorCode}`;
     }
 
-    // Alternar entre formulários
+    // Alternar para registro
     showRegister.addEventListener('click', (e) => {
       e.preventDefault();
       loginForm.style.display = 'none';
       registerForm.style.display = 'block';
-      messageDiv.textContent = '';
       messageDiv.style.display = 'none';
     });
 
+    // Alternar para login
     showLogin.addEventListener('click', (e) => {
       e.preventDefault();
       registerForm.style.display = 'none';
       loginForm.style.display = 'block';
-      messageDiv.textContent = '';
       messageDiv.style.display = 'none';
+    });
+
+    // Esqueci minha senha
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = prompt('Digite seu e-mail para recuperar a senha:');
+      if (!email) return;
+
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showMessage('E-mail de recuperação enviado! Verifique sua caixa de entrada.', true);
+      } catch (error) {
+        showMessage(traduzirErroFirebase(error.code));
+      }
     });
 
     // Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      console.log('Formulário de login submetido');
-
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      
-      messageDiv.textContent = '';
       messageDiv.style.display = 'none';
 
       try {
-        console.log('Tentando login com:', email);
         await auth.signInWithEmailAndPassword(email, password);
       } catch (error) {
-        console.log('Erro no login:', error.code);
-        const mensagem = traduzirErroFirebase(error.code);
-        messageDiv.textContent = mensagem;
-        messageDiv.style.display = 'flex';
+        showMessage(traduzirErroFirebase(error.code));
       }
     });
 
     // Registro
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      console.log('Formulário de registro submetido');
 
-      const nome = document.getElementById('reg-nome').value;
-      const email = document.getElementById('reg-email').value;
+      const nome = document.getElementById('reg-nome').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+      if (password !== confirmPassword) {
+        showMessage('As senhas não coincidem.');
+        return;
+      }
+
+      if (nome === '') {
+        showMessage('Por favor, informe seu nome.');
+        return;
+      }
       
-      messageDiv.textContent = '';
       messageDiv.style.display = 'none';
 
       try {
         const cred = await auth.createUserWithEmailAndPassword(email, password);
+        
+        // Salvar no Firestore com o nome fornecido
         await db.collection('users').doc(cred.user.uid).set({
-          nome,
-          email,
+          nome: nome,
+          email: email,
           tipo: 'comum',
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
+
+        // Atualizar o displayName no Auth
+        await cred.user.updateProfile({ displayName: nome });
+
         console.log('Registro bem-sucedido');
       } catch (error) {
-        console.log('Erro no registro:', error.code);
-        const mensagem = traduzirErroFirebase(error.code);
-        messageDiv.textContent = mensagem;
-        messageDiv.style.display = 'flex';
+        showMessage(traduzirErroFirebase(error.code));
       }
     });
 
-    // Logout (caso necessário em outras páginas)
+    // Logout (para uso em outras páginas)
     window.logout = () => {
       auth.signOut().then(() => {
         window.location.href = './index.html';
