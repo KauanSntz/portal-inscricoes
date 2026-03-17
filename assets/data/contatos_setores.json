@@ -1,56 +1,72 @@
 [
   {
-    "setor": "IDIOMAS FAMETRO",
-    "telefone": "(92) 9 8411-5087",
+    "setor": "SECAD",
+    "telefone": "(92) 9 2101-1000",
     "tipo": "whatsapp"
   },
   {
-    "setor": "COLEGIO FAMETRO",
-    "telefone": "(92) 9 8403-0034",
+    "setor": "SECAD LESTE",
+    "telefone": "(92) 9 8414-9639",
     "tipo": "whatsapp"
   },
   {
-    "setor": "FACULDADE SANTA TERESA",
-    "telefone": "(92) 9 8440-1024",
+    "setor": "SECAD NORTE",
+    "telefone": "(92) 9 8474-8569",
     "tipo": "whatsapp"
   },
   {
-    "setor": "Clínicas Fametro",
-    "telefone": "(92) 98646-1141"
-  },
-  {
-    "setor": "CLÍNICAS ODONTO",
-    "telefone": "(92) 9 8466-1018",
+    "setor": "SECAD SUL",
+    "telefone": "(92) 9 8403-6148",
     "tipo": "whatsapp"
   },
   {
-    "setor": "COBRAFIX",
-    "telefone": "(92) 9 8465-1033",
+    "setor": "SECAD COMPENSA",
+    "telefone": "(92) 9 8456-7537",
     "tipo": "whatsapp"
   },
   {
-    "setor": "EJA TECNICO",
-    "telefone": "(92) 9 8008-0009",
+    "setor": "ALUNO COM DISCIPLINA EAD",
+    "telefone": "(92) 9 8646-0347",
     "tipo": "whatsapp"
   },
   {
-    "setor": "FIES",
-    "telefone": "(92) 9 8309-9005",
-    "tipo": "whatsapp"
-  },
-  {
-    "setor": "COORD. PÓS",
-    "telefone": "(92) 9 8429-5139",
+    "setor": "CENTRAL DE MATRÍCULAS",
+    "telefone": "(92) 9 8415-6346",
     "tipo": "whatsapp"
   },
   {
     "setor": "COORD. MEDICINA",
-    "telefone": "(92) 9 8435-4407",
+    "telefone": "(92) 9 8455-4407",
     "tipo": "whatsapp"
   },
   {
-    "setor": "CENTRAL DE MATRICULAS",
-    "telefone": "(92) 9 8451-6346",
+    "setor": "FIES",
+    "telefone": "(92) 9 8429-5193",
+    "tipo": "whatsapp"
+  },
+  {
+    "setor": "COBRAFIX",
+    "telefone": "(92) 800-888-0097",
+    "tipo": "telefone"
+  },
+  {
+    "setor": "CLÍNICAS ODONTO",
+    "telefone": "(92) 9 8646-0124",
+    "tipo": "whatsapp"
+  },
+  {
+    "setor": "FACULDADE SANTA TERESA",
+    "telefone": "(92) 9 8403-0034",
+    "tipo": "whatsapp"
+  },
+  {
+    "setor": "IDIOMAS FAMETRO",
+    "telefone": "(92) 9 8160-9230",
+    "tipo": "whatsapp"
+  },
+  {
+    "setor": "COLÉGIO FAMETRO",
+    "telefone": "(92) 9 8441-5087",
     "tipo": "whatsapp"
   },
   {
@@ -59,23 +75,23 @@
     "tipo": "whatsapp"
   },
   {
-    "setor": "ALUNO COM DISCIPLINA EAD",
-    "telefone": "(92) 9 8466-0347",
+    "setor": "COORD. PÓS",
+    "telefone": "(92) 9 8445-9399",
     "tipo": "whatsapp"
   },
   {
-    "setor": "SECAD COMPENSA",
-    "telefone": "(92) 9 8455-7537",
+    "setor": "EJA E TÉCNICO",
+    "telefone": "(92) 9 3090-9005",
     "tipo": "whatsapp"
   },
   {
-    "setor": "SECAD NORTE",
-    "telefone": "(92) 9 8435-6148",
+    "setor": "CASA FAMETRO/VET",
+    "telefone": "(92) 98646-1081",
     "tipo": "whatsapp"
   },
   {
-    "setor": "SECAD LESTE",
-    "telefone": "(92) 9 8440-8539",
+    "setor": "Clínicas Fametro",
+    "telefone": "(92) 98646-1141",
     "tipo": "whatsapp"
   }
 ]

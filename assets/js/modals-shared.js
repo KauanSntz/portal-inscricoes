@@ -1116,58 +1116,107 @@ const cursosTecnicosModal = (() => {
 
 // Expor globalmente (adicione esta linha junto com os outros exports)
 window.cursosTecnicosModal = cursosTecnicosModal; 
-window.cursosTecnicosModal = cursosTecnicosModal;
 
-  // ==================== MODAL DE COORDENAÇÃO ====================
+  // ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
 const coordenadoresModal = createInfoModal(
   'coordenadores-modal',
-  'Coordenação de Cursos',
+  'Coordenação de Cursos e Contatos',
   'coordenadores.json',
   (item) => {
     const card = document.createElement('article');
     card.className = 'info-card coordenador-card';
 
-    // Unidade (em destaque)
-    const unidade = document.createElement('div');
-    unidade.className = 'info-card-unidade';
-    unidade.textContent = item.unidade;
+    // Se for um setor (como Direção Jurídica, NADI)
+    if (item.setor) {
+      const setor = document.createElement('div');
+      setor.className = 'info-card-unidade'; // reutiliza a classe de unidade para manter estilo
+      setor.textContent = item.setor;
+      card.appendChild(setor);
+    }
 
-    // Curso(s) – se for array, junta com vírgula
-    const cursos = document.createElement('div');
-    cursos.className = 'info-card-cursos';
-    cursos.textContent = Array.isArray(item.cursos) ? item.cursos.join(', ') : item.cursos;
+    // Se tiver unidade (coordenadores normais)
+    if (item.unidade) {
+      const unidade = document.createElement('div');
+      unidade.className = 'info-card-unidade';
+      unidade.textContent = item.unidade;
+      card.appendChild(unidade);
+    }
 
-    // E-mail (em destaque, clicável?)
-    const email = document.createElement('div');
-    email.className = 'info-card-email';
-    
-    // Se quiser que o e-mail seja um link mailto:
-    const emailLink = document.createElement('a');
-    emailLink.href = `mailto:${item.email}`;
-    emailLink.textContent = item.email || 'Não informado';
-    emailLink.style.color = 'var(--accent)';
-    emailLink.style.textDecoration = 'none';
-    emailLink.style.fontWeight = '600';
-    email.appendChild(emailLink);
+    // Nome do coordenador (se houver)
+    if (item.coordenador) {
+      const nome = document.createElement('div');
+      nome.className = 'info-card-nome';
+      nome.textContent = item.coordenador;
+      card.appendChild(nome);
+    }
 
-    // Mensagem para cópia (inclui apenas o e-mail mesmo)
-    const mensagem = item.email || 'E-mail não disponível';
+    // Cursos (se houver)
+    if (item.cursos) {
+      const cursos = document.createElement('div');
+      cursos.className = 'info-card-cursos';
+      cursos.textContent = Array.isArray(item.cursos) ? item.cursos.join(', ') : item.cursos;
+      card.appendChild(cursos);
+    }
 
+    // Telefones (se for array) – pode ser um array de strings
+    if (item.telefones && Array.isArray(item.telefones)) {
+      const telefonesDiv = document.createElement('div');
+      telefonesDiv.className = 'info-card-contato';
+      telefonesDiv.innerHTML = item.telefones.map(t => `📞 ${t}`).join('<br>');
+      card.appendChild(telefonesDiv);
+    } else if (item.contato) {
+      // Telefone único (coordenadores antigos)
+      const telefone = document.createElement('div');
+      telefone.className = 'info-card-contato';
+      telefone.textContent = `📞 ${item.contato}`;
+      card.appendChild(telefone);
+    }
+
+    // E-mail (se houver)
+    if (item.email) {
+      const email = document.createElement('div');
+      email.className = 'info-card-email';
+      const emailLink = document.createElement('a');
+      emailLink.href = `mailto:${item.email}`;
+      emailLink.textContent = item.email;
+      emailLink.style.color = 'var(--accent)';
+      emailLink.style.textDecoration = 'none';
+      emailLink.style.fontWeight = '600';
+      email.appendChild(emailLink);
+      card.appendChild(email);
+    }
+
+    // Botão copiar – monta mensagem de acordo com os dados disponíveis
     const copyBtn = document.createElement('button');
     copyBtn.className = 'info-copy-btn';
-    copyBtn.textContent = 'Copiar e-mail';
-    copyBtn.addEventListener('click', async () => {
-      const ok = await copyText(mensagem);
-      copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-      setTimeout(() => {
-        copyBtn.textContent = 'Copiar e-mail';
-      }, 1200);
-    });
+    copyBtn.textContent = 'Copiar';
 
-    card.appendChild(unidade);
-    card.appendChild(cursos);
-    card.appendChild(email);
+    let mensagem = '';
+    if (item.setor) {
+      mensagem += `${item.setor}\n`;
+    }
+    if (item.unidade) {
+      mensagem += `${item.unidade}\n`;
+    }
+    if (item.coordenador) {
+      mensagem += `Coordenador: ${item.coordenador}\n`;
+    }
+    if (item.telefones) {
+      mensagem += `Telefones: ${item.telefones.join(', ')}\n`;
+    } else if (item.contato) {
+      mensagem += `Telefone: ${item.contato}\n`;
+    }
+    if (item.email) {
+      mensagem += `E-mail: ${item.email}`;
+    }
+
+    copyBtn.addEventListener('click', async () => {
+      const ok = await copyText(mensagem.trim());
+      copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+      setTimeout(() => copyBtn.textContent = 'Copiar', 1200);
+    });
     card.appendChild(copyBtn);
+
     return card;
   }
 );
