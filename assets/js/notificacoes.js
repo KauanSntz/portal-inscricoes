@@ -156,18 +156,18 @@
 
     // Registrar Service Worker (se ainda não registrado)
     try {
-      // Tenta obter registrações existentes
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      if (registrations.length > 0) {
-        swRegistration = registrations[0];
-        console.log('✅ Service Worker já está ativo', swRegistration);
-      } else {
-        swRegistration = await navigator.serviceWorker.register('./service-worker.js');
-        console.log('✅ Service Worker registrado', swRegistration);
-      }
-    } catch (err) {
-      console.error('❌ Erro ao registrar Service Worker:', err);
-    }
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  if (registrations.length > 0) {
+    swRegistration = registrations[0];
+    console.log('✅ Service Worker já está ativo', swRegistration);
+  } else {
+    // Caminho absoluto para o service worker (ajuste se necessário)
+    swRegistration = await navigator.serviceWorker.register('/assets/js/service-worker.js');
+    console.log('✅ Service Worker registrado', swRegistration);
+  }
+} catch (err) {
+  console.error('❌ Erro ao registrar Service Worker:', err);
+}
 
     // Iniciar polling a cada 30 segundos
     setInterval(() => verificarNotificacoes(user), 30000);
