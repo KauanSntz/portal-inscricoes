@@ -154,8 +154,8 @@
       }
     }
 
-   // Registrar Service Worker (se ainda não registrado)
-try {
+    // Registrar Service Worker (se ainda não registrado)
+    try {
   const registrations = await navigator.serviceWorker.getRegistrations();
   if (registrations.length > 0) {
     swRegistration = registrations[0];
@@ -169,6 +169,7 @@ try {
 } catch (err) {
   console.error('❌ Erro ao registrar Service Worker:', err);
 }
+
     // Iniciar polling a cada 30 segundos
     setInterval(() => verificarNotificacoes(user), 30000);
 
