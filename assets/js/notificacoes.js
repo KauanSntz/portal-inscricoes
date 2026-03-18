@@ -154,21 +154,21 @@
       }
     }
 
-    // Registrar Service Worker (se ainda não registrado)
-    try {
+   // Registrar Service Worker (se ainda não registrado)
+try {
   const registrations = await navigator.serviceWorker.getRegistrations();
   if (registrations.length > 0) {
     swRegistration = registrations[0];
     console.log('✅ Service Worker já está ativo', swRegistration);
   } else {
-    // Caminho absoluto para o service worker (ajuste se necessário)
-    swRegistration = await navigator.serviceWorker.register('/assets/js/service-worker.js');
+    // Caminho correto considerando o subdiretório do GitHub Pages
+    const basePath = window.location.pathname.includes('portal-inscricoes') ? '/portal-inscricoes' : '';
+    swRegistration = await navigator.serviceWorker.register(`${basePath}/assets/js/service-worker.js`);
     console.log('✅ Service Worker registrado', swRegistration);
   }
 } catch (err) {
   console.error('❌ Erro ao registrar Service Worker:', err);
 }
-
     // Iniciar polling a cada 30 segundos
     setInterval(() => verificarNotificacoes(user), 30000);
 
