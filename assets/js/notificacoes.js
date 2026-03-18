@@ -2,17 +2,14 @@
 (() => {
   'use strict';
 
-  // Verifica suporte do navegador
   if (!('Notification' in window) || !('serviceWorker' in navigator)) {
     console.log('❌ Notificações não suportadas');
     return;
   }
 
-  // Chave para localStorage
   const STORAGE_KEY_ABERTOS = 'notificadosAbertos';
   const STORAGE_KEY_CONCLUIDOS = 'notificadosConcluidos';
 
-  // Carrega conjuntos do localStorage
   function carregarNotificados() {
     const abertos = new Set();
     const concluidos = new Set();
@@ -31,7 +28,6 @@
     return { abertos, concluidos };
   }
 
-  // Salva conjuntos no localStorage
   function salvarNotificados(abertos, concluidos) {
     try {
       localStorage.setItem(STORAGE_KEY_ABERTOS, JSON.stringify(Array.from(abertos)));
@@ -41,29 +37,23 @@
     }
   }
 
-  // Carrega estado inicial
   let { abertos: notificadosAbertos, concluidos: notificadosConcluidos } = carregarNotificados();
 
-  // Elemento de áudio (pré-carregado)
   const audio = new Audio('./assets/audio/notification.mp3');
   audio.load();
 
-  // Função para tocar som (com tratamento de autoplay)
   function tocarSom() {
     audio.play().catch(e => console.log('⚠️ Autoplay bloqueado:', e));
   }
 
-  // Referência para a registration do service worker
   let swRegistration = null;
 
-  // Função principal de verificação
   async function verificarNotificacoes(user) {
     if (!user) return;
     console.log('🔍 Verificando notificações...');
 
     const db = firebase.firestore();
 
-    // ========== 1. Verificar novos tickets ABERTOS (para admins) ==========
     const userDoc = await db.collection('users').doc(user.uid).get();
     const userTipo = userDoc.data()?.tipo;
 
@@ -76,11 +66,8 @@
 
       abertosSnap.forEach(doc => {
         const ticketId = doc.id;
-
         if (!notificadosAbertos.has(ticketId)) {
           notificadosAbertos.add(ticketId);
-
-          // Usa showNotification se disponível, senão fallback para Notification
           if (swRegistration) {
             swRegistration.showNotification('🎫 Novo Ticket Aberto', {
               body: `Ticket #${ticketId.slice(0, 6)} - ${doc.data().problema.substring(0, 50)}...`,
@@ -93,14 +80,12 @@
               silent: false
             });
           }
-
           tocarSom();
           console.log('🔔 Notificação de abertura enviada', ticketId);
         }
       });
     }
 
-    // ========== 2. Verificar tickets CONCLUÍDOS (para o criador) ==========
     const concluidosSnap = await db.collection('tickets')
       .where('status', '==', 'concluido')
       .where('criadoPor', '==', user.uid)
@@ -110,10 +95,8 @@
 
     concluidosSnap.forEach(doc => {
       const ticketId = doc.id;
-
       if (!notificadosConcluidos.has(ticketId)) {
         notificadosConcluidos.add(ticketId);
-
         if (swRegistration) {
           swRegistration.showNotification('✅ Ticket Concluído', {
             body: `Seu ticket #${ticketId.slice(0, 6)} foi resolvido.`,
@@ -126,17 +109,14 @@
             silent: false
           });
         }
-
         tocarSom();
         console.log('🔔 Notificação de conclusão enviada', ticketId);
       }
     });
 
-    // Salva os conjuntos atualizados no localStorage
     salvarNotificados(notificadosAbertos, notificadosConcluidos);
   }
 
-  // ========== Inicialização do sistema ==========
   firebase.auth().onAuthStateChanged(async (user) => {
     if (!user) {
       console.log('👤 Usuário não logado – notificações desativadas');
@@ -145,7 +125,6 @@
 
     console.log('👤 Usuário logado – iniciando notificações');
 
-    // Solicitar permissão se necessário
     if (Notification.permission === 'default') {
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
@@ -154,15 +133,12 @@
       }
     }
 
-    // Registrar Service Worker (se ainda não registrado)
-    // Registrar Service Worker (se ainda não registrado)
     try {
       const registrations = await navigator.serviceWorker.getRegistrations();
       if (registrations.length > 0) {
         swRegistration = registrations[0];
         console.log('✅ Service Worker já está ativo', swRegistration);
       } else {
-        // Caminho correto considerando o subdiretório do GitHub Pages
         const basePath = window.location.pathname.includes('portal-inscricoes') ? '/portal-inscricoes' : '';
         swRegistration = await navigator.serviceWorker.register(`${basePath}/assets/js/service-worker.js`);
         console.log('✅ Service Worker registrado', swRegistration);
@@ -171,10 +147,7 @@
       console.error('❌ Erro ao registrar Service Worker:', err);
     }
 
-    // Iniciar polling a cada 30 segundos
     setInterval(() => verificarNotificacoes(user), 30000);
-
-    // Executar uma verificação imediata
     verificarNotificacoes(user);
   });
 })();
