@@ -2,7 +2,17 @@ services:
   - type: web
     name: portal-inscricoes-api
     env: node
-    rootDir: api
     buildCommand: npm install
     startCommand: npm start
     plan: free
+    envVars:
+      - key: OPENSHET_BASE_URL
+        value: https://opensheet.elk.sh/1t2upLN5hFLLf0Bqwgd_kheS9f1ztXJiMfrm1BSRp-Bo
+      - key: URL_PROCESSOS
+        value: processos_normalizados
+      - key: URL_UNIDADES
+        value: unidades
+      - key: URL_MODALIDADES
+        value: modalidades
+      - key: CACHE_DURATION_MS
+        value: 300000
