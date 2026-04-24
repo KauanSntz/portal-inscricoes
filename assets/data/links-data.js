@@ -6,6 +6,9 @@
   const CACHE_KEY = "portal_links_cache";
   const CACHE_DURATION = 5 * 60 * 1000;
 
+  // Unidades para tela inicial (capital + compensa)
+  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+
   const MODALITY_MAP = {
     "PRESENCIAL": "presencial",
     "100% EAD": "ead",
@@ -87,6 +90,11 @@
     return units;
   }
 
+  function filterByUnidades(units, unidadeIds) {
+    if (!unidadeIds || unidadeIds.length === 0) return units;
+    return units.filter(u => unidadeIds.includes(u.key));
+  }
+
   async function refreshFromAPI() {
     try {
       console.log("[links-data] Atualizando da API...");
@@ -124,7 +132,9 @@
 
   window.PortalLinks = {
     load: init,
-    clearCache: () => localStorage.removeItem(CACHE_KEY)
+    clearCache: () => localStorage.removeItem(CACHE_KEY),
+    UNIDADES_CAPITAL: UNIDADES_CAPITAL,
+    filter: filterByUnidades
   };
 
   init();

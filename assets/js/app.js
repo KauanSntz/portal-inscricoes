@@ -24,6 +24,9 @@
     DEBUG: new URLSearchParams(location.search).has("debug"),
   });
 
+  // Unidades para tela inicial (capital + compensa)
+  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+
   // ----------------------------- UTILS -----------------------------
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, attrs = {}, children = []) => {
@@ -108,10 +111,24 @@
   })();
 
   // ----------------------------- DATA -----------------------------
+  // Verifica se é página inicial (index/portal) que precisa filtrar capital
+  const isCapitalPage = () => {
+    const path = window.location.pathname || "";
+    return path.includes("index") || path.includes("portal") || path.endsWith("/") || path === "";
+  };
+
   const getDataOrThrow = () => {
     if (!Array.isArray(window.PORTAL_LINKS)) throw new Error("PORTAL_LINKS não encontrado.");
     if (!window.COURSES?.catalog || !window.COURSES?.offers) throw new Error("COURSES não encontrado.");
-    return { linksRaw: window.PORTAL_LINKS, courses: window.COURSES };
+    
+    let linksRaw = window.PORTAL_LINKS;
+    
+    // Filtrar para Capital nas páginas iniciais
+    if (isCapitalPage()) {
+      linksRaw = linksRaw.filter(u => UNIDADES_CAPITAL.includes(u.key));
+    }
+    
+    return { linksRaw, courses: window.COURSES };
   };
 
   // ----------------------------- NORMALIZE LINKS -----------------------------
