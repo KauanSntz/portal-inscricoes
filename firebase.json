@@ -3,8 +3,12 @@
     "public": ".",
     "ignore": [
       "firebase.json",
+      ".git",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "api",
+      "functions",
+      "node_modules"
     ],
     "rewrites": [
       {
