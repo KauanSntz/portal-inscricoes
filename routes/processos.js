@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const sheetsService = require('./services/sheetsService');
+const sheetsService = require('../services/sheetsService');
 
 /**
  * GET /processos
