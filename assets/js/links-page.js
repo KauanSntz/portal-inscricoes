@@ -130,7 +130,7 @@
     const sorted = unique.sort((a, b) => {
       const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aUnknown !== bUnknown) return aUnknown - bUnknown;
-      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR");
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
 
     audit.topInconsistencies = audit.inconsistencies.slice(0, 10);
@@ -251,7 +251,7 @@
         h3.textContent = MODALITY_LABELS[mKey] || MODALITY_LABELS.outro;
         section.appendChild(h3);
 
-        const rows = byModality.get(mKey).slice().sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR"));
+        const rows = byModality.get(mKey).slice().sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR"));
 
         rows.forEach(rec => {
           const row = document.createElement("div");
@@ -337,15 +337,24 @@
 
 const loadRecords = async () => {
     console.log("[links-page] ✅ Script carregado");
-    console.log("[links-page] PORTAL_LINKS:", window.PORTAL_LINKS);
-    console.log("[links-page] Tipo de PORTAL_LINKS:", typeof window.PORTAL_LINKS);
-    console.log("[links-page] É array?:", Array.isArray(window.PORTAL_LINKS));
     
-    if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
-      console.error("[links-page] ❌ PORTAL_LINKS vazio ou inválido!");
-      state.sourceLabel = `❌ API indisponível (PORTAL_LINKS: ${typeof window.PORTAL_LINKS})`;
-      return [];
+    // Aguardar PORTAL_LINKS estar disponível (máximo 5 segundos)
+    const maxWait = 5000;
+    const checkInterval = 100;
+    let waited = 0;
+    
+    while (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
+      if (waited >= maxWait) {
+        console.error("[links-page] ❌ Timeout aguardando PORTAL_LINKS");
+        state.sourceLabel = `❌ Timeout aguardando API`;
+        return [];
+      }
+      console.log("[links-page] Aguardando PORTAL_LINKS...", waited, "ms");
+      await new Promise(resolve => setTimeout(resolve, checkInterval));
+      waited += checkInterval;
     }
+    
+    console.log("[links-page] PORTAL_LINKS disponível:", window.PORTAL_LINKS.length, "unidades");
     
     const records = fromPortalLinks(window.PORTAL_LINKS);
     console.log("[links-page] fromPortalLinks result:", records.length, "registros");
@@ -353,7 +362,7 @@ const loadRecords = async () => {
     records.sort((a, b) => {
       const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aU !== bU) return aU - bU;
-      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(a.code, b.code);
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
     state.sourceLabel = `API (${records.length} registros)`;
     console.log("[links-page] ✅ Registros prontos:", records.length);
