@@ -71,9 +71,9 @@
         const blockTitles = {
           presencial: "Presencial",
           hibrido: "Híbrido",
+          flex: "Flex",
           semipresencial: "Semipresencial",
-          flex: "Semipresencial Flex",
-          ead: "EAD (100% Online)"
+          ead: "100% EAD"
         };
         unidade.blocks[blockKey] = {
           title: blockTitles[blockKey] || p.modalidade,

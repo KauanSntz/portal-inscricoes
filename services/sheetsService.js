@@ -5,13 +5,19 @@ const BASE_URL = process.env.OPENSHET_BASE_URL || 'https://opensheet.elk.sh/1t2u
 const URL_PROCESSOS = process.env.URL_PROCESSOS || 'processos_normalizados';
 const URL_UNIDADES = process.env.URL_UNIDADES || 'unidades';
 const URL_MODALIDADES = process.env.URL_MODALIDADES || 'modalidades';
+const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
+const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
+const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
 const cache = {
   processos: { data: null, timestamp: 0 },
   unidades: { data: null, timestamp: 0 },
-  modalidades: { data: null, timestamp: 0 }
+  modalidades: { data: null, timestamp: 0 },
+  coordenadores: { data: null, timestamp: 0 },
+  setores_contato: { data: null, timestamp: 0 },
+  cursos_tecnicos: { data: null, timestamp: 0 }
 };
 
 /**
@@ -114,6 +120,64 @@ async function getModalidades() {
 }
 
 /**
+ * Busca coordenadores com JOIN de unidades
+ * @param {Object} filtros - Filtros opcionais (unidade_id)
+ * @returns {Promise<Array>} Coordenadores com unidade_nome
+ */
+async function getCoordenadores(filtros = {}) {
+  const url = `${BASE_URL}/${URL_COORDENADORES}`;
+  const coordenadores = await fetchWithCache(url, 'coordenadores');
+  
+  const urlUnidades = `${BASE_URL}/${URL_UNIDADES}`;
+  const unidades = await fetchWithCache(urlUnidades, 'unidades');
+  
+  const unidadesMap = {};
+  unidades.forEach(u => {
+    unidadesMap[u.unidade_id] = u;
+  });
+  
+  let resultados = coordenadores.map(c => ({
+    ...c,
+    unidade_nome: unidadesMap[c.unidade_id]?.nome || null
+  }));
+  
+  if (filtros.unidade_id) {
+    resultados = resultados.filter(c => c.unidade_id === filtros.unidade_id);
+  }
+  
+  return resultados;
+}
+
+/**
+ * Busca contatos de setores
+ * @returns {Promise<Array>} Setores com contatos
+ */
+async function getSetoresContato() {
+  const url = `${BASE_URL}/${URL_SETORES_CONTATO}`;
+  return fetchWithCache(url, 'setores_contato');
+}
+
+/**
+ * Busca cursos técnicos com filtro opcional por unidade
+ * @param {Object} filtros - Filtros opcionais (unidade - minúsculo sem acento)
+ * @returns {Promise<Array>} Cursos técnicos filtrados
+ */
+async function getCursosTecnicos(filtros = {}) {
+  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
+  let cursos = await fetchWithCache(url, 'cursos_tecnicos');
+
+  if (filtros.unidade) {
+    const normalizedFilter = filtros.unidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    cursos = cursos.filter(c => {
+      const normalizedUnidade = (c.unidade || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return normalizedUnidade.includes(normalizedFilter);
+    });
+  }
+
+  return cursos;
+}
+
+/**
  * Busca um processo pelo código
  * @param {string} codigo - Código do processo
  * @returns {Promise<Object|null>} Processo encontrado ou null
@@ -141,6 +205,9 @@ function invalidateCache() {
   cache.processos = { data: null, timestamp: 0 };
   cache.unidades = { data: null, timestamp: 0 };
   cache.modalidades = { data: null, timestamp: 0 };
+  cache.coordenadores = { data: null, timestamp: 0 };
+  cache.setores_contato = { data: null, timestamp: 0 };
+  cache.cursos_tecnicos = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
 }
 
@@ -148,6 +215,9 @@ module.exports = {
   getProcessos,
   getUnidades,
   getModalidades,
+  getCoordenadores,
+  getSetoresContato,
+  getCursosTecnicos,
   getProcessoByCodigo,
   getUnidadeById,
   invalidateCache

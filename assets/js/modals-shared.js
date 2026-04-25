@@ -28,6 +28,22 @@
     { key: "hibrido", label: "Híbrido" },
   ]);
 
+  const API_URL = window.API_URL || '';
+  const isApiResponse = (data) => data && typeof data === 'object' && 'data' in data;
+  const extractData = (response) => isApiResponse(response) ? response.data : response;
+
+  const loadApiData = async (endpoint) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`);
+      if (!response.ok) throw new Error(`Erro ${response.status}`);
+      const json = await response.json();
+      return extractData(json);
+    } catch (error) {
+      console.error(`Erro ao carregar ${endpoint}:`, error);
+      return [];
+    }
+  };
+
   const PRICE_PLAN_OPTIONS = Object.freeze([
     { key: "enem_vestibular", label: "ENEM/Vestibular" },
     { key: "transfer_portador", label: "Portador/Transferência" },
@@ -618,7 +634,7 @@
   })();
 
   // ==================== INFO MODAL BASE (genérico) ====================
-  const createInfoModal = (modalId, title, jsonFile, cardRenderer) => {
+  const createInfoModal = (modalId, title, apiEndpoint, cardRenderer) => {
     return (() => {
       let overlay;
       let titleEl;
@@ -630,14 +646,7 @@
       let data = [];
 
       const loadData = async () => {
-        try {
-          const response = await fetch(`./assets/data/${jsonFile}`);
-          if (!response.ok) throw new Error('Erro ao carregar dados');
-          data = await response.json();
-        } catch (error) {
-          console.error(`Erro ao carregar ${jsonFile}:`, error);
-          data = [];
-        }
+        data = await loadApiData(apiEndpoint);
       };
 
       const renderList = (filterText = '') => {
@@ -767,7 +776,7 @@
   const setoresModal = createInfoModal(
     'setores-modal',
     'Contatos dos Setores',
-    'contatos_setores.json',
+    '/setores-contato',
     (item) => {
       const card = document.createElement('article');
       card.className = 'info-card setor-card';
@@ -810,14 +819,7 @@ const cursosTecnicosModal = (() => {
   let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
 
   const loadData = async () => {
-    try {
-      const response = await fetch('./assets/data/cursos_tecnicos.json');
-      if (!response.ok) throw new Error('Erro ao carregar dados');
-      data = await response.json();
-    } catch (error) {
-      console.error('Erro ao carregar cursos técnicos:', error);
-      data = [];
-    }
+    data = await loadApiData('/cursos-tecnicos');
   };
 
   const getUniqueDuracoes = () => {
@@ -1117,25 +1119,30 @@ const cursosTecnicosModal = (() => {
 // Expor globalmente (adicione esta linha junto com os outros exports)
 window.cursosTecnicosModal = cursosTecnicosModal; 
 
-  // ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
-const coordenadoresModal = createInfoModal(
-  'coordenadores-modal',
-  'Coordenação de Cursos e Contatos',
-  'coordenadores.json',
-  (item) => {
-    const card = document.createElement('article');
-    card.className = 'info-card coordenador-card';
+// ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
+  const coordenadoresModal = createInfoModal(
+    'coordenadores-modal',
+    'Coordenação de Cursos e Contatos',
+    '/coordenadores',
+    (item) => {
+      const card = document.createElement('article');
+      card.className = 'info-card coordenador-card';
 
-    // Se for um setor (como Direção Jurídica, NADI)
-    if (item.setor) {
-      const setor = document.createElement('div');
-      setor.className = 'info-card-unidade'; // reutiliza a classe de unidade para manter estilo
-      setor.textContent = item.setor;
-      card.appendChild(setor);
-    }
+      const displayUnidade = item.unidade_nome || item.unidade || '';
+      const displayCursos = (item.cursos && typeof item.cursos === 'string') 
+        ? item.cursos.split(',').map(c => c.trim()) 
+        : (Array.isArray(item.cursos) ? item.cursos : []);
 
-    // Se tiver unidade (coordenadores normais)
-    if (item.unidade) {
+      // Se for um setor (como Direção Jurídica, NADI)
+      if (item.setor) {
+        const setor = document.createElement('div');
+        setor.className = 'info-card-unidade';
+        setor.textContent = item.setor;
+        card.appendChild(setor);
+      }
+
+      // Se tiver unidade (coordenadores normais)
+      if (displayUnidade) {
       const unidade = document.createElement('div');
       unidade.className = 'info-card-unidade';
       unidade.textContent = item.unidade;
@@ -1151,10 +1158,10 @@ const coordenadoresModal = createInfoModal(
     }
 
     // Cursos (se houver)
-    if (item.cursos) {
+    if (displayCursos.length > 0) {
       const cursos = document.createElement('div');
       cursos.className = 'info-card-cursos';
-      cursos.textContent = Array.isArray(item.cursos) ? item.cursos.join(', ') : item.cursos;
+      cursos.textContent = displayCursos.join(', ');
       card.appendChild(cursos);
     }
 

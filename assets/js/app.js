@@ -159,7 +159,7 @@
     const m = norm(modalidade), gt = norm(groupTitle);
     if (m.includes("presencial") || gt.includes("presencial")) return "presencial";
     if (m.includes("hibrid") || gt.includes("hibrid")) return "hibrido";
-    if (m.includes("semi") && m.includes("flex")) return "flex";
+    if (m.includes("flex")) return "flex";
     if (m.includes("semipresencial") || m.includes("semi")) return "semipresencial";
     if (m.includes("ead") || m.includes("online") || gt.includes("ead")) return "ead";
     return null;
@@ -202,8 +202,8 @@
     const tn = norm(t);
     if (tn.includes("presencial") && !tn.includes("semi") && !tn.includes("hibrid")) return "Presencial";
     if (tn.includes("hibrid")) return "Híbrido";
-    if (tn.includes("semipresencial") || (tn.includes("semi") && !tn.includes("flex"))) return "Semipresencial";
     if (tn.includes("flex")) return "Flex";
+    if (tn.includes("semipresencial") || (tn.includes("semi") && !tn.includes("flex"))) return "Semipresencial";
     if (tn.includes("ead") || tn.includes("online")) return "100% EAD";
     return t;
   };
