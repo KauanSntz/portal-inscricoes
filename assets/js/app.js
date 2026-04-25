@@ -24,6 +24,9 @@
     DEBUG: new URLSearchParams(location.search).has("debug"),
   });
 
+  // Unidades para tela inicial (capital + compensa)
+  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+
   // ----------------------------- UTILS -----------------------------
   const $ = (sel, root = document) => root.querySelector(sel);
   const el = (tag, attrs = {}, children = []) => {
@@ -108,10 +111,24 @@
   })();
 
   // ----------------------------- DATA -----------------------------
+  // Verifica se é página inicial (index/portal) que precisa filtrar capital
+  const isCapitalPage = () => {
+    const path = window.location.pathname || "";
+    return path.includes("index") || path.includes("portal") || path.endsWith("/") || path === "";
+  };
+
   const getDataOrThrow = () => {
     if (!Array.isArray(window.PORTAL_LINKS)) throw new Error("PORTAL_LINKS não encontrado.");
     if (!window.COURSES?.catalog || !window.COURSES?.offers) throw new Error("COURSES não encontrado.");
-    return { linksRaw: window.PORTAL_LINKS, courses: window.COURSES };
+    
+    let linksRaw = window.PORTAL_LINKS;
+    
+    // Filtrar para Capital nas páginas iniciais
+    if (isCapitalPage()) {
+      linksRaw = linksRaw.filter(u => UNIDADES_CAPITAL.includes(u.key));
+    }
+    
+    return { linksRaw, courses: window.COURSES };
   };
 
   // ----------------------------- NORMALIZE LINKS -----------------------------
@@ -142,7 +159,7 @@
     const m = norm(modalidade), gt = norm(groupTitle);
     if (m.includes("presencial") || gt.includes("presencial")) return "presencial";
     if (m.includes("hibrid") || gt.includes("hibrid")) return "hibrido";
-    if (m.includes("semi") && m.includes("flex")) return "flex";
+    if (m.includes("flex")) return "flex";
     if (m.includes("semipresencial") || m.includes("semi")) return "semipresencial";
     if (m.includes("ead") || m.includes("online") || gt.includes("ead")) return "ead";
     return null;
@@ -185,8 +202,8 @@
     const tn = norm(t);
     if (tn.includes("presencial") && !tn.includes("semi") && !tn.includes("hibrid")) return "Presencial";
     if (tn.includes("hibrid")) return "Híbrido";
-    if (tn.includes("semipresencial") || (tn.includes("semi") && !tn.includes("flex"))) return "Semipresencial";
     if (tn.includes("flex")) return "Flex";
+    if (tn.includes("semipresencial") || (tn.includes("semi") && !tn.includes("flex"))) return "Semipresencial";
     if (tn.includes("ead") || tn.includes("online")) return "100% EAD";
     return t;
   };
@@ -294,6 +311,34 @@
       tabsEl.textContent = "";
       CONFIG.COURSE_TABS.forEach(t => tabsEl.appendChild(el("button", { class: "tab", type: "button", "data-action": "set-tab", "data-tab": t.key }, [el("span", { text: t.label })])));
     };
+    // DEBUG visual: verificar quem está quebrando o layout
+setTimeout(() => {
+  const tabs = tabsEl;
+  const chips = chipsEl;
+  const tabBtn = tabs?.querySelector("button.tab");
+  const chipBtn = chips?.querySelector("button.chip");
+
+  console.log("=== DEBUG MODAL LAYOUT ===");
+  if (tabs) {
+    const cs = getComputedStyle(tabs);
+    console.log("modal-tabs", { display: cs.display, flexDir: cs.flexDirection, flexWrap: cs.flexWrap, overflowX: cs.overflowX });
+  } else console.warn("tabsEl não existe");
+
+  if (tabBtn) {
+    const cs = getComputedStyle(tabBtn);
+    console.log("tab button", { display: cs.display, width: cs.width });
+  } else console.warn("nenhuma .tab");
+
+  if (chips) {
+    const cs = getComputedStyle(chips);
+    console.log("chips", { display: cs.display, flexDir: cs.flexDirection, flexWrap: cs.flexWrap });
+  } else console.warn("chipsEl não existe");
+
+  if (chipBtn) {
+    const cs = getComputedStyle(chipBtn);
+    console.log("chip button", { display: cs.display, width: cs.width });
+  } else console.warn("nenhuma .chip");
+}, 0);
     const syncTabs = () => tabsEl.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("is-active", btn.dataset.tab === state.tab));
 
     const loadUnitList = () => {
@@ -336,187 +381,14 @@
     return { open, close };
   })();
 
-  // ----------------------------- GLOBAL MODAL -----------------------------
-  const globalModal = (() => {
-    let overlay, inputEl, resultsEl, index, lastFocus, isOpen = false;
-    const ensure = () => {
-      if (overlay) return overlay;
-      overlay = el("div", { class: "modal-overlay", role: "dialog", "aria-modal": "true" });
-      applyUnitTheme(overlay, "sede");
-      const dialog = el("div", { class: "modal" });
-      const head = el("div", { class: "modal-head" }, [
-        el("div", { class: "modal-title", text: "Pesquisar Cursos (todas as unidades)" }),
-        el("button", { class: "modal-close", type: "button", "data-action": "close-global-modal", "aria-label": "Fechar" }, [el("span", { text: "×" })])
-      ]);
-      const body = el("div", { class: "modal-body" });
-      const searchRow = el("div", { class: "search-row" });
-      inputEl = el("input", { class: "search-input", type: "search", placeholder: "Digite o nome do curso..." });
-      inputEl.addEventListener("input", debounce(updateResults, 150));
-      searchRow.appendChild(inputEl);
-      resultsEl = el("div", { class: "results" });
-      body.append(searchRow, resultsEl);
-      dialog.append(head, body);
-      overlay.appendChild(dialog);
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) { close(); return; }
-        const btn = e.target.closest("[data-action]");
-        if (!btn) return;
-        if (btn.dataset.action === "close-global-modal") close();
-        if (btn.dataset.action === "goto-unit") { close(); requestAnimationFrame(() => scrollToUnit(btn.dataset.unitKey)); }
-      });
-      document.addEventListener("keydown", (e) => { if (isOpen && e.key === "Escape") close(); });
-      document.body.appendChild(overlay);
-      return overlay;
-    };
-    const open = (courseIndex) => { ensure(); index = courseIndex; lastFocus = document.activeElement; isOpen = true; overlay.classList.add("is-open"); scrollLock.lock(); inputEl.value = ""; resultsEl.innerHTML = '<div class="empty">Digite um curso para ver em quais unidades ele está disponível.</div>'; inputEl.focus(); };
-    const close = () => { if (!overlay || !isOpen) return; isOpen = false; overlay.classList.remove("is-open"); scrollLock.unlock(); if (lastFocus) lastFocus.focus(); };
-    const modalityLabel = (key) => CONFIG.COURSE_TABS.find(t => t.key === key)?.label || key;
-    const updateResults = () => {
-      if (!index) return;
-      const q = norm(inputEl.value);
-      resultsEl.innerHTML = "";
-      if (!q) { resultsEl.appendChild(el("div", { class: "empty", text: "Digite um curso para ver em quais unidades ele está disponível." })); return; }
-      const hits = index.searchable.filter(c => c.nameNorm.includes(q)).slice(0, CONFIG.GLOBAL_LIMIT);
-      if (!hits.length) { resultsEl.appendChild(el("div", { class: "empty", text: "Nenhum curso encontrado." })); return; }
-      hits.forEach(course => {
-        const card = el("div", { class: "result-card" });
-        card.appendChild(el("div", { class: "result-course", text: course.name }));
-        const byUnit = index.availability.get(course.id);
-        if (byUnit) {
-          const orderedUnits = index.unitOrder.filter(uk => byUnit.has(uk)).map(uk => ({ unitKey: uk, mods: Array.from(byUnit.get(uk)) }));
-          orderedUnits.forEach(u => {
-            const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), visualKey: "sede" };
-            const row = el("div", { class: "result-row" });
-            applyUnitTheme(row, meta.visualKey);
-            const left = el("div", { class: "result-left" }, [el("div", { class: "result-unit", text: `Unidade ${meta.title}` })]);
-            const tags = el("div", { class: "result-tags" });
-            u.mods.forEach(mk => tags.appendChild(el("span", { class: "tag", text: modalityLabel(mk) })));
-            left.appendChild(tags);
-            row.append(left, el("button", { class: "btn-unit", type: "button", "data-action": "goto-unit", "data-unit-key": u.unitKey }, [el("span", { text: "Ver na unidade" })]));
-            card.appendChild(row);
-          });
-        }
-        resultsEl.appendChild(card);
-      });
-    };
-    return { open, close };
-  })();
-
-  // ----------------------------- PRICES MODAL -----------------------------
-  const pricesModal = (() => {
-    let overlay, titleEl, inputEl, unitSelectEl, modalitySelectEl, planSelectEl, listEl, emptyEl, isOpen = false, lastFocus;
-    const state = { unitKey: "manaus", modalityKey: "presencial", planKey: "enem_vestibular", query: "", unitLabel: "Manaus", recordsView: [], data: null };
-
-    const filteredRecords = () => {
-      if (!Array.isArray(state.data?.records)) return [];
-      const q = norm(state.query);
-      return state.data.records.filter(r => (r.unitKey === state.unitKey || r.unitKey === '__all__') && r.modalityKey === state.modalityKey && r.planKey === state.planKey && (!q || norm(r.courseName).includes(q) || norm(r.courseId).includes(q)));
-    };
-
-    const buildCopyMessage = (record) => {
-      const p10 = record?.bolsaPontualidadeCents?.p10;
-      const modalityLabel = state.data?.modalities?.[state.modalityKey]?.label || PRICE_MODALITY_OPTIONS.find(x => x.key === state.modalityKey)?.label || state.modalityKey;
-      const planLabel = state.data?.plans?.[state.planKey]?.label || PRICE_PLAN_OPTIONS.find(x => x.key === state.planKey)?.label || state.planKey;
-      const unitLabel = state.data?.units?.[state.unitKey]?.label || state.unitLabel || "Tabela Geral";
-      const lines = [
-        `🎓 ${record.courseName} - ${modalityLabel} (${planLabel})`,
-        `Curso de ${record.courseName} – Modalidade ${modalityLabel} (${unitLabel})`,
-        `Valor integral: ${formatCents(record.integralCents)}`,
-        `Com bolsa de estudos: ${formatCents(record.bolsaCents)} (mensalidade)`,
-      ];
-      if (p10 != null) lines.push(`Valor com 10% de desconto pontualidade: ${formatCents(p10)}`);
-      lines.push("", "O desconto de pontualidade é adicionado caso você pague até o dia 5 de todo mês, somando assim +10% de desconto à sua bolsa.");
-      return lines.join("\n");
-    };
-
-    const renderList = () => {
-      state.recordsView = filteredRecords();
-      listEl.innerHTML = "";
-      if (!state.data?.records?.length) {
-        emptyEl.hidden = false; emptyEl.textContent = "Base de preços carregada, aguardando dados."; return;
-      }
-      if (!state.recordsView.length) {
-        emptyEl.hidden = false; emptyEl.textContent = "Nenhum preço encontrado para os filtros selecionados."; return;
-      }
-      emptyEl.hidden = true;
-      state.recordsView.forEach(record => {
-        const card = el("article", { class: "result-card prices-card" });
-        card.appendChild(el("div", { class: "result-course prices-course", text: record.courseName }));
-        card.appendChild(el("div", { class: "meta prices-meta", text: `Integral: ${formatCents(record.integralCents)}` }));
-        card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa: ${formatCents(record.bolsaCents)}` }));
-        if (record?.bolsaPontualidadeCents?.p10 != null) {
-          card.appendChild(el("div", { class: "meta prices-meta", text: `Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}` }));
-        }
-        const copyBtn = el("button", { class: "prices-copy-btn", type: "button", text: "Copiar mensagem" });
-        copyBtn.addEventListener("click", async () => {
-          const ok = await copyText(buildCopyMessage(record));
-          copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
-          setTimeout(() => { copyBtn.textContent = "Copiar mensagem"; }, 1200);
-        });
-        card.appendChild(copyBtn);
-        listEl.appendChild(card);
-      });
-    };
-
-    const updateFilters = () => {
-      state.unitKey = unitSelectEl.value; state.modalityKey = modalitySelectEl.value; state.planKey = planSelectEl.value; state.query = inputEl.value;
-      state.unitLabel = state.data?.units?.[state.unitKey]?.label || PRICE_UNIT_OPTIONS.find(x => x.key === state.unitKey)?.label || state.unitLabel;
-      renderList();
-    };
-
-    const ensure = () => {
-      if (overlay) return;
-      overlay = el("div", { class: "modal-overlay prices-overlay", "data-modal": "prices", "aria-hidden": "true" });
-      const modal = el("div", { class: "modal prices-modal", role: "dialog", "aria-modal": "true", "aria-label": "Pesquisar preços" });
-      const head = el("div", { class: "modal-head prices-head" }, [
-        (titleEl = el("div", { class: "modal-title prices-title", text: "Pesquisar preços" })),
-        el("button", { class: "modal-close prices-close", type: "button", "aria-label": "Fechar", text: "×" })
-      ]);
-      head.querySelector(".modal-close").addEventListener("click", close);
-      const body = el("div", { class: "modal-body prices-body" });
-      const controls = el("div", { class: "links-controls-grid prices-filters-grid" });
-
-      unitSelectEl = el("select", { class: "prices-field", "aria-label": "Unidade" });
-      PRICE_UNIT_OPTIONS.forEach(opt => unitSelectEl.appendChild(el("option", { value: opt.key, text: opt.label })));
-      modalitySelectEl = el("select", { class: "prices-field", "aria-label": "Modalidade" });
-      PRICE_MODALITY_OPTIONS.forEach(opt => modalitySelectEl.appendChild(el("option", { value: opt.key, text: opt.label })));
-      planSelectEl = el("select", { class: "prices-field", "aria-label": "Plano" });
-      PRICE_PLAN_OPTIONS.forEach(opt => planSelectEl.appendChild(el("option", { value: opt.key, text: opt.label })));
-      inputEl = el("input", { class: "search-input prices-field", type: "search", placeholder: "Buscar curso...", "aria-label": "Buscar curso" });
-
-      controls.append(unitSelectEl, modalitySelectEl, planSelectEl, inputEl);
-      listEl = el("div", { class: "course-grid prices-grid" });
-      emptyEl = el("div", { class: "empty prices-empty", text: "Carregando..." });
-      body.append(controls, emptyEl, listEl);
-      modal.append(head, body);
-      overlay.appendChild(modal);
-      document.body.appendChild(overlay);
-
-      overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-      unitSelectEl.addEventListener("change", updateFilters);
-      modalitySelectEl.addEventListener("change", updateFilters);
-      planSelectEl.addEventListener("change", updateFilters);
-      inputEl.addEventListener("input", debounce(updateFilters, 120));
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && isOpen) close(); });
-    };
-
-    const open = async ({ unitKey = "sede", unitTitle = "Manaus" } = {}) => {
-      ensure(); lastFocus = document.activeElement;
-      state.unitKey = resolvePriceUnitKey(unitKey); state.unitLabel = unitTitle;
-      titleEl.textContent = `Pesquisar preços — ${state.unitLabel}`;
-      unitSelectEl.value = state.unitKey; modalitySelectEl.value = state.modalityKey; planSelectEl.value = state.planKey; inputEl.value = state.query;
-      overlay.classList.add("is-open"); overlay.setAttribute("aria-hidden", "false"); isOpen = true; scrollLock.lock();
-      state.data = await loadPricesOnce(); renderList(); inputEl.focus();
-    };
-    const close = () => { if (!overlay || !isOpen) return; overlay.classList.remove("is-open"); overlay.setAttribute("aria-hidden", "true"); isOpen = false; scrollLock.unlock(); if (lastFocus) lastFocus.focus(); };
-    return { open, close };
-  })();
-
   // ----------------------------- SCROLL TO UNIT -----------------------------
   const scrollToUnit = (unitKey) => {
     const target = document.getElementById(`unit-${unitKey}`) || document.querySelector(`[data-unit-key="${CSS.escape(unitKey)}"]`);
     if (target) { target.scrollIntoView({ behavior: "smooth", block: "start" }); target.classList.add("unit--flash"); setTimeout(() => target.classList.remove("unit--flash"), 900); }
   };
+
+  // Expor globalmente para uso no modais compartilhados (fallback)
+  window.scrollToUnit = scrollToUnit;
 
   // ----------------------------- BIND EVENTS -----------------------------
   const bindEvents = (courseIndex) => {
@@ -524,9 +396,12 @@
       const btn = e.target.closest("[data-action]");
       if (!btn) return;
       const action = btn.dataset.action;
-      if (action === "open-courses") { unitModal.open({ unitKey: btn.dataset.unit, unitTitle: btn.dataset.title }); return; }
-      if (action === "open-global-search") { globalModal.open(courseIndex); return; }
-      if (action === "open-prices-menu") { pricesModal.open({ unitKey: "sede", unitTitle: "Manaus" }); return; }
+
+      // Ações específicas do portal
+      if (action === "open-courses") {
+        unitModal.open({ unitKey: btn.dataset.unit, unitTitle: btn.dataset.title });
+        return;
+      }
     });
   };
 
@@ -539,7 +414,9 @@
       idx.unitOrder = units.map(u => u.coursesKey);
       renderApp({ units });
       bindEvents(idx);
-      if (new URLSearchParams(location.search).get("openPrices") === "1") pricesModal.open({ unitKey: "sede", unitTitle: "Manaus" });
+      if (new URLSearchParams(location.search).get("openPrices") === "1") {
+        if (window.pricesModal) window.pricesModal.open({ unitKey: "sede", unitTitle: "Manaus" });
+      }
     } catch (err) {
       console.error(err);
       const root = document.getElementById(CONFIG.ROOT_ID);

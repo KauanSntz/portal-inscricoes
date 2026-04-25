@@ -28,6 +28,22 @@
     { key: "hibrido", label: "Híbrido" },
   ]);
 
+  const API_URL = window.API_URL || '';
+  const isApiResponse = (data) => data && typeof data === 'object' && 'data' in data;
+  const extractData = (response) => isApiResponse(response) ? response.data : response;
+
+  const loadApiData = async (endpoint) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`);
+      if (!response.ok) throw new Error(`Erro ${response.status}`);
+      const json = await response.json();
+      return extractData(json);
+    } catch (error) {
+      console.error(`Erro ao carregar ${endpoint}:`, error);
+      return [];
+    }
+  };
+
   const PRICE_PLAN_OPTIONS = Object.freeze([
     { key: "enem_vestibular", label: "ENEM/Vestibular" },
     { key: "transfer_portador", label: "Portador/Transferência" },
@@ -43,7 +59,7 @@
   });
 
   // -----------------------------
-  // Utils
+  // Utils (expostas globalmente)
   // -----------------------------
   const norm = (s) =>
     String(s || "")
@@ -97,24 +113,14 @@
     }
   };
 
-  let pricesDataPromise = null;
-  const loadPricesOnce = async () => {
-    if (!pricesDataPromise) {
-      pricesDataPromise = Promise.resolve().then(() => {
-        const payload = window.COURSE_PRICES_2026_1;
-        if (!payload || !Array.isArray(payload.records)) {
-          return { records: [] };
-        }
-        return {
-          ...payload,
-          records: payload.records,
-        };
-      });
-    }
-    return pricesDataPromise;
-  };
+  // Expõe utilitários globalmente
+  window.norm = norm;
+  window.debounce = debounce;
+  window.applyUnitTheme = applyUnitTheme;
 
+  // -----------------------------
   // Scroll lock
+  // -----------------------------
   const scrollLock = (() => {
     let locks = 0;
     let scrollY = 0;
@@ -146,16 +152,76 @@
     return { lock, unlock };
   })();
 
+  // -----------------------------
+  // Prices data loader
+  // -----------------------------
+  let pricesDataPromise = null;
+  const loadPricesOnce = async () => {
+    if (!pricesDataPromise) {
+      pricesDataPromise = Promise.resolve().then(() => {
+        const payload = window.COURSE_PRICES_2026_1;
+        if (!payload || !Array.isArray(payload.records)) {
+          return { records: [] };
+        }
+        return {
+          ...payload,
+          records: payload.records,
+        };
+      });
+    }
+    return pricesDataPromise;
+  };
+
   // ==================== GLOBAL MODAL ====================
   const globalModal = (() => {
     let overlay, inputEl, resultsEl;
-    let index = null;
+    let courseIndex = null;
     let lastFocus = null;
     let isOpen = false;
 
+    const loadCourseIndex = () => {
+      if (courseIndex) return courseIndex;
+      if (!window.COURSES) return null;
+
+      const courses = window.COURSES;
+      const unitMeta = new Map();
+      const availability = new Map();
+      const searchable = [];
+
+      if (courses.catalog) {
+        Object.entries(courses.catalog).forEach(([id, c]) => {
+          searchable.push({ id, name: c.name || id, nameNorm: norm(c.name || id) });
+        });
+      }
+
+      if (courses.offers) {
+        Object.entries(courses.offers).forEach(([unitKey, offerByMod]) => {
+          ['presencial', 'hibrido', 'semipresencial', 'ead'].forEach(modKey => {
+            (offerByMod?.[modKey] || []).forEach(item => {
+              if (!item.id) return;
+              if (!availability.has(item.id)) availability.set(item.id, new Map());
+              const byUnit = availability.get(item.id);
+              if (!byUnit.has(unitKey)) byUnit.set(unitKey, new Set());
+              byUnit.get(unitKey).add(modKey);
+            });
+          });
+        });
+      }
+
+      const unitOrder = [];
+      if (Array.isArray(window.PORTAL_LINKS)) {
+        window.PORTAL_LINKS.forEach(u => {
+          const key = u.coursesKey || u.key || u.slug;
+          if (key) unitOrder.push(key);
+        });
+      }
+
+      courseIndex = { searchable, availability, unitMeta, unitOrder };
+      return courseIndex;
+    };
+
     const ensure = () => {
       if (overlay) return overlay;
-
       overlay = document.createElement("div");
       overlay.className = "modal-overlay";
       overlay.setAttribute("role", "dialog");
@@ -192,48 +258,44 @@
       overlay.appendChild(dialog);
 
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-          close();
-          return;
-        }
+        if (e.target === overlay) { close(); return; }
         const btn = e.target.closest("[data-action]");
         if (!btn) return;
-        if (btn.dataset.action === "close-global-modal") {
-          close();
-          return;
-        }
+        if (btn.dataset.action === "close-global-modal") { close(); return; }
         if (btn.dataset.action === "goto-unit") {
           const unitKey = btn.dataset.unitKey;
           close();
-          // Função para rolar até a unidade (pode ser definida externamente)
-          if (typeof scrollToUnit === 'function') {
-            requestAnimationFrame(() => scrollToUnit(unitKey));
+          if (typeof window.scrollToUnit === 'function') {
+            requestAnimationFrame(() => window.scrollToUnit(unitKey));
           } else {
-            // Fallback: redirecionar para index.html com âncora
-            window.location.href = `./index.html#unit-${unitKey}`;
+            window.location.href = `./portal.html#unit-${unitKey}`;
           }
         }
       });
 
       document.addEventListener("keydown", (e) => {
-        if (!isOpen) return;
-        if (e.key === "Escape") close();
+        if (isOpen && e.key === "Escape") close();
       });
 
       document.body.appendChild(overlay);
       return overlay;
     };
 
-    const open = (courseIndex) => {
+    const open = () => {
       ensure();
-      index = courseIndex;
-      lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      const idx = loadCourseIndex();
+      if (!idx) {
+        resultsEl.innerHTML = '<div class="empty">Dados de cursos não disponíveis.</div>';
+        return;
+      }
+      lastFocus = document.activeElement;
       isOpen = true;
       overlay.classList.add("is-open");
       scrollLock.lock();
       inputEl.value = "";
       resultsEl.innerHTML = '<div class="empty">Digite um curso para ver em quais unidades ele está disponível.</div>';
       inputEl.focus();
+      courseIndex = idx;
     };
 
     const close = () => {
@@ -245,12 +307,12 @@
     };
 
     const modalityLabel = (key) => {
-      const t = COURSE_TABS.find((x) => x.key === key);
+      const t = COURSE_TABS.find(x => x.key === key);
       return t ? t.label : key;
     };
 
     const updateResults = () => {
-      if (!index) return;
+      if (!courseIndex) return;
       const q = norm(inputEl.value);
       resultsEl.innerHTML = "";
       if (!q) {
@@ -258,8 +320,8 @@
         return;
       }
 
-      const hits = index.searchable
-        .filter((c) => c.nameNorm.includes(q))
+      const hits = courseIndex.searchable
+        .filter(c => c.nameNorm.includes(q))
         .slice(0, GLOBAL_LIMIT);
 
       if (!hits.length) {
@@ -272,21 +334,18 @@
         card.className = "result-card";
         card.innerHTML = `<div class="result-course">${course.name}</div>`;
 
-        const byUnit = index.availability.get(course.id);
+        const byUnit = courseIndex.availability.get(course.id);
         if (!byUnit) {
           resultsEl.appendChild(card);
           continue;
         }
 
-        const orderedUnits = index.unitOrder
-          .filter((uk) => byUnit.has(uk))
-          .map((uk) => ({
-            unitKey: uk,
-            mods: Array.from(byUnit.get(uk)),
-          }));
+        const orderedUnits = (courseIndex.unitOrder || [])
+          .filter(uk => byUnit.has(uk))
+          .map(uk => ({ unitKey: uk, mods: Array.from(byUnit.get(uk)) }));
 
         for (const u of orderedUnits) {
-          const meta = index.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), visualKey: "sede" };
+          const meta = courseIndex.unitMeta.get(u.unitKey) || { title: u.unitKey.toUpperCase(), visualKey: "sede" };
 
           const row = document.createElement("div");
           row.className = "result-row";
@@ -298,12 +357,12 @@
 
           const tags = document.createElement("div");
           tags.className = "result-tags";
-          for (const mk of u.mods) {
+          u.mods.forEach(mk => {
             const tag = document.createElement("span");
             tag.className = "tag";
             tag.textContent = modalityLabel(mk);
             tags.appendChild(tag);
-          }
+          });
           left.appendChild(tags);
 
           const btn = document.createElement("button");
@@ -574,9 +633,647 @@
     return { open, close };
   })();
 
-  // Expor globalmente
-  window.globalModal = globalModal;
-  window.pricesModal = pricesModal;
-  window.norm = norm; // útil para outros scripts
-  window.applyUnitTheme = applyUnitTheme;
+  // ==================== INFO MODAL BASE (genérico) ====================
+  const createInfoModal = (modalId, title, apiEndpoint, cardRenderer) => {
+    return (() => {
+      let overlay;
+      let titleEl;
+      let inputEl;
+      let listEl;
+      let emptyEl;
+      let isOpen = false;
+      let lastFocus = null;
+      let data = [];
+
+      const loadData = async () => {
+        data = await loadApiData(apiEndpoint);
+      };
+
+      const renderList = (filterText = '') => {
+        const q = norm(filterText);
+        const filtered = data.filter(item => {
+          if (!q) return true;
+          return Object.values(item).some(val => 
+            val && norm(String(val)).includes(q)
+          );
+        });
+
+        listEl.innerHTML = '';
+
+        if (!filtered.length) {
+          emptyEl.hidden = false;
+          emptyEl.textContent = 'Nenhum resultado encontrado.';
+          return;
+        }
+
+        emptyEl.hidden = true;
+        filtered.forEach(item => {
+          const card = cardRenderer(item);
+          listEl.appendChild(card);
+        });
+      };
+
+      const ensure = () => {
+        if (overlay) return overlay;
+
+        overlay = document.createElement('div');
+        overlay.className = 'modal-overlay info-overlay';
+        overlay.id = modalId;
+        overlay.setAttribute('aria-hidden', 'true');
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal info-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', title);
+
+        // Cabeçalho
+        const head = document.createElement('div');
+        head.className = 'modal-head info-head';
+        titleEl = document.createElement('div');
+        titleEl.className = 'modal-title info-title';
+        titleEl.textContent = title;
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'modal-close info-close';
+        closeBtn.type = 'button';
+        closeBtn.setAttribute('aria-label', 'Fechar');
+        closeBtn.textContent = '×';
+        closeBtn.addEventListener('click', () => close());
+        head.appendChild(titleEl);
+        head.appendChild(closeBtn);
+
+        // Corpo
+        const body = document.createElement('div');
+        body.className = 'modal-body info-body';
+
+        // Campo de busca
+        const searchRow = document.createElement('div');
+        searchRow.className = 'search-row info-search-row';
+        inputEl = document.createElement('input');
+        inputEl.className = 'search-input info-search';
+        inputEl.type = 'search';
+        inputEl.placeholder = 'Buscar...';
+        inputEl.addEventListener('input', debounce((e) => {
+          renderList(e.target.value);
+        }, 200));
+        searchRow.appendChild(inputEl);
+
+        // Lista de cards
+        listEl = document.createElement('div');
+        listEl.className = 'info-grid';
+
+        emptyEl = document.createElement('div');
+        emptyEl.className = 'empty info-empty';
+        emptyEl.textContent = 'Carregando...';
+
+        body.appendChild(searchRow);
+        body.appendChild(emptyEl);
+        body.appendChild(listEl);
+        modal.appendChild(head);
+        modal.appendChild(body);
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) close();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && isOpen) close();
+        });
+
+        return overlay;
+      };
+
+      const open = async () => {
+        ensure();
+        lastFocus = document.activeElement;
+
+        await loadData();
+        renderList();
+
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        isOpen = true;
+        scrollLock.lock();
+        inputEl.focus();
+      };
+
+      const close = () => {
+        if (!overlay || !isOpen) return;
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        isOpen = false;
+        scrollLock.unlock();
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      };
+
+      return { open, close };
+    })();
+  };
+
+  // ==================== MODAL DE SETORES ====================
+  const setoresModal = createInfoModal(
+    'setores-modal',
+    'Contatos dos Setores',
+    '/setores-contato',
+    (item) => {
+      const card = document.createElement('article');
+      card.className = 'info-card setor-card';
+
+      const title = document.createElement('div');
+      title.className = 'info-card-title';
+      title.textContent = item.setor;
+
+      const phone = document.createElement('div');
+      phone.className = 'info-card-phone';
+      phone.textContent = item.telefone;
+
+      const mensagem = `${item.setor}\n📞 ${item.telefone}`;
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'info-copy-btn';
+      copyBtn.textContent = 'Copiar contato';
+      copyBtn.addEventListener('click', async () => {
+        const ok = await copyText(mensagem);
+        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+        setTimeout(() => {
+          copyBtn.textContent = 'Copiar contato';
+        }, 1200);
+      });
+
+      card.appendChild(title);
+      card.appendChild(phone);
+      card.appendChild(copyBtn);
+      return card;
+    }
+  );
+
+  // ==================== MODAL DE CURSOS TÉCNICOS ====================
+const cursosTecnicosModal = (() => {
+  let overlay, titleEl, searchInput, turnoSelect, duracaoSelect, listEl, emptyEl, backBtn, filtersRow;
+  let isOpen = false, lastFocus = null;
+  let data = [];
+  let currentView = 'units'; // 'units' ou 'courses'
+  let currentUnit = null;
+  let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+
+  const loadData = async () => {
+    data = await loadApiData('/cursos-tecnicos');
+  };
+
+  const getUniqueDuracoes = () => {
+    const duracoes = new Set();
+    data.forEach(u => u.cursos.forEach(c => duracoes.add(c.duracao)));
+    return Array.from(duracoes).sort();
+  };
+
+  const renderUnits = (filterText = '') => {
+    const q = window.norm(filterText);
+    const filtered = data.filter(u => {
+      if (!q) return true;
+      return window.norm(u.unidade).includes(q) || u.cursos.some(c => window.norm(c.nome).includes(q));
+    });
+
+    listEl.innerHTML = '';
+
+    if (!filtered.length) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = 'Nenhuma unidade encontrada.';
+      return;
+    }
+
+    emptyEl.hidden = true;
+    filtered.forEach(u => {
+      const card = document.createElement('article');
+      card.className = 'info-card unidade-card';
+      card.innerHTML = `
+        <h3 class="unidade-nome">${u.unidade}</h3>
+        <p class="unidade-endereco">${u.endereco}</p>
+      `;
+      card.addEventListener('click', () => showCourses(u));
+      listEl.appendChild(card);
+    });
+  };
+
+  const renderCourses = () => {
+    if (!currentUnit) return;
+
+    let cursos = currentUnit.cursos;
+
+    const q = window.norm(currentFilter.text);
+    if (q) {
+      cursos = cursos.filter(c => window.norm(c.nome).includes(q));
+    }
+    if (currentFilter.turno !== 'todos') {
+      cursos = cursos.filter(c => c.turnos.includes(currentFilter.turno));
+    }
+    if (currentFilter.duracao !== 'todos') {
+      cursos = cursos.filter(c => c.duracao === currentFilter.duracao);
+    }
+
+    listEl.innerHTML = '';
+
+    if (!cursos.length) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = 'Nenhum curso encontrado.';
+      return;
+    }
+
+    emptyEl.hidden = true;
+    cursos.forEach(curso => {
+      const card = document.createElement('article');
+      card.className = 'info-card curso-card';
+
+      const header = document.createElement('div');
+      header.className = 'curso-header';
+      header.innerHTML = `
+        <h4 class="curso-nome">${curso.nome}</h4>
+        <span class="curso-duracao-badge">${curso.duracao}</span>
+      `;
+      card.appendChild(header);
+
+      const valoresDiv = document.createElement('div');
+      valoresDiv.className = 'curso-valores';
+      
+      const primeira = document.createElement('div');
+      primeira.className = 'primeira-mensalidade';
+      primeira.textContent = `1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}`;
+      valoresDiv.appendChild(primeira);
+
+      Object.entries(curso.valores).forEach(([turno, valor]) => {
+        const turnoDiv = document.createElement('div');
+        turnoDiv.className = 'curso-turno';
+        turnoDiv.textContent = `${turno}: R$ ${valor.toFixed(2)}`;
+        valoresDiv.appendChild(turnoDiv);
+      });
+      card.appendChild(valoresDiv);
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'info-copy-btn';
+      copyBtn.textContent = 'Copiar mensagem';
+      copyBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const turnosStr = Object.entries(curso.valores)
+          .map(([t, v]) => `  • ${t}: R$ ${v.toFixed(2)}`)
+          .join('\n');
+        const mensagem = `🎓 *Curso Técnico em ${curso.nome}* - Unidade ${currentUnit.unidade}\n` +
+          `📍 Endereço: ${currentUnit.endereco}\n` +
+          `⏱️ Duração: ${curso.duracao}\n` +
+          `📅 Turnos disponíveis: ${curso.turnos.join(', ')}\n\n` +
+          `💰 *Valores*:\n` +
+          `- 1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}\n` +
+          `- A partir da 2ª:\n${turnosStr}`;
+        const ok = await copyText(mensagem);
+        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+        setTimeout(() => copyBtn.textContent = 'Copiar mensagem', 1200);
+      });
+      card.appendChild(copyBtn);
+
+      listEl.appendChild(card);
+    });
+  };
+
+  const updateView = () => {
+    if (currentView === 'units') {
+      titleEl.textContent = 'Cursos Técnicos - Unidades';
+      searchInput.placeholder = 'Buscar unidade ou curso...';
+      filtersRow.style.display = 'none';
+      backBtn.style.display = 'none';
+      renderUnits(searchInput.value);
+    } else {
+      titleEl.textContent = `Cursos - ${currentUnit.unidade}`;
+      searchInput.placeholder = 'Buscar curso...';
+      filtersRow.style.display = 'flex';
+      backBtn.style.display = 'inline-block';
+      renderCourses();
+    }
+  };
+
+  const showCourses = (unit) => {
+    currentUnit = unit;
+    currentView = 'courses';
+    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+  };
+
+  const goBack = () => {
+    currentView = 'units';
+    currentUnit = null;
+    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+  };
+
+  const ensure = () => {
+    if (overlay) return overlay;
+
+    overlay = document.createElement('div');
+    overlay.className = 'modal-overlay info-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal info-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Cursos Técnicos');
+
+    const head = document.createElement('div');
+    head.className = 'modal-head info-head';
+    titleEl = document.createElement('div');
+    titleEl.className = 'modal-title info-title';
+    titleEl.textContent = 'Cursos Técnicos - Unidades';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close info-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Fechar');
+    closeBtn.textContent = '×';
+    closeBtn.addEventListener('click', close);
+    
+    head.appendChild(titleEl);
+    head.appendChild(closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'modal-body info-body';
+
+    const searchRow = document.createElement('div');
+    searchRow.className = 'search-row info-search-row';
+    searchInput = document.createElement('input');
+    searchInput.className = 'search-input info-search';
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Buscar unidade ou curso...';
+    searchInput.addEventListener('input', debounce(() => {
+      if (currentView === 'units') {
+        renderUnits(searchInput.value);
+      } else {
+        currentFilter.text = searchInput.value;
+        renderCourses();
+      }
+    }, 200));
+    searchRow.appendChild(searchInput);
+
+    filtersRow = document.createElement('div');
+    filtersRow.className = 'filters-row';
+    filtersRow.style.display = 'none';
+
+    turnoSelect = document.createElement('select');
+    turnoSelect.className = 'search-input filter-select';
+    turnoSelect.innerHTML = `
+      <option value="todos">Todos os turnos</option>
+      <option value="matutino">Matutino</option>
+      <option value="vespertino">Vespertino</option>
+      <option value="noturno">Noturno</option>
+      <option value="sabado">Sábado</option>
+    `;
+    turnoSelect.addEventListener('change', () => {
+      currentFilter.turno = turnoSelect.value;
+      renderCourses();
+    });
+
+    duracaoSelect = document.createElement('select');
+    duracaoSelect.className = 'search-input filter-select';
+
+    backBtn = document.createElement('button');
+    backBtn.className = 'btn back-btn';
+    backBtn.textContent = '← Voltar';
+    backBtn.style.display = 'none';
+    backBtn.addEventListener('click', goBack);
+
+    filtersRow.appendChild(turnoSelect);
+    filtersRow.appendChild(duracaoSelect);
+    filtersRow.appendChild(backBtn);
+
+    listEl = document.createElement('div');
+    listEl.className = 'info-grid';
+
+    emptyEl = document.createElement('div');
+    emptyEl.className = 'empty info-empty';
+    emptyEl.textContent = 'Carregando...';
+
+    body.appendChild(searchRow);
+    body.appendChild(filtersRow);
+    body.appendChild(listEl);
+    body.appendChild(emptyEl);
+    modal.appendChild(head);
+    modal.appendChild(body);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) close();
+    });
+
+    return overlay;
+  };
+
+  const open = async () => {
+    ensure();
+    lastFocus = document.activeElement;
+    await loadData();
+
+    const duracoes = getUniqueDuracoes();
+    duracaoSelect.innerHTML = '<option value="todos">Todas as durações</option>';
+    duracoes.forEach(d => {
+      const option = document.createElement('option');
+      option.value = d;
+      option.textContent = d;
+      duracaoSelect.appendChild(option);
+    });
+
+    currentView = 'units';
+    currentUnit = null;
+    searchInput.value = '';
+    turnoSelect.value = 'todos';
+    duracaoSelect.value = 'todos';
+    updateView();
+
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    isOpen = true;
+    scrollLock.lock();
+    searchInput.focus();
+  };
+
+  const close = () => {
+    if (!overlay || !isOpen) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    isOpen = false;
+    scrollLock.unlock();
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  };
+
+  return { open, close };
+})();
+
+// Expor globalmente (adicione esta linha junto com os outros exports)
+window.cursosTecnicosModal = cursosTecnicosModal; 
+
+// ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
+  const coordenadoresModal = createInfoModal(
+    'coordenadores-modal',
+    'Coordenação de Cursos e Contatos',
+    '/coordenadores',
+    (item) => {
+      const card = document.createElement('article');
+      card.className = 'info-card coordenador-card';
+
+      const displayUnidade = item.unidade_nome || item.unidade || '';
+      const displayCursos = (item.cursos && typeof item.cursos === 'string') 
+        ? item.cursos.split(',').map(c => c.trim()) 
+        : (Array.isArray(item.cursos) ? item.cursos : []);
+
+      // Se for um setor (como Direção Jurídica, NADI)
+      if (item.setor) {
+        const setor = document.createElement('div');
+        setor.className = 'info-card-unidade';
+        setor.textContent = item.setor;
+        card.appendChild(setor);
+      }
+
+      // Se tiver unidade (coordenadores normais)
+      if (displayUnidade) {
+      const unidade = document.createElement('div');
+      unidade.className = 'info-card-unidade';
+      unidade.textContent = item.unidade;
+      card.appendChild(unidade);
+    }
+
+    // Nome do coordenador (se houver)
+    if (item.coordenador) {
+      const nome = document.createElement('div');
+      nome.className = 'info-card-nome';
+      nome.textContent = item.coordenador;
+      card.appendChild(nome);
+    }
+
+    // Cursos (se houver)
+    if (displayCursos.length > 0) {
+      const cursos = document.createElement('div');
+      cursos.className = 'info-card-cursos';
+      cursos.textContent = displayCursos.join(', ');
+      card.appendChild(cursos);
+    }
+
+    // Telefones (se for array) – pode ser um array de strings
+    if (item.telefones && Array.isArray(item.telefones)) {
+      const telefonesDiv = document.createElement('div');
+      telefonesDiv.className = 'info-card-contato';
+      telefonesDiv.innerHTML = item.telefones.map(t => `📞 ${t}`).join('<br>');
+      card.appendChild(telefonesDiv);
+    } else if (item.contato) {
+      // Telefone único (coordenadores antigos)
+      const telefone = document.createElement('div');
+      telefone.className = 'info-card-contato';
+      telefone.textContent = `📞 ${item.contato}`;
+      card.appendChild(telefone);
+    }
+
+    // E-mail (se houver)
+    if (item.email) {
+      const email = document.createElement('div');
+      email.className = 'info-card-email';
+      const emailLink = document.createElement('a');
+      emailLink.href = `mailto:${item.email}`;
+      emailLink.textContent = item.email;
+      emailLink.style.color = 'var(--accent)';
+      emailLink.style.textDecoration = 'none';
+      emailLink.style.fontWeight = '600';
+      email.appendChild(emailLink);
+      card.appendChild(email);
+    }
+
+    // Botão copiar – monta mensagem de acordo com os dados disponíveis
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'info-copy-btn';
+    copyBtn.textContent = 'Copiar';
+
+    let mensagem = '';
+    if (item.setor) {
+      mensagem += `${item.setor}\n`;
+    }
+    if (item.unidade) {
+      mensagem += `${item.unidade}\n`;
+    }
+    if (item.coordenador) {
+      mensagem += `Coordenador: ${item.coordenador}\n`;
+    }
+    if (item.telefones) {
+      mensagem += `Telefones: ${item.telefones.join(', ')}\n`;
+    } else if (item.contato) {
+      mensagem += `Telefone: ${item.contato}\n`;
+    }
+    if (item.email) {
+      mensagem += `E-mail: ${item.email}`;
+    }
+
+    copyBtn.addEventListener('click', async () => {
+      const ok = await copyText(mensagem.trim());
+      copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+      setTimeout(() => copyBtn.textContent = 'Copiar', 1200);
+    });
+    card.appendChild(copyBtn);
+
+    return card;
+  }
+);
+
+ // Expor globalmente
+window.globalModal = globalModal;
+window.pricesModal = pricesModal;
+window.setoresModal = setoresModal;
+window.coordenadoresModal = coordenadoresModal;
+window.cursosTecnicosModal = cursosTecnicosModal;
+
+  // Listener global para os botões de pesquisa
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+
+    if (action === 'open-cursos-tecnicos') {
+  e.preventDefault();
+  if (window.cursosTecnicosModal) window.cursosTecnicosModal.open();
+}
+
+    if (action === 'open-global-search') {
+      e.preventDefault();
+      if (window.globalModal) window.globalModal.open();
+    }
+
+    if (action === 'open-prices-menu') {
+      e.preventDefault();
+      if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  console.log('Clique em ação:', action); // Log para depuração
+
+  if (action === 'open-global-search') {
+    e.preventDefault();
+    if (window.globalModal) window.globalModal.open();
+    else console.error('globalModal não encontrado');
+  }
+
+  if (action === 'open-prices-menu') {
+    e.preventDefault();
+    if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
+    else console.error('pricesModal não encontrado');
+  }
+});
+
 })();

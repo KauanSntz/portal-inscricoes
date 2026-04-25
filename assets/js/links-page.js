@@ -5,7 +5,6 @@
   if (!location.pathname.endsWith("links.html") && location.pathname !== "/links") return;
 
   const CHUNK_SIZE = 120;
-  const JSON_DATA_PATH = "./assets/data/portal_links_2026_1.json";
   const FIXED_HASH = "#/es/inscricoeswizard/dados-basicos";
   const UNKNOWN_UNIT = "UNIDADE NÃO IDENTIFICADA";
 
@@ -131,7 +130,7 @@
     const sorted = unique.sort((a, b) => {
       const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aUnknown !== bUnknown) return aUnknown - bUnknown;
-      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR");
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
 
     audit.topInconsistencies = audit.inconsistencies.slice(0, 10);
@@ -141,10 +140,35 @@
   };
 
   const fromDataJson = (payload) => {
-    const raw = [];
-    (payload?.sheets || []).forEach(sheet => (sheet.entries || []).forEach(entry => { if (entry.type === "link") raw.push({ title: entry.title, url: entry.url, ps: entry.params?.ps, sheetName: sheet.name }); }));
+  // Se for array (novo formato plano)
+  if (Array.isArray(payload)) {
+    const raw = payload.map(item => ({
+      title: item.descricao,          // nosso campo descricao vira title
+      url: item.url,
+      unitHint: item.unidade,          // campo unidade usado como dica
+      type: item.tipo,                 // tipo (vestibular/matricula)
+      modality: item.modalidade,       // modalidade (EAD, Semipresencial...)
+      code: item.codigo                // código do processo
+    }));
     return normalizeLinksData(raw);
-  };
+  }
+  
+  // Formato antigo com sheets (fallback)
+  const raw = [];
+  (payload?.sheets || []).forEach(sheet => 
+    (sheet.entries || []).forEach(entry => {
+      if (entry.type === "link") {
+        raw.push({ 
+          title: entry.title, 
+          url: entry.url, 
+          ps: entry.params?.ps, 
+          sheetName: sheet.name 
+        });
+      }
+    })
+  );
+  return normalizeLinksData(raw);
+};
 
   const fromPortalLinks = (units) => {
     const raw = [];
@@ -154,7 +178,7 @@
         (block.links || []).forEach(ln => {
           const type = TYPE_LABELS[parseTypeKey(ln.type)] || "Processo";
           const modality = MODALITY_LABELS[parseModalityKey(`${ln.modality || ""} ${blockKey}`)] || "Outro";
-          const title = `${ln.code || ""} ${String(ln.type || type).toUpperCase()} - ${unitHint} ${String(modality).toUpperCase()} - 2026/1`;
+          const title = `${ln.code || ""} ${String(ln.type || type).toUpperCase()} - ${unitHint} ${String(modality).toUpperCase()} - ${ln.periodo || '2026/2'}`;
           raw.push({ title, href: ln.href, code: ln.code, unitHint });
         });
       });
@@ -227,7 +251,7 @@
         h3.textContent = MODALITY_LABELS[mKey] || MODALITY_LABELS.outro;
         section.appendChild(h3);
 
-        const rows = byModality.get(mKey).slice().sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR"));
+        const rows = byModality.get(mKey).slice().sort((a, b) => (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR"));
 
         rows.forEach(rec => {
           const row = document.createElement("div");
@@ -311,34 +335,44 @@
     dom.type.addEventListener("change", () => { state.filters.type = dom.type.value; applyFilters(); });
   };
 
-  const loadRecords = async () => {
-    const fallback = fromPortalLinks(window.PORTAL_LINKS);
-    const portalUnitKeys = new Set(fallback.map(r => r.unitKey));
-    try {
-      const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
-      if (!res.ok) throw new Error("json fail");
-      const payload = await res.json();
-      const fromJson = fromDataJson(payload);
-      if (fromJson.length) {
-        const seen = new Set();
-        const merged = [];
-        fallback.forEach(rec => { const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|"); if (!seen.has(key)) { seen.add(key); merged.push(rec); } });
-        fromJson.forEach(rec => { if (!portalUnitKeys.has(rec.unitKey)) { const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|"); if (!seen.has(key)) { seen.add(key); merged.push(rec); } } });
-        merged.sort((a, b) => {
-          const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
-          if (aU !== bU) return aU - bU;
-          return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR");
-        });
-        state.sourceLabel = `JSON + PORTAL_LINKS (${merged.length} registros)`;
-        return merged;
+const loadRecords = async () => {
+    console.log("[links-page] ✅ Script carregado");
+    
+    // Aguardar PORTAL_LINKS estar disponível (máximo 5 segundos)
+    const maxWait = 5000;
+    const checkInterval = 100;
+    let waited = 0;
+    
+    while (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
+      if (waited >= maxWait) {
+        console.error("[links-page] ❌ Timeout aguardando PORTAL_LINKS");
+        state.sourceLabel = `❌ Timeout aguardando API`;
+        return [];
       }
-    } catch {}
-    state.sourceLabel = `links-data.js (${fallback.length} registros)`;
-    return fallback;
+      console.log("[links-page] Aguardando PORTAL_LINKS...", waited, "ms");
+      await new Promise(resolve => setTimeout(resolve, checkInterval));
+      waited += checkInterval;
+    }
+    
+    console.log("[links-page] PORTAL_LINKS disponível:", window.PORTAL_LINKS.length, "unidades");
+    
+    const records = fromPortalLinks(window.PORTAL_LINKS);
+    console.log("[links-page] fromPortalLinks result:", records.length, "registros");
+    
+    records.sort((a, b) => {
+      const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      if (aU !== bU) return aU - bU;
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
+    });
+    state.sourceLabel = `API (${records.length} registros)`;
+    console.log("[links-page] ✅ Registros prontos:", records.length);
+    return records;
   };
 
   const init = async () => {
+    console.log("[links-page] init() chamada");
     state.records = await loadRecords();
+    console.log("[links-page] state.records:", state.records.length);
     state.qa = buildQA(state.records);
     const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
     buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
@@ -347,6 +381,7 @@
     bindEvents();
     applyFilters();
     renderQA();
+    console.log("[links-page] ✅ Inicialização completa");
   };
 
   init();

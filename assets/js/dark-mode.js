@@ -9,11 +9,11 @@
   const applyMode = (isDark) => {
     if (isDark) {
       document.body.classList.add('dark-mode');
-      if (modeText) modeText.textContent = 'White';
+      if (modeText) modeText.textContent = 'Whitter';
       if (modeIcon) modeIcon.textContent = '☀️';
     } else {
       document.body.classList.remove('dark-mode');
-      if (modeText) modeText.textContent = 'Nigga';
+      if (modeText) modeText.textContent = 'Nigger';
       if (modeIcon) modeIcon.textContent = '🌙';
     }
   };

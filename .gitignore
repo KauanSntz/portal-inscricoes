@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Firebase
+.firebase/
+firebase-debug.log*
+
+# Dependencies
+node_modules/
+api/node_modules/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.eslintcache
+.node_repl_history
+
+# Build
+build/
+dist/

@@ -40,8 +40,8 @@
         </div>
         <button type="submit" class="btn btn--accent" style="width:100%;">Entrar</button>
         
-        <!-- Link esqueci minha senha (centralizado) -->
-        <div style="text-align: center; margin-top: 0.5rem;">
+        <!-- Link esqueci minha senha -->
+        <div style="text-align: right; margin-top: 0.5rem;">
           <a href="#" id="forgot-password">Esqueci minha senha</a>
         </div>
 
@@ -108,12 +108,9 @@
       .then(() => console.log('Persistência LOCAL definida'))
       .catch(error => console.error('Erro na persistência:', error));
 
-    // Flag para controle de redirecionamento
-    let isRedirecting = false;
-
     auth.onAuthStateChanged(user => {
-      if (user && !isRedirecting) {
-        console.log('Usuário já logado, redirecionando para portal.html');
+      if (user) {
+        console.log('Usuário logado, redirecionando para portal.html');
         window.location.href = './portal.html';
       }
     });
@@ -207,23 +204,22 @@
       const password = document.getElementById('reg-password').value;
       const confirmPassword = document.getElementById('reg-confirm-password').value;
 
-      // Validações
       if (password !== confirmPassword) {
         showMessage('As senhas não coincidem.');
         return;
       }
+
       if (nome === '') {
         showMessage('Por favor, informe seu nome.');
         return;
       }
-
+      
       messageDiv.style.display = 'none';
-      isRedirecting = true;
 
       try {
         const cred = await auth.createUserWithEmailAndPassword(email, password);
         
-        // Salvar no Firestore
+        // Salvar no Firestore com o nome fornecido
         await db.collection('users').doc(cred.user.uid).set({
           nome: nome,
           email: email,
@@ -231,15 +227,12 @@
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Atualizar displayName
+        // Atualizar o displayName no Auth
         await cred.user.updateProfile({ displayName: nome });
 
-        console.log('Registro concluído. Nome salvo:', nome);
-        window.location.href = './portal.html';
+        console.log('Registro bem-sucedido');
       } catch (error) {
-        console.log('Erro no registro:', error.code);
         showMessage(traduzirErroFirebase(error.code));
-        isRedirecting = false;
       }
     });
 
