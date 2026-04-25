@@ -336,18 +336,34 @@
   };
 
 const loadRecords = async () => {
+    console.log("[links-page] ✅ Script carregado");
+    console.log("[links-page] PORTAL_LINKS:", window.PORTAL_LINKS);
+    console.log("[links-page] Tipo de PORTAL_LINKS:", typeof window.PORTAL_LINKS);
+    console.log("[links-page] É array?:", Array.isArray(window.PORTAL_LINKS));
+    
+    if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
+      console.error("[links-page] ❌ PORTAL_LINKS vazio ou inválido!");
+      state.sourceLabel = `❌ API indisponível (PORTAL_LINKS: ${typeof window.PORTAL_LINKS})`;
+      return [];
+    }
+    
     const records = fromPortalLinks(window.PORTAL_LINKS);
+    console.log("[links-page] fromPortalLinks result:", records.length, "registros");
+    
     records.sort((a, b) => {
       const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aU !== bU) return aU - bU;
       return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(a.code, b.code);
     });
     state.sourceLabel = `API (${records.length} registros)`;
+    console.log("[links-page] ✅ Registros prontos:", records.length);
     return records;
   };
 
   const init = async () => {
+    console.log("[links-page] init() chamada");
     state.records = await loadRecords();
+    console.log("[links-page] state.records:", state.records.length);
     state.qa = buildQA(state.records);
     const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
     buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
@@ -356,6 +372,7 @@ const loadRecords = async () => {
     bindEvents();
     applyFilters();
     renderQA();
+    console.log("[links-page] ✅ Inicialização completa");
   };
 
   init();

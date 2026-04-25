@@ -110,21 +110,32 @@
   }
 
   function init() {
+    console.log("[links-data] ✅ Script carregado");
     const cached = getCachedData();
+    console.log("[links-data] Cache encontrado:", !!cached);
     if (cached) {
-      console.log("[links-data] Usando cache local");
+      console.log("[links-data] Usando cache local:", cached.length, "unidades");
       window.PORTAL_LINKS = cached;
+      console.log("[links-data] PORTAL_LINKS setado (cache)");
     } else {
       console.log("[links-data] Sem cache, tentando API...");
       fetch(`${API_URL}/processos?limit=500`)
-        .then(r => r.json())
+        .then(r => {
+          console.log("[links-data] Resposta API status:", r.status);
+          return r.json();
+        })
         .then(json => {
+          console.log("[links-data] JSON recebido:", json);
           const portalLinks = transformToPortalLinks(json.data || []);
+          console.log("[links-data] Transformado:", portalLinks.length, "unidades");
           setCachedData(portalLinks);
           window.PORTAL_LINKS = portalLinks;
-          console.log(`[links-data] Carregado da API (${json.data?.length || 0} processos)`);
+          console.log(`[links-data] ✅ PORTAL_LINKS setado: ${portalLinks.length} unidades, ${portalLinks.reduce((acc, u) => acc + Object.values(u.blocks).reduce((a, b) => a + b.links.length, 0), 0)} links`);
         })
-        .catch(err => console.warn("[links-data] Erro:", err));
+        .catch(err => {
+          console.error("[links-data] ❌ Erro:", err);
+          window.PORTAL_LINKS = [];
+        });
     }
 
     refreshFromAPI();
