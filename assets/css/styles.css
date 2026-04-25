@@ -952,6 +952,7 @@ body.dark-mode .status-badge.resolvido {
 /* Categorias de Preços */
 .price-category {
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 .price-category-title {
