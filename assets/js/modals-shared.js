@@ -30,32 +30,48 @@
 
   // Mapeamento de cursos para categorias
   const CATEGORY_MAP = {
-    // Tecnologia
+    // 🖥️ TECNOLOGIA
     "análise e desenvolvimento de sistemas": "tecnologia",
     "ciência da computação": "tecnologia",
     "ciências de dados": "tecnologia",
     "engenharia da computação": "tecnologia",
     "engenharia de software": "tecnologia",
+    "engenharia ambiental e energias renováveis": "tecnologia",
+    "engenharia civil": "tecnologia",
+    "engenharia de produção": "tecnologia",
+    "engenharia elétrica": "tecnologia",
+    "engenharia mecânica": "tecnologia",
     "fullstack": "tecnologia",
     "inteligência artificial": "tecnologia",
     "internet das coisas": "tecnologia",
     "iot": "tecnologia",
     "jogos digitais": "tecnologia",
     "redes de computadores": "tecnologia",
+    "rede de computadores": "tecnologia",
     "big data": "tecnologia",
     "big data e inteligência analítica": "tecnologia",
     "gestão da segurança e defesa cibernética": "tecnologia",
+    "tecnólogo gestão da segurança e defesa cibernética": "tecnologia",
     "sistemas de informação": "tecnologia",
     "tecnologia em análise e desenvolvimento de sistemas": "tecnologia",
     "tecnologia em design gráfico": "tecnologia",
     "tecnologia em gestão da tecnologia da informação": "tecnologia",
     "tecnologia em redes de computadores": "tecnologia",
+    "tecnologia em desenvolvimento full stack": "tecnologia",
+    "tecnologia em desenvolvimento full stack (tecnólogo)": "tecnologia",
+    "tecnologia em internet das coisas": "tecnologia",
+    "tecnologia em big data e inteligência analítica": "tecnologia",
+    "tecnologia em ciência de dados": "tecnologia",
+    "tecnologia em inteligência artificial": "tecnologia",
+    "tecnologia em jogos digitais": "tecnologia",
+    "segurança do trabalho": "tecnologia",
     "design gráfico": "tecnologia",
     
-    // Gestão
+    // 📊 GESTÃO
     "administração": "gestao",
     "ciências contábeis": "gestao",
     "ciências econômicas": "gestao",
+    "ciências econômicas (novo)": "gestao",
     "gestão da qualidade": "gestao",
     "gestão de recursos humanos": "gestao",
     "gestão de rh": "gestao",
@@ -69,7 +85,7 @@
     "gestão de segurança privada": "gestao",
     "recursos humanos": "gestao",
     
-    // Saúde
+    // 🏥 SAÚDE
     "biomedicina": "saude",
     "enfermagem": "saude",
     "farmácia": "saude",
@@ -84,21 +100,26 @@
     "terapia ocupacional": "saude",
     "estética e cosmética": "saude",
     
-    // Direito e Serviços Sociais
+    // ⚖️ DIREITO E SERVIÇOS SOCIAIS
     "direito": "direito",
+    "direito - manaus": "direito",
     "serviço social": "direito",
     "gestão de serviços jurídicos e notariais": "direito",
+    "gestão de serviços judiciais e notariais": "direito",
+    "gestão de serviços judiciais e notariais (tecnólogo)": "direito",
     
-    // Educação
+    // 🎓 EDUCAÇÃO
     "pedagogia": "educacao",
     "educação física": "educacao",
+    "educação física (bacharelado)": "educacao",
     "educação física bacharelado": "educacao",
+    "educação física (licenciatura)": "educacao",
     "educação física licenciatura": "educacao",
     "letras": "educacao",
     "psicopedagogia": "educacao",
-    "tecnologia em segurança no trabalho": "saude",
     
-    // Criativos e Comunicação
+    // 🎨 CRIATIVOS E COMUNICAÇÃO
+    "arquitetura e urbanismo": "criativos",
     "jornalismo": "criativos",
     "publicidade e propaganda": "criativos",
     "gastronomia": "criativos",
@@ -557,7 +578,7 @@
       }
 
       // Ordenar categorias: principais primero
-      const catOrder = ["tecnologia", "gestao", "saude", "direito", "educacao", "criativos", "outros"];
+      const catOrder = ["tecnologia", "gestao", "saude", "direito", "educacao", "criativos"];
       const sortedCats = Object.keys(grouped).sort((a, b) => {
         const ia = catOrder.indexOf(a);
         const ib = catOrder.indexOf(b);

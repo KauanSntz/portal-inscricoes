@@ -961,18 +961,20 @@ body.dark-mode .status-badge.resolvido {
   margin: 1.5rem 0 1rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--accent);
+  text-align: center;
 }
 
 .price-category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
-@media (max-width: 768px) {
-  .price-category-grid {
-    grid-template-columns: 1fr;
-  }
+.price-category-grid .prices-card {
+  max-width: 500px;
+  width: 100%;
 }
 
 .prices-course {
