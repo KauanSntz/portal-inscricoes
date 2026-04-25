@@ -21,7 +21,7 @@
     "FLEX": "flex"
   };
 
-  const makeLink = (code, type, modality, href) => ({ code, type, modality, href });
+  const makeLink = (code, type, modality, href, periodo) => ({ code, type, modality, href, periodo });
 
   function getCachedData() {
     try {
@@ -81,7 +81,7 @@
         };
       }
 
-      const link = makeLink(p.codigo, p.tipo_ingresso, p.modalidade, p.link);
+      const link = makeLink(p.codigo, p.tipo_ingresso, p.modalidade, p.link, p.periodo);
       unidade.blocks[blockKey].links.push(link);
     });
 

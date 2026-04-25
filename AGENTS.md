@@ -249,6 +249,64 @@ curl http://localhost:11434/api/tags
 
 ---
 
+## Validação Obrigatória (Após Qualquer Modificação)
+
+### REGRAS OBRIGATÓRIAS
+
+Após **QUALQUER** modificação no código, você **DEVE** executar:
+
+#### 1. VALIDAÇÃO DE BACKEND
+- [ ] `GET /` → 200 OK
+- [ ] `GET /processos?limit=1` → dados retornados
+- [ ] `GET /unidades` → dados retornados
+- [ ] `GET /modalidades` → dados retornados
+- [ ] Verificar logs por erros silenciosos
+
+#### 2. VALIDAÇÃO DE FRONTEND
+- [ ] Páginas carregam sem erro JS
+- [ ] Console (F12) sem erros
+- [ ] `window.PORTAL_LINKS` definido
+- [ ] Dados renderizados na interface
+
+#### 3. VALIDAÇÃO DE INTEGRAÇÃO
+- [ ] API → fetch → `window.PORTAL_LINKS` → renderização
+- [ ] Se API falhar: logar erro claro, NÃO quebrar silenciosamente
+
+#### 4. VALIDAÇÃO DE CACHE
+- [ ] Invalidar cache se estrutura mudou
+- [ ] Evitar dados antigos incompatíveis
+
+#### 5. VALIDAÇÃO DE DEPLOY
+- [ ] Serviço sobe sem erro
+- [ ] Endpoints em produção OK (não 503)
+- [ ] Detectar causa de 503 (sleep vs crash)
+
+### PROIBIÇÕES
+- ❌ NÃO finalizar sem testes
+- ❌ NÃO assumir "deve estar funcionando"
+- ❌ NÃO ignorar 503, 500, undefined
+- ❌ NÃO deixar frontend sem dados visíveis
+
+### FORMATO DE RESPOSTA
+Após qualquer alteração, retornar:
+
+```
+✔ Backend: (OK ou ERRO + detalhes)
+✔ API endpoints: (status de cada rota)
+✔ Frontend: (OK ou ERRO + o que está sendo exibido)
+✔ Integração: (dados chegando? sim/não)
+✔ Console: (erros encontrados)
+✔ Produção (Render): (status real)
+```
+
+Se algo falhar:
+→ Parar tudo
+→ Explicar causa raiz
+→ Corrigir antes de continuar
+→ NÃO pular etapas
+
+---
+
 ## Comandos Rápidos
 
 ```bash

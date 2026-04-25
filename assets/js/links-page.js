@@ -178,7 +178,7 @@
         (block.links || []).forEach(ln => {
           const type = TYPE_LABELS[parseTypeKey(ln.type)] || "Processo";
           const modality = MODALITY_LABELS[parseModalityKey(`${ln.modality || ""} ${blockKey}`)] || "Outro";
-          const title = `${ln.code || ""} ${String(ln.type || type).toUpperCase()} - ${unitHint} ${String(modality).toUpperCase()} - 2026/1`;
+          const title = `${ln.code || ""} ${String(ln.type || type).toUpperCase()} - ${unitHint} ${String(modality).toUpperCase()} - ${ln.periodo || '2026/2'}`;
           raw.push({ title, href: ln.href, code: ln.code, unitHint });
         });
       });
