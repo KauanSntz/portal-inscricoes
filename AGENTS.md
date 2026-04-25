@@ -268,6 +268,39 @@ render deploys create <service-id> --confirm
 
 ---
 
+## Workflow de Commit e Push
+
+### Obrigatório ANTES de cada commit:
+
+1. **Testar API Local**
+   - Iniciar API: `node server-api.js`
+   - Testar rotas:
+     - `GET /` → 200 OK
+     - `GET /processos?limit=2` → retorna dados
+     - `GET /unidades` → retorna dados
+     - `GET /modalidades` → retorna dados
+
+2. **Testar API Produção**
+   - `GET https://portal-inscricoes.onrender.com/` → 200
+   - `GET https://portal-inscricoes.onrender.com/processos?limit=2` → retorna dados
+
+3. **Verificar Frontend**
+   - Conferir que `assets/js/api.js` tem a URL correta
+   - Conferir que não há referências quebradas
+
+4. **Feedback ao Usuário**
+   - Reportar status de cada teste
+   - Informar se há problemas
+   - **PERGUNTAR**: "Posso comitar?"
+   - Somente comitar após autorização explícita
+
+5. **Em caso de erro**
+   - Verificar logs: `render logs <service-id>`
+   - Não fazer push se API estiver 503
+   - Reportar erro antes de prosseguir
+
+---
+
 ## Contatos
 
 - **Dashboard Render**: https://dashboard.render.com

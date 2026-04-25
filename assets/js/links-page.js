@@ -5,7 +5,6 @@
   if (!location.pathname.endsWith("links.html") && location.pathname !== "/links") return;
 
   const CHUNK_SIZE = 120;
-  const JSON_DATA_PATH = "./assets/data/portal_links_2026_1.json";
   const FIXED_HASH = "#/es/inscricoeswizard/dados-basicos";
   const UNKNOWN_UNIT = "UNIDADE NÃO IDENTIFICADA";
 
@@ -336,30 +335,15 @@
     dom.type.addEventListener("change", () => { state.filters.type = dom.type.value; applyFilters(); });
   };
 
-  const loadRecords = async () => {
-    const fallback = fromPortalLinks(window.PORTAL_LINKS);
-    const portalUnitKeys = new Set(fallback.map(r => r.unitKey));
-    try {
-      const res = await fetch(JSON_DATA_PATH, { cache: "no-store" });
-      if (!res.ok) throw new Error("json fail");
-      const payload = await res.json();
-      const fromJson = fromDataJson(payload);
-      if (fromJson.length) {
-        const seen = new Set();
-        const merged = [];
-        fallback.forEach(rec => { const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|"); if (!seen.has(key)) { seen.add(key); merged.push(rec); } });
-        fromJson.forEach(rec => { if (!portalUnitKeys.has(rec.unitKey)) { const key = [rec.unitKey, rec.code, rec.typeKey, rec.modalityKey, rec.url].join("|"); if (!seen.has(key)) { seen.add(key); merged.push(rec); } } });
-        merged.sort((a, b) => {
-          const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
-          if (aU !== bU) return aU - bU;
-          return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(b.code, "pt-BR");
-        });
-        state.sourceLabel = `JSON + PORTAL_LINKS (${merged.length} registros)`;
-        return merged;
-      }
-    } catch {}
-    state.sourceLabel = `links-data.js (${fallback.length} registros)`;
-    return fallback;
+const loadRecords = async () => {
+    const records = fromPortalLinks(window.PORTAL_LINKS);
+    records.sort((a, b) => {
+      const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+      if (aU !== bU) return aU - bU;
+      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || a.code.localeCompare(a.code, b.code);
+    });
+    state.sourceLabel = `API (${records.length} registros)`;
+    return records;
   };
 
   const init = async () => {
