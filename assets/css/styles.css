@@ -955,6 +955,12 @@ body.dark-mode .status-badge.resolvido {
   width: 100%;
 }
 
+/* Container principal das categorias de preços */
+.prices-categories-container {
+  display: block;
+  width: 100%;
+}
+
 .price-category-title {
   font-size: 1.1rem;
   font-weight: 700;

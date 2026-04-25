@@ -719,7 +719,7 @@
       controls.appendChild(inputEl);
 
       listEl = document.createElement("div");
-      listEl.className = "course-grid prices-grid";
+      listEl.className = "prices-categories-container";
 
       emptyEl = document.createElement("div");
       emptyEl.className = "empty prices-empty";
