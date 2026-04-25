@@ -784,27 +784,55 @@
       const title = document.createElement('div');
       title.className = 'info-card-title';
       title.textContent = item.setor;
-
-      const phone = document.createElement('div');
-      phone.className = 'info-card-phone';
-      phone.textContent = item.telefone;
-
-      const mensagem = `${item.setor}\n📞 ${item.telefone}`;
-
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'info-copy-btn';
-      copyBtn.textContent = 'Copiar contato';
-      copyBtn.addEventListener('click', async () => {
-        const ok = await copyText(mensagem);
-        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-        setTimeout(() => {
-          copyBtn.textContent = 'Copiar contato';
-        }, 1200);
-      });
-
       card.appendChild(title);
-      card.appendChild(phone);
-      card.appendChild(copyBtn);
+
+      const contatoRow = document.createElement('div');
+      contatoRow.className = 'contato-row';
+
+      if (item.telefone) {
+        const phone = document.createElement('div');
+        phone.className = 'contato-item';
+        phone.innerHTML = `<span class="contato-icon">📞</span><span class="contato-value">${item.telefone}</span>`;
+        contatoRow.appendChild(phone);
+      }
+
+      if (item.email) {
+        const email = document.createElement('div');
+        email.className = 'contato-item';
+        email.innerHTML = `<span class="contato-icon">✉️</span><span class="contato-value">${item.email}</span>`;
+        contatoRow.appendChild(email);
+      }
+
+      card.appendChild(contatoRow);
+
+      const btnRow = document.createElement('div');
+      btnRow.className = 'btn-row';
+
+      if (item.telefone) {
+        const copyPhoneBtn = document.createElement('button');
+        copyPhoneBtn.className = 'info-copy-btn';
+        copyPhoneBtn.textContent = '📋 Copiar Telefone';
+        copyPhoneBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.telefone);
+          copyPhoneBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyPhoneBtn.textContent = '📋 Copiar Telefone', 1200);
+        });
+        btnRow.appendChild(copyPhoneBtn);
+      }
+
+      if (item.email) {
+        const copyEmailBtn = document.createElement('button');
+        copyEmailBtn.className = 'info-copy-btn';
+        copyEmailBtn.textContent = '✉️ Copiar E-mail';
+        copyEmailBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.email);
+          copyEmailBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyEmailBtn.textContent = '✉️ Copiar E-mail', 1200);
+        });
+        btnRow.appendChild(copyEmailBtn);
+      }
+
+      card.appendChild(btnRow);
       return card;
     }
   );
@@ -1120,7 +1148,7 @@ const cursosTecnicosModal = (() => {
 window.cursosTecnicosModal = cursosTecnicosModal; 
 
 // ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
-  const coordenadoresModal = createInfoModal(
+const coordenadoresModal = createInfoModal(
     'coordenadores-modal',
     'Coordenação de Cursos e Contatos',
     '/coordenadores',
@@ -1133,100 +1161,78 @@ window.cursosTecnicosModal = cursosTecnicosModal;
         ? item.cursos.split(',').map(c => c.trim()) 
         : (Array.isArray(item.cursos) ? item.cursos : []);
 
-      // Se for um setor (como Direção Jurídica, NADI)
-      if (item.setor) {
-        const setor = document.createElement('div');
-        setor.className = 'info-card-unidade';
-        setor.textContent = item.setor;
-        card.appendChild(setor);
+      // Nome do coordenador
+      if (item.coordenador) {
+        const nome = document.createElement('div');
+        nome.className = 'info-card-nome';
+        nome.textContent = item.coordenador;
+        card.appendChild(nome);
       }
 
-      // Se tiver unidade (coordenadores normais)
-      if (displayUnidade) {
-      const unidade = document.createElement('div');
-      unidade.className = 'info-card-unidade';
-      unidade.textContent = item.unidade;
-      card.appendChild(unidade);
-    }
+      // Cursos
+      if (displayCursos.length > 0) {
+        const cursos = document.createElement('div');
+        cursos.className = 'info-card-cursos';
+        cursos.innerHTML = `⚡ ${displayCursos.join(', ')}`;
+        card.appendChild(cursos);
+      }
 
-    // Nome do coordenador (se houver)
-    if (item.coordenador) {
-      const nome = document.createElement('div');
-      nome.className = 'info-card-nome';
-      nome.textContent = item.coordenador;
-      card.appendChild(nome);
-    }
+      // Contato row
+      const contatoRow = document.createElement('div');
+      contatoRow.className = 'contato-row';
 
-    // Cursos (se houver)
-    if (displayCursos.length > 0) {
-      const cursos = document.createElement('div');
-      cursos.className = 'info-card-cursos';
-      cursos.textContent = displayCursos.join(', ');
-      card.appendChild(cursos);
-    }
+      // Telefone (pode ser array telefones ou contato)
+      const telefone = item.contato || (item.telefones && item.telefones[0]);
+      if (telefone) {
+        const phone = document.createElement('div');
+        phone.className = 'contato-item';
+        phone.innerHTML = `<span class="contato-icon">📞</span><span class="contato-value">${telefone}</span>`;
+        contatoRow.appendChild(phone);
+      }
 
-    // Telefones (se for array) – pode ser um array de strings
-    if (item.telefones && Array.isArray(item.telefones)) {
-      const telefonesDiv = document.createElement('div');
-      telefonesDiv.className = 'info-card-contato';
-      telefonesDiv.innerHTML = item.telefones.map(t => `📞 ${t}`).join('<br>');
-      card.appendChild(telefonesDiv);
-    } else if (item.contato) {
-      // Telefone único (coordenadores antigos)
-      const telefone = document.createElement('div');
-      telefone.className = 'info-card-contato';
-      telefone.textContent = `📞 ${item.contato}`;
-      card.appendChild(telefone);
-    }
+      // E-mail
+      if (item.email) {
+        const email = document.createElement('div');
+        email.className = 'contato-item';
+        email.innerHTML = `<span class="contato-icon">✉️</span><span class="contato-value">${item.email}</span>`;
+        contatoRow.appendChild(email);
+      }
 
-    // E-mail (se houver)
-    if (item.email) {
-      const email = document.createElement('div');
-      email.className = 'info-card-email';
-      const emailLink = document.createElement('a');
-      emailLink.href = `mailto:${item.email}`;
-      emailLink.textContent = item.email;
-      emailLink.style.color = 'var(--accent)';
-      emailLink.style.textDecoration = 'none';
-      emailLink.style.fontWeight = '600';
-      email.appendChild(emailLink);
-      card.appendChild(email);
-    }
+      card.appendChild(contatoRow);
 
-    // Botão copiar – monta mensagem de acordo com os dados disponíveis
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'info-copy-btn';
-    copyBtn.textContent = 'Copiar';
+      // Botões de copiar
+      const btnRow = document.createElement('div');
+      btnRow.className = 'btn-row';
 
-    let mensagem = '';
-    if (item.setor) {
-      mensagem += `${item.setor}\n`;
-    }
-    if (item.unidade) {
-      mensagem += `${item.unidade}\n`;
-    }
-    if (item.coordenador) {
-      mensagem += `Coordenador: ${item.coordenador}\n`;
-    }
-    if (item.telefones) {
-      mensagem += `Telefones: ${item.telefones.join(', ')}\n`;
-    } else if (item.contato) {
-      mensagem += `Telefone: ${item.contato}\n`;
-    }
-    if (item.email) {
-      mensagem += `E-mail: ${item.email}`;
-    }
+      if (telefone) {
+        const copyPhoneBtn = document.createElement('button');
+        copyPhoneBtn.className = 'info-copy-btn';
+        copyPhoneBtn.textContent = '📋 Copiar Telefone';
+        copyPhoneBtn.addEventListener('click', async () => {
+          const ok = await copyText(telefone);
+          copyPhoneBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyPhoneBtn.textContent = '📋 Copiar Telefone', 1200);
+        });
+        btnRow.appendChild(copyPhoneBtn);
+      }
 
-    copyBtn.addEventListener('click', async () => {
-      const ok = await copyText(mensagem.trim());
-      copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-      setTimeout(() => copyBtn.textContent = 'Copiar', 1200);
-    });
-    card.appendChild(copyBtn);
+      if (item.email) {
+        const copyEmailBtn = document.createElement('button');
+        copyEmailBtn.className = 'info-copy-btn';
+        copyEmailBtn.textContent = '✉️ Copiar E-mail';
+        copyEmailBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.email);
+          copyEmailBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyEmailBtn.textContent = '✉️ Copiar E-mail', 1200);
+        });
+        btnRow.appendChild(copyEmailBtn);
+      }
 
-    return card;
-  }
-);
+      card.appendChild(btnRow);
+
+      return card;
+    }
+  );
 
  // Expor globalmente
 window.globalModal = globalModal;
