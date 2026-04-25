@@ -965,16 +965,29 @@ body.dark-mode .status-badge.resolvido {
 }
 
 .price-category-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
   width: 100%;
 }
 
 .price-category-grid .prices-card {
-  max-width: 500px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+@media (max-width: 1024px) {
+  .price-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .price-category-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .prices-course {
