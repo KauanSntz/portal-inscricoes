@@ -949,6 +949,32 @@ body.dark-mode .status-badge.resolvido {
   transform: translateY(-2px);
 }
 
+/* Categorias de Preços */
+.price-category {
+  margin-bottom: 2rem;
+}
+
+.price-category-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.price-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .price-category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .prices-course {
   font-weight: 700;
   color: #1e293b;

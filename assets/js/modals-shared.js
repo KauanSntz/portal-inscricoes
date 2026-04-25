@@ -28,6 +28,92 @@
     { key: "hibrido", label: "Híbrido" },
   ]);
 
+  // Mapeamento de cursos para categorias
+  const CATEGORY_MAP = {
+    // Tecnologia
+    "análise e desenvolvimento de sistemas": "tecnologia",
+    "ciência da computação": "tecnologia",
+    "ciências de dados": "tecnologia",
+    "engenharia da computação": "tecnologia",
+    "engenharia de software": "tecnologia",
+    "fullstack": "tecnologia",
+    "inteligência artificial": "tecnologia",
+    "internet das coisas": "tecnologia",
+    "iot": "tecnologia",
+    "jogos digitais": "tecnologia",
+    "redes de computadores": "tecnologia",
+    "big data": "tecnologia",
+    "big data e inteligência analítica": "tecnologia",
+    "gestão da segurança e defesa cibernética": "tecnologia",
+    "sistemas de informação": "tecnologia",
+    "tecnologia em análise e desenvolvimento de sistemas": "tecnologia",
+    "tecnologia em design gráfico": "tecnologia",
+    "tecnologia em gestão da tecnologia da informação": "tecnologia",
+    "tecnologia em redes de computadores": "tecnologia",
+    "design gráfico": "tecnologia",
+    
+    // Gestão
+    "administração": "gestao",
+    "ciências contábeis": "gestao",
+    "ciências econômicas": "gestao",
+    "gestão da qualidade": "gestao",
+    "gestão de recursos humanos": "gestao",
+    "gestão de rh": "gestao",
+    "logística": "gestao",
+    "marketing": "gestao",
+    "turismo": "gestao",
+    "gestão comercial": "gestao",
+    "gestão financeira": "gestao",
+    "gestão pública": "gestao",
+    "gestão portuária": "gestao",
+    "gestão de segurança privada": "gestao",
+    "recursos humanos": "gestao",
+    
+    // Saúde
+    "biomedicina": "saude",
+    "enfermagem": "saude",
+    "farmácia": "saude",
+    "fisioterapia": "saude",
+    "fonoaudiologia": "saude",
+    "medicina veterinária": "saude",
+    "nutrição": "saude",
+    "odontologia": "saude",
+    "psicologia": "saude",
+    "quiropraxia": "saude",
+    "radiologia": "saude",
+    "terapia ocupacional": "saude",
+    "estética e cosmética": "saude",
+    
+    // Direito e Serviços Sociais
+    "direito": "direito",
+    "serviço social": "direito",
+    "gestão de serviços jurídicos e notariais": "direito",
+    
+    // Educação
+    "pedagogia": "educacao",
+    "educação física": "educacao",
+    "educação física bacharelado": "educacao",
+    "educação física licenciatura": "educacao",
+    "letras": "educacao",
+    "psicopedagogia": "educacao",
+    "tecnologia em segurança no trabalho": "saude",
+    
+    // Criativos e Comunicação
+    "jornalismo": "criativos",
+    "publicidade e propaganda": "criativos",
+    "gastronomia": "criativos",
+    "tecnologia em gastronomia": "criativos",
+  };
+
+  const CATEGORY_LABELS = {
+    tecnologia: "🖥️ Tecnologia",
+    gestao: "📊 Gestão",
+    saude: "🏥 Saúde",
+    direito: "⚖️ Direito e Serviços Sociais",
+    educacao: "🎓 Educação",
+    criativos: "🎨 Criativos e Comunicação",
+  };
+
   const API_URL = window.API_URL || '';
   const isApiResponse = (data) => data && typeof data === 'object' && 'data' in data;
   const extractData = (response) => isApiResponse(response) ? response.data : response;
@@ -457,30 +543,74 @@
         return;
       }
 
-      emptyEl.hidden = true;
-      for (const record of state.recordsView) {
-        const card = document.createElement("article");
-        card.className = "result-card prices-card";
-        card.innerHTML = `
-          <div class="result-course prices-course">${record.courseName}</div>
-          <div class="meta prices-meta">Integral: ${formatCents(record.integralCents)}</div>
-          <div class="meta prices-meta">Bolsa: ${formatCents(record.bolsaCents)}</div>
-          ${record?.bolsaPontualidadeCents?.p10 != null ? `<div class="meta prices-meta">Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}</div>` : ''}
-        `;
+      // Agrupar por categoria
+      const grouped = {};
+      const getCategory = (courseName) => {
+        const norm = (courseName || "").toLowerCase().trim();
+        return CATEGORY_MAP[norm] || "outros";
+      };
 
-        const copyBtn = document.createElement("button");
-        copyBtn.className = "btn-unit prices-copy-btn";
-        copyBtn.type = "button";
-        copyBtn.textContent = "Copiar mensagem";
-        copyBtn.addEventListener("click", async () => {
-          const ok = await copyText(buildCopyMessage(record));
-          copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
-          setTimeout(() => {
-            copyBtn.textContent = "Copiar mensagem";
-          }, 1200);
-        });
-        card.appendChild(copyBtn);
-        listEl.appendChild(card);
+      for (const record of state.recordsView) {
+        const cat = getCategory(record.courseName);
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(record);
+      }
+
+      // Ordenar categorias: principais primero
+      const catOrder = ["tecnologia", "gestao", "saude", "direito", "educacao", "criativos", "outros"];
+      const sortedCats = Object.keys(grouped).sort((a, b) => {
+        const ia = catOrder.indexOf(a);
+        const ib = catOrder.indexOf(b);
+        return (ia >= 0 ? ia : 999) - (ib >= 0 ? ib : 999);
+      });
+
+      emptyEl.hidden = true;
+
+      for (const cat of sortedCats) {
+        const records = grouped[cat];
+        if (!records || !records.length) continue;
+
+        // Container da categoria
+        const catContainer = document.createElement("div");
+        catContainer.className = "price-category";
+
+        // Título da categoria
+        const catTitle = document.createElement("h3");
+        catTitle.className = "price-category-title";
+        catTitle.textContent = CATEGORY_LABELS[cat] || cat;
+        catContainer.appendChild(catTitle);
+
+        // Grid de cards
+        const grid = document.createElement("div");
+        grid.className = "price-category-grid";
+
+        for (const record of records) {
+          const card = document.createElement("article");
+          card.className = "result-card prices-card";
+          card.innerHTML = `
+            <div class="result-course prices-course">${record.courseName}</div>
+            <div class="meta prices-meta">Integral: ${formatCents(record.integralCents)}</div>
+            <div class="meta prices-meta">Bolsa: ${formatCents(record.bolsaCents)}</div>
+            ${record?.bolsaPontualidadeCents?.p10 != null ? `<div class="meta prices-meta">Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}</div>` : ''}
+          `;
+
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "btn-unit prices-copy-btn";
+          copyBtn.type = "button";
+          copyBtn.textContent = "Copiar mensagem";
+          copyBtn.addEventListener("click", async () => {
+            const ok = await copyText(buildCopyMessage(record));
+            copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
+            setTimeout(() => {
+              copyBtn.textContent = "Copiar mensagem";
+            }, 1200);
+          });
+          card.appendChild(copyBtn);
+          grid.appendChild(card);
+        }
+
+        catContainer.appendChild(grid);
+        listEl.appendChild(catContainer);
       }
     };
 
