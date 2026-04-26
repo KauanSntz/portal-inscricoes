@@ -247,19 +247,17 @@
         // Atualizar displayName
         await cred.user.updateProfile({ displayName: nome });
 
-        // Salvar na aba OPERADORES do Google Sheets (em background)
-        fetch('https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec', {
+        // Salvar na aba OPERADORES do Google Sheets (via API backend)
+        fetch('https://portal-inscricoes.onrender.com/operadores', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            aba: 'OPERADORES',
             id: novoIdOperador,
             uid: cred.user.uid,
             nome: nome,
             email: email,
             tipo: 'comum'
-          }),
-          mode: 'no-cors'
+          })
         }).catch(err => console.warn('Aviso: não salvou no Sheets:', err));
 
         console.log('Registro concluído. Nome salvo:', nome);
