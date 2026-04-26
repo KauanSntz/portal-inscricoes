@@ -405,8 +405,27 @@ setTimeout(() => {
     });
   };
 
+  // ----------------------------- HELPERS -----------------------------
+  const hideLoading = () => {
+    const el = document.getElementById('app-loading');
+    if (el) el.remove();
+  };
+
+  const showError = (msg) => {
+    const el = document.getElementById('app-loading');
+    if (el) el.innerHTML = `<p style="color:#f87171;">${msg || 'Erro ao carregar dados. Recarregue a página.'}</p>`;
+  };
+
   // ----------------------------- INIT -----------------------------
+  let appInitialized = false;
+
   const init = () => {
+    if (appInitialized) return;
+    if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) return;
+
+    appInitialized = true;
+    hideLoading();
+
     try {
       const { linksRaw, courses } = getDataOrThrow();
       const units = normalizeLinks(linksRaw);
@@ -424,5 +443,15 @@ setTimeout(() => {
     }
   };
 
-  init();
+  // Fonte única: dados já disponíveis (cache) -> init imediato
+  if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
+    init();
+  } else {
+    // Caso contrário, aguardar evento do links-data.js
+    window.addEventListener('portal-links-loaded', init, { once: true });
+    window.addEventListener('portal-links-error', () => {
+      console.error('[app] Erro ao carregar links');
+      showError('Erro ao carregar dados da API.');
+    }, { once: true });
+  }
 })();

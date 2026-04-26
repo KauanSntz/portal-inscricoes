@@ -131,10 +131,12 @@
           setCachedData(portalLinks);
           window.PORTAL_LINKS = portalLinks;
           console.log(`[links-data] ✅ PORTAL_LINKS setado: ${portalLinks.length} unidades, ${portalLinks.reduce((acc, u) => acc + Object.values(u.blocks).reduce((a, b) => a + b.links.length, 0), 0)} links`);
+          window.dispatchEvent(new Event('portal-links-loaded'));
         })
         .catch(err => {
           console.error("[links-data] ❌ Erro:", err);
           window.PORTAL_LINKS = [];
+          window.dispatchEvent(new Event('portal-links-error'));
         });
     }
 

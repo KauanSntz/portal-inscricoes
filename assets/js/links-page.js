@@ -335,54 +335,49 @@
     dom.type.addEventListener("change", () => { state.filters.type = dom.type.value; applyFilters(); });
   };
 
-const loadRecords = async () => {
-    console.log("[links-page] ✅ Script carregado");
-    
-    // Aguardar PORTAL_LINKS estar disponível (máximo 5 segundos)
-    const maxWait = 5000;
-    const checkInterval = 100;
-    let waited = 0;
-    
-    while (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
-      if (waited >= maxWait) {
-        console.error("[links-page] ❌ Timeout aguardando PORTAL_LINKS");
-        state.sourceLabel = `❌ Timeout aguardando API`;
-        return [];
-      }
-      console.log("[links-page] Aguardando PORTAL_LINKS...", waited, "ms");
-      await new Promise(resolve => setTimeout(resolve, checkInterval));
-      waited += checkInterval;
+const init = async () => {
+    const hideLoading = () => document.getElementById('app-loading')?.remove();
+    const showError = (msg) => {
+      const el = document.getElementById('app-loading');
+      if (el) el.innerHTML = `<p style="color:#f87171;">${msg || 'Erro ao carregar dados.'}</p>`;
+    };
+
+    if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
+      window.addEventListener('portal-links-loaded', () => init(), { once: true });
+      window.addEventListener('portal-links-error', () => showError('Erro ao carregar dados da API.'), { once: true });
+      return;
     }
-    
-    console.log("[links-page] PORTAL_LINKS disponível:", window.PORTAL_LINKS.length, "unidades");
-    
-    const records = fromPortalLinks(window.PORTAL_LINKS);
-    console.log("[links-page] fromPortalLinks result:", records.length, "registros");
-    
-    records.sort((a, b) => {
+
+    hideLoading();
+    state.records = fromPortalLinks(window.PORTAL_LINKS);
+
+    state.records.sort((a, b) => {
       const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aU !== bU) return aU - bU;
       return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
-    state.sourceLabel = `API (${records.length} registros)`;
-    console.log("[links-page] ✅ Registros prontos:", records.length);
-    return records;
-  };
-
-  const init = async () => {
-    console.log("[links-page] init() chamada");
-    state.records = await loadRecords();
-    console.log("[links-page] state.records:", state.records.length);
+    
+    state.sourceLabel = `API (${state.records.length} registros)`;
     state.qa = buildQA(state.records);
+    
     const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
     buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
     buildOptions(dom.modality, [...new Set(state.records.map(r => r.modalityKey))], MODALITY_LABELS);
     buildOptions(dom.type, [...new Set(state.records.map(r => r.typeKey))], TYPE_LABELS);
+    
     bindEvents();
     applyFilters();
     renderQA();
-    console.log("[links-page] ✅ Inicialização completa");
   };
 
-  init();
+  // Fonte única: dados já disponíveis (cache) -> init imediato
+  if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
+    init();
+  } else {
+    window.addEventListener('portal-links-loaded', init, { once: true });
+    window.addEventListener('portal-links-error', () => {
+      const el = document.getElementById('app-loading');
+      if (el) el.innerHTML = `<p style="color:#f87171;">Erro ao carregar dados da API.</p>`;
+    }, { once: true });
+  }
 })();
