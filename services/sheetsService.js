@@ -199,7 +199,7 @@ async function getUnidadeById(unidade_id) {
 }
 
 /**
- * Força刷新 do cache
+ * Fuerza刷新 do cache
  */
 function invalidateCache() {
   cache.processos = { data: null, timestamp: 0 };
@@ -211,6 +211,48 @@ function invalidateCache() {
   console.log('[CACHE] Cache invalidado');
 }
 
+/**
+ * Invalida cache específico
+ * @param {string} cacheKey - Chave do cache para invalidar
+ */
+function invalidateCacheKey(cacheKey) {
+  if (cache[cacheKey]) {
+    cache[cacheKey] = { data: null, timestamp: 0 };
+    console.log(`[CACHE] Cache '${cacheKey}' invalidado`);
+  }
+}
+
+/**
+ * Crear una nova unidade (STUB)
+ * @param {Object} data - Dados da unidade
+ * @returns {Promise<Object>} Unidade creada (ou erro)
+ */
+async function createUnidade(data) {
+  console.log('[STUB] createUnidade chamado - requer Google Sheets API');
+  throw new Error('CRUD de unidades requer configuração do Google Sheets API');
+}
+
+/**
+ * Atualizar uma unidade (STUB)
+ * @param {string} unidade_id - ID da unidade
+ * @param {Object} data - Novos dados
+ * @returns {Promise<Object>} Unidade atualizada (ou erro)
+ */
+async function updateUnidade(unidade_id, data) {
+  console.log('[STUB] updateUnidade chamado - requer Google Sheets API');
+  throw new Error('CRUD de unidades requer configuração do Google Sheets API');
+}
+
+/**
+ * Excluir uma unidade (soft delete) (STUB)
+ * @param {string} unidade_id - ID da unidade
+ * @returns {Promise<boolean>} Sucesso
+ */
+async function deleteUnidade(unidade_id) {
+  console.log('[STUB] deleteUnidade chamado - requer Google Sheets API');
+  throw new Error('CRUD de unidades requer configuração do Google Sheets API');
+}
+
 module.exports = {
   getProcessos,
   getUnidades,
@@ -220,5 +262,9 @@ module.exports = {
   getCursosTecnicos,
   getProcessoByCodigo,
   getUnidadeById,
-  invalidateCache
+  invalidateCache,
+  invalidateCacheKey,
+  createUnidade,
+  updateUnidade,
+  deleteUnidade
 };

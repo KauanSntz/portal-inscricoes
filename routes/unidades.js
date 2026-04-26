@@ -55,4 +55,75 @@ router.get('/:unidade_id', async (req, res) => {
   }
 });
 
+/**
+ * POST /unidades
+ * Criar nova unidade (STUB - requer implementação de write no Google Sheets)
+ */
+router.post('/', async (req, res) => {
+  try {
+    const { unidade_id, nome, tipo, ordem } = req.body;
+
+    if (!unidade_id || !nome) {
+      return res.status(400).json({
+        error: 'Dados inválidos',
+        message: 'unidade_id e nome são obrigatórios'
+      });
+    }
+
+    res.status(501).json({
+      error: 'Não implementado',
+      message: 'CRUD de unidades requer configuração do Google Sheets API. Funcionalidade em desenvolvimento.'
+    });
+  } catch (error) {
+    console.error(`[ERRO] POST /unidades - ${error.message}`);
+    res.status(500).json({
+      error: 'Erro interno',
+      message: 'Não foi possível criar a unidade.'
+    });
+  }
+});
+
+/**
+ * PUT /unidades/:unidade_id
+ * Atualizar unidade existente (STUB)
+ */
+router.put('/:unidade_id', async (req, res) => {
+  try {
+    const { unidade_id } = req.params;
+    const { nome, tipo, ordem, ativo } = req.body;
+
+    res.status(501).json({
+      error: 'Não implementado',
+      message: 'CRUD de unidades requer configuração do Google Sheets API. Funcionalidade em desenvolvimento.'
+    });
+  } catch (error) {
+    console.error(`[ERRO] PUT /unidades/:unidade_id - ${error.message}`);
+    res.status(500).json({
+      error: 'Erro interno',
+      message: 'Não foi possível atualizar a unidade.'
+    });
+  }
+});
+
+/**
+ * DELETE /unidades/:unidade_id
+ * Excluir unidade (soft delete - STUB)
+ */
+router.delete('/:unidade_id', async (req, res) => {
+  try {
+    const { unidade_id } = req.params;
+
+    res.status(501).json({
+      error: 'Não implementado',
+      message: 'CRUD de unidades requer configuração do Google Sheets API. Funcionalidade em desenvolvimento.'
+    });
+  } catch (error) {
+    console.error(`[ERRO] DELETE /unidades/:unidade_id - ${error.message}`);
+    res.status(500).json({
+      error: 'Erro interno',
+      message: 'Não foi possível excluir a unidade.'
+    });
+  }
+});
+
 module.exports = router;
