@@ -7,7 +7,7 @@ const unidadesRoutes = require('./routes/unidades');
 const modalidadesRoutes = require('./routes/modalidades');
 const coordenadoresRoutes = require('./routes/coordenadores');
 const setoresContatoRoutes = require('./routes/setores-contato');
-const cursosTecnicosRoutes = require('./routes/cursos-tecnicos');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,7 +25,7 @@ app.use('/unidades', unidadesRoutes);
 app.use('/modalidades', modalidadesRoutes);
 app.use('/coordenadores', coordenadoresRoutes);
 app.use('/setores-contato', setoresContatoRoutes);
-app.use('/cursos-tecnicos', cursosTecnicosRoutes);
+app.use('/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'API Portal Inscrições rodando' });

@@ -7,7 +7,6 @@ const URL_UNIDADES = process.env.URL_UNIDADES || 'unidades';
 const URL_MODALIDADES = process.env.URL_MODALIDADES || 'modalidades';
 const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
-const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
@@ -16,8 +15,7 @@ const cache = {
   unidades: { data: null, timestamp: 0 },
   modalidades: { data: null, timestamp: 0 },
   coordenadores: { data: null, timestamp: 0 },
-  setores_contato: { data: null, timestamp: 0 },
-  cursos_tecnicos: { data: null, timestamp: 0 }
+  setores_contato: { data: null, timestamp: 0 }
 };
 
 /**
@@ -158,26 +156,6 @@ async function getSetoresContato() {
 }
 
 /**
- * Busca cursos técnicos com filtro opcional por unidade
- * @param {Object} filtros - Filtros opcionais (unidade - minúsculo sem acento)
- * @returns {Promise<Array>} Cursos técnicos filtrados
- */
-async function getCursosTecnicos(filtros = {}) {
-  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
-  let cursos = await fetchWithCache(url, 'cursos_tecnicos');
-
-  if (filtros.unidade) {
-    const normalizedFilter = filtros.unidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    cursos = cursos.filter(c => {
-      const normalizedUnidade = (c.unidade || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      return normalizedUnidade.includes(normalizedFilter);
-    });
-  }
-
-  return cursos;
-}
-
-/**
  * Busca um processo pelo código
  * @param {string} codigo - Código do processo
  * @returns {Promise<Object|null>} Processo encontrado ou null
@@ -207,7 +185,6 @@ function invalidateCache() {
   cache.modalidades = { data: null, timestamp: 0 };
   cache.coordenadores = { data: null, timestamp: 0 };
   cache.setores_contato = { data: null, timestamp: 0 };
-  cache.cursos_tecnicos = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
 }
 
@@ -217,7 +194,6 @@ module.exports = {
   getModalidades,
   getCoordenadores,
   getSetoresContato,
-  getCursosTecnicos,
   getProcessoByCodigo,
   getUnidadeById,
   invalidateCache
