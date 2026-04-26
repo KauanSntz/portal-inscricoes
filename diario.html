@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diário de Bordo - Sistema Fametro</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    .diario-table-wrapper { overflow-x: auto; }
+    .diario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .diario-table th, .diario-table td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+    .diario-table th { background: var(--accent); color: #fff; font-weight: 700; position: sticky; top: 0; }
+    .diario-table tr:hover { background: var(--surface-soft); }
+    .sit-badge { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; display: inline-block; }
+    .sit-inscrito { background: #dbeafe; color: #1d4ed8; }
+    .sit-aprovado { background: #d1fae5; color: #065f46; }
+    .sit-matriculado { background: #ede9fe; color: #5b21b6; }
+    .sit-pendente { background: #fef3c7; color: #92400e; }
+    .sit-cancelado { background: #fee2e2; color: #991b1b; }
+    .paste-area { width: 100%; min-height: 200px; font-family: monospace; font-size: 0.85rem; resize: vertical; }
+    .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem; }
+    .preview-item { padding: 0.5rem 0.75rem; background: var(--surface-soft); border-radius: var(--radius-sm); border: 1px solid var(--line-soft); }
+    .preview-item strong { color: var(--accent); font-size: 0.8rem; display: block; margin-bottom: 0.15rem; }
+    .preview-item span { font-weight: 500; }
+    .diario-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .cpf-copy { cursor: pointer; color: var(--accent); text-decoration: underline dotted; }
+    .cpf-copy:hover { opacity: 0.8; }
+    @media (max-width: 768px) {
+      .diario-table th:nth-child(n+6), .diario-table td:nth-child(n+6) { display: none; }
+      .preview-grid { grid-template-columns: 1fr; }
+    }
+    body.dark-mode .diario-table th { background: var(--accent); }
+    body.dark-mode .diario-table tr:hover { background: #1e293b; }
+    body.dark-mode .preview-item { background: #1e293b; border-color: #334155; }
+    body.dark-mode .sit-inscrito { background: #1e3a5f; color: #93c5fd; }
+    body.dark-mode .sit-aprovado { background: #064e3b; color: #6ee7b7; }
+    body.dark-mode .sit-matriculado { background: #3b0764; color: #c4b5fd; }
+    body.dark-mode .sit-pendente { background: #78350f; color: #fcd34d; }
+    body.dark-mode .sit-cancelado { background: #7f1d1d; color: #fca5a5; }
+  </style>
+</head>
+<body>
+  <div class="top-stripe" aria-hidden="true"></div>
+  <main class="container app-shell">
+    <header class="site-header">
+      <div class="header-row">
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+        <div>
+          <h1>Diário de Bordo</h1>
+          <p class="site-subtitle">Registro de atendimentos de inscrição</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- MENU LATERAL -->
+    <div class="side-menu" id="sideMenu">
+      <div class="side-menu-header"><button class="menu-close" id="menuClose">✕</button></div>
+      <nav class="side-menu-nav">
+        <a class="menu-link" href="./portal.html">Portal</a>
+        <a class="menu-link" href="./links.html">Central de Links</a>
+        <a class="menu-link is-active" href="./diario.html">Diário de Bordo</a>
+        <a class="menu-link" href="./tickets.html" id="tickets-link" style="display:none;">Tickets</a>
+        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
+        <div class="user-profile" id="user-profile" style="display:none;">
+          <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <span class="user-email" id="user-email"></span>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- NAV SUPERIOR -->
+    <nav class="app-nav" aria-label="Navegação principal">
+      <div class="nav-left">
+        <a class="btn btn--nav" href="./portal.html">Portal</a>
+        <a class="btn btn--nav" href="./links.html">Central de Links</a>
+        <a class="btn btn--nav is-active" href="./diario.html" aria-current="page">Diário de Bordo</a>
+        <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">Tickets</a>
+        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+          <span class="mode-text">Modo</span>
+          <span class="mode-icon">🌙</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- CONTROLES -->
+    <div class="links-controls">
+      <div class="diario-controls">
+        <button class="btn btn--accent" id="novo-registro-btn" style="width:auto;">Novo Registro</button>
+        <div class="field" style="flex:1; min-width:180px;">
+          <input type="search" id="busca-diario" class="search-input" placeholder="Buscar por nome ou CPF..." />
+        </div>
+        <div class="field">
+          <input type="date" id="filtro-data" class="search-input" />
+        </div>
+      </div>
+      <p class="links-meta" id="diario-meta"></p>
+    </div>
+
+    <!-- TABELA -->
+    <div class="links-controls diario-table-wrapper">
+      <table class="diario-table" id="diario-table">
+        <thead>
+          <tr><th>DATA</th><th>TIPO</th><th>NOME</th><th>CPF</th><th>CURSO</th><th>MODALIDADE</th><th>UNIDADE</th><th>SITUAÇÃO</th></tr>
+        </thead>
+        <tbody id="diario-tbody"></tbody>
+      </table>
+    </div>
+    <div id="diario-empty" class="empty" hidden>Nenhum registro encontrado.</div>
+
+    <!-- MODAL NOVO REGISTRO -->
+    <div id="diario-modal" class="modal-overlay" style="display:none;">
+      <div class="modal" style="max-width:600px;">
+        <div class="modal-head">
+          <div class="modal-title">Novo Registro</div>
+          <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Etapa 1: Tipo + Texto -->
+          <div id="etapa-1">
+            <div class="field">
+              <span>Tipo de Inscrição</span>
+              <select id="tipo-inscricao" class="search-input" required>
+                <option value="">Selecione...</option>
+                <option value="Vestibular">Vestibular</option>
+                <option value="Enem">Enem</option>
+                <option value="Transferência externa">Transferência externa</option>
+                <option value="Portador de diplomas">Portador de diplomas</option>
+              </select>
+            </div>
+            <div class="field" style="margin-top:0.75rem;">
+              <span>Cole o texto preenchido do aluno</span>
+              <textarea id="texto-colado" class="search-input paste-area" placeholder="Cole aqui o texto padrão preenchido com os dados do aluno..."></textarea>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
+              <button class="btn btn--accent" id="btn-extrair" style="width:auto;">Extrair Dados</button>
+              <button class="btn" id="btn-copiar-texto" style="width:auto;">📋 Copiar Texto Padrão</button>
+            </div>
+          </div>
+          <!-- Etapa 2: Preview + Situação -->
+          <div id="etapa-2" style="display:none;">
+            <h3 style="color:var(--accent); margin:0 0 0.5rem;">Dados Extraídos</h3>
+            <div class="preview-grid" id="preview-grid"></div>
+            <div class="field" style="margin-top:1rem;">
+              <span>Situação</span>
+              <select id="situacao-select" class="search-input" required>
+                <option value="">Selecione...</option>
+                <option value="Inscrito">Inscrito</option>
+                <option value="Aprovado">Aprovado</option>
+                <option value="Matriculado">Matriculado</option>
+                <option value="Pagamento pendente">Pagamento pendente</option>
+                <option value="Cancelado">Cancelado</option>
+              </select>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+              <button class="btn btn--accent" id="btn-salvar" style="width:auto;">Salvar</button>
+              <button class="btn" id="btn-voltar" style="width:auto;">Voltar</button>
+              <button class="btn" id="btn-cancelar" style="width:auto;">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
+  </footer>
+
+  <!-- Notificação -->
+  <div id="notificacao" style="position:fixed; bottom:20px; right:20px; background:#10b981; color:#fff; padding:10px 20px; border-radius:5px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999; display:none;"></div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
+      authDomain: "portal-inscricoes-tickets.firebaseapp.com",
+      projectId: "portal-inscricoes-tickets",
+      storageBucket: "portal-inscricoes-tickets.firebasestorage.app",
+      messagingSenderId: "364717584125",
+      appId: "1:364717584125:web:d7099acf6391325c7cd894"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const API_URL = 'https://portal-inscricoes.onrender.com';
+
+    let currentUser = null;
+    let dadosExtraidos = null;
+
+    // ===== AUTH =====
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) { window.location.href = './index.html'; return; }
+      try {
+        const doc = await db.collection('users').doc(user.uid).get();
+        currentUser = doc.exists
+          ? { uid: user.uid, ...doc.data() }
+          : { uid: user.uid, nome: user.displayName || 'Usuário', id_operador: '' };
+
+        // UI
+        const el = (id) => document.getElementById(id);
+        ['tickets-link','tickets-link-nav','logout-btn-nav','logout-btn-menu'].forEach(id => { if(el(id)) el(id).style.display = 'inline-block'; });
+        if (el('user-name')) el('user-name').textContent = currentUser.nome || 'Usuário';
+        if (el('user-email')) el('user-email').textContent = currentUser.email || '';
+        if (el('user-profile')) el('user-profile').style.display = 'flex';
+        carregarRegistros();
+      } catch (e) { console.error('Erro auth:', e); window.location.href = './index.html'; }
+    });
+
+    window.logout = () => auth.signOut().then(() => window.location.href = './index.html');
+
+    // ===== PARSER =====
+    function parsearTexto(texto) {
+      const campos = {};
+      const linhas = texto.split('\n');
+      const mapa = {
+        'nome completo': 'nome', 'nome': 'nome',
+        'telefone': 'telefone', 'fone': 'telefone',
+        'data de nascimento': 'nascimento', 'nascimento': 'nascimento',
+        'cpf': 'cpf',
+        'curso': 'curso',
+        'modalidade': 'modalidade',
+        'unidade': 'unidade'
+      };
+      for (const linha of linhas) {
+        const clean = linha.replace(/^[➡️➡►→•\-\s]+/g, '').trim();
+        const idx = clean.indexOf(':');
+        if (idx === -1) continue;
+        const label = clean.substring(0, idx).trim().toLowerCase();
+        const valor = clean.substring(idx + 1).trim();
+        if (!valor) continue;
+        for (const [chave, campo] of Object.entries(mapa)) {
+          if (label.includes(chave)) { campos[campo] = valor; break; }
+        }
+      }
+      return campos;
+    }
+
+    // ===== NOTIFICAÇÃO =====
+    function notificar(msg, ok = true) {
+      const n = document.getElementById('notificacao');
+      n.textContent = msg;
+      n.style.backgroundColor = ok ? '#10b981' : '#ef4444';
+      n.style.display = 'block';
+      setTimeout(() => n.style.display = 'none', 3000);
+    }
+
+    // ===== CARREGAR REGISTROS =====
+    async function carregarRegistros() {
+      try {
+        const res = await fetch(`${API_URL}/diario`);
+        const json = await res.json();
+        const registros = json.data || [];
+        renderTabela(registros);
+      } catch (e) {
+        console.error('Erro ao carregar:', e);
+        document.getElementById('diario-empty').hidden = false;
+      }
+    }
+
+    function renderTabela(registros) {
+      const tbody = document.getElementById('diario-tbody');
+      const empty = document.getElementById('diario-empty');
+      const meta = document.getElementById('diario-meta');
+
+      // Filtros
+      const busca = (document.getElementById('busca-diario').value || '').toLowerCase();
+      const dataFiltro = document.getElementById('filtro-data').value || '';
+      let filtrados = registros;
+      if (busca) filtrados = filtrados.filter(r => (r.NOME||'').toLowerCase().includes(busca) || (r.CPF||'').includes(busca));
+      if (dataFiltro) filtrados = filtrados.filter(r => r.DATA_INSCRICAO === dataFiltro);
+
+      meta.textContent = `${filtrados.length} registro(s) encontrado(s)`;
+      if (!filtrados.length) { tbody.innerHTML = ''; empty.hidden = false; return; }
+      empty.hidden = true;
+
+      tbody.innerHTML = filtrados.map(r => {
+        const sitClass = getSitClass(r.SITUACAO);
+        return `<tr>
+          <td>${r.DATA_INSCRICAO || ''}</td>
+          <td>${r.TIPO_INSCRICAO || ''}</td>
+          <td>${r.NOME || ''}</td>
+          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF||''}')">${formatCPF(r.CPF||'')}</span></td>
+          <td>${r.CURSO || ''}</td>
+          <td>${r.MODALIDADE || ''}</td>
+          <td>${r.UNIDADE || ''}</td>
+          <td><span class="sit-badge ${sitClass}">${r.SITUACAO || ''}</span></td>
+        </tr>`;
+      }).join('');
+
+      // Guardar para filtro local
+      window._registros = registros;
+    }
+
+    function getSitClass(s) {
+      if (!s) return '';
+      const sl = s.toLowerCase();
+      if (sl.includes('inscrito')) return 'sit-inscrito';
+      if (sl.includes('aprovado')) return 'sit-aprovado';
+      if (sl.includes('matriculado')) return 'sit-matriculado';
+      if (sl.includes('pendente')) return 'sit-pendente';
+      if (sl.includes('cancelado')) return 'sit-cancelado';
+      return '';
+    }
+
+    function formatCPF(c) {
+      if (!c || c.length !== 11) return c;
+      return `${c.slice(0,3)}.${c.slice(3,6)}.${c.slice(6,9)}-${c.slice(9)}`;
+    }
+
+    function copiarCPF(cpf) {
+      navigator.clipboard.writeText(cpf).then(() => notificar('✅ CPF copiado!')).catch(() => notificar('❌ Erro ao copiar', false));
+    }
+
+    // ===== FILTROS =====
+    document.getElementById('busca-diario').addEventListener('input', () => { if (window._registros) renderTabela(window._registros); });
+    document.getElementById('filtro-data').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
+
+    // ===== MODAL =====
+    const modal = document.getElementById('diario-modal');
+    const etapa1 = document.getElementById('etapa-1');
+    const etapa2 = document.getElementById('etapa-2');
+
+    function abrirModal() {
+      document.getElementById('tipo-inscricao').value = '';
+      document.getElementById('texto-colado').value = '';
+      document.getElementById('situacao-select').value = '';
+      etapa1.style.display = 'block';
+      etapa2.style.display = 'none';
+      dadosExtraidos = null;
+      modal.style.display = 'flex';
+    }
+    function fecharModal() { modal.style.display = 'none'; }
+
+    document.getElementById('novo-registro-btn').addEventListener('click', abrirModal);
+    document.getElementById('modal-close').addEventListener('click', fecharModal);
+    document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
+
+    // Copiar texto padrão
+    document.getElementById('btn-copiar-texto').addEventListener('click', () => {
+      const tipo = document.getElementById('tipo-inscricao').value || 'Vestibular';
+      const texto = `Para se inscrever na modalidade ${tipo}, precisamos dos seguintes dados:\n\n➡Nome Completo:\n➡E-mail:\n➡CPF:\n➡Telefone:\n➡Data de nascimento:\n➡País natal:\n➡Estado natal:\n➡Naturalidade:\n➡Nacionalidade:\n➡RG:\n➡CEP:\n➡Cor/Raça:\n➡Possui algum tipo de deficiência?\n➡️ Já cursou na Fametro?\n➡️Curso:\n➡️Turno:\n➡️Modalidade:\n➡️Unidade:`;
+      navigator.clipboard.writeText(texto).then(() => notificar('📋 Texto copiado!')).catch(() => notificar('❌ Erro', false));
+    });
+
+    // Extrair dados
+    document.getElementById('btn-extrair').addEventListener('click', () => {
+      const tipo = document.getElementById('tipo-inscricao').value;
+      const texto = document.getElementById('texto-colado').value.trim();
+      if (!tipo) { notificar('Selecione o tipo de inscrição.', false); return; }
+      if (!texto) { notificar('Cole o texto preenchido.', false); return; }
+
+      dadosExtraidos = parsearTexto(texto);
+      dadosExtraidos.tipo_inscricao = tipo;
+
+      if (!dadosExtraidos.nome) { notificar('Não foi possível extrair o Nome. Verifique o texto.', false); return; }
+
+      // Preview
+      const grid = document.getElementById('preview-grid');
+      const hoje = new Date().toLocaleDateString('pt-BR');
+      const campos = [
+        ['Data de Inscrição', hoje],
+        ['Tipo', dadosExtraidos.tipo_inscricao],
+        ['Nome', dadosExtraidos.nome],
+        ['Telefone', dadosExtraidos.telefone || '—'],
+        ['Nascimento', dadosExtraidos.nascimento || '—'],
+        ['CPF', dadosExtraidos.cpf || '—'],
+        ['Curso', dadosExtraidos.curso || '—'],
+        ['Modalidade', dadosExtraidos.modalidade || '—'],
+        ['Unidade', dadosExtraidos.unidade || '—']
+      ];
+      grid.innerHTML = campos.map(([k, v]) => `<div class="preview-item"><strong>${k}</strong><span>${v}</span></div>`).join('');
+      etapa1.style.display = 'none';
+      etapa2.style.display = 'block';
+    });
+
+    // Voltar
+    document.getElementById('btn-voltar').addEventListener('click', () => {
+      etapa2.style.display = 'none';
+      etapa1.style.display = 'block';
+    });
+
+    // Salvar
+    document.getElementById('btn-salvar').addEventListener('click', async () => {
+      const situacao = document.getElementById('situacao-select').value;
+      if (!situacao) { notificar('Selecione a situação.', false); return; }
+
+      const hoje = new Date();
+      const dataFormatada = `${String(hoje.getDate()).padStart(2,'0')}/${String(hoje.getMonth()+1).padStart(2,'0')}/${hoje.getFullYear()}`;
+
+      const payload = {
+        id_operador: currentUser.id_operador || '',
+        nome_operador: currentUser.nome || '',
+        data_inscricao: dataFormatada,
+        tipo_inscricao: dadosExtraidos.tipo_inscricao,
+        nome: dadosExtraidos.nome || '',
+        telefone: dadosExtraidos.telefone || '',
+        nascimento: dadosExtraidos.nascimento || '',
+        cpf: dadosExtraidos.cpf || '',
+        curso: dadosExtraidos.curso || '',
+        modalidade: dadosExtraidos.modalidade || '',
+        unidade: dadosExtraidos.unidade || '',
+        situacao: situacao
+      };
+
+      try {
+        document.getElementById('btn-salvar').disabled = true;
+        document.getElementById('btn-salvar').textContent = 'Salvando...';
+        const res = await fetch(`${API_URL}/diario`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.status === 'ok' || res.ok) {
+          notificar('✅ Registro salvo com sucesso!');
+          fecharModal();
+          setTimeout(() => carregarRegistros(), 2000);
+        } else {
+          notificar('❌ ' + (json.message || 'Erro ao salvar'), false);
+        }
+      } catch (e) {
+        console.error('Erro ao salvar:', e);
+        notificar('❌ Erro ao salvar registro', false);
+      } finally {
+        document.getElementById('btn-salvar').disabled = false;
+        document.getElementById('btn-salvar').textContent = 'Salvar';
+      }
+    });
+  </script>
+  <script src="./assets/js/menu.js"></script>
+  <script src="./assets/js/dark-mode.js"></script>
+</body>
+</html>
