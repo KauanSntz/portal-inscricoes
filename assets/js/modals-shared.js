@@ -819,7 +819,15 @@ const cursosTecnicosModal = (() => {
   let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
 
   const loadData = async () => {
-    data = await loadApiData('/cursos-tecnicos');
+    try {
+      const response = await fetch('./assets/data/cursos_tecnicos.json');
+      if (!response.ok) throw new Error('Erro ao carregar cursos técnicos');
+      data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('[CursosTecnicos] Erro ao carregar dados locais:', error);
+      return [];
+    }
   };
 
   const getUniqueDuracoes = () => {
