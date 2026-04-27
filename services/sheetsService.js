@@ -7,6 +7,9 @@ const URL_UNIDADES = process.env.URL_UNIDADES || 'unidades';
 const URL_MODALIDADES = process.env.URL_MODALIDADES || 'modalidades';
 const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
+const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
+const URL_DIARIO_BORDO = process.env.URL_DIARIO_BORDO || 'diario_bordo';
+const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
@@ -15,7 +18,9 @@ const cache = {
   unidades: { data: null, timestamp: 0 },
   modalidades: { data: null, timestamp: 0 },
   coordenadores: { data: null, timestamp: 0 },
-  setores_contato: { data: null, timestamp: 0 }
+  setores_contato: { data: null, timestamp: 0 },
+  cursos_tecnicos: { data: null, timestamp: 0 },
+  diario_bordo: { data: null, timestamp: 0 }
 };
 
 /**
@@ -185,7 +190,51 @@ function invalidateCache() {
   cache.modalidades = { data: null, timestamp: 0 };
   cache.coordenadores = { data: null, timestamp: 0 };
   cache.setores_contato = { data: null, timestamp: 0 };
+  cache.cursos_tecnicos = { data: null, timestamp: 0 };
+  cache.diario_bordo = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
+}
+
+/**
+ * Busca registros do diário de bordo
+ * @param {Object} filtros - Filtros opcionais (operador, data, cpf)
+ * @returns {Promise<Array>} Registros do diário
+ */
+async function getDiarioBordo(filtros = {}) {
+  const url = `${BASE_URL}/${URL_DIARIO_BORDO}`;
+  let registros = await fetchWithCache(url, 'diario_bordo');
+
+  if (filtros.operador) {
+    registros = registros.filter(r => String(r.ID_OPERADOR) === String(filtros.operador));
+  }
+  if (filtros.data) {
+    registros = registros.filter(r => r.DATA_INSCRICAO === filtros.data);
+  }
+  if (filtros.cpf) {
+    registros = registros.filter(r => (r.CPF || '').includes(filtros.cpf));
+  }
+  if (filtros.nome) {
+    const termo = filtros.nome.toLowerCase();
+    registros = registros.filter(r => (r.NOME || '').toLowerCase().includes(termo));
+  }
+
+  return registros;
+}
+
+/**
+ * Salva um registro no diário de bordo via Google Apps Script
+ * @param {Object} registro - Dados do registro
+ * @returns {Promise<Object>} Resposta do Apps Script
+ */
+async function salvarDiarioBordo(registro) {
+  const response = await axios.post(APPS_SCRIPT_URL, registro, {
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 15000,
+    maxRedirects: 5
+  });
+  // Invalidar cache do diário após salvar
+  cache.diario_bordo = { data: null, timestamp: 0 };
+  return response.data;
 }
 
 module.exports = {
@@ -196,5 +245,7 @@ module.exports = {
   getSetoresContato,
   getProcessoByCodigo,
   getUnidadeById,
+  getDiarioBordo,
+  salvarDiarioBordo,
   invalidateCache
 };
