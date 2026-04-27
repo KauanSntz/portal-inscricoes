@@ -94,6 +94,16 @@
           </div>
         </div>
 
+        <!-- Submenu Admin (desabilitado temporariamente) -->
+        <!-- <div class="menu-item-with-submenu" id="admin-menu-item" style="display: none;">
+          <button class="menu-link submenu-toggle" aria-expanded="false">
+            Admin <span class="arrow">▼</span>
+          </button>
+          <div class="submenu">
+            <a class="menu-link submenu-link" href="./admin-unidades.html">Editar Unidades</a>
+          </div>
+        </div> -->
+
         <a class="menu-link is-active" href="./tickets.html" id="tickets-link" style="display:none;">
           Tickets 
           <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
@@ -337,6 +347,8 @@
           if (ticketsLinkNav) ticketsLinkNav.style.display = 'inline-block';
           if (logoutBtnNav) logoutBtnNav.style.display = 'inline-block';
           if (logoutBtnMenu) logoutBtnMenu.style.display = 'inline-block';
+
+          // Menu Admin desabilitado temporariamente
 
           // Preencher perfil
           const userProfile = document.getElementById('user-profile');
