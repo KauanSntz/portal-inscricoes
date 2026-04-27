@@ -183,18 +183,16 @@
 
     auth.onAuthStateChanged(async (user) => {
       console.log('🔍 links: onAuthStateChanged', user ? `Usuário: ${user.email}` : 'Nenhum usuário');
-      // LOGIN TEMPORARIAMENTE DESATIVADO - qualquer usuário acessa o portal
       if (!user) {
-        console.log('[LINKS] Acesso sem login (temporário)');
-        // window.location.href = './index.html';
-        // return;
+        window.location.href = './index.html';
+        return;
       }
 
       try {
-        const doc = user ? await db.collection('users').doc(user.uid).get() : null;
-        if (doc && doc.exists) {
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (doc.exists) {
           currentUser = { uid: user.uid, ...doc.data() };
-        } else if (user) {
+        } else {
           const newUser = {
             email: user.email,
             nome: user.displayName || 'Usuário',
@@ -205,28 +203,34 @@
           currentUser = { uid: user.uid, ...newUser };
         }
 
-        // TICKETS TEMPORARIAMENTE OCULTOS
-        // const ticketsLink = document.getElementById('tickets-link');
-        // const ticketsLinkNav = document.getElementById('tickets-link-nav');
-        // if (ticketsLink) ticketsLink.style.display = 'inline-block';
-        // if (ticketsLinkNav) ticketsLinkNav.style.display = 'inline-block';
+        // Mostrar links de tickets e logout nos dois menus
+        const ticketsLink = document.getElementById('tickets-link');
+        const ticketsLinkNav = document.getElementById('tickets-link-nav');
+        const logoutBtnNav = document.getElementById('logout-btn-nav');
+        const logoutBtnMenu = document.getElementById('logout-btn-menu');
 
-        // Preencher perfil se logado
-        if (user) {
-          const userProfile = document.getElementById('user-profile');
-          const userNameSpan = document.getElementById('user-name');
-          const userEmailSpan = document.getElementById('user-email');
-          if (userProfile && userNameSpan && userEmailSpan) {
-            userNameSpan.textContent = currentUser.nome || 'Usuário';
-            userEmailSpan.textContent = currentUser.email || '';
-            userProfile.style.display = 'flex';
-          }
-          atualizarBadges();
+        if (ticketsLink) ticketsLink.style.display = 'inline-block';
+        if (ticketsLinkNav) ticketsLinkNav.style.display = 'inline-block';
+        if (logoutBtnNav) logoutBtnNav.style.display = 'inline-block';
+        if (logoutBtnMenu) logoutBtnMenu.style.display = 'inline-block';
+
+        // Menu Admin desabilitado temporariamente
+
+        // Preencher perfil
+        const userProfile = document.getElementById('user-profile');
+        const userNameSpan = document.getElementById('user-name');
+        const userEmailSpan = document.getElementById('user-email');
+        if (userProfile && userNameSpan && userEmailSpan) {
+          userNameSpan.textContent = currentUser.nome || 'Usuário';
+          userEmailSpan.textContent = currentUser.email || '';
+          userProfile.style.display = 'flex';
         }
+
+        // Atualizar badges
+        atualizarBadges();
       } catch (error) {
         console.error('Erro ao carregar perfil:', error);
-        // LOGIN TEMPORARIAMENTE DESATIVADO
-        // window.location.href = './index.html';
+        window.location.href = './index.html';
       }
     });
 
