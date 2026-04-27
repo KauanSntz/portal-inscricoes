@@ -223,7 +223,16 @@
       const novoTipo = select.value;
       if (!confirm(`Tem certeza que deseja alterar o tipo deste usuário para "${novoTipo}"?`)) return;
       try {
+        // Atualiza no Firestore
         await db.collection('users').doc(uid).update({ tipo: novoTipo });
+        
+        // Atualiza no Google Sheets (via API)
+        await fetch(`${window.API_URL}/operadores/${uid}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tipo: novoTipo })
+        }).catch(e => console.warn('Aviso: falha ao sincronizar com Google Sheets:', e));
+
         alert('Tipo alterado com sucesso!');
         carregarUsuarios();
       } catch (error) {
@@ -247,7 +256,7 @@
 <script src="./assets/js/menu-loader.js"></script>
 
 <!-- Utilitários e modais -->
-<script>window.API_URL = 'https://portal-inscricoes.onrender.com';</script>
+<script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
 <script src="./assets/js/modals-shared.js"></script>
 <script src="./assets/js/menu.js"></script>
 <script src="./assets/js/dark-mode.js"></script>

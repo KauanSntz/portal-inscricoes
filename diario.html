@@ -26,7 +26,10 @@
     .cpf-copy { cursor: pointer; color: var(--accent); text-decoration: underline dotted; }
     .cpf-copy:hover { opacity: 0.8; }
     @media (max-width: 768px) {
-      .diario-table th:nth-child(n+6), .diario-table td:nth-child(n+6) { display: none; }
+      /* Esconde colunas menos importantes, mas mantém Ações (última) */
+      .diario-table th:nth-child(5), .diario-table td:nth-child(5),
+      .diario-table th:nth-child(6), .diario-table td:nth-child(6),
+      .diario-table th:nth-child(7), .diario-table td:nth-child(7) { display: none; }
       .preview-grid { grid-template-columns: 1fr; }
     }
     body.dark-mode .diario-table th { background: var(--accent); }
@@ -98,6 +101,11 @@
         <div class="field">
           <input type="date" id="filtro-data" class="search-input" />
         </div>
+        <div class="field" id="filtro-operador-container" style="display:none;">
+          <select id="filtro-operador" class="search-input">
+            <option value="">Todos os Operadores</option>
+          </select>
+        </div>
       </div>
       <p class="links-meta" id="diario-meta"></p>
     </div>
@@ -106,7 +114,7 @@
     <div class="links-controls diario-table-wrapper">
       <table class="diario-table" id="diario-table">
         <thead>
-          <tr><th>DATA</th><th>TIPO</th><th>NOME</th><th>CPF</th><th>CURSO</th><th>MODALIDADE</th><th>UNIDADE</th><th>SITUAÇÃO</th></tr>
+          <tr><th>DATA</th><th>TIPO</th><th>NOME</th><th>CPF</th><th>CURSO</th><th>MODALIDADE</th><th>UNIDADE</th><th>SITUAÇÃO</th><th>AÇÕES</th></tr>
         </thead>
         <tbody id="diario-tbody"></tbody>
       </table>
@@ -117,7 +125,7 @@
     <div id="diario-modal" class="modal-overlay" style="display:none;">
       <div class="modal" style="max-width:600px;">
         <div class="modal-head">
-          <div class="modal-title">Novo Registro</div>
+          <div class="modal-title" id="modal-title-text">Novo Registro</div>
           <button class="modal-close" id="modal-close">&times;</button>
         </div>
         <div class="modal-body">
@@ -191,10 +199,13 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const API_URL = 'https://portal-inscricoes.onrender.com';
+    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
 
     let currentUser = null;
     let dadosExtraidos = null;
+    let modoEdicao = false;
+    let idRegistroEmEdicao = null;
+    let operadoresDisponiveis = new Set();
 
     // ===== AUTH =====
     auth.onAuthStateChanged(async (user) => {
@@ -211,6 +222,12 @@
         if (el('user-name')) el('user-name').textContent = currentUser.nome || 'Usuário';
         if (el('user-email')) el('user-email').textContent = currentUser.email || '';
         if (el('user-profile')) el('user-profile').style.display = 'flex';
+        
+        // Mostrar filtro de operador se for super admin
+        if (currentUser.tipo === 'super_admin') {
+          document.getElementById('filtro-operador-container').style.display = 'block';
+        }
+
         carregarRegistros();
       } catch (e) { console.error('Erro auth:', e); window.location.href = './index.html'; }
     });
@@ -271,12 +288,31 @@
       const empty = document.getElementById('diario-empty');
       const meta = document.getElementById('diario-meta');
 
-      // Filtros
+      // Atualizar dropdown de operadores para Super Admin
+      if (currentUser && currentUser.tipo === 'super_admin') {
+        const selectOp = document.getElementById('filtro-operador');
+        const oldVal = selectOp.value;
+        registros.forEach(r => { if (r.NOME_OPERADOR) operadoresDisponiveis.add(r.NOME_OPERADOR); });
+        selectOp.innerHTML = '<option value="">Todos os Operadores</option>' + 
+          Array.from(operadoresDisponiveis).sort().map(op => `<option value="${op}">${op}</option>`).join('');
+        selectOp.value = oldVal;
+      }
+
+      // Filtros Base (Permissão)
+      let filtrados = registros;
+      if (currentUser && currentUser.tipo !== 'super_admin') {
+        // Usuário comum só vê os próprios registros
+        filtrados = filtrados.filter(r => r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome);
+      }
+
+      // Filtros de UI
       const busca = (document.getElementById('busca-diario').value || '').toLowerCase();
       const dataFiltro = document.getElementById('filtro-data').value || '';
-      let filtrados = registros;
+      const opFiltro = document.getElementById('filtro-operador').value || '';
+      
       if (busca) filtrados = filtrados.filter(r => (r.NOME||'').toLowerCase().includes(busca) || (r.CPF||'').includes(busca));
       if (dataFiltro) filtrados = filtrados.filter(r => r.DATA_INSCRICAO === dataFiltro);
+      if (opFiltro && currentUser.tipo === 'super_admin') filtrados = filtrados.filter(r => r.NOME_OPERADOR === opFiltro);
 
       meta.textContent = `${filtrados.length} registro(s) encontrado(s)`;
       if (!filtrados.length) { tbody.innerHTML = ''; empty.hidden = false; return; }
@@ -284,6 +320,9 @@
 
       tbody.innerHTML = filtrados.map(r => {
         const sitClass = getSitClass(r.SITUACAO);
+        const podeEditar = currentUser.tipo === 'super_admin' || r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome;
+        // Escape data para o botão de editar
+        const rawData = encodeURIComponent(JSON.stringify(r));
         return `<tr>
           <td>${r.DATA_INSCRICAO || ''}</td>
           <td>${r.TIPO_INSCRICAO || ''}</td>
@@ -293,6 +332,9 @@
           <td>${r.MODALIDADE || ''}</td>
           <td>${r.UNIDADE || ''}</td>
           <td><span class="sit-badge ${sitClass}">${r.SITUACAO || ''}</span></td>
+          <td>
+            ${podeEditar && r.ID_REGISTRO ? `<button class="btn" style="padding:0.2rem 0.5rem; font-size:0.8rem;" onclick="editarRegistro('${rawData}')">✏️ Editar</button>` : ''}
+          </td>
         </tr>`;
       }).join('');
 
@@ -323,24 +365,75 @@
     // ===== FILTROS =====
     document.getElementById('busca-diario').addEventListener('input', () => { if (window._registros) renderTabela(window._registros); });
     document.getElementById('filtro-data').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
+    document.getElementById('filtro-operador').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
 
     // ===== MODAL =====
     const modal = document.getElementById('diario-modal');
     const etapa1 = document.getElementById('etapa-1');
     const etapa2 = document.getElementById('etapa-2');
 
-    function abrirModal() {
-      document.getElementById('tipo-inscricao').value = '';
-      document.getElementById('texto-colado').value = '';
-      document.getElementById('situacao-select').value = '';
-      etapa1.style.display = 'block';
-      etapa2.style.display = 'none';
-      dadosExtraidos = null;
+    function abrirModal(isEdit = false) {
+      modoEdicao = isEdit;
+      document.getElementById('modal-title-text').textContent = isEdit ? 'Editar Registro' : 'Novo Registro';
+      document.getElementById('btn-salvar').textContent = isEdit ? 'Atualizar' : 'Salvar';
+      
+      if (!isEdit) {
+        document.getElementById('tipo-inscricao').value = '';
+        document.getElementById('texto-colado').value = '';
+        document.getElementById('situacao-select').value = '';
+        etapa1.style.display = 'block';
+        etapa2.style.display = 'none';
+        dadosExtraidos = null;
+        idRegistroEmEdicao = null;
+      }
       modal.style.display = 'flex';
     }
+    
+    window.editarRegistro = (encodedData) => {
+      const r = JSON.parse(decodeURIComponent(encodedData));
+      idRegistroEmEdicao = r.ID_REGISTRO;
+      
+      // Simular dados extraídos baseados na linha
+      dadosExtraidos = {
+        tipo_inscricao: r.TIPO_INSCRICAO || '',
+        nome: r.NOME || '',
+        telefone: r.TELEFONE || '',
+        nascimento: r.NASCIMENTO || '',
+        cpf: r.CPF || '',
+        curso: r.CURSO || '',
+        modalidade: r.MODALIDADE || '',
+        unidade: r.UNIDADE || ''
+      };
+      
+      document.getElementById('situacao-select').value = r.SITUACAO || '';
+      
+      // Renderizar preview
+      renderPreview(r.DATA_INSCRICAO || new Date().toLocaleDateString('pt-BR'));
+      
+      etapa1.style.display = 'none';
+      etapa2.style.display = 'block';
+      abrirModal(true);
+    };
+
+    function renderPreview(dataExibicao) {
+      const grid = document.getElementById('preview-grid');
+      const campos = [
+        ['Data de Inscrição', dataExibicao],
+        ['Tipo', dadosExtraidos.tipo_inscricao],
+        ['Nome', dadosExtraidos.nome],
+        ['Telefone', dadosExtraidos.telefone || '—'],
+        ['Nascimento', dadosExtraidos.nascimento || '—'],
+        ['CPF', dadosExtraidos.cpf || '—'],
+        ['Curso', dadosExtraidos.curso || '—'],
+        ['Modalidade', dadosExtraidos.modalidade || '—'],
+        ['Unidade', dadosExtraidos.unidade || '—']
+      ];
+      grid.innerHTML = campos.map(([k, v]) => `<div class="preview-item"><strong>${k}</strong><span>${v}</span></div>`).join('');
+    }
+
     function fecharModal() { modal.style.display = 'none'; }
 
-    document.getElementById('novo-registro-btn').addEventListener('click', abrirModal);
+    document.getElementById('novo-registro-btn').addEventListener('click', () => abrirModal(false));
     document.getElementById('modal-close').addEventListener('click', fecharModal);
     document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
@@ -365,20 +458,7 @@
       if (!dadosExtraidos.nome) { notificar('Não foi possível extrair o Nome. Verifique o texto.', false); return; }
 
       // Preview
-      const grid = document.getElementById('preview-grid');
-      const hoje = new Date().toLocaleDateString('pt-BR');
-      const campos = [
-        ['Data de Inscrição', hoje],
-        ['Tipo', dadosExtraidos.tipo_inscricao],
-        ['Nome', dadosExtraidos.nome],
-        ['Telefone', dadosExtraidos.telefone || '—'],
-        ['Nascimento', dadosExtraidos.nascimento || '—'],
-        ['CPF', dadosExtraidos.cpf || '—'],
-        ['Curso', dadosExtraidos.curso || '—'],
-        ['Modalidade', dadosExtraidos.modalidade || '—'],
-        ['Unidade', dadosExtraidos.unidade || '—']
-      ];
-      grid.innerHTML = campos.map(([k, v]) => `<div class="preview-item"><strong>${k}</strong><span>${v}</span></div>`).join('');
+      renderPreview(new Date().toLocaleDateString('pt-BR'));
       etapa1.style.display = 'none';
       etapa2.style.display = 'block';
     });
@@ -396,8 +476,10 @@
 
       const hoje = new Date();
       const dataFormatada = `${String(hoje.getDate()).padStart(2,'0')}/${String(hoje.getMonth()+1).padStart(2,'0')}/${hoje.getFullYear()}`;
-
+      
       const payload = {
+        acao: modoEdicao ? 'editar' : 'novo',
+        id_registro: modoEdicao ? idRegistroEmEdicao : (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)),
         id_operador: currentUser.id_operador || '',
         nome_operador: currentUser.nome || '',
         data_inscricao: dataFormatada,
@@ -414,19 +496,21 @@
 
       try {
         document.getElementById('btn-salvar').disabled = true;
-        document.getElementById('btn-salvar').textContent = 'Salvando...';
+        document.getElementById('btn-salvar').textContent = modoEdicao ? 'Atualizando...' : 'Salvando...';
         const res = await fetch(`${API_URL}/diario`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
         const json = await res.json();
-        if (json.status === 'ok' || res.ok) {
-          notificar('✅ Registro salvo com sucesso!');
+        if (json.status === 'ok') {
+          notificar(modoEdicao ? '✅ Registro atualizado!' : '✅ Registro salvo com sucesso!');
           fecharModal();
           setTimeout(() => carregarRegistros(), 2000);
         } else {
-          notificar('❌ ' + (json.message || 'Erro ao salvar'), false);
+          notificar('❌ Erro: ' + (json.message || 'Falha ao salvar'), false);
+          document.getElementById('btn-salvar').disabled = false;
+          document.getElementById('btn-salvar').textContent = modoEdicao ? 'Atualizar' : 'Salvar';
         }
       } catch (e) {
         console.error('Erro ao salvar:', e);

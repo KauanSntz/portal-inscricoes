@@ -60,6 +60,8 @@ router.post('/', async (req, res) => {
     }
 
     const resultado = await salvarDiarioBordo({
+      acao: req.body.acao || 'novo',
+      id_registro: req.body.id_registro || '',
       id_operador: id_operador || '',
       nome_operador: nome_operador || '',
       data_inscricao: data_inscricao || '',
