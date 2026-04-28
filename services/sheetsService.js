@@ -23,6 +23,26 @@ const cache = {
   diario_bordo: { data: null, timestamp: 0 }
 };
 
+function invalidateCache(cacheKey) {
+  if (cache[cacheKey]) {
+    cache[cacheKey] = { data: null, timestamp: 0 };
+    console.log(`[CACHE] ${cacheKey} invalidado`);
+  }
+}
+
+module.exports = {
+  fetchWithCache,
+  getProcessos,
+  getUnidades,
+  getModalidades,
+  getCoordenadores,
+  getSetoresContato,
+  getCursosTecnicos,
+  getProcessoByCodigo,
+  getUnidadeById,
+  invalidateCache
+};
+
 /**
  * Busca dados de uma URL com cache
  * @param {string} url - URL para buscar
@@ -106,6 +126,9 @@ async function getUnidades(filtros = {}) {
   const url = `${BASE_URL}/${URL_UNIDADES}`;
   let unidades = await fetchWithCache(url, 'unidades');
 
+  // FILTRA: remover deletadas (deleted_at)
+  unidades = unidades.filter(u => !u.deleted_at);
+
   if (filtros.tipo) {
     unidades = unidades.filter(u => u.tipo === filtros.tipo);
   }
@@ -132,7 +155,8 @@ async function getCoordenadores(filtros = {}) {
   const coordenadores = await fetchWithCache(url, 'coordenadores');
   
   const urlUnidades = `${BASE_URL}/${URL_UNIDADES}`;
-  const unidades = await fetchWithCache(urlUnidades, 'unidades');
+  const todasUnidades = await fetchWithCache(urlUnidades, 'unidades');
+  const unidades = todasUnidades.filter(u => !u.deleted_at);
   
   const unidadesMap = {};
   unidades.forEach(u => {
@@ -161,26 +185,6 @@ async function getSetoresContato() {
 }
 
 /**
- * Busca cursos técnicos com filtro opcional por unidade
- * @param {Object} filtros - Filtros opcionais (unidade - minúsculo sem acento)
- * @returns {Promise<Array>} Cursos técnicos filtrados
- */
-async function getCursosTecnicos(filtros = {}) {
-  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
-  let cursos = await fetchWithCache(url, 'cursos_tecnicos');
-
-  if (filtros.unidade) {
-    const normalizedFilter = filtros.unidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    cursos = cursos.filter(c => {
-      const normalizedUnidade = (c.unidade || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      return normalizedUnidade.includes(normalizedFilter);
-    });
-  }
-
-  return cursos;
-}
-
-/**
  * Busca um processo pelo código
  * @param {string} codigo - Código do processo
  * @returns {Promise<Object|null>} Processo encontrado ou null
@@ -198,7 +202,9 @@ async function getProcessoByCodigo(codigo) {
 async function getUnidadeById(unidade_id) {
   const url = `${BASE_URL}/${URL_UNIDADES}`;
   const unidades = await fetchWithCache(url, 'unidades');
-  return unidades.find(u => u.unidade_id === unidade_id) || null;
+  const unidade = unidades.find(u => u.unidade_id === unidade_id);
+  if (unidade && unidade.deleted_at) return null;
+  return unidade || null;
 }
 
 /**
@@ -268,7 +274,6 @@ module.exports = {
   getModalidades,
   getCoordenadores,
   getSetoresContato,
-  getCursosTecnicos,
   getProcessoByCodigo,
   getUnidadeById,
   getDiarioBordo,

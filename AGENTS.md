@@ -23,15 +23,18 @@ portal-inscricoes/
 ├── links.html           # Central de links
 ├── tickets.html        # Sistema de tickets
 ├── login.html          # Login admin
-├── admin-users.html   # Gerenciamento de usuários
+├── admin-unidades.html   # Admin CRUD Unidades (DESABILITADO temporarily)
+├── admin-users.html   # Admin Gerenciar Usuários (DESABILITADO temporarily)
 ├── menu-content.html  # Menu carregado dinamicamente
 ├── server-api.js      # API Express (raiz - usado no Render)
 ├── routes/           # Rotas da API
 │   ├── processos.js
 │   ├── unidades.js
-│   └── modalidades.js
+│   ├── modalidades.js
+│   └── admin.js      # Rotas de admin (CRUD)
 ├── services/         # Serviços
-│   └── sheetsService.js
+│   ├── sheetsService.js    # Fetch com cache
+│   └── sheetsCrudService.js # CRUD Google Sheets
 ├── assets/
 │   ├── js/          # Scripts frontend
 │   ├── css/         # Estilos
@@ -68,8 +71,11 @@ portal-inscricoes/
 | GET | `/processos?unidade_id=SEDE` | Filtra por unidade |
 | GET | `/processos?modalidade=EAD` | Filtra por modalidade |
 | GET | `/processos/:codigo` | Detalhes de um processo |
-| GET | `/unidades` | Lista unidades (45 unidades) |
+| GET | `/unidades` | Lista unidades (46 unidades) |
 | GET | `/modalidades` | Lista modalidades (5 modalidades) |
+| POST | `/admin/:tabela` | Criar registro |
+| PUT | `/admin/:tabela/:id` | Atualizar registro |
+| DELETE | `/admin/:tabela/:id` | Deletar registro |
 
 ---
 
@@ -179,8 +185,14 @@ Após **QUALQUER** modificação no código, você **DEVE** executar:
 #### 1. VALIDAÇÃO DE BACKEND
 - [ ] `GET /` → 200 OK
 - [ ] `GET /processos?limit=1` → dados retornados (287 registros)
-- [ ] `GET /unidades` → dados retornados (45 unidades)
+- [ ] `GET /unidades` → dados retornados (46 unidades)
 - [ ] `GET /modalidades` → dados retornados (5 modalidades)
+
+#### 2. VALIDAÇÃO DE CRUD (se aplicável)
+- [ ] `POST /admin/:tabela` → criar registro
+- [ ] `PUT /admin/:tabela/:id` → atualizar registro
+- [ ] `DELETE /admin/:tabela/:id` → deletar registro
+- [ ] Cache invalidado corretamente após CRUD
 
 #### 2. VALIDAÇÃO DE FRONTEND
 - [ ] Páginas carregam sem erro JS
@@ -307,15 +319,24 @@ Se algo falhar:
 
 ## Tarefas Comuns
 
+### CRUD de dados via API
+
+1. `POST /admin/:tabela` - Criar registro
+2. `PUT /admin/:tabela/:id` - Atualizar registro
+3. `DELETE /admin/:tabela/:id` - Deletar registro
+4. Cache é invalidado automaticamente após CRUD
+
 ### Adicionar novo processo
 
-1. Adicionar na planilha Google Sheets
-2. Esperar cache expirar (5 min) ou invalidar
+1. Via API: `POST /admin/processos` com dados do processo
+2. Ou adicionar na planilha Google Sheets
+3. Esperar cache expirar (5 min) ou invalidar
 
 ### Adicionar nova unidade
 
-1. Adicionar linha em `unidades` no Sheets
-2. Adicionar theme em `assets/css/themes.css` (se necessário)
+1. Via API: `POST /admin/unidades` com dados da unidade
+2. Ou adicionar linha em `unidades` no Sheets
+3. Adicionar theme em `assets/css/themes.css` (se necessário)
 
 ### Atualizar dados locais
 
@@ -375,3 +396,34 @@ render deploys create <service-id> --confirm
 2. **Cache**: Dados em cache por 5 minutos no servidor, mas localStorage pode precisar limpeza
 3. **Período**: Atualmente 2026/2 - veio da API, não hardcoded
 4. **Modelo Big Pickle**: Disponibilizado via OpenCode Zen (OpenRouter), não Ollama
+
+---
+
+## Regras do Agente
+
+### ⚠️ IMPORTANTE: O/agente NÃO pode reiniciar/processar nada sozinho
+
+O agente está rodando dentro de um processo persistence shell. **Qualquer comando que tente reiniciar esse processo vai fazer o agente PARAR de funcionar**.
+
+#### É PROIBIDO executar:
+- ❌ `Ctrl+C` ou equivalente
+- ❌ Comandos que fecham o terminal/shell
+- ❌ Qualquer comando queforce o restart do agente
+- ❌kill` em processos do agente
+
+#### O que fazer:
+- ✅ Apenas responder perguntas
+- ✅ Ler e editar arquivos
+- ✅ Executar comandos de開発 (npm, git, curl, etc.)
+- ✅ **SEMPRE pedir autorização antes de commitar ou fazer push**
+
+#### Fluxo de trabalho:
+1. Agente executa tarefas solicitadas pelo usuário
+2. Ao final, **perguntar**: "Posso fazer o commit?"
+3. **AGUARDAR** autorização explícita
+4. Se autorizado → fazer commit
+5. **SEMPRE perguntar** sobre push: "Posso fazer o push?"
+
+#### Se o usuário pedir algo que reiniciaria o agente:
+- Alertar que isso faria o agente parar
+- Pedir confirmação explícita
