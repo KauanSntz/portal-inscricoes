@@ -8,7 +8,6 @@ const modalidadesRoutes = require('./routes/modalidades');
 const coordenadoresRoutes = require('./routes/coordenadores');
 const setoresContatoRoutes = require('./routes/setores-contato');
 const adminRoutes = require('./routes/admin');
-const cursosTecnicosRoutes = require('./routes/cursos-tecnicos');
 const diarioRoutes = require('./routes/diario');
 const operadoresRoutes = require('./routes/operadores');
 
@@ -29,7 +28,6 @@ app.use('/modalidades', modalidadesRoutes);
 app.use('/coordenadores', coordenadoresRoutes);
 app.use('/setores-contato', setoresContatoRoutes);
 app.use('/admin', adminRoutes);
-app.use('/cursos-tecnicos', cursosTecnicosRoutes);
 app.use('/diario', diarioRoutes);
 app.use('/operadores', operadoresRoutes);
 

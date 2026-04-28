@@ -25,7 +25,7 @@
   });
 
   // Unidades para tela inicial (capital + compensa)
-  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+  const UNIDADES_CAPITAL = ['sede', 'leste', 'norte', 'sul', 'oeste', 'compensa'];
 
   // ----------------------------- UTILS -----------------------------
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -123,9 +123,16 @@
     
     let linksRaw = window.PORTAL_LINKS;
     
-    // Filtrar para Capital nas páginas iniciais
+    // Filtrar para Capital nas páginas iniciais e ordenar
     if (isCapitalPage()) {
-      linksRaw = linksRaw.filter(u => UNIDADES_CAPITAL.includes(u.key));
+      linksRaw = linksRaw.filter(u => UNIDADES_CAPITAL.includes((u.key || "").toLowerCase()));
+      linksRaw.sort((a, b) => {
+        let indexA = UNIDADES_CAPITAL.indexOf((a.key || "").toLowerCase());
+        let indexB = UNIDADES_CAPITAL.indexOf((b.key || "").toLowerCase());
+        if (indexA === -1) indexA = 99;
+        if (indexB === -1) indexB = 99;
+        return indexA - indexB;
+      });
     }
     
     return { linksRaw, courses: window.COURSES };

@@ -7,7 +7,7 @@
   const CACHE_DURATION = 5 * 60 * 1000;
 
   // Unidades para tela inicial (capital + compensa)
-  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+  const UNIDADES_CAPITAL = ['sede', 'leste', 'norte', 'sul', 'oeste', 'compensa'];
 
   const MODALITY_MAP = {
     "PRESENCIAL": "presencial",

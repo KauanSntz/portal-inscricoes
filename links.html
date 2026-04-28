@@ -206,6 +206,9 @@
           await db.collection('users').doc(user.uid).set(newUser);
           currentUser = { uid: user.uid, ...newUser };
         }
+        
+        // Sincroniza o tipo com localStorage para telas standalone (ex: admin-links.html)
+        localStorage.setItem('userType', currentUser.tipo);
 
         // Mostrar links de tickets e logout nos dois menus
         const ticketsLink = document.getElementById('tickets-link');

@@ -341,6 +341,9 @@
           <input type="search" id="busca-diario" class="search-input"
             placeholder="Buscar por nome, CPF ou telefone..." />
         </div>
+        <div class="field" style="max-width: 140px;">
+          <input type="date" id="filtro-data" class="search-input" title="Filtrar por data" />
+        </div>
         <div class="field" id="filtro-operador-container" style="display:none;">
           <select id="filtro-operador" class="search-input">
             <option value="">Todos os Operadores</option>
@@ -498,6 +501,9 @@
         currentUser = doc.exists
           ? { uid: user.uid, ...doc.data() }
           : { uid: user.uid, nome: user.displayName || 'Usuário', id_operador: '' };
+        
+        // Sincroniza o tipo com localStorage para telas standalone (ex: admin-links.html)
+        localStorage.setItem('userType', currentUser.tipo || 'comum');
 
         // UI
         const el = (id) => document.getElementById(id);
@@ -604,9 +610,15 @@
       // Filtros de UI
       const busca = (document.getElementById('busca-diario').value || '').toLowerCase();
       const opFiltro = document.getElementById('filtro-operador').value || '';
+      const dataFiltro = document.getElementById('filtro-data').value || '';
 
       if (busca) filtrados = filtrados.filter(r => (r.NOME || '').toLowerCase().includes(busca) || (r.CPF || '').includes(busca) || (r.TELEFONE || '').includes(busca));
       if (opFiltro && isAdmin()) filtrados = filtrados.filter(r => r.NOME_OPERADOR === opFiltro);
+      if (dataFiltro) {
+        const [y, m, d] = dataFiltro.split('-');
+        const dataFormatada = `${d}/${m}/${y}`;
+        filtrados = filtrados.filter(r => r.DATA_INSCRICAO === dataFormatada);
+      }
 
       meta.textContent = `${filtrados.length} registro(s) encontrado(s)`;
       if (!filtrados.length) { tbody.innerHTML = ''; empty.hidden = false; return; }
@@ -780,6 +792,7 @@
     // ===== FILTROS =====
     document.getElementById('busca-diario').addEventListener('input', () => { if (window._registros) renderTabela(window._registros); });
     document.getElementById('filtro-operador').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
+    document.getElementById('filtro-data').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
 
     // ===== MODAL =====
     const modal = document.getElementById('diario-modal');

@@ -13,6 +13,11 @@
     // Submenu Informações será tratado separadamente
   ];
 
+  const userType = localStorage.getItem('userType') || 'comum';
+  if (userType === 'super_admin') {
+    menuLinks.splice(2, 0, { href: './admin-links.html', text: 'Gerenciar Links', dataAction: null });
+  }
+
   const menuHTML = `
     <div class="side-menu" id="sideMenu">
       <div class="side-menu-header">

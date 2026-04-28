@@ -12,6 +12,7 @@
   const MODALITY_LABELS = Object.freeze({ ead: "100% EAD", semipresencial: "Semipresencial", flex: "Flex", presencial: "Presencial", hibrido: "Híbrido", outro: "Outro" });
   const MODALITY_ORDER = Object.freeze({ ead: 0, semipresencial: 1, flex: 2, presencial: 3, hibrido: 4, outro: 5 });
   const TYPE_ORDER = Object.freeze({ vestibular: 0, matricula: 1, outro: 2 });
+  const UNIT_ORDER = Object.freeze({ "SEDE": 1, "LESTE-AUTAZ MIRIM": 2, "LESTE - AUTAZ MIRIM": 2, "NORTE-CIDADE NOVA": 3, "NORTE - CIDADE NOVA": 3, "SUL-CACHOERINHA": 4, "SUL - CACHOERINHA": 4, "OESTE-COMPENSA": 5, "OESTE - COMPENSA": 5 });
 
   const state = {
     records: [],
@@ -130,6 +131,9 @@
     const sorted = unique.sort((a, b) => {
       const aUnknown = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bUnknown = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aUnknown !== bUnknown) return aUnknown - bUnknown;
+      const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
+      const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
       return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
 
@@ -218,6 +222,9 @@
     const units = Array.from(byUnit.values()).sort((a, b) => {
       const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aU !== bU) return aU - bU;
+      const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
+      const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
       return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR");
     });
 
@@ -354,6 +361,9 @@ const init = async () => {
     state.records.sort((a, b) => {
       const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
       if (aU !== bU) return aU - bU;
+      const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
+      const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
       return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
     });
     

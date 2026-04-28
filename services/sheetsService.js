@@ -1,4 +1,5 @@
 const axios = require('axios');
+const crud = require('./sheetsCrudService');
 
 // URLs base do OpenSheet (configuradas no .env)
 const BASE_URL = process.env.OPENSHET_BASE_URL || 'https://opensheet.elk.sh/1t2upLN5hFLLf0Bqwgd_kheS9f1ztXJiMfrm1BSRp-Bo';
@@ -30,18 +31,7 @@ function invalidateCache(cacheKey) {
   }
 }
 
-module.exports = {
-  fetchWithCache,
-  getProcessos,
-  getUnidades,
-  getModalidades,
-  getCoordenadores,
-  getSetoresContato,
-  getCursosTecnicos,
-  getProcessoByCodigo,
-  getUnidadeById,
-  invalidateCache
-};
+
 
 /**
  * Busca dados de uma URL com cache
@@ -95,10 +85,12 @@ async function getProcessos(filtros = {}) {
   });
 
   // Aplica filtros e join
-  let resultados = processos.map(p => ({
-    ...p,
-    unidade_nome: unidadesMap[p.unidade_id]?.nome || null
-  }));
+  let resultados = processos
+    .filter(p => !p.deleted_at)
+    .map(p => ({
+      ...p,
+      unidade_nome: unidadesMap[p.unidade_id]?.nome || null
+    }));
 
   // Filtros
   if (filtros.unidade_id) {
@@ -252,20 +244,49 @@ async function getDiarioBordo(filtros = {}) {
   return registros;
 }
 
-/**
- * Salva um registro no diário de bordo via Google Apps Script
- * @param {Object} registro - Dados do registro
- * @returns {Promise<Object>} Resposta do Apps Script
- */
 async function salvarDiarioBordo(registro) {
-  const response = await axios.post(APPS_SCRIPT_URL, registro, {
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 15000,
-    maxRedirects: 5
-  });
-  // Invalidar cache do diário após salvar
-  cache.diario_bordo = { data: null, timestamp: 0 };
-  return response.data;
+  const { acao, id_registro, ...dados } = registro;
+
+  const rowData = {
+    id_registro: id_registro,
+    id_operador: dados.id_operador,
+    nome_operador: dados.nome_operador,
+    data_inscricao: dados.data_inscricao,
+    tipo_inscricao: dados.tipo_inscricao,
+    nome: dados.nome,
+    telefone: dados.telefone,
+    nascimento: dados.nascimento,
+    cpf: dados.cpf,
+    curso: dados.curso,
+    modalidade: dados.modalidade,
+    unidade: dados.unidade,
+    situacao: dados.situacao
+  };
+
+  let response;
+
+  try {
+    if (acao === 'novo') {
+      if (!rowData.id_registro) {
+        rowData.id_registro = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+      }
+      response = await crud.appendRow('diario_bordo', rowData);
+    } else if (acao === 'editar' || acao === 'excluir') {
+      if (acao === 'excluir') {
+        rowData.situacao = 'inativo';
+      }
+      response = await crud.updateRow('diario_bordo', 'id_registro', id_registro, rowData);
+      if (!response) {
+        throw new Error(`Registro ${id_registro} não encontrado.`);
+      }
+    }
+
+    invalidateCache('diario_bordo');
+    return { status: 'ok', message: 'Registro salvo com sucesso!', data: response };
+  } catch (error) {
+    console.error('[CRUD DIARIO] Erro:', error.message);
+    throw error;
+  }
 }
 
 module.exports = {
