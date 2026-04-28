@@ -224,6 +224,11 @@ async function getDiarioBordo(filtros = {}) {
   const url = `${BASE_URL}/${URL_DIARIO_BORDO}`;
   let registros = await fetchWithCache(url, 'diario_bordo');
 
+  // Ignorar registros inativos
+  if (Array.isArray(registros)) {
+    registros = registros.filter(r => r && typeof r === 'object' && (r.SITUACAO || '').toLowerCase() !== 'inativo');
+  }
+
   if (filtros.operador) {
     registros = registros.filter(r => String(r.ID_OPERADOR) === String(filtros.operador));
   }

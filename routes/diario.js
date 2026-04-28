@@ -54,8 +54,8 @@ router.post('/', async (req, res) => {
       situacao
     } = req.body;
 
-    // Validação básica
-    if (!nome || !cpf) {
+    // Validação básica (ignorar se for exclusão)
+    if (req.body.acao !== 'excluir' && (!nome || !cpf)) {
       return res.status(400).json({ error: 'Nome e CPF são obrigatórios.' });
     }
 
