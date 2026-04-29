@@ -9,8 +9,14 @@
     { href: null, text: 'Pesquisar cursos', dataAction: 'open-global-search' },
     { href: null, text: 'Pesquisar preços', dataAction: 'open-prices-menu' },
     { href: null, text: 'Cursos Técnicos', dataAction: 'open-cursos-tecnicos' },
+    { href: './diario.html', text: '📋 Diário de Bordo', dataAction: null },
     // Submenu Informações será tratado separadamente
   ];
+
+  const userType = localStorage.getItem('userType') || 'comum';
+  if (userType === 'super_admin') {
+    menuLinks.splice(2, 0, { href: './admin-links.html', text: 'Gerenciar Links', dataAction: null });
+  }
 
   const menuHTML = `
     <div class="side-menu" id="sideMenu">

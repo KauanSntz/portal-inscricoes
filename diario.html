@@ -1,44 +1,289 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diário de Bordo - Sistema Fametro</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <style>
-    .diario-table-wrapper { overflow-x: auto; }
-    .diario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .diario-table th, .diario-table td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
-    .diario-table th { background: var(--accent); color: #fff; font-weight: 700; position: sticky; top: 0; }
-    .diario-table tr:hover { background: var(--surface-soft); }
-    .sit-badge { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; display: inline-block; }
-    .sit-inscrito { background: #dbeafe; color: #1d4ed8; }
-    .sit-aprovado { background: #d1fae5; color: #065f46; }
-    .sit-matriculado { background: #ede9fe; color: #5b21b6; }
-    .sit-pendente { background: #fef3c7; color: #92400e; }
-    .sit-cancelado { background: #fee2e2; color: #991b1b; }
-    .paste-area { width: 100%; min-height: 200px; font-family: monospace; font-size: 0.85rem; resize: vertical; }
-    .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem; }
-    .preview-item { padding: 0.5rem 0.75rem; background: var(--surface-soft); border-radius: var(--radius-sm); border: 1px solid var(--line-soft); }
-    .preview-item strong { color: var(--accent); font-size: 0.8rem; display: block; margin-bottom: 0.15rem; }
-    .preview-item span { font-weight: 500; }
-    .diario-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
-    .cpf-copy { cursor: pointer; color: var(--accent); text-decoration: underline dotted; }
-    .cpf-copy:hover { opacity: 0.8; }
-    @media (max-width: 768px) {
-      .diario-table th:nth-child(n+6), .diario-table td:nth-child(n+6) { display: none; }
-      .preview-grid { grid-template-columns: 1fr; }
+    .diario-table-wrapper {
+      overflow-x: auto;
     }
-    body.dark-mode .diario-table th { background: var(--accent); }
-    body.dark-mode .diario-table tr:hover { background: #1e293b; }
-    body.dark-mode .preview-item { background: #1e293b; border-color: #334155; }
-    body.dark-mode .sit-inscrito { background: #1e3a5f; color: #93c5fd; }
-    body.dark-mode .sit-aprovado { background: #064e3b; color: #6ee7b7; }
-    body.dark-mode .sit-matriculado { background: #3b0764; color: #c4b5fd; }
-    body.dark-mode .sit-pendente { background: #78350f; color: #fcd34d; }
-    body.dark-mode .sit-cancelado { background: #7f1d1d; color: #fca5a5; }
+
+    .diario-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .diario-table th,
+    .diario-table td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+      white-space: nowrap;
+    }
+
+    .diario-table th {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+    }
+
+    .diario-table tr:hover {
+      background: var(--surface-soft);
+    }
+
+    .sit-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .sit-inscrito {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .sit-aprovado {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .sit-matriculado {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .sit-pendente {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .paste-area {
+      width: 100%;
+      min-height: 200px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .preview-item {
+      padding: 0.5rem 0.75rem;
+      background: var(--surface-soft);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line-soft);
+    }
+
+    .preview-item strong {
+      color: var(--accent);
+      font-size: 0.8rem;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .preview-item span {
+      font-weight: 500;
+    }
+
+    .diario-controls {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .cpf-copy,
+    .tel-copy {
+      cursor: pointer;
+      color: var(--accent);
+      text-decoration: underline dotted;
+    }
+
+    .cpf-copy:hover,
+    .tel-copy:hover {
+      opacity: 0.8;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+
+    .edit-input:focus {
+      outline: 2px solid var(--accent);
+      border-color: var(--accent);
+    }
+
+    .edit-select {
+      width: 100%;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+
+    /* Painel de contagem de operadores */
+    .contagem-painel {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line-soft);
+      background: var(--surface-soft);
+      margin-top: 0.5rem;
+    }
+
+    .contagem-titulo {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .contagem-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .contagem-card {
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line-soft);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .contagem-card .op-nome {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .contagem-card .op-count {
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      min-width: 1.4rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    .contagem-card .op-count.count-inscricoes {
+      background: #3b82f6;
+    }
+
+    .contagem-card .op-count.count-matriculas {
+      background: #8b5cf6;
+    }
+
+    .btn--danger {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+    }
+
+    .btn--danger:hover {
+      background: #dc2626;
+    }
+
+    .contagem-total {
+      font-weight: 700;
+      color: var(--accent);
+      margin-left: auto;
+      font-size: 0.9rem;
+    }
+
+    body.dark-mode .contagem-painel {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    body.dark-mode .contagem-card {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    @media (max-width: 768px) {
+
+      /* Esconde colunas menos importantes, mas mantém Telefone, Situação e Ações */
+      .diario-table th:nth-child(6),
+      .diario-table td:nth-child(6),
+      .diario-table th:nth-child(7),
+      .diario-table td:nth-child(7),
+      .diario-table th:nth-child(8),
+      .diario-table td:nth-child(8),
+      .diario-table th:nth-child(9),
+      .diario-table td:nth-child(9) {
+        display: none;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    body.dark-mode .diario-table th {
+      background: var(--accent);
+    }
+
+    body.dark-mode .diario-table tr:hover {
+      background: #1e293b;
+    }
+
+    body.dark-mode .preview-item {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    body.dark-mode .sit-inscrito {
+      background: #1e3a5f;
+      color: #93c5fd;
+    }
+
+    body.dark-mode .sit-aprovado {
+      background: #064e3b;
+      color: #6ee7b7;
+    }
+
+    body.dark-mode .sit-matriculado {
+      background: #3b0764;
+      color: #c4b5fd;
+    }
+
+    body.dark-mode .sit-pendente {
+      background: #78350f;
+      color: #fcd34d;
+    }
   </style>
 </head>
+
 <body>
   <div class="top-stripe" aria-hidden="true"></div>
   <main class="container app-shell">
@@ -93,20 +338,46 @@
       <div class="diario-controls">
         <button class="btn btn--accent" id="novo-registro-btn" style="width:auto;">Novo Registro</button>
         <div class="field" style="flex:1; min-width:180px;">
-          <input type="search" id="busca-diario" class="search-input" placeholder="Buscar por nome ou CPF..." />
+          <input type="search" id="busca-diario" class="search-input"
+            placeholder="Buscar por nome, CPF ou telefone..." />
         </div>
-        <div class="field">
-          <input type="date" id="filtro-data" class="search-input" />
+        <div class="field" style="max-width: 140px;">
+          <input type="date" id="filtro-data" class="search-input" title="Filtrar por data" />
+        </div>
+        <div class="field" id="filtro-operador-container" style="display:none;">
+          <select id="filtro-operador" class="search-input">
+            <option value="">Todos os Operadores</option>
+          </select>
         </div>
       </div>
       <p class="links-meta" id="diario-meta"></p>
+      <!-- Painel de contagem por operador (só para admin) -->
+      <div id="contagem-painel" class="contagem-painel" style="display:none;">
+        <div class="contagem-titulo">
+          📊 Registros de Hoje por Operador
+          <span class="contagem-total" id="contagem-total"></span>
+        </div>
+        <div class="contagem-grid" id="contagem-grid"></div>
+      </div>
     </div>
 
     <!-- TABELA -->
     <div class="links-controls diario-table-wrapper">
       <table class="diario-table" id="diario-table">
         <thead>
-          <tr><th>DATA</th><th>TIPO</th><th>NOME</th><th>CPF</th><th>CURSO</th><th>MODALIDADE</th><th>UNIDADE</th><th>SITUAÇÃO</th></tr>
+          <tr>
+            <th>DATA</th>
+            <th>TIPO</th>
+            <th>NOME</th>
+            <th>TELEFONE</th>
+            <th>CPF</th>
+            <th>NASCIMENTO</th>
+            <th>CURSO</th>
+            <th>MODALIDADE</th>
+            <th>UNIDADE</th>
+            <th>SITUAÇÃO</th>
+            <th>AÇÕES</th>
+          </tr>
         </thead>
         <tbody id="diario-tbody"></tbody>
       </table>
@@ -114,10 +385,10 @@
     <div id="diario-empty" class="empty" hidden>Nenhum registro encontrado.</div>
 
     <!-- MODAL NOVO REGISTRO -->
-    <div id="diario-modal" class="modal-overlay" style="display:none;">
+    <div id="diario-modal" class="modal-overlay" style="display:none; align-items: center; justify-content: center;">
       <div class="modal" style="max-width:600px;">
         <div class="modal-head">
-          <div class="modal-title">Novo Registro</div>
+          <div class="modal-title" id="modal-title-text">Novo Registro</div>
           <button class="modal-close" id="modal-close">&times;</button>
         </div>
         <div class="modal-body">
@@ -135,16 +406,17 @@
             </div>
             <div class="field" style="margin-top:0.75rem;">
               <span>Cole o texto preenchido do aluno</span>
-              <textarea id="texto-colado" class="search-input paste-area" placeholder="Cole aqui o texto padrão preenchido com os dados do aluno..."></textarea>
+              <textarea id="texto-colado" class="search-input paste-area"
+                placeholder="Cole aqui o texto padrão preenchido com os dados do aluno..."></textarea>
             </div>
             <div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
               <button class="btn btn--accent" id="btn-extrair" style="width:auto;">Extrair Dados</button>
-              <button class="btn" id="btn-copiar-texto" style="width:auto;">📋 Copiar Texto Padrão</button>
+              <button class="btn" id="btn-copiar-texto" style="width:auto;"> Copiar Texto Padrão</button>
             </div>
           </div>
-          <!-- Etapa 2: Preview + Situação -->
+          <!-- Etapa 2: Preview/Edição -->
           <div id="etapa-2" style="display:none;">
-            <h3 style="color:var(--accent); margin:0 0 0.5rem;">Dados Extraídos</h3>
+            <h3 style="color:var(--accent); margin:0 0 0.5rem;" id="etapa2-titulo">Dados Extraídos</h3>
             <div class="preview-grid" id="preview-grid"></div>
             <div class="field" style="margin-top:1rem;">
               <span>Situação</span>
@@ -154,7 +426,6 @@
                 <option value="Aprovado">Aprovado</option>
                 <option value="Matriculado">Matriculado</option>
                 <option value="Pagamento pendente">Pagamento pendente</option>
-                <option value="Cancelado">Cancelado</option>
               </select>
             </div>
             <div style="display:flex; gap:0.5rem; margin-top:1rem;">
@@ -166,6 +437,23 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+    <div id="confirmacao-modal" class="modal-overlay" style="display:none; align-items: center; justify-content: center;">
+      <div class="modal" style="max-width:400px;">
+        <div class="modal-head">
+          <div class="modal-title">Confirmar Exclusão</div>
+          <button class="modal-close" onclick="fecharConfirmacao()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmacao-msg" style="margin-bottom: 1.5rem; font-size: 0.95rem;"></p>
+          <div style="display:flex; gap:0.5rem; justify-content: flex-end;">
+            <button class="btn" onclick="fecharConfirmacao()" style="width:auto;">Cancelar</button>
+            <button class="btn btn--danger" id="btn-confirmar-exclusao" style="width:auto;">Excluir</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -173,7 +461,9 @@
   </footer>
 
   <!-- Notificação -->
-  <div id="notificacao" style="position:fixed; bottom:20px; right:20px; background:#10b981; color:#fff; padding:10px 20px; border-radius:5px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999; display:none;"></div>
+  <div id="notificacao"
+    style="position:fixed; bottom:20px; right:20px; background:#10b981; color:#fff; padding:10px 20px; border-radius:5px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999; display:none;">
+  </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -191,11 +481,18 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const API_URL = 'https://portal-inscricoes.onrender.com';
+    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
 
     let currentUser = null;
     let dadosExtraidos = null;
+    let modoEdicao = false;
+    let idRegistroEmEdicao = null;
+    let operadoresDisponiveis = new Set();
 
+    // Verifica se o usuário é admin ou super_admin
+    function isAdmin() {
+      return currentUser && (currentUser.tipo === 'super_admin' || currentUser.tipo === 'admin');
+    }
     // ===== AUTH =====
     auth.onAuthStateChanged(async (user) => {
       if (!user) { window.location.href = './index.html'; return; }
@@ -204,13 +501,22 @@
         currentUser = doc.exists
           ? { uid: user.uid, ...doc.data() }
           : { uid: user.uid, nome: user.displayName || 'Usuário', id_operador: '' };
+        
+        // Sincroniza o tipo com localStorage para telas standalone (ex: admin-links.html)
+        localStorage.setItem('userType', currentUser.tipo || 'comum');
 
         // UI
         const el = (id) => document.getElementById(id);
-        ['tickets-link','tickets-link-nav','logout-btn-nav','logout-btn-menu'].forEach(id => { if(el(id)) el(id).style.display = 'inline-block'; });
+        ['tickets-link', 'tickets-link-nav', 'logout-btn-nav', 'logout-btn-menu'].forEach(id => { if (el(id)) el(id).style.display = 'inline-block'; });
         if (el('user-name')) el('user-name').textContent = currentUser.nome || 'Usuário';
         if (el('user-email')) el('user-email').textContent = currentUser.email || '';
         if (el('user-profile')) el('user-profile').style.display = 'flex';
+
+        // Mostrar filtro de operador se for admin ou super admin
+        if (isAdmin()) {
+          document.getElementById('filtro-operador-container').style.display = 'block';
+        }
+
         carregarRegistros();
       } catch (e) { console.error('Erro auth:', e); window.location.href = './index.html'; }
     });
@@ -241,6 +547,9 @@
           if (label.includes(chave)) { campos[campo] = valor; break; }
         }
       }
+      // Limpar CPF e telefone: só números
+      if (campos.cpf) campos.cpf = campos.cpf.replace(/\D/g, '');
+      if (campos.telefone) campos.telefone = campos.telefone.replace(/\D/g, '');
       return campos;
     }
 
@@ -271,12 +580,45 @@
       const empty = document.getElementById('diario-empty');
       const meta = document.getElementById('diario-meta');
 
-      // Filtros
+      // Atualizar dropdown de operadores para Admin
+      if (currentUser && isAdmin()) {
+        const selectOp = document.getElementById('filtro-operador');
+        const oldVal = selectOp.value;
+        const primeiraVez = selectOp.options.length <= 1;
+        registros.forEach(r => { if (r.NOME_OPERADOR) operadoresDisponiveis.add(r.NOME_OPERADOR); });
+        selectOp.innerHTML = '<option value="">Todos os Operadores</option>' +
+          Array.from(operadoresDisponiveis).sort().map(op => `<option value="${op}">${op}</option>`).join('');
+        
+        // Na primeira carga, selecionar o próprio usuário
+        if (primeiraVez && currentUser.nome) {
+          selectOp.value = currentUser.nome;
+        } else {
+          selectOp.value = oldVal;
+        }
+
+        // Renderizar contagem de registros de hoje por operador
+        renderContagemOperadores(registros);
+      }
+
+      // Filtros Base (Permissão e Inativos)
+      let filtrados = registros.filter(r => (r.SITUACAO || '').toLowerCase() !== 'inativo');
+      if (currentUser && !isAdmin()) {
+        // Usuário comum só vê os próprios registros
+        filtrados = filtrados.filter(r => r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome);
+      }
+
+      // Filtros de UI
       const busca = (document.getElementById('busca-diario').value || '').toLowerCase();
+      const opFiltro = document.getElementById('filtro-operador').value || '';
       const dataFiltro = document.getElementById('filtro-data').value || '';
-      let filtrados = registros;
-      if (busca) filtrados = filtrados.filter(r => (r.NOME||'').toLowerCase().includes(busca) || (r.CPF||'').includes(busca));
-      if (dataFiltro) filtrados = filtrados.filter(r => r.DATA_INSCRICAO === dataFiltro);
+
+      if (busca) filtrados = filtrados.filter(r => (r.NOME || '').toLowerCase().includes(busca) || (r.CPF || '').includes(busca) || (r.TELEFONE || '').includes(busca));
+      if (opFiltro && isAdmin()) filtrados = filtrados.filter(r => r.NOME_OPERADOR === opFiltro);
+      if (dataFiltro) {
+        const [y, m, d] = dataFiltro.split('-');
+        const dataFormatada = `${d}/${m}/${y}`;
+        filtrados = filtrados.filter(r => r.DATA_INSCRICAO === dataFormatada);
+      }
 
       meta.textContent = `${filtrados.length} registro(s) encontrado(s)`;
       if (!filtrados.length) { tbody.innerHTML = ''; empty.hidden = false; return; }
@@ -284,21 +626,144 @@
 
       tbody.innerHTML = filtrados.map(r => {
         const sitClass = getSitClass(r.SITUACAO);
+        const podeEditar = isAdmin() || r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome;
+        const podeExcluir = r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome || isAdmin();
+        // Escape data para o botão de editar
+        const rawData = encodeURIComponent(JSON.stringify(r));
         return `<tr>
           <td>${r.DATA_INSCRICAO || ''}</td>
           <td>${r.TIPO_INSCRICAO || ''}</td>
           <td>${r.NOME || ''}</td>
-          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF||''}')">${formatCPF(r.CPF||'')}</span></td>
+          <td><span class="tel-copy" onclick="copiarTelefone('${r.TELEFONE || ''}')">${r.TELEFONE || '—'}</span></td>
+          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF || ''}')">${formatCPF(r.CPF || '')}</span></td>
+          <td>${r.NASCIMENTO || '—'}</td>
           <td>${r.CURSO || ''}</td>
           <td>${r.MODALIDADE || ''}</td>
           <td>${r.UNIDADE || ''}</td>
           <td><span class="sit-badge ${sitClass}">${r.SITUACAO || ''}</span></td>
+          <td style="white-space:nowrap;">
+            ${podeEditar && r.ID_REGISTRO ? `<button class="btn" style="padding:0.2rem 0.5rem; font-size:0.8rem;" onclick="editarRegistro('${rawData}')">✏️</button>` : ''}
+            ${podeExcluir && r.ID_REGISTRO ? `<button class="btn btn--danger" style="padding:0.2rem 0.5rem; font-size:0.8rem; margin-left:0.25rem;" onclick="excluirRegistro('${rawData}')">Excluir</button>` : ''}
+          </td>
         </tr>`;
       }).join('');
 
       // Guardar para filtro local
       window._registros = registros;
     }
+
+    // ===== CONTAGEM POR OPERADOR (ADMIN) =====
+    function renderContagemOperadores(registros) {
+      const painel = document.getElementById('contagem-painel');
+      const grid = document.getElementById('contagem-grid');
+      const totalEl = document.getElementById('contagem-total');
+
+      // Data de hoje no formato DD/MM/YYYY
+      const hoje = new Date();
+      const hojeStr = `${String(hoje.getDate()).padStart(2, '0')}/${String(hoje.getMonth() + 1).padStart(2, '0')}/${hoje.getFullYear()}`;
+
+      // Filtrar registros de hoje
+      const registrosHoje = registros.filter(r => r.DATA_INSCRICAO === hojeStr);
+
+      // Contagem por operador com 2 categorias
+      const contagem = {};
+      registrosHoje.forEach(r => {
+        const nome = r.NOME_OPERADOR || 'Desconhecido';
+        if (!contagem[nome]) contagem[nome] = { inscricoes: 0, matriculas: 0 };
+        const sit = (r.SITUACAO || '').toLowerCase();
+        if (sit.includes('inscrito') || sit.includes('aprovado')) {
+          contagem[nome].inscricoes++;
+        } else if (sit.includes('matriculado') || sit.includes('pendente')) {
+          contagem[nome].matriculas++;
+        }
+      });
+
+      // Totais gerais
+      let totalInsc = 0, totalMatr = 0;
+      Object.values(contagem).forEach(v => { totalInsc += v.inscricoes; totalMatr += v.matriculas; });
+
+      // Ordenar por total (maior primeiro)
+      const ordenado = Object.entries(contagem).sort((a, b) => (b[1].inscricoes + b[1].matriculas) - (a[1].inscricoes + a[1].matriculas));
+
+      totalEl.innerHTML = `<span style="color:#3b82f6;">Inscrições: ${totalInsc}</span> &nbsp;·&nbsp; <span style="color:#8b5cf6;">Matrículas: ${totalMatr}</span>`;
+
+      if (!ordenado.length) {
+        grid.innerHTML = '<span style="font-size:0.85rem; color: var(--text); opacity:0.6;">Nenhum registro hoje.</span>';
+      } else {
+        grid.innerHTML = ordenado.map(([nome, c]) =>
+          `<div class="contagem-card">
+            <span class="op-nome">${nome}</span>
+            <span class="op-count count-inscricoes" title="Inscrições (Inscrito + Aprovado)">${c.inscricoes}</span>
+            <span class="op-count count-matriculas" title="Matrículas (Matriculado + Pgto pendente)">${c.matriculas}</span>
+          </div>`
+        ).join('');
+      }
+
+      painel.style.display = 'block';
+    }
+
+    // ===== EXCLUIR REGISTRO =====
+    let registroParaExcluir = null;
+
+    window.fecharConfirmacao = () => {
+      document.getElementById('confirmacao-modal').style.display = 'none';
+      registroParaExcluir = null;
+    };
+
+    window.excluirRegistro = (encodedData) => {
+      const r = JSON.parse(decodeURIComponent(encodedData));
+      registroParaExcluir = r;
+      document.getElementById('confirmacao-msg').innerHTML = `Tem certeza que deseja excluir o registro de <strong>${r.NOME || 'este candidato'}</strong>?<br><br><span style="color:var(--text); opacity:0.8; font-size:0.85rem;">Essa ação não pode ser desfeita.</span>`;
+      document.getElementById('confirmacao-modal').style.display = 'flex';
+    };
+
+    document.getElementById('btn-confirmar-exclusao').addEventListener('click', async () => {
+      if (!registroParaExcluir) return;
+      const r = registroParaExcluir;
+      const btn = document.getElementById('btn-confirmar-exclusao');
+      const btnOldText = btn.textContent;
+      
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Excluindo...';
+
+        const res = await fetch(`${API_URL}/diario`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            acao: 'editar',
+            id_registro: r.ID_REGISTRO,
+            id_operador: r.ID_OPERADOR,
+            nome_operador: r.NOME_OPERADOR,
+            data_inscricao: r.DATA_INSCRICAO,
+            tipo_inscricao: r.TIPO_INSCRICAO,
+            nome: r.NOME,
+            telefone: r.TELEFONE,
+            nascimento: r.NASCIMENTO,
+            cpf: r.CPF,
+            curso: r.CURSO,
+            modalidade: r.MODALIDADE,
+            unidade: r.UNIDADE,
+            situacao: 'inativo',
+            aba: 'diario_bordo'
+          })
+        });
+        const json = await res.json();
+        if (json.status === 'ok') {
+          notificar('🗑️ Registro excluído com sucesso!');
+          fecharConfirmacao();
+          setTimeout(() => carregarRegistros(), 1500);
+        } else {
+          notificar('❌ Erro: ' + (json.message || 'Falha ao excluir'), false);
+        }
+      } catch (e) {
+        console.error('Erro ao excluir:', e);
+        notificar('❌ Erro ao excluir registro', false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = btnOldText;
+      }
+    });
 
     function getSitClass(s) {
       if (!s) return '';
@@ -307,21 +772,26 @@
       if (sl.includes('aprovado')) return 'sit-aprovado';
       if (sl.includes('matriculado')) return 'sit-matriculado';
       if (sl.includes('pendente')) return 'sit-pendente';
-      if (sl.includes('cancelado')) return 'sit-cancelado';
       return '';
     }
 
     function formatCPF(c) {
       if (!c || c.length !== 11) return c;
-      return `${c.slice(0,3)}.${c.slice(3,6)}.${c.slice(6,9)}-${c.slice(9)}`;
+      return `${c.slice(0, 3)}.${c.slice(3, 6)}.${c.slice(6, 9)}-${c.slice(9)}`;
     }
 
     function copiarCPF(cpf) {
       navigator.clipboard.writeText(cpf).then(() => notificar('✅ CPF copiado!')).catch(() => notificar('❌ Erro ao copiar', false));
     }
 
+    function copiarTelefone(tel) {
+      if (!tel) return;
+      navigator.clipboard.writeText(tel).then(() => notificar('📞 Telefone copiado!')).catch(() => notificar('❌ Erro ao copiar', false));
+    }
+
     // ===== FILTROS =====
     document.getElementById('busca-diario').addEventListener('input', () => { if (window._registros) renderTabela(window._registros); });
+    document.getElementById('filtro-operador').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
     document.getElementById('filtro-data').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
 
     // ===== MODAL =====
@@ -329,18 +799,76 @@
     const etapa1 = document.getElementById('etapa-1');
     const etapa2 = document.getElementById('etapa-2');
 
-    function abrirModal() {
-      document.getElementById('tipo-inscricao').value = '';
-      document.getElementById('texto-colado').value = '';
-      document.getElementById('situacao-select').value = '';
-      etapa1.style.display = 'block';
-      etapa2.style.display = 'none';
-      dadosExtraidos = null;
+    function abrirModal(isEdit = false) {
+      modoEdicao = isEdit;
+      document.getElementById('modal-title-text').textContent = isEdit ? 'Editar Registro' : 'Novo Registro';
+      document.getElementById('btn-salvar').textContent = isEdit ? 'Atualizar' : 'Salvar';
+
+      if (!isEdit) {
+        document.getElementById('tipo-inscricao').value = '';
+        document.getElementById('texto-colado').value = '';
+        document.getElementById('situacao-select').value = '';
+        etapa1.style.display = 'block';
+        etapa2.style.display = 'none';
+        dadosExtraidos = null;
+        idRegistroEmEdicao = null;
+      }
       modal.style.display = 'flex';
     }
+
+    window.editarRegistro = (encodedData) => {
+      const r = JSON.parse(decodeURIComponent(encodedData));
+      idRegistroEmEdicao = r.ID_REGISTRO;
+
+      // Preencher dados extraídos baseados na linha
+      dadosExtraidos = {
+        tipo_inscricao: r.TIPO_INSCRICAO || '',
+        nome: r.NOME || '',
+        telefone: r.TELEFONE || '',
+        nascimento: r.NASCIMENTO || '',
+        cpf: r.CPF || '',
+        curso: r.CURSO || '',
+        modalidade: r.MODALIDADE || '',
+        unidade: r.UNIDADE || '',
+        data_inscricao: r.DATA_INSCRICAO || ''
+      };
+
+      document.getElementById('situacao-select').value = r.SITUACAO || '';
+
+      // Renderizar formulário editável
+      renderPreview(r.DATA_INSCRICAO || new Date().toLocaleDateString('pt-BR'));
+      document.getElementById('etapa2-titulo').textContent = 'Editar Registro';
+
+      etapa1.style.display = 'none';
+      etapa2.style.display = 'block';
+      abrirModal(true);
+    };
+
+    function renderPreview(dataExibicao) {
+      const grid = document.getElementById('preview-grid');
+      const tituloEtapa2 = document.getElementById('etapa2-titulo');
+
+      // Sempre editável (tanto para novo quanto para edição)
+      tituloEtapa2.textContent = modoEdicao ? 'Editar Registro' : 'Confirme os Dados';
+      const tipoOpcoes = ['Vestibular', 'Enem', 'Transferência externa', 'Portador de diplomas'];
+      const tipoOptions = tipoOpcoes.map(t => `<option value="${t}" ${dadosExtraidos.tipo_inscricao === t ? 'selected' : ''}>${t}</option>`).join('');
+
+      grid.innerHTML = `
+        <div class="preview-item"><strong>Data de Inscrição</strong><input type="text" class="edit-input" id="edit-data" value="${dataExibicao}" ${modoEdicao ? '' : 'readonly'} /></div>
+        <div class="preview-item"><strong>Tipo de Inscrição</strong><select class="edit-select" id="edit-tipo"><option value="">Selecione...</option>${tipoOptions}</select></div>
+        <div class="preview-item"><strong>Nome</strong><input type="text" class="edit-input" id="edit-nome" value="${dadosExtraidos.nome || ''}" /></div>
+        <div class="preview-item"><strong>Telefone</strong><input type="text" class="edit-input" id="edit-telefone" value="${dadosExtraidos.telefone || ''}" placeholder="Somente números" /></div>
+        <div class="preview-item"><strong>Nascimento</strong><input type="text" class="edit-input" id="edit-nascimento" value="${dadosExtraidos.nascimento || ''}" /></div>
+        <div class="preview-item"><strong>CPF</strong><input type="text" class="edit-input" id="edit-cpf" value="${dadosExtraidos.cpf || ''}" placeholder="Somente números" /></div>
+        <div class="preview-item"><strong>Curso</strong><input type="text" class="edit-input" id="edit-curso" value="${dadosExtraidos.curso || ''}" /></div>
+        <div class="preview-item"><strong>Modalidade</strong><input type="text" class="edit-input" id="edit-modalidade" value="${dadosExtraidos.modalidade || ''}" /></div>
+        <div class="preview-item"><strong>Unidade</strong><input type="text" class="edit-input" id="edit-unidade" value="${dadosExtraidos.unidade || ''}" /></div>
+      `;
+    }
+
     function fecharModal() { modal.style.display = 'none'; }
 
-    document.getElementById('novo-registro-btn').addEventListener('click', abrirModal);
+    document.getElementById('novo-registro-btn').addEventListener('click', () => abrirModal(false));
     document.getElementById('modal-close').addEventListener('click', fecharModal);
     document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
@@ -365,20 +893,7 @@
       if (!dadosExtraidos.nome) { notificar('Não foi possível extrair o Nome. Verifique o texto.', false); return; }
 
       // Preview
-      const grid = document.getElementById('preview-grid');
-      const hoje = new Date().toLocaleDateString('pt-BR');
-      const campos = [
-        ['Data de Inscrição', hoje],
-        ['Tipo', dadosExtraidos.tipo_inscricao],
-        ['Nome', dadosExtraidos.nome],
-        ['Telefone', dadosExtraidos.telefone || '—'],
-        ['Nascimento', dadosExtraidos.nascimento || '—'],
-        ['CPF', dadosExtraidos.cpf || '—'],
-        ['Curso', dadosExtraidos.curso || '—'],
-        ['Modalidade', dadosExtraidos.modalidade || '—'],
-        ['Unidade', dadosExtraidos.unidade || '—']
-      ];
-      grid.innerHTML = campos.map(([k, v]) => `<div class="preview-item"><strong>${k}</strong><span>${v}</span></div>`).join('');
+      renderPreview(new Date().toLocaleDateString('pt-BR'));
       etapa1.style.display = 'none';
       etapa2.style.display = 'block';
     });
@@ -395,38 +910,64 @@
       if (!situacao) { notificar('Selecione a situação.', false); return; }
 
       const hoje = new Date();
-      const dataFormatada = `${String(hoje.getDate()).padStart(2,'0')}/${String(hoje.getMonth()+1).padStart(2,'0')}/${hoje.getFullYear()}`;
+      const dataFormatada = `${String(hoje.getDate()).padStart(2, '0')}/${String(hoje.getMonth() + 1).padStart(2, '0')}/${hoje.getFullYear()}`;
 
-      const payload = {
-        id_operador: currentUser.id_operador || '',
-        nome_operador: currentUser.nome || '',
-        data_inscricao: dataFormatada,
-        tipo_inscricao: dadosExtraidos.tipo_inscricao,
-        nome: dadosExtraidos.nome || '',
-        telefone: dadosExtraidos.telefone || '',
-        nascimento: dadosExtraidos.nascimento || '',
-        cpf: dadosExtraidos.cpf || '',
-        curso: dadosExtraidos.curso || '',
-        modalidade: dadosExtraidos.modalidade || '',
-        unidade: dadosExtraidos.unidade || '',
-        situacao: situacao
-      };
+      let payload;
+      if (modoEdicao) {
+        // Na edição, pegar valores dos inputs editáveis
+        payload = {
+          acao: 'editar',
+          id_registro: idRegistroEmEdicao,
+          id_operador: currentUser.id_operador || '',
+          nome_operador: currentUser.nome || '',
+          data_inscricao: document.getElementById('edit-data').value || dataFormatada,
+          tipo_inscricao: document.getElementById('edit-tipo').value || '',
+          nome: document.getElementById('edit-nome').value || '',
+          telefone: document.getElementById('edit-telefone').value || '',
+          nascimento: document.getElementById('edit-nascimento').value || '',
+          cpf: document.getElementById('edit-cpf').value || '',
+          curso: document.getElementById('edit-curso').value || '',
+          modalidade: document.getElementById('edit-modalidade').value || '',
+          unidade: document.getElementById('edit-unidade').value || '',
+          situacao: situacao
+        };
+      } else {
+        // Novo registro: pegar valores dos inputs (editáveis pelo usuário)
+        payload = {
+          acao: 'novo',
+          id_registro: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+          id_operador: currentUser.id_operador || '',
+          nome_operador: currentUser.nome || '',
+          data_inscricao: document.getElementById('edit-data').value || dataFormatada,
+          tipo_inscricao: document.getElementById('edit-tipo').value || '',
+          nome: document.getElementById('edit-nome').value || '',
+          telefone: document.getElementById('edit-telefone').value || '',
+          nascimento: document.getElementById('edit-nascimento').value || '',
+          cpf: document.getElementById('edit-cpf').value || '',
+          curso: document.getElementById('edit-curso').value || '',
+          modalidade: document.getElementById('edit-modalidade').value || '',
+          unidade: document.getElementById('edit-unidade').value || '',
+          situacao: situacao
+        };
+      }
 
       try {
         document.getElementById('btn-salvar').disabled = true;
-        document.getElementById('btn-salvar').textContent = 'Salvando...';
+        document.getElementById('btn-salvar').textContent = modoEdicao ? 'Atualizando...' : 'Salvando...';
         const res = await fetch(`${API_URL}/diario`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
         const json = await res.json();
-        if (json.status === 'ok' || res.ok) {
-          notificar('✅ Registro salvo com sucesso!');
+        if (json.status === 'ok') {
+          notificar(modoEdicao ? '✅ Registro atualizado!' : '✅ Registro salvo com sucesso!');
           fecharModal();
           setTimeout(() => carregarRegistros(), 2000);
         } else {
-          notificar('❌ ' + (json.message || 'Erro ao salvar'), false);
+          notificar('❌ Erro: ' + (json.message || 'Falha ao salvar'), false);
+          document.getElementById('btn-salvar').disabled = false;
+          document.getElementById('btn-salvar').textContent = modoEdicao ? 'Atualizar' : 'Salvar';
         }
       } catch (e) {
         console.error('Erro ao salvar:', e);
@@ -440,4 +981,5 @@
   <script src="./assets/js/menu.js"></script>
   <script src="./assets/js/dark-mode.js"></script>
 </body>
+
 </html>

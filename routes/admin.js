@@ -1,80 +1,231 @@
 const express = require('express');
 const router = express.Router();
 const sheetsCrud = require('../services/sheetsCrudService');
-const { invalidateCache } = require('../services/sheetsService');
+const sheetsService = require('../services/sheetsService');
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-
-function authMiddleware(req, res, next) {
+function isAdmin(req, res, next) {
   const password = req.headers['x-admin-password'];
-  if (password !== ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  
+  if (!password) {
+    return res.status(401).json({ error: 'Unauthorized', message: 'Header x-admin-password required' });
   }
+
+  const validPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  
+  if (password !== validPassword) {
+    return res.status(401).json({ error: 'Unauthorized', message: 'Invalid password' });
+  }
+
   next();
 }
 
-router.use(authMiddleware);
+router.use(isAdmin);
 
-router.post('/unidades', async (req, res) => {
+async function validateUnidade(req, res, next) {
+  const { nome, tipo } = req.body;
+  
+  if (!nome || !tipo) {
+    return res.status(400).json({ error: 'Bad Request', message: 'nome and tipo are required' });
+  }
+
+  next();
+}
+
+async function validateProcesso(req, res, next) {
+  const { codigo, tipo_ingresso, unidade_id, modalidade } = req.body;
+  
+  if (!codigo || !tipo_ingresso || !unidade_id || !modalidade) {
+    return res.status(400).json({ 
+      error: 'Bad Request', 
+      message: 'codigo, tipo_ingresso, unidade_id, modalidade are required' 
+    });
+  }
+
+  next();
+}
+
+router.post('/unidades', validateUnidade, async (req, res) => {
   try {
-    const { unidade_id, nome, tipo, ordem, ativo } = req.body;
+    const { nome, tipo, unidade_id, ordem } = req.body;
     
-    if (!unidade_id || !nome || !tipo) {
-      return res.status(400).json({ error: 'Campos obrigatórios: unidade_id, nome, tipo' });
+    const generatedId = unidade_id || nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '_');
+    
+    const existing = await sheetsCrud.findRowByField('unidades', 'unidade_id', generatedId);
+    if (existing && !existing.deleted_at) {
+      return res.status(409).json({ error: 'Conflict', message: `Unidade ${generatedId} already exists` });
     }
 
-    const result = await sheetsCrud.appendRow('unidades', {
-      unidade_id,
+    const isUpdate = existing && existing.deleted_at;
+    
+    const data = {
+      unidade_id: generatedId,
       nome: nome.toUpperCase(),
       tipo,
       ordem: ordem || '99',
-      ativo: ativo || 'SIM',
+      ativo: 'SIM',
       deleted_at: ''
-    });
+    };
 
-    invalidateCache('unidades');
+    if (isUpdate) {
+      await sheetsCrud.updateRow('unidades', 'unidade_id', generatedId, data);
+    } else {
+      await sheetsCrud.appendRow('unidades', data);
+    }
 
-    res.json({ success: true, data: result });
-  } catch (err) {
-    console.error('[POST /admin/unidades] erro:', err.message);
-    res.status(500).json({ error: err.message });
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Unidade ${generatedId} ${isUpdate ? 'updated' : 'created'}`);
+
+    res.json({ success: true, action: isUpdate ? 'update' : 'create', unidade_id: generatedId });
+  } catch (error) {
+    console.error(`[ERRO] /admin/unidades - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
 
-router.put('/unidades/:id', async (req, res) => {
+router.put('/unidades/:unidade_id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { unidade_id } = req.params;
     const { nome, tipo, ordem, ativo } = req.body;
 
-    const updateData = {};
-    if (nome) updateData.nome = nome.toUpperCase();
-    if (tipo) updateData.tipo = tipo;
-    if (ordem) updateData.ordem = ordem;
-    if (ativo) updateData.ativo = ativo;
+    const existing = await sheetsCrud.findRowByField('unidades', 'unidade_id', unidade_id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Not Found', message: `Unidade ${unidade_id} not found` });
+    }
 
-    const result = await sheetsCrud.updateRow('unidades', 'unidade_id', id, updateData);
-    
-    invalidateCache('unidades');
+    const data = {
+      ...existing,
+      nome: nome ? nome.toUpperCase() : existing.nome,
+      tipo: tipo || existing.tipo,
+      ordem: ordem || existing.ordem,
+      ativo: ativo || existing.ativo,
+      deleted_at: ''
+    };
 
-    res.json({ success: true, data: result });
-  } catch (err) {
-    console.error('[PUT /admin/unidades/:id] erro:', err.message);
-    res.status(500).json({ error: err.message });
+    await sheetsCrud.updateRow('unidades', 'unidade_id', unidade_id, data);
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Unidade ${unidade_id} updated`);
+
+    res.json({ success: true, action: 'update', unidade_id });
+  } catch (error) {
+    console.error(`[ERRO] /admin/unidades/:id - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
 
-router.delete('/unidades/:id', async (req, res) => {
+router.delete('/unidades/:unidade_id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { unidade_id } = req.params;
 
-    const result = await sheetsCrud.updateRow('unidades', 'unidade_id', id, {
-      deleted_at: new Date().toISOString()
-    });
+    const existing = await sheetsCrud.findRowByField('unidades', 'unidade_id', unidade_id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Not Found', message: `Unidade ${unidade_id} not found` });
+    }
 
-    res.json({ success: true, data: result });
-  } catch (err) {
-    console.error('[DELETE /admin/unidades/:id] erro:', err.message);
-    res.status(500).json({ error: err.message });
+    if (existing.deleted_at) {
+      return res.status(409).json({ error: 'Conflict', message: `Unidade ${unidade_id} already deleted` });
+    }
+
+    await sheetsCrud.deleteRow('unidades', 'unidade_id', unidade_id);
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Unidade ${unidade_id} deleted`);
+
+    res.json({ success: true, action: 'delete', unidade_id });
+  } catch (error) {
+    console.error(`[ERRO] /admin/unidades/:id - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+});
+
+router.post('/processos', validateProcesso, async (req, res) => {
+  try {
+    const { codigo, tipo_ingresso, unidade_id, modalidade, periodo, link } = req.body;
+    
+    const existing = await sheetsCrud.findRowByField('processos_normalizados', 'codigo', String(codigo));
+    if (existing && !existing.deleted_at) {
+      return res.status(409).json({ error: 'Conflict', message: `Processo ${codigo} already exists` });
+    }
+
+    const isUpdate = existing && existing.deleted_at;
+    
+    const data = {
+      codigo: String(codigo),
+      tipo_ingresso,
+      unidade_id,
+      modalidade,
+      periodo: periodo || 46054,
+      link: link || '',
+      deleted_at: ''
+    };
+
+    if (isUpdate) {
+      await sheetsCrud.updateRow('processos_normalizados', 'codigo', String(codigo), data);
+    } else {
+      await sheetsCrud.appendRow('processos_normalizados', data);
+    }
+
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Processo ${codigo} ${isUpdate ? 'updated' : 'created'}`);
+
+    res.json({ success: true, action: isUpdate ? 'update' : 'create', codigo });
+  } catch (error) {
+    console.error(`[ERRO] /admin/processos - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+});
+
+router.put('/processos/:codigo', async (req, res) => {
+  try {
+    const { codigo } = req.params;
+    const { tipo_ingresso, unidade_id, modalidade, periodo, link } = req.body;
+
+    const existing = await sheetsCrud.findRowByField('processos_normalizados', 'codigo', codigo);
+    if (!existing) {
+      return res.status(404).json({ error: 'Not Found', message: `Processo ${codigo} not found` });
+    }
+
+    const data = {
+      ...existing,
+      codigo,
+      tipo_ingresso: tipo_ingresso || existing.tipo_ingresso,
+      unidade_id: unidade_id || existing.unidade_id,
+      modalidade: modalidade || existing.modalidade,
+      periodo: periodo || existing.periodo,
+      link: link || existing.link,
+      deleted_at: ''
+    };
+
+    await sheetsCrud.updateRow('processos_normalizados', 'codigo', codigo, data);
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Processo ${codigo} updated`);
+
+    res.json({ success: true, action: 'update', codigo });
+  } catch (error) {
+    console.error(`[ERRO] /admin/processos/:codigo - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+});
+
+router.delete('/processos/:codigo', async (req, res) => {
+  try {
+    const { codigo } = req.params;
+
+    const existing = await sheetsCrud.findRowByField('processos_normalizados', 'codigo', codigo);
+    if (!existing) {
+      return res.status(404).json({ error: 'Not Found', message: `Processo ${codigo} not found` });
+    }
+
+    if (existing.deleted_at) {
+      return res.status(409).json({ error: 'Conflict', message: `Processo ${codigo} already deleted` });
+    }
+
+    await sheetsCrud.deleteRow('processos_normalizados', 'codigo', codigo);
+    sheetsService.invalidateCache();
+    console.log(`[ADMIN] Processo ${codigo} deleted`);
+
+    res.json({ success: true, action: 'delete', codigo });
+  } catch (error) {
+    console.error(`[ERRO] /admin/processos/:codigo - ${error.message}`);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
 

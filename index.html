@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Sistema Fametro</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
+
 <body>
   <div class="top-stripe"></div>
 
@@ -39,7 +41,7 @@
           <input type="password" id="password" class="search-input" required>
         </div>
         <button type="submit" class="btn btn--accent" style="width:100%;">Entrar</button>
-        
+
         <!-- Link esqueci minha senha (centralizado) -->
         <div style="text-align: center; margin-top: 0.5rem;">
           <a href="#" id="forgot-password">Esqueci minha senha</a>
@@ -108,8 +110,15 @@
       .then(() => console.log('Persistência LOCAL definida'))
       .catch(error => console.error('Erro na persistência:', error));
 
-    // LOGIN TEMPORARIAMENTE DESATIVADO - redireciona direto para portal
-    window.location.href = './portal.html';
+    // Flag para controle de redirecionamento
+    let isRedirecting = false;
+
+    auth.onAuthStateChanged(user => {
+      if (user && !isRedirecting) {
+        console.log('Usuário já logado, redirecionando para portal.html');
+        window.location.href = './portal.html';
+      }
+    });
 
     // Elementos do DOM
     const loginForm = document.getElementById('login-form');
@@ -215,7 +224,7 @@
 
       try {
         const cred = await auth.createUserWithEmailAndPassword(email, password);
-        
+
         // Gerar id_operador auto-incrementado via transação
         const contadorRef = db.collection('counters').doc('id_operador');
         const novoIdOperador = await db.runTransaction(async (transaction) => {
@@ -240,19 +249,18 @@
         // Atualizar displayName
         await cred.user.updateProfile({ displayName: nome });
 
-        // Salvar na aba OPERADORES do Google Sheets (em background)
-        fetch('https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec', {
+        // Salvar na aba OPERADORES do Google Sheets (via API backend)
+        const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
+        fetch(`${apiUrl}/operadores`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            aba: 'OPERADORES',
             id: novoIdOperador,
             uid: cred.user.uid,
             nome: nome,
             email: email,
             tipo: 'comum'
-          }),
-          mode: 'no-cors'
+          })
         }).catch(err => console.warn('Aviso: não salvou no Sheets:', err));
 
         console.log('Registro concluído. Nome salvo:', nome);
@@ -273,4 +281,5 @@
   </script>
   <script src="./assets/js/dark-mode.js"></script>
 </body>
+
 </html>

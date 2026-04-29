@@ -1,4 +1,5 @@
 const axios = require('axios');
+const crud = require('./sheetsCrudService');
 
 // URLs base do OpenSheet (configuradas no .env)
 const BASE_URL = process.env.OPENSHET_BASE_URL || 'https://opensheet.elk.sh/1t2upLN5hFLLf0Bqwgd_kheS9f1ztXJiMfrm1BSRp-Bo';
@@ -9,7 +10,6 @@ const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
 const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
 const URL_DIARIO_BORDO = process.env.URL_DIARIO_BORDO || 'diario_bordo';
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
@@ -30,18 +30,7 @@ function invalidateCache(cacheKey) {
   }
 }
 
-module.exports = {
-  fetchWithCache,
-  getProcessos,
-  getUnidades,
-  getModalidades,
-  getCoordenadores,
-  getSetoresContato,
-  getCursosTecnicos,
-  getProcessoByCodigo,
-  getUnidadeById,
-  invalidateCache
-};
+
 
 /**
  * Busca dados de uma URL com cache
@@ -95,10 +84,12 @@ async function getProcessos(filtros = {}) {
   });
 
   // Aplica filtros e join
-  let resultados = processos.map(p => ({
-    ...p,
-    unidade_nome: unidadesMap[p.unidade_id]?.nome || null
-  }));
+  let resultados = processos
+    .filter(p => !p.deleted_at)
+    .map(p => ({
+      ...p,
+      unidade_nome: unidadesMap[p.unidade_id]?.nome || null
+    }));
 
   // Filtros
   if (filtros.unidade_id) {
@@ -185,26 +176,6 @@ async function getSetoresContato() {
 }
 
 /**
- * Busca cursos técnicos com filtro opcional por unidade
- * @param {Object} filtros - Filtros opcionais (unidade - minúsculo sem acento)
- * @returns {Promise<Array>} Cursos técnicos filtrados
- */
-async function getCursosTecnicos(filtros = {}) {
-  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
-  let cursos = await fetchWithCache(url, 'cursos_tecnicos');
-
-  if (filtros.unidade) {
-    const normalizedFilter = filtros.unidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    cursos = cursos.filter(c => {
-      const normalizedUnidade = (c.unidade || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      return normalizedUnidade.includes(normalizedFilter);
-    });
-  }
-
-  return cursos;
-}
-
-/**
  * Busca um processo pelo código
  * @param {string} codigo - Código do processo
  * @returns {Promise<Object|null>} Processo encontrado ou null
@@ -247,8 +218,22 @@ function invalidateCache() {
  * @returns {Promise<Array>} Registros do diário
  */
 async function getDiarioBordo(filtros = {}) {
-  const url = `${BASE_URL}/${URL_DIARIO_BORDO}`;
-  let registros = await fetchWithCache(url, 'diario_bordo');
+  // Busca direto da API do Google Sheets via CRUD para evitar delay de cache do OpenSheet
+  let registrosRaw = await crud.getAllRows('diario_bordo');
+  
+  // Converte as chaves para UPPERCASE para manter compatibilidade com o frontend
+  let registros = registrosRaw.map(r => {
+    const upperObj = {};
+    for (const key in r) {
+      upperObj[key.toUpperCase()] = r[key];
+    }
+    return upperObj;
+  });
+
+  // Ignorar registros inativos
+  if (Array.isArray(registros)) {
+    registros = registros.filter(r => r && typeof r === 'object' && (r.SITUACAO || '').toLowerCase() !== 'inativo');
+  }
 
   if (filtros.operador) {
     registros = registros.filter(r => String(r.ID_OPERADOR) === String(filtros.operador));
@@ -267,20 +252,49 @@ async function getDiarioBordo(filtros = {}) {
   return registros;
 }
 
-/**
- * Salva um registro no diário de bordo via Google Apps Script
- * @param {Object} registro - Dados do registro
- * @returns {Promise<Object>} Resposta do Apps Script
- */
 async function salvarDiarioBordo(registro) {
-  const response = await axios.post(APPS_SCRIPT_URL, registro, {
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 15000,
-    maxRedirects: 5
-  });
-  // Invalidar cache do diário após salvar
-  cache.diario_bordo = { data: null, timestamp: 0 };
-  return response.data;
+  const { acao, id_registro, ...dados } = registro;
+
+  const rowData = {
+    id_registro: id_registro,
+    id_operador: dados.id_operador,
+    nome_operador: dados.nome_operador,
+    data_inscricao: dados.data_inscricao,
+    tipo_inscricao: dados.tipo_inscricao,
+    nome: dados.nome,
+    telefone: dados.telefone,
+    nascimento: dados.nascimento,
+    cpf: dados.cpf,
+    curso: dados.curso,
+    modalidade: dados.modalidade,
+    unidade: dados.unidade,
+    situacao: dados.situacao
+  };
+
+  let response;
+
+  try {
+    if (acao === 'novo') {
+      if (!rowData.id_registro) {
+        rowData.id_registro = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+      }
+      response = await crud.appendRow('diario_bordo', rowData);
+    } else if (acao === 'editar' || acao === 'excluir') {
+      if (acao === 'excluir') {
+        rowData.situacao = 'inativo';
+      }
+      response = await crud.updateRow('diario_bordo', 'id_registro', id_registro, rowData);
+      if (!response) {
+        throw new Error(`Registro ${id_registro} não encontrado.`);
+      }
+    }
+
+    invalidateCache('diario_bordo');
+    return { status: 'ok', message: 'Registro salvo com sucesso!', data: response };
+  } catch (error) {
+    console.error('[CRUD DIARIO] Erro:', error.message);
+    throw error;
+  }
 }
 
 module.exports = {
@@ -289,7 +303,6 @@ module.exports = {
   getModalidades,
   getCoordenadores,
   getSetoresContato,
-  getCursosTecnicos,
   getProcessoByCodigo,
   getUnidadeById,
   getDiarioBordo,

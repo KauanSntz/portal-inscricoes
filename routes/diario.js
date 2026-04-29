@@ -40,6 +40,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const {
+      acao,
+      id_registro,
       id_operador,
       nome_operador,
       data_inscricao,
@@ -54,20 +56,22 @@ router.post('/', async (req, res) => {
       situacao
     } = req.body;
 
-    // Validação básica
-    if (!nome || !cpf) {
-      return res.status(400).json({ error: 'Nome e CPF são obrigatórios.' });
+    // Validação básica (ignorar se for exclusão ou se for edição parcial sem nome/cpf)
+    if (req.body.acao !== 'excluir' && req.body.acao !== 'editar' && (!nome || !cpf)) {
+      return res.status(400).json({ error: 'Nome e CPF são obrigatórios para novos registros.' });
     }
 
     const resultado = await salvarDiarioBordo({
+      acao: acao || 'novo',
+      id_registro: id_registro || '',
       id_operador: id_operador || '',
       nome_operador: nome_operador || '',
       data_inscricao: data_inscricao || '',
       tipo_inscricao: tipo_inscricao || '',
-      nome,
+      nome: nome || '',
       telefone: telefone || '',
       nascimento: nascimento || '',
-      cpf,
+      cpf: cpf || '',
       curso: curso || '',
       modalidade: modalidade || '',
       unidade: unidade || '',

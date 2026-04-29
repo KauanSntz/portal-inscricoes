@@ -28,6 +28,113 @@
     { key: "hibrido", label: "Híbrido" },
   ]);
 
+  // Mapeamento de cursos para categorias
+  const CATEGORY_MAP = {
+    // 🖥️ TECNOLOGIA
+    "análise e desenvolvimento de sistemas": "tecnologia",
+    "ciência da computação": "tecnologia",
+    "ciências de dados": "tecnologia",
+    "engenharia da computação": "tecnologia",
+    "engenharia de software": "tecnologia",
+    "engenharia ambiental e energias renováveis": "tecnologia",
+    "engenharia civil": "tecnologia",
+    "engenharia de produção": "tecnologia",
+    "engenharia elétrica": "tecnologia",
+    "engenharia mecânica": "tecnologia",
+    "fullstack": "tecnologia",
+    "inteligência artificial": "tecnologia",
+    "internet das coisas": "tecnologia",
+    "iot": "tecnologia",
+    "jogos digitais": "tecnologia",
+    "redes de computadores": "tecnologia",
+    "rede de computadores": "tecnologia",
+    "big data": "tecnologia",
+    "big data e inteligência analítica": "tecnologia",
+    "gestão da segurança e defesa cibernética": "tecnologia",
+    "tecnólogo gestão da segurança e defesa cibernética": "tecnologia",
+    "sistemas de informação": "tecnologia",
+    "tecnologia em análise e desenvolvimento de sistemas": "tecnologia",
+    "tecnologia em design gráfico": "tecnologia",
+    "tecnologia em gestão da tecnologia da informação": "tecnologia",
+    "tecnologia em redes de computadores": "tecnologia",
+    "tecnologia em desenvolvimento full stack": "tecnologia",
+    "tecnologia em desenvolvimento full stack (tecnólogo)": "tecnologia",
+    "tecnologia em internet das coisas": "tecnologia",
+    "tecnologia em big data e inteligência analítica": "tecnologia",
+    "tecnologia em ciência de dados": "tecnologia",
+    "tecnologia em inteligência artificial": "tecnologia",
+    "tecnologia em jogos digitais": "tecnologia",
+    "segurança do trabalho": "tecnologia",
+    "design gráfico": "tecnologia",
+    
+    // 📊 GESTÃO
+    "administração": "gestao",
+    "ciências contábeis": "gestao",
+    "ciências econômicas": "gestao",
+    "ciências econômicas (novo)": "gestao",
+    "gestão da qualidade": "gestao",
+    "gestão de recursos humanos": "gestao",
+    "gestão de rh": "gestao",
+    "logística": "gestao",
+    "marketing": "gestao",
+    "turismo": "gestao",
+    "gestão comercial": "gestao",
+    "gestão financeira": "gestao",
+    "gestão pública": "gestao",
+    "gestão portuária": "gestao",
+    "gestão de segurança privada": "gestao",
+    "recursos humanos": "gestao",
+    
+    // 🏥 SAÚDE
+    "biomedicina": "saude",
+    "enfermagem": "saude",
+    "farmácia": "saude",
+    "fisioterapia": "saude",
+    "fonoaudiologia": "saude",
+    "medicina veterinária": "saude",
+    "nutrição": "saude",
+    "odontologia": "saude",
+    "psicologia": "saude",
+    "quiropraxia": "saude",
+    "radiologia": "saude",
+    "terapia ocupacional": "saude",
+    "estética e cosmética": "saude",
+    
+    // ⚖️ DIREITO E SERVIÇOS SOCIAIS
+    "direito": "direito",
+    "direito - manaus": "direito",
+    "serviço social": "direito",
+    "gestão de serviços jurídicos e notariais": "direito",
+    "gestão de serviços judiciais e notariais": "direito",
+    "gestão de serviços judiciais e notariais (tecnólogo)": "direito",
+    
+    // 🎓 EDUCAÇÃO
+    "pedagogia": "educacao",
+    "educação física": "educacao",
+    "educação física (bacharelado)": "educacao",
+    "educação física bacharelado": "educacao",
+    "educação física (licenciatura)": "educacao",
+    "educação física licenciatura": "educacao",
+    "letras": "educacao",
+    "psicopedagogia": "educacao",
+    
+    // 🎨 CRIATIVOS E COMUNICAÇÃO
+    "arquitetura e urbanismo": "criativos",
+    "jornalismo": "criativos",
+    "publicidade e propaganda": "criativos",
+    "gastronomia": "criativos",
+    "tecnologia em gastronomia": "criativos",
+  };
+
+  const CATEGORY_LABELS = {
+    tecnologia: "🖥️ Tecnologia",
+    gestao: "📊 Gestão",
+    saude: "🏥 Saúde",
+    direito: "⚖️ Direito e Serviços Sociais",
+    educacao: "🎓 Educação",
+    criativos: "🎨 Criativos e Comunicação",
+  };
+
   const API_URL = window.API_URL || '';
   const isApiResponse = (data) => data && typeof data === 'object' && 'data' in data;
   const extractData = (response) => isApiResponse(response) ? response.data : response;
@@ -457,30 +564,74 @@
         return;
       }
 
-      emptyEl.hidden = true;
-      for (const record of state.recordsView) {
-        const card = document.createElement("article");
-        card.className = "result-card prices-card";
-        card.innerHTML = `
-          <div class="result-course prices-course">${record.courseName}</div>
-          <div class="meta prices-meta">Integral: ${formatCents(record.integralCents)}</div>
-          <div class="meta prices-meta">Bolsa: ${formatCents(record.bolsaCents)}</div>
-          ${record?.bolsaPontualidadeCents?.p10 != null ? `<div class="meta prices-meta">Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}</div>` : ''}
-        `;
+      // Agrupar por categoria
+      const grouped = {};
+      const getCategory = (courseName) => {
+        const norm = (courseName || "").toLowerCase().trim();
+        return CATEGORY_MAP[norm] || "outros";
+      };
 
-        const copyBtn = document.createElement("button");
-        copyBtn.className = "btn-unit prices-copy-btn";
-        copyBtn.type = "button";
-        copyBtn.textContent = "Copiar mensagem";
-        copyBtn.addEventListener("click", async () => {
-          const ok = await copyText(buildCopyMessage(record));
-          copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
-          setTimeout(() => {
-            copyBtn.textContent = "Copiar mensagem";
-          }, 1200);
-        });
-        card.appendChild(copyBtn);
-        listEl.appendChild(card);
+      for (const record of state.recordsView) {
+        const cat = getCategory(record.courseName);
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(record);
+      }
+
+      // Ordenar categorias: principais primero
+      const catOrder = ["tecnologia", "gestao", "saude", "direito", "educacao", "criativos"];
+      const sortedCats = Object.keys(grouped).sort((a, b) => {
+        const ia = catOrder.indexOf(a);
+        const ib = catOrder.indexOf(b);
+        return (ia >= 0 ? ia : 999) - (ib >= 0 ? ib : 999);
+      });
+
+      emptyEl.hidden = true;
+
+      for (const cat of sortedCats) {
+        const records = grouped[cat];
+        if (!records || !records.length) continue;
+
+        // Container da categoria
+        const catContainer = document.createElement("div");
+        catContainer.className = "price-category";
+
+        // Título da categoria
+        const catTitle = document.createElement("h3");
+        catTitle.className = "price-category-title";
+        catTitle.textContent = CATEGORY_LABELS[cat] || cat;
+        catContainer.appendChild(catTitle);
+
+        // Grid de cards
+        const grid = document.createElement("div");
+        grid.className = "price-category-grid";
+
+        for (const record of records) {
+          const card = document.createElement("article");
+          card.className = "result-card prices-card";
+          card.innerHTML = `
+            <div class="result-course prices-course">${record.courseName}</div>
+            <div class="meta prices-meta">Integral: ${formatCents(record.integralCents)}</div>
+            <div class="meta prices-meta">Bolsa: ${formatCents(record.bolsaCents)}</div>
+            ${record?.bolsaPontualidadeCents?.p10 != null ? `<div class="meta prices-meta">Bolsa + Pontualidade: ${formatCents(record.bolsaPontualidadeCents.p10)}</div>` : ''}
+          `;
+
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "btn-unit prices-copy-btn";
+          copyBtn.type = "button";
+          copyBtn.textContent = "Copiar mensagem";
+          copyBtn.addEventListener("click", async () => {
+            const ok = await copyText(buildCopyMessage(record));
+            copyBtn.textContent = ok ? "Copiado!" : "Falha ao copiar";
+            setTimeout(() => {
+              copyBtn.textContent = "Copiar mensagem";
+            }, 1200);
+          });
+          card.appendChild(copyBtn);
+          grid.appendChild(card);
+        }
+
+        catContainer.appendChild(grid);
+        listEl.appendChild(catContainer);
       }
     };
 
@@ -568,7 +719,7 @@
       controls.appendChild(inputEl);
 
       listEl = document.createElement("div");
-      listEl.className = "course-grid prices-grid";
+      listEl.className = "prices-categories-container";
 
       emptyEl = document.createElement("div");
       emptyEl.className = "empty prices-empty";
@@ -784,27 +935,55 @@
       const title = document.createElement('div');
       title.className = 'info-card-title';
       title.textContent = item.setor;
-
-      const phone = document.createElement('div');
-      phone.className = 'info-card-phone';
-      phone.textContent = item.telefone;
-
-      const mensagem = `${item.setor}\n📞 ${item.telefone}`;
-
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'info-copy-btn';
-      copyBtn.textContent = 'Copiar contato';
-      copyBtn.addEventListener('click', async () => {
-        const ok = await copyText(mensagem);
-        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-        setTimeout(() => {
-          copyBtn.textContent = 'Copiar contato';
-        }, 1200);
-      });
-
       card.appendChild(title);
-      card.appendChild(phone);
-      card.appendChild(copyBtn);
+
+      const contatoRow = document.createElement('div');
+      contatoRow.className = 'contato-row';
+
+      if (item.telefone) {
+        const phone = document.createElement('div');
+        phone.className = 'contato-item';
+        phone.innerHTML = `<span class="contato-icon">📞</span><span class="contato-value">${item.telefone}</span>`;
+        contatoRow.appendChild(phone);
+      }
+
+      if (item.email) {
+        const email = document.createElement('div');
+        email.className = 'contato-item';
+        email.innerHTML = `<span class="contato-icon">✉️</span><span class="contato-value">${item.email}</span>`;
+        contatoRow.appendChild(email);
+      }
+
+      card.appendChild(contatoRow);
+
+      const btnRow = document.createElement('div');
+      btnRow.className = 'btn-row';
+
+      if (item.telefone) {
+        const copyPhoneBtn = document.createElement('button');
+        copyPhoneBtn.className = 'info-copy-btn';
+        copyPhoneBtn.textContent = '📋 Copiar Telefone';
+        copyPhoneBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.telefone);
+          copyPhoneBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyPhoneBtn.textContent = '📋 Copiar Telefone', 1200);
+        });
+        btnRow.appendChild(copyPhoneBtn);
+      }
+
+      if (item.email) {
+        const copyEmailBtn = document.createElement('button');
+        copyEmailBtn.className = 'info-copy-btn';
+        copyEmailBtn.textContent = '✉️ Copiar E-mail';
+        copyEmailBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.email);
+          copyEmailBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyEmailBtn.textContent = '✉️ Copiar E-mail', 1200);
+        });
+        btnRow.appendChild(copyEmailBtn);
+      }
+
+      card.appendChild(btnRow);
       return card;
     }
   );
@@ -1128,7 +1307,7 @@ const cursosTecnicosModal = (() => {
 window.cursosTecnicosModal = cursosTecnicosModal; 
 
 // ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
-  const coordenadoresModal = createInfoModal(
+const coordenadoresModal = createInfoModal(
     'coordenadores-modal',
     'Coordenação de Cursos e Contatos',
     '/coordenadores',
@@ -1141,100 +1320,78 @@ window.cursosTecnicosModal = cursosTecnicosModal;
         ? item.cursos.split(',').map(c => c.trim()) 
         : (Array.isArray(item.cursos) ? item.cursos : []);
 
-      // Se for um setor (como Direção Jurídica, NADI)
-      if (item.setor) {
-        const setor = document.createElement('div');
-        setor.className = 'info-card-unidade';
-        setor.textContent = item.setor;
-        card.appendChild(setor);
+      // Nome do coordenador
+      if (item.coordenador) {
+        const nome = document.createElement('div');
+        nome.className = 'info-card-nome';
+        nome.textContent = item.coordenador;
+        card.appendChild(nome);
       }
 
-      // Se tiver unidade (coordenadores normais)
-      if (displayUnidade) {
-      const unidade = document.createElement('div');
-      unidade.className = 'info-card-unidade';
-      unidade.textContent = item.unidade;
-      card.appendChild(unidade);
-    }
+      // Cursos
+      if (displayCursos.length > 0) {
+        const cursos = document.createElement('div');
+        cursos.className = 'info-card-cursos';
+        cursos.innerHTML = `⚡ ${displayCursos.join(', ')}`;
+        card.appendChild(cursos);
+      }
 
-    // Nome do coordenador (se houver)
-    if (item.coordenador) {
-      const nome = document.createElement('div');
-      nome.className = 'info-card-nome';
-      nome.textContent = item.coordenador;
-      card.appendChild(nome);
-    }
+      // Contato row
+      const contatoRow = document.createElement('div');
+      contatoRow.className = 'contato-row';
 
-    // Cursos (se houver)
-    if (displayCursos.length > 0) {
-      const cursos = document.createElement('div');
-      cursos.className = 'info-card-cursos';
-      cursos.textContent = displayCursos.join(', ');
-      card.appendChild(cursos);
-    }
+      // Telefone (pode ser array telefones ou contato)
+      const telefone = item.contato || (item.telefones && item.telefones[0]);
+      if (telefone) {
+        const phone = document.createElement('div');
+        phone.className = 'contato-item';
+        phone.innerHTML = `<span class="contato-icon">📞</span><span class="contato-value">${telefone}</span>`;
+        contatoRow.appendChild(phone);
+      }
 
-    // Telefones (se for array) – pode ser um array de strings
-    if (item.telefones && Array.isArray(item.telefones)) {
-      const telefonesDiv = document.createElement('div');
-      telefonesDiv.className = 'info-card-contato';
-      telefonesDiv.innerHTML = item.telefones.map(t => `📞 ${t}`).join('<br>');
-      card.appendChild(telefonesDiv);
-    } else if (item.contato) {
-      // Telefone único (coordenadores antigos)
-      const telefone = document.createElement('div');
-      telefone.className = 'info-card-contato';
-      telefone.textContent = `📞 ${item.contato}`;
-      card.appendChild(telefone);
-    }
+      // E-mail
+      if (item.email) {
+        const email = document.createElement('div');
+        email.className = 'contato-item';
+        email.innerHTML = `<span class="contato-icon">✉️</span><span class="contato-value">${item.email}</span>`;
+        contatoRow.appendChild(email);
+      }
 
-    // E-mail (se houver)
-    if (item.email) {
-      const email = document.createElement('div');
-      email.className = 'info-card-email';
-      const emailLink = document.createElement('a');
-      emailLink.href = `mailto:${item.email}`;
-      emailLink.textContent = item.email;
-      emailLink.style.color = 'var(--accent)';
-      emailLink.style.textDecoration = 'none';
-      emailLink.style.fontWeight = '600';
-      email.appendChild(emailLink);
-      card.appendChild(email);
-    }
+      card.appendChild(contatoRow);
 
-    // Botão copiar – monta mensagem de acordo com os dados disponíveis
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'info-copy-btn';
-    copyBtn.textContent = 'Copiar';
+      // Botões de copiar
+      const btnRow = document.createElement('div');
+      btnRow.className = 'btn-row';
 
-    let mensagem = '';
-    if (item.setor) {
-      mensagem += `${item.setor}\n`;
-    }
-    if (item.unidade) {
-      mensagem += `${item.unidade}\n`;
-    }
-    if (item.coordenador) {
-      mensagem += `Coordenador: ${item.coordenador}\n`;
-    }
-    if (item.telefones) {
-      mensagem += `Telefones: ${item.telefones.join(', ')}\n`;
-    } else if (item.contato) {
-      mensagem += `Telefone: ${item.contato}\n`;
-    }
-    if (item.email) {
-      mensagem += `E-mail: ${item.email}`;
-    }
+      if (telefone) {
+        const copyPhoneBtn = document.createElement('button');
+        copyPhoneBtn.className = 'info-copy-btn';
+        copyPhoneBtn.textContent = '📋 Copiar Telefone';
+        copyPhoneBtn.addEventListener('click', async () => {
+          const ok = await copyText(telefone);
+          copyPhoneBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyPhoneBtn.textContent = '📋 Copiar Telefone', 1200);
+        });
+        btnRow.appendChild(copyPhoneBtn);
+      }
 
-    copyBtn.addEventListener('click', async () => {
-      const ok = await copyText(mensagem.trim());
-      copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-      setTimeout(() => copyBtn.textContent = 'Copiar', 1200);
-    });
-    card.appendChild(copyBtn);
+      if (item.email) {
+        const copyEmailBtn = document.createElement('button');
+        copyEmailBtn.className = 'info-copy-btn';
+        copyEmailBtn.textContent = '✉️ Copiar E-mail';
+        copyEmailBtn.addEventListener('click', async () => {
+          const ok = await copyText(item.email);
+          copyEmailBtn.textContent = ok ? '✓ Copiado!' : '✗ Erro';
+          setTimeout(() => copyEmailBtn.textContent = '✉️ Copiar E-mail', 1200);
+        });
+        btnRow.appendChild(copyEmailBtn);
+      }
 
-    return card;
-  }
-);
+      card.appendChild(btnRow);
+
+      return card;
+    }
+  );
 
  // Expor globalmente
 window.globalModal = globalModal;

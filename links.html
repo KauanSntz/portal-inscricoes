@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Central de Links - Fametro 2026/1</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
+
 <body>
+  <!-- Loading State -->
+  <div id="app-loading">
+    <div class="spinner"></div>
+    <p>Carregando dados...</p>
+  </div>
+
   <div class="top-stripe" aria-hidden="true"></div>
 
   <main class="container app-shell">
@@ -31,7 +39,7 @@
         <a class="menu-link is-active" href="./links.html">Central de Links</a>
 
         <!-- Diário de Bordo -->
-        <a class="menu-link" href="./diario.html">📋 Diário de Bordo</a>
+        <a class="menu-link" href="./diario.html"> Diário de Bordo</a>
 
         <!-- Submenu Informações -->
         <div class="menu-item-with-submenu">
@@ -70,9 +78,10 @@
         </div> -->
 
         <a class="menu-link" href="./tickets.html" id="tickets-link" style="display:none;">
-          Tickets 
+          Tickets
           <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+          <span id="tickets-andamento-badge" class="badge"
+            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
         </a>
 
         <!-- Botão Sair -->
@@ -97,9 +106,10 @@
         <a class="btn btn--nav" href="./portal.html">Portal</a>
         <a class="btn btn--nav is-active" href="./links.html" aria-current="page">Central de Links</a>
         <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">
-          Tickets 
+          Tickets
           <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+          <span id="tickets-andamento-badge-nav" class="badge"
+            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
         </a>
         <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
       </div>
@@ -177,18 +187,16 @@
 
     auth.onAuthStateChanged(async (user) => {
       console.log('🔍 links: onAuthStateChanged', user ? `Usuário: ${user.email}` : 'Nenhum usuário');
-      // LOGIN TEMPORARIAMENTE DESATIVADO - qualquer usuário acessa o portal
       if (!user) {
-        console.log('[LINKS] Acesso sem login (temporário)');
-        // window.location.href = './index.html';
-        // return;
+        window.location.href = './index.html';
+        return;
       }
 
       try {
-        const doc = user ? await db.collection('users').doc(user.uid).get() : null;
-        if (doc && doc.exists) {
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (doc.exists) {
           currentUser = { uid: user.uid, ...doc.data() };
-        } else if (user) {
+        } else {
           const newUser = {
             email: user.email,
             nome: user.displayName || 'Usuário',
@@ -198,77 +206,86 @@
           await db.collection('users').doc(user.uid).set(newUser);
           currentUser = { uid: user.uid, ...newUser };
         }
+        
+        // Sincroniza o tipo com localStorage para telas standalone (ex: admin-links.html)
+        localStorage.setItem('userType', currentUser.tipo);
 
-        // TICKETS TEMPORARIAMENTE OCULTOS
-        // const ticketsLink = document.getElementById('tickets-link');
-        // const ticketsLinkNav = document.getElementById('tickets-link-nav');
-        // if (ticketsLink) ticketsLink.style.display = 'inline-block';
-        // if (ticketsLinkNav) ticketsLinkNav.style.display = 'inline-block';
+        // Mostrar links de tickets e logout nos dois menus
+        const ticketsLink = document.getElementById('tickets-link');
+        const ticketsLinkNav = document.getElementById('tickets-link-nav');
+        const logoutBtnNav = document.getElementById('logout-btn-nav');
+        const logoutBtnMenu = document.getElementById('logout-btn-menu');
 
-        // Preencher perfil se logado
-        if (user) {
-          const userProfile = document.getElementById('user-profile');
-          const userNameSpan = document.getElementById('user-name');
-          const userEmailSpan = document.getElementById('user-email');
-          if (userProfile && userNameSpan && userEmailSpan) {
-            userNameSpan.textContent = currentUser.nome || 'Usuário';
-            userEmailSpan.textContent = currentUser.email || '';
-            userProfile.style.display = 'flex';
-          }
-          atualizarBadges();
+        if (ticketsLink) ticketsLink.style.display = 'inline-block';
+        if (ticketsLinkNav) ticketsLinkNav.style.display = 'inline-block';
+        if (logoutBtnNav) logoutBtnNav.style.display = 'inline-block';
+        if (logoutBtnMenu) logoutBtnMenu.style.display = 'inline-block';
+
+        // Menu Admin desabilitado temporariamente
+
+        // Preencher perfil
+        const userProfile = document.getElementById('user-profile');
+        const userNameSpan = document.getElementById('user-name');
+        const userEmailSpan = document.getElementById('user-email');
+        if (userProfile && userNameSpan && userEmailSpan) {
+          userNameSpan.textContent = currentUser.nome || 'Usuário';
+          userEmailSpan.textContent = currentUser.email || '';
+          userProfile.style.display = 'flex';
         }
+
+        // Atualizar badges
+        atualizarBadges();
       } catch (error) {
         console.error('Erro ao carregar perfil:', error);
-        // LOGIN TEMPORARIAMENTE DESATIVADO
-        // window.location.href = './index.html';
+        window.location.href = './index.html';
       }
     });
 
     async function atualizarBadges() {
-  if (!currentUser) return;
+      if (!currentUser) return;
 
-  const badgeAbertos = document.getElementById('tickets-badge');
-  const badgeAndamento = document.getElementById('tickets-andamento-badge');
-  const badgeAbertosNav = document.getElementById('tickets-badge-nav');
-  const badgeAndamentoNav = document.getElementById('tickets-andamento-badge-nav');
+      const badgeAbertos = document.getElementById('tickets-badge');
+      const badgeAndamento = document.getElementById('tickets-andamento-badge');
+      const badgeAbertosNav = document.getElementById('tickets-badge-nav');
+      const badgeAndamentoNav = document.getElementById('tickets-andamento-badge-nav');
 
-  if (!badgeAbertos || !badgeAndamento || !badgeAbertosNav || !badgeAndamentoNav) {
-    console.warn('Elementos de badge não encontrados');
-    return;
-  }
+      if (!badgeAbertos || !badgeAndamento || !badgeAbertosNav || !badgeAndamentoNav) {
+        console.warn('Elementos de badge não encontrados');
+        return;
+      }
 
-  let queryAbertos = db.collection('tickets').where('status', '==', 'aberto');
-  let queryAndamento = db.collection('tickets').where('status', '==', 'em_andamento');
+      let queryAbertos = db.collection('tickets').where('status', '==', 'aberto');
+      let queryAndamento = db.collection('tickets').where('status', '==', 'em_andamento');
 
-  if (currentUser.tipo === 'comum') {
-    queryAbertos = queryAbertos.where('criadoPor', '==', currentUser.uid);
-    queryAndamento = queryAndamento.where('criadoPor', '==', currentUser.uid);
-  } else if (currentUser.tipo === 'admin') {
-    queryAbertos = queryAbertos.where('superTicket', '==', false);
-    queryAndamento = queryAndamento.where('superTicket', '==', false)
-                                    .where('iniciadoPor', '==', currentUser.uid);
-  } else if (currentUser.tipo === 'super_admin') {
-    queryAndamento = queryAndamento.where('iniciadoPor', '==', currentUser.uid);
-  }
+      if (currentUser.tipo === 'comum') {
+        queryAbertos = queryAbertos.where('criadoPor', '==', currentUser.uid);
+        queryAndamento = queryAndamento.where('criadoPor', '==', currentUser.uid);
+      } else if (currentUser.tipo === 'admin') {
+        queryAbertos = queryAbertos.where('superTicket', '==', false);
+        queryAndamento = queryAndamento.where('superTicket', '==', false)
+          .where('iniciadoPor', '==', currentUser.uid);
+      } else if (currentUser.tipo === 'super_admin') {
+        queryAndamento = queryAndamento.where('iniciadoPor', '==', currentUser.uid);
+      }
 
-  try {
-    const [snapAbertos, snapAndamento] = await Promise.all([queryAbertos.get(), queryAndamento.get()]);
+      try {
+        const [snapAbertos, snapAndamento] = await Promise.all([queryAbertos.get(), queryAndamento.get()]);
 
-    badgeAbertos.textContent = snapAbertos.size;
-    badgeAbertos.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
+        badgeAbertos.textContent = snapAbertos.size;
+        badgeAbertos.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
 
-    badgeAndamento.textContent = snapAndamento.size;
-    badgeAndamento.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
+        badgeAndamento.textContent = snapAndamento.size;
+        badgeAndamento.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
 
-    badgeAbertosNav.textContent = snapAbertos.size;
-    badgeAbertosNav.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
+        badgeAbertosNav.textContent = snapAbertos.size;
+        badgeAbertosNav.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
 
-    badgeAndamentoNav.textContent = snapAndamento.size;
-    badgeAndamentoNav.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
-  } catch (error) {
-    console.error('Erro ao atualizar badges:', error);
-  }
-}
+        badgeAndamentoNav.textContent = snapAndamento.size;
+        badgeAndamentoNav.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
+      } catch (error) {
+        console.error('Erro ao atualizar badges:', error);
+      }
+    }
 
     window.logout = () => {
       auth.signOut().then(() => {
@@ -280,22 +297,23 @@
   </script>
 
   <!-- Dados -->
-<script src="./assets/data/links-data.js"></script>
-<script src="./assets/data/courses-data.js"></script>
-<script src="./assets/data/course_prices_2026_1_data.js"></script>
+  <script src="./assets/data/links-data.js"></script>
+  <script src="./assets/data/courses-data.js"></script>
+  <script src="./assets/data/course_prices_2026_1_data.js"></script>
 
-<!-- Carregador do menu (NOVO) -->
-<script src="./assets/js/menu-loader.js"></script>
+  <!-- Carregador do menu (NOVO) -->
+  <script src="./assets/js/menu-loader.js"></script>
 
-<!-- API URL -->
-<script>window.API_URL = 'https://portal-inscricoes.onrender.com';</script>
+  <!-- API URL -->
+  <script>window.API_URL = 'https://portal-inscricoes.onrender.com';</script>
 
-<!-- Utilitários e modais -->
-<script src="./assets/js/modals-shared.js"></script>
-<script src="./assets/js/menu.js"></script>
-<script src="./assets/js/dark-mode.js"></script>
-<script src="./assets/js/notificacoes.js"></script>
+  <!-- Utilitários e modais -->
+  <script src="./assets/js/modals-shared.js"></script>
+  <script src="./assets/js/menu.js"></script>
+  <script src="./assets/js/dark-mode.js"></script>
+  <script src="./assets/js/notificacoes.js"></script>
 
-<!-- Scripts específicos da página -->
-<script src="./assets/js/links-page.js"></script> <!-- apenas no links -->  
+  <!-- Scripts específicos da página -->
+  <script src="./assets/js/links-page.js"></script> <!-- apenas no links -->
+
 </html>

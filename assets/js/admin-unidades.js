@@ -2,7 +2,7 @@
 // Admin Unidades - Lógica CRUD
 // ============================================
 
-const API_URL = 'http://localhost:3000';
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
 let unidades = [];
 let deleteTargetId = '';
 
@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function init() {
   // Simulação de permissão (fake)
   // No futuro, substituir pela verificação real via Firebase Auth
-  const userType = localStorage.getItem('userType') || 'admin';
+  const userType = localStorage.getItem('userType') || 'comum';
   
-  if (userType !== 'admin' && userType !== 'super_admin') {
+  if (userType !== 'super_admin') {
     showAccessDenied();
     return;
   }
@@ -440,8 +440,4 @@ function logout() {
 // Inicializar senha admin (para testes)
 if (!localStorage.getItem('adminPassword')) {
   localStorage.setItem('adminPassword', 'admin123');
-}
-// Simular usuário admin
-if (!localStorage.getItem('userType')) {
-  localStorage.setItem('userType', 'admin');
 }

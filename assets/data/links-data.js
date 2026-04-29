@@ -7,7 +7,7 @@
   const CACHE_DURATION = 5 * 60 * 1000;
 
   // Unidades para tela inicial (capital + compensa)
-  const UNIDADES_CAPITAL = ['sede', 'norte', 'sul', 'leste', 'compensa'];
+  const UNIDADES_CAPITAL = ['sede', 'leste', 'norte', 'sul', 'oeste', 'compensa'];
 
   const MODALITY_MAP = {
     "PRESENCIAL": "presencial",
@@ -104,6 +104,12 @@
       const portalLinks = transformToPortalLinks(json.data || []);
       setCachedData(portalLinks);
       console.log(`[links-data] Cache atualizado (${json.data?.length || 0} processos)`);
+      
+      if (!window.PORTAL_LINKS || window.PORTAL_LINKS.length === 0) {
+        window.PORTAL_LINKS = portalLinks;
+        window.dispatchEvent(new Event('portal-links-loaded'));
+        console.log("[links-data] PORTAL_LINKS atualizado em tempo real");
+      }
     } catch (error) {
       console.warn("[links-data] Erro ao atualizar:", error);
     }
@@ -113,7 +119,7 @@
     console.log("[links-data] ✅ Script carregado");
     const cached = getCachedData();
     console.log("[links-data] Cache encontrado:", !!cached);
-    if (cached) {
+    if (cached && cached.length > 0) {
       console.log("[links-data] Usando cache local:", cached.length, "unidades");
       window.PORTAL_LINKS = cached;
       console.log("[links-data] PORTAL_LINKS setado (cache)");
@@ -131,10 +137,12 @@
           setCachedData(portalLinks);
           window.PORTAL_LINKS = portalLinks;
           console.log(`[links-data] ✅ PORTAL_LINKS setado: ${portalLinks.length} unidades, ${portalLinks.reduce((acc, u) => acc + Object.values(u.blocks).reduce((a, b) => a + b.links.length, 0), 0)} links`);
+          window.dispatchEvent(new Event('portal-links-loaded'));
         })
         .catch(err => {
           console.error("[links-data] ❌ Erro:", err);
           window.PORTAL_LINKS = [];
+          window.dispatchEvent(new Event('portal-links-error'));
         });
     }
 

@@ -1,3 +1,30 @@
+/* ===== LOADING STATE ===== */
+#app-loading {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #334155;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ===== VARIÁVEIS GLOBAIS ===== */
 :root {
   --space-1: 0.5rem;
@@ -947,6 +974,54 @@ body.dark-mode .status-badge.resolvido {
 .prices-card:hover {
   box-shadow: 0 0 0 2px var(--accent), var(--shadow-md);
   transform: translateY(-2px);
+}
+
+/* Categorias de Preços */
+.price-category {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+/* Container principal das categorias de preços */
+.prices-categories-container {
+  display: block;
+  width: 100%;
+}
+
+.price-category-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+  text-align: center;
+}
+
+.price-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+}
+
+.price-category-grid .prices-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+@media (max-width: 1024px) {
+  .price-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .price-category-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .prices-course {
