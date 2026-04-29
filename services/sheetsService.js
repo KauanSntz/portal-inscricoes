@@ -10,7 +10,6 @@ const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
 const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
 const URL_DIARIO_BORDO = process.env.URL_DIARIO_BORDO || 'diario_bordo';
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
@@ -219,8 +218,17 @@ function invalidateCache() {
  * @returns {Promise<Array>} Registros do diário
  */
 async function getDiarioBordo(filtros = {}) {
-  const url = `${BASE_URL}/${URL_DIARIO_BORDO}`;
-  let registros = await fetchWithCache(url, 'diario_bordo');
+  // Busca direto da API do Google Sheets via CRUD para evitar delay de cache do OpenSheet
+  let registrosRaw = await crud.getAllRows('diario_bordo');
+  
+  // Converte as chaves para UPPERCASE para manter compatibilidade com o frontend
+  let registros = registrosRaw.map(r => {
+    const upperObj = {};
+    for (const key in r) {
+      upperObj[key.toUpperCase()] = r[key];
+    }
+    return upperObj;
+  });
 
   // Ignorar registros inativos
   if (Array.isArray(registros)) {
