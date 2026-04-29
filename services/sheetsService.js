@@ -10,6 +10,7 @@ const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
 const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
 const URL_DIARIO_BORDO = process.env.URL_DIARIO_BORDO || 'diario_bordo';
+const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
 // Cache em memória
@@ -253,48 +254,16 @@ async function getDiarioBordo(filtros = {}) {
 }
 
 async function salvarDiarioBordo(registro) {
-  const { acao, id_registro, ...dados } = registro;
-
-  const rowData = {
-    id_registro: id_registro,
-    id_operador: dados.id_operador,
-    nome_operador: dados.nome_operador,
-    data_inscricao: dados.data_inscricao,
-    tipo_inscricao: dados.tipo_inscricao,
-    nome: dados.nome,
-    telefone: dados.telefone,
-    nascimento: dados.nascimento,
-    cpf: dados.cpf,
-    curso: dados.curso,
-    modalidade: dados.modalidade,
-    unidade: dados.unidade,
-    situacao: dados.situacao
-  };
-
-  let response;
-
-  try {
-    if (acao === 'novo') {
-      if (!rowData.id_registro) {
-        rowData.id_registro = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-      }
-      response = await crud.appendRow('diario_bordo', rowData);
-    } else if (acao === 'editar' || acao === 'excluir') {
-      if (acao === 'excluir') {
-        rowData.situacao = 'inativo';
-      }
-      response = await crud.updateRow('diario_bordo', 'id_registro', id_registro, rowData);
-      if (!response) {
-        throw new Error(`Registro ${id_registro} não encontrado.`);
-      }
-    }
-
-    invalidateCache('diario_bordo');
-    return { status: 'ok', message: 'Registro salvo com sucesso!', data: response };
-  } catch (error) {
-    console.error('[CRUD DIARIO] Erro:', error.message);
-    throw error;
+  const response = await axios.post(APPS_SCRIPT_URL, registro, {
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 15000,
+    maxRedirects: 5
+  });
+  // Invalidar cache do diário após salvar
+  if (cache.diario_bordo) {
+    cache.diario_bordo = { data: null, timestamp: 0 };
   }
+  return response.data;
 }
 
 module.exports = {
