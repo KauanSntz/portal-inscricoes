@@ -108,12 +108,8 @@
       .then(() => console.log('Persistência LOCAL definida'))
       .catch(error => console.error('Erro na persistência:', error));
 
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        console.log('Usuário logado, redirecionando para portal.html');
-        window.location.href = './portal.html';
-      }
-    });
+    // LOGIN TEMPORARIAMENTE DESATIVADO - redireciona direto para portal
+    window.location.href = './portal.html';
 
     // Elementos do DOM
     const loginForm = document.getElementById('login-form');

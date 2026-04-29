@@ -23,6 +23,26 @@ const cache = {
   diario_bordo: { data: null, timestamp: 0 }
 };
 
+function invalidateCache(cacheKey) {
+  if (cache[cacheKey]) {
+    cache[cacheKey] = { data: null, timestamp: 0 };
+    console.log(`[CACHE] ${cacheKey} invalidado`);
+  }
+}
+
+module.exports = {
+  fetchWithCache,
+  getProcessos,
+  getUnidades,
+  getModalidades,
+  getCoordenadores,
+  getSetoresContato,
+  getCursosTecnicos,
+  getProcessoByCodigo,
+  getUnidadeById,
+  invalidateCache
+};
+
 /**
  * Busca dados de uma URL com cache
  * @param {string} url - URL para buscar
@@ -106,6 +126,9 @@ async function getUnidades(filtros = {}) {
   const url = `${BASE_URL}/${URL_UNIDADES}`;
   let unidades = await fetchWithCache(url, 'unidades');
 
+  // FILTRA: remover deletadas (deleted_at)
+  unidades = unidades.filter(u => !u.deleted_at);
+
   if (filtros.tipo) {
     unidades = unidades.filter(u => u.tipo === filtros.tipo);
   }
@@ -132,7 +155,8 @@ async function getCoordenadores(filtros = {}) {
   const coordenadores = await fetchWithCache(url, 'coordenadores');
   
   const urlUnidades = `${BASE_URL}/${URL_UNIDADES}`;
-  const unidades = await fetchWithCache(urlUnidades, 'unidades');
+  const todasUnidades = await fetchWithCache(urlUnidades, 'unidades');
+  const unidades = todasUnidades.filter(u => !u.deleted_at);
   
   const unidadesMap = {};
   unidades.forEach(u => {
@@ -198,7 +222,9 @@ async function getProcessoByCodigo(codigo) {
 async function getUnidadeById(unidade_id) {
   const url = `${BASE_URL}/${URL_UNIDADES}`;
   const unidades = await fetchWithCache(url, 'unidades');
-  return unidades.find(u => u.unidade_id === unidade_id) || null;
+  const unidade = unidades.find(u => u.unidade_id === unidade_id);
+  if (unidade && unidade.deleted_at) return null;
+  return unidade || null;
 }
 
 /**
