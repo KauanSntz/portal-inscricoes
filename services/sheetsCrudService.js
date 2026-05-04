@@ -10,14 +10,17 @@ let authClient = null;
 async function getAuthClient() {
   if (authClient) return authClient;
 
-  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || './assets/credentials/sheets-creds.json';
-  
-  const keyPath = path.resolve(credentialsPath);
-  if (!fs.existsSync(keyPath)) {
-    throw new Error(`Credentials file not found: ${keyPath}`);
+  let key;
+  if (process.env.GOOGLE_CREDENTIALS_JSON) {
+    key = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+  } else {
+    const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS || './assets/credentials/sheets-creds.json';
+    const keyPath = path.resolve(credentialsPath);
+    if (!fs.existsSync(keyPath)) {
+      throw new Error(`Credentials file not found: ${keyPath}`);
+    }
+    key = require(keyPath);
   }
-  
-  const key = require(keyPath);
   
   authClient = new google.auth.JWT(
     key.client_email,
