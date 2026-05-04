@@ -252,6 +252,10 @@ async function confirmImport() {
 
   await loadCurrentLinks(); // recarrega o banco
   
+  // Invalidar cache da Central de Links para que novos links apareçam
+  localStorage.removeItem('portal_links_cache');
+  console.log('[admin-links] Cache da Central de Links invalidado');
+
   showLoading(false);
   btn.disabled = false;
   
@@ -352,6 +356,8 @@ async function executeDelete(codigos) {
   }
 
   await loadCurrentLinks();
+  // Invalidar cache da Central de Links
+  localStorage.removeItem('portal_links_cache');
   renderManageLinks(document.getElementById('searchInput').value);
   showLoading(false);
   showFeedback(`${successCount} processo(s) inativado(s) com sucesso.`, 'success');

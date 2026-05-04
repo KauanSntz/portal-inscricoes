@@ -21,6 +21,8 @@ const cache = {
   coordenadores: { data: null, timestamp: 0 },
   setores_contato: { data: null, timestamp: 0 },
   cursos_tecnicos: { data: null, timestamp: 0 },
+  cursos_oferta: { data: null, timestamp: 0 },
+  precos_cursos: { data: null, timestamp: 0 },
   diario_bordo: { data: null, timestamp: 0 }
 };
 
@@ -209,8 +211,70 @@ function invalidateCache() {
   cache.coordenadores = { data: null, timestamp: 0 };
   cache.setores_contato = { data: null, timestamp: 0 };
   cache.cursos_tecnicos = { data: null, timestamp: 0 };
+  cache.cursos_oferta = { data: null, timestamp: 0 };
+  cache.precos_cursos = { data: null, timestamp: 0 };
   cache.diario_bordo = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
+}
+
+/**
+ * Busca cursos ofertados por unidade/modalidade (da aba cursos_oferta)
+ * @returns {Promise<Array>} Cursos ofertados
+ */
+async function getCursosOferta() {
+  const url = `${BASE_URL}/cursos_oferta`;
+  return fetchWithCache(url, 'cursos_oferta');
+}
+
+/**
+ * Busca preços de cursos (da aba precos_cursos)
+ * @returns {Promise<Array>} Preços
+ */
+async function getPrecosCursos() {
+  const url = `${BASE_URL}/precos_cursos`;
+  return fetchWithCache(url, 'precos_cursos');
+}
+
+/**
+ * Busca cursos técnicos (da aba cursos_tecnicos)
+ * Reagrupa os dados tabulares no formato aninhado esperado pelo frontend
+ * @returns {Promise<Array>} Cursos técnicos agrupados por unidade
+ */
+async function getCursosTecnicos() {
+  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
+  const rows = await fetchWithCache(url, 'cursos_tecnicos');
+  
+  // Reagrupar: flat rows → { unidade, endereco, cursos: [{ nome, duracao, turnos, valores, primeiraMensalidade }] }
+  const unidadesMap = new Map();
+  for (const row of rows) {
+    const key = row.unidade;
+    if (!unidadesMap.has(key)) {
+      unidadesMap.set(key, { unidade: row.unidade, endereco: row.endereco, cursosMap: new Map() });
+    }
+    const u = unidadesMap.get(key);
+    if (!u.cursosMap.has(row.curso)) {
+      u.cursosMap.set(row.curso, {
+        nome: row.curso,
+        duracao: row.duracao,
+        turnos: [],
+        valores: {},
+        primeiraMensalidade: parseFloat(row.primeira_mensalidade) || 0
+      });
+    }
+    const c = u.cursosMap.get(row.curso);
+    if (row.turno && !c.turnos.includes(row.turno)) {
+      c.turnos.push(row.turno);
+    }
+    if (row.turno && row.valor) {
+      c.valores[row.turno] = parseFloat(row.valor) || 0;
+    }
+  }
+  
+  return Array.from(unidadesMap.values()).map(u => ({
+    unidade: u.unidade,
+    endereco: u.endereco,
+    cursos: Array.from(u.cursosMap.values())
+  }));
 }
 
 /**
@@ -254,16 +318,55 @@ async function getDiarioBordo(filtros = {}) {
 }
 
 async function salvarDiarioBordo(registro) {
-  const response = await axios.post(APPS_SCRIPT_URL, registro, {
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 15000,
-    maxRedirects: 5
-  });
+  const acao = registro.acao || 'novo';
+  
+  // Mapear campos para lowercase (formato do CRUD/Google Sheets)
+  const dados = {
+    id_registro: registro.id_registro || '',
+    id_operador: registro.id_operador || '',
+    nome_operador: registro.nome_operador || '',
+    data_inscricao: registro.data_inscricao || '',
+    tipo_inscricao: registro.tipo_inscricao || '',
+    nome: registro.nome || '',
+    telefone: registro.telefone || '',
+    nascimento: registro.nascimento || '',
+    cpf: registro.cpf || '',
+    curso: registro.curso || '',
+    modalidade: registro.modalidade || '',
+    unidade: registro.unidade || '',
+    situacao: registro.situacao || ''
+  };
+
+  let resultado;
+
+  if (acao === 'excluir') {
+    // Soft delete: marcar como inativo
+    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, {
+      situacao: 'inativo'
+    });
+    if (!resultado) {
+      throw new Error(`Registro ${dados.id_registro} não encontrado para exclusão`);
+    }
+    console.log(`[DIARIO] Registro ${dados.id_registro} marcado como inativo`);
+  } else if (acao === 'editar') {
+    // Update: atualizar registro existente pelo id_registro
+    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, dados);
+    if (!resultado) {
+      throw new Error(`Registro ${dados.id_registro} não encontrado para edição`);
+    }
+    console.log(`[DIARIO] Registro ${dados.id_registro} atualizado`);
+  } else {
+    // Novo: adicionar nova linha
+    resultado = await crud.appendRow('diario_bordo', dados);
+    console.log(`[DIARIO] Novo registro criado: ${dados.id_registro}`);
+  }
+
   // Invalidar cache do diário após salvar
   if (cache.diario_bordo) {
     cache.diario_bordo = { data: null, timestamp: 0 };
   }
-  return response.data;
+
+  return { status: 'ok', action: acao, data: resultado };
 }
 
 module.exports = {
@@ -276,5 +379,8 @@ module.exports = {
   getUnidadeById,
   getDiarioBordo,
   salvarDiarioBordo,
+  getCursosOferta,
+  getPrecosCursos,
+  getCursosTecnicos,
   invalidateCache
 };

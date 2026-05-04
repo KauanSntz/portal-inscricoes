@@ -2,7 +2,7 @@
 (() => {
   "use strict";
 
-  const API_URL = "https://portal-inscricoes.onrender.com";
+  const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
   const CACHE_KEY = "portal_links_cache";
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
@@ -67,7 +67,7 @@
     const unidadesMap = {};
 
     processos.forEach(p => {
-      const uid = p.unidade_id;
+      const uid = (p.unidade_id || "").toLowerCase();
       if (!unidadesMap[uid]) {
         unidadesMap[uid] = {
           key: uid,

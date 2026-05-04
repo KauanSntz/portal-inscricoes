@@ -110,13 +110,19 @@ async function updateRow(sheetTitle, field, fieldValue, data) {
   const auth = await getAuthClient();
   
   const headers = await getHeaders(sheetTitle);
-  const rowIndex = await findRowIndex(sheetTitle, field, fieldValue);
+  const rows = await getAllRows(sheetTitle);
+  const idx = rows.findIndex(row => row[field] === fieldValue);
   
-  if (rowIndex < 0) {
+  if (idx < 0) {
     return null;
   }
 
-  const values = headers.map(h => data[h] || '');
+  const rowIndex = idx + 2; // +1 for header, +1 for 1-indexed
+  const existing = rows[idx];
+
+  // Merge: existing data + new data (new data wins)
+  const merged = { ...existing, ...data };
+  const values = headers.map(h => merged[h] !== undefined && merged[h] !== null ? String(merged[h]) : '');
   
   await sheets.spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
@@ -129,10 +135,11 @@ async function updateRow(sheetTitle, field, fieldValue, data) {
   });
 
   console.log(`[CRUD] Updated row ${rowIndex} in ${sheetTitle}`);
-  return { row: rowIndex, data };
+  return { row: rowIndex, data: merged };
 }
 
 async function deleteRow(sheetTitle, field, fieldValue) {
+  // Soft delete: preserva todos os dados existentes e apenas marca deleted_at
   return updateRow(sheetTitle, field, fieldValue, {
     deleted_at: new Date().toISOString()
   });

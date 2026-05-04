@@ -344,11 +344,7 @@
         <div class="field" style="max-width: 140px;">
           <input type="date" id="filtro-data" class="search-input" title="Filtrar por data" />
         </div>
-        <div class="field" id="filtro-operador-container" style="display:none;">
-          <select id="filtro-operador" class="search-input">
-            <option value="">Todos os Operadores</option>
-          </select>
-        </div>
+
       </div>
       <p class="links-meta" id="diario-meta"></p>
       <!-- Painel de contagem por operador (só para admin) -->
@@ -512,12 +508,14 @@
         if (el('user-email')) el('user-email').textContent = currentUser.email || '';
         if (el('user-profile')) el('user-profile').style.display = 'flex';
 
-        // Mostrar filtro de operador se for admin ou super admin
-        if (isAdmin()) {
-          document.getElementById('filtro-operador-container').style.display = 'block';
-        }
+
 
         carregarRegistros();
+
+        // Polling: atualização em tempo real a cada 30 segundos
+        window._diarioPollingInterval = setInterval(() => {
+          carregarRegistros();
+        }, 30000);
       } catch (e) { console.error('Erro auth:', e); window.location.href = './index.html'; }
     });
 
@@ -580,40 +578,24 @@
       const empty = document.getElementById('diario-empty');
       const meta = document.getElementById('diario-meta');
 
-      // Atualizar dropdown de operadores para Admin
+      // Renderizar contagem de registros de hoje por operador (só para admins)
       if (currentUser && isAdmin()) {
-        const selectOp = document.getElementById('filtro-operador');
-        const oldVal = selectOp.value;
-        const primeiraVez = selectOp.options.length <= 1;
-        registros.forEach(r => { if (r.NOME_OPERADOR) operadoresDisponiveis.add(r.NOME_OPERADOR); });
-        selectOp.innerHTML = '<option value="">Todos os Operadores</option>' +
-          Array.from(operadoresDisponiveis).sort().map(op => `<option value="${op}">${op}</option>`).join('');
-        
-        // Na primeira carga, selecionar o próprio usuário
-        if (primeiraVez && currentUser.nome) {
-          selectOp.value = currentUser.nome;
-        } else {
-          selectOp.value = oldVal;
-        }
-
-        // Renderizar contagem de registros de hoje por operador
         renderContagemOperadores(registros);
       }
 
-      // Filtros Base (Permissão e Inativos)
+      // Filtro base: remover inativos
       let filtrados = registros.filter(r => (r.SITUACAO || '').toLowerCase() !== 'inativo');
-      if (currentUser && !isAdmin()) {
-        // Usuário comum só vê os próprios registros
+
+      // SEMPRE filtrar por operador logado (independente da hierarquia)
+      if (currentUser) {
         filtrados = filtrados.filter(r => r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome);
       }
 
-      // Filtros de UI
+      // Filtros de UI (busca e data)
       const busca = (document.getElementById('busca-diario').value || '').toLowerCase();
-      const opFiltro = document.getElementById('filtro-operador').value || '';
       const dataFiltro = document.getElementById('filtro-data').value || '';
 
       if (busca) filtrados = filtrados.filter(r => (r.NOME || '').toLowerCase().includes(busca) || (r.CPF || '').includes(busca) || (r.TELEFONE || '').includes(busca));
-      if (opFiltro && isAdmin()) filtrados = filtrados.filter(r => r.NOME_OPERADOR === opFiltro);
       if (dataFiltro) {
         const [y, m, d] = dataFiltro.split('-');
         const dataFormatada = `${d}/${m}/${y}`;
@@ -626,7 +608,7 @@
 
       tbody.innerHTML = filtrados.map(r => {
         const sitClass = getSitClass(r.SITUACAO);
-        const podeEditar = isAdmin() || r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome;
+        const podeEditar = r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome || isAdmin();
         const podeExcluir = r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome || isAdmin();
         // Escape data para o botão de editar
         const rawData = encodeURIComponent(JSON.stringify(r));
@@ -752,7 +734,7 @@
         if (json.status === 'ok') {
           notificar('🗑️ Registro excluído com sucesso!');
           fecharConfirmacao();
-          setTimeout(() => carregarRegistros(), 1500);
+          await carregarRegistros();
         } else {
           notificar('❌ Erro: ' + (json.message || 'Falha ao excluir'), false);
         }
@@ -791,7 +773,6 @@
 
     // ===== FILTROS =====
     document.getElementById('busca-diario').addEventListener('input', () => { if (window._registros) renderTabela(window._registros); });
-    document.getElementById('filtro-operador').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
     document.getElementById('filtro-data').addEventListener('change', () => { if (window._registros) renderTabela(window._registros); });
 
     // ===== MODAL =====
@@ -963,7 +944,7 @@
         if (json.status === 'ok') {
           notificar(modoEdicao ? '✅ Registro atualizado!' : '✅ Registro salvo com sucesso!');
           fecharModal();
-          setTimeout(() => carregarRegistros(), 2000);
+          await carregarRegistros();
         } else {
           notificar('❌ Erro: ' + (json.message || 'Falha ao salvar'), false);
           document.getElementById('btn-salvar').disabled = false;

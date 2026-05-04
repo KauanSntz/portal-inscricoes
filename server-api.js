@@ -10,6 +10,9 @@ const setoresContatoRoutes = require('./routes/setores-contato');
 const diarioRoutes = require('./routes/diario');
 const adminRoutes = require('./routes/admin');
 const operadoresRoutes = require('./routes/operadores');
+const cursosOfertaRoutes = require('./routes/cursos-oferta');
+const precosCursosRoutes = require('./routes/precos-cursos');
+const cursosTecnicosRoutes = require('./routes/cursos-tecnicos');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +33,12 @@ app.use('/setores-contato', setoresContatoRoutes);
 app.use('/diario', diarioRoutes);
 app.use('/admin', adminRoutes);
 app.use('/operadores', operadoresRoutes);
+app.use('/cursos-oferta', cursosOfertaRoutes);
+app.use('/precos-cursos', precosCursosRoutes);
+app.use('/cursos-tecnicos', cursosTecnicosRoutes);
+
+// Servir arquivos estáticos (HTML, CSS, JS)
+app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'API Portal Inscrições rodando' });

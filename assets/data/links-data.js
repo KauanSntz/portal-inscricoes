@@ -2,7 +2,7 @@
 (() => {
   "use strict";
 
-  const API_URL = "https://portal-inscricoes.onrender.com";
+  const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
   const CACHE_KEY = "portal_links_cache";
   const CACHE_DURATION = 5 * 60 * 1000;
 
@@ -53,7 +53,7 @@
     const unidadesMap = {};
 
     processos.forEach(p => {
-      const uid = p.unidade_id;
+      const uid = (p.unidade_id || "").toLowerCase();
       if (!unidadesMap[uid]) {
         unidadesMap[uid] = {
           key: uid,
@@ -105,11 +105,18 @@
       setCachedData(portalLinks);
       console.log(`[links-data] Cache atualizado (${json.data?.length || 0} processos)`);
       
-      if (!window.PORTAL_LINKS || window.PORTAL_LINKS.length === 0) {
-        window.PORTAL_LINKS = portalLinks;
+      // SEMPRE atualizar PORTAL_LINKS com dados frescos da API
+      window.PORTAL_LINKS = portalLinks;
+      
+      if (!window._portalLinksInitialLoaded) {
+        // Primeira carga: disparar evento de carregamento
+        window._portalLinksInitialLoaded = true;
         window.dispatchEvent(new Event('portal-links-loaded'));
-        console.log("[links-data] PORTAL_LINKS atualizado em tempo real");
+      } else {
+        // Atualizações subsequentes: disparar evento de update para re-render
+        window.dispatchEvent(new Event('portal-links-updated'));
       }
+      console.log("[links-data] PORTAL_LINKS atualizado em tempo real");
     } catch (error) {
       console.warn("[links-data] Erro ao atualizar:", error);
     }

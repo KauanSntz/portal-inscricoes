@@ -75,9 +75,22 @@
   let pricesDataPromise = null;
   const loadPricesOnce = async () => {
     if (!pricesDataPromise) {
-      pricesDataPromise = Promise.resolve().then(() => {
-        const payload = window.COURSE_PRICES_2026_1;
-        return payload && Array.isArray(payload.records) ? { ...payload, records: payload.records } : { records: [] };
+      pricesDataPromise = new Promise((resolve) => {
+        const tryLoad = () => {
+          const payload = window.COURSE_PRICES_2026_1;
+          if (payload && Array.isArray(payload.records)) {
+            resolve({ ...payload, records: payload.records });
+          } else {
+            // Esperar evento prices-loaded
+            window.addEventListener('prices-loaded', () => {
+              const p = window.COURSE_PRICES_2026_1;
+              resolve(p && Array.isArray(p.records) ? { ...p, records: p.records } : { records: [] });
+            }, { once: true });
+            // Timeout fallback: 10s
+            setTimeout(() => resolve({ records: [] }), 10000);
+          }
+        };
+        tryLoad();
       });
     }
     return pricesDataPromise;
@@ -119,7 +132,7 @@
 
   const getDataOrThrow = () => {
     if (!Array.isArray(window.PORTAL_LINKS)) throw new Error("PORTAL_LINKS não encontrado.");
-    if (!window.COURSES?.catalog || !window.COURSES?.offers) throw new Error("COURSES não encontrado.");
+    if (!window.COURSES?.catalog || !window.COURSES?.offers) throw new Error("COURSES ainda carregando...");
     
     let linksRaw = window.PORTAL_LINKS;
     
@@ -429,6 +442,7 @@ setTimeout(() => {
   const init = () => {
     if (appInitialized) return;
     if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) return;
+    if (!window.COURSES?.catalog || !window.COURSES?.offers) return; // Espera COURSES carregar
 
     appInitialized = true;
     hideLoading();
@@ -450,15 +464,26 @@ setTimeout(() => {
     }
   };
 
-  // Fonte única: dados já disponíveis (cache) -> init imediato
-  if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
-    init();
-  } else {
-    // Caso contrário, aguardar evento do links-data.js
-    window.addEventListener('portal-links-loaded', init, { once: true });
-    window.addEventListener('portal-links-error', () => {
-      console.error('[app] Erro ao carregar links');
-      showError('Erro ao carregar dados da API.');
-    }, { once: true });
-  }
+  // Esperar ambos: PORTAL_LINKS e COURSES
+  const tryInit = () => {
+    if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS) && window.COURSES?.catalog) {
+      init();
+    }
+  };
+
+  // Tentar imediatamente
+  tryInit();
+
+  // Escutar eventos de carregamento
+  window.addEventListener('portal-links-loaded', tryInit);
+  window.addEventListener('courses-loaded', tryInit);
+  // Re-render quando links atualizam
+  window.addEventListener('portal-links-updated', () => {
+    appInitialized = false;
+    tryInit();
+  });
+  window.addEventListener('portal-links-error', () => {
+    console.error('[app] Erro ao carregar links');
+    showError('Erro ao carregar dados da API.');
+  }, { once: true });
 })();

@@ -305,7 +305,7 @@
   <script src="./assets/js/menu-loader.js"></script>
 
   <!-- API URL -->
-  <script>window.API_URL = 'https://portal-inscricoes.onrender.com';</script>
+  <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
 
   <!-- Utilitários e modais -->
   <script src="./assets/js/modals-shared.js"></script>
