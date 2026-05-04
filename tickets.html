@@ -176,8 +176,8 @@
     <div id="tickets-empty" class="empty" hidden>Nenhum ticket encontrado.</div>
 
     <!-- Modal para criar/editar ticket -->
-    <div id="ticket-modal" class="modal-overlay" style="display:none;">
-      <div class="modal" style="max-width:500px;">
+    <div id="ticket-modal" class="modal-overlay" style="display:none; align-items: center; justify-content: center;">
+      <div class="modal" style="max-width:450px;">
         <div class="modal-head">
           <div class="modal-title" id="modal-title">Novo Ticket</div>
           <button class="modal-close" id="modal-close">&times;</button>
@@ -189,6 +189,14 @@
               <span>CPF do Aluno</span>
               <input type="text" id="cpf-aluno" class="search-input" required placeholder="Apenas números"
                 maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <div class="field">
+              <span>Nome do Aluno</span>
+              <input type="text" id="nome-aluno" class="search-input" required placeholder="Nome completo">
+            </div>
+            <div class="field">
+              <span>Curso</span>
+              <input type="text" id="curso-aluno" class="search-input" required placeholder="Ex: Administração">
             </div>
             <div class="field">
               <span>Unidade</span>
@@ -273,6 +281,9 @@
   <div id="notificacao"
     style="position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 9999; display: none; transition: opacity 0.3s;">
   </div>
+
+  <!-- Tooltip de mouse -->
+  <div id="tooltip-mouse" style="position:fixed; background:#334155; color:#fff; padding:4px 8px; border-radius:4px; font-size:0.75rem; pointer-events:none; z-index:10000; display:none; opacity:0; transition:opacity 0.2s;"></div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -451,14 +462,34 @@
     }
 
     // Função de cópia de CPF
-    window.copiarCPF = (cpf) => {
+    window.copiarCPF = (cpf, event) => {
       navigator.clipboard.writeText(cpf).then(() => {
-        mostrarNotificacao('✅ CPF copiado!');
+        if(event) mostrarTooltipMouse('✅ Copiado!', event);
+        else mostrarNotificacao('✅ CPF copiado!');
       }).catch((error) => {
         console.error('Erro ao copiar:', error);
-        mostrarNotificacao('❌ Erro ao copiar CPF', false);
+        if(event) mostrarTooltipMouse('❌ Erro', event);
+        else mostrarNotificacao('❌ Erro ao copiar CPF', false);
       });
     };
+
+    function mostrarTooltipMouse(mensagem, event) {
+      const tooltip = document.getElementById('tooltip-mouse');
+      if (!tooltip || !event) return;
+      tooltip.textContent = mensagem;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (event.clientX + 10) + 'px';
+      tooltip.style.top = (event.clientY + 10) + 'px';
+      
+      requestAnimationFrame(() => {
+        tooltip.style.opacity = '1';
+      });
+
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+        setTimeout(() => tooltip.style.display = 'none', 200);
+      }, 1500);
+    }
 
     // Modal de confirmação
     let confirmCallback = null;
@@ -536,7 +567,7 @@
 
     // Função para habilitar/desabilitar campos do modal
     function setModalFieldsState(editable) {
-      const campos = ['cpf-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'motivo', 'resolucao'];
+      const campos = ['cpf-aluno', 'nome-aluno', 'curso-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'motivo', 'resolucao'];
       campos.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = !editable;
@@ -549,6 +580,8 @@
     document.getElementById('new-ticket-btn').addEventListener('click', () => {
       document.getElementById('ticket-id').value = '';
       document.getElementById('cpf-aluno').value = '';
+      document.getElementById('nome-aluno').value = '';
+      document.getElementById('curso-aluno').value = '';
       document.getElementById('unidade').value = '';
       document.getElementById('modalidade').value = '';
       document.getElementById('problema-select').value = '';
@@ -571,9 +604,11 @@
         if (!doc.exists) return;
         const t = doc.data();
         document.getElementById('ticket-id').value = id;
-        document.getElementById('cpf-aluno').value = t.cpfAluno;
-        document.getElementById('unidade').value = t.unidade;
-        document.getElementById('modalidade').value = t.modalidade;
+        document.getElementById('cpf-aluno').value = t.cpfAluno || '';
+        document.getElementById('nome-aluno').value = t.nomeAluno || '';
+        document.getElementById('curso-aluno').value = t.cursoAluno || '';
+        document.getElementById('unidade').value = t.unidade || '';
+        document.getElementById('modalidade').value = t.modalidade || '';
 
         const problemaSelect = document.getElementById('problema-select');
         const problemaOutro = document.getElementById('problema-outro');
@@ -633,6 +668,8 @@
 
       const id = document.getElementById('ticket-id').value;
       const cpf = document.getElementById('cpf-aluno').value;
+      const nome = document.getElementById('nome-aluno').value.trim();
+      const curso = document.getElementById('curso-aluno').value.trim();
       const unidade = document.getElementById('unidade').value;
       const modalidade = document.getElementById('modalidade').value;
 
@@ -722,6 +759,8 @@
         try {
           const novo = {
             cpfAluno: cpf,
+            nomeAluno: nome,
+            cursoAluno: curso,
             unidade: unidade,
             modalidade: modalidade,
             problema: problemaTexto,
@@ -929,9 +968,10 @@
           </div>
           <p>
             <strong>CPF:</strong> 
-            <span class="cpf-copy" onclick="copiarCPF('${t.cpfAluno}')">${t.cpfAluno}</span>
-            | <strong>Unidade:</strong> ${t.unidade} | <strong>Modalidade:</strong> ${t.modalidade}
+            <span class="cpf-copy" onclick="copiarCPF('${t.cpfAluno}', event)">${t.cpfAluno}</span>
+            | <strong>Nome:</strong> ${t.nomeAluno || '—'}
           </p>
+          <p><strong>Curso:</strong> ${t.cursoAluno || '—'} | <strong>Unidade:</strong> ${t.unidade} | <strong>Modalidade:</strong> ${t.modalidade}</p>
           <p><strong>Criado por:</strong> ${t.nomeCriador || 'Desconhecido'}</p>
           ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${t.nomeIniciador || t.iniciadoPor}</p>` : ''}
           <p><strong>Problema:</strong> ${t.problema}</p>

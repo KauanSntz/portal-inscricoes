@@ -461,6 +461,9 @@
     style="position:fixed; bottom:20px; right:20px; background:#10b981; color:#fff; padding:10px 20px; border-radius:5px; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:9999; display:none;">
   </div>
 
+  <!-- Tooltip de mouse -->
+  <div id="tooltip-mouse" style="position:fixed; background:#334155; color:#fff; padding:4px 8px; border-radius:4px; font-size:0.75rem; pointer-events:none; z-index:10000; display:none; opacity:0; transition:opacity 0.2s;"></div>
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
@@ -616,9 +619,9 @@
           <td>${r.DATA_INSCRICAO || ''}</td>
           <td>${r.TIPO_INSCRICAO || ''}</td>
           <td>${r.NOME || ''}</td>
-          <td><span class="tel-copy" onclick="copiarTelefone('${r.TELEFONE || ''}')">${r.TELEFONE || '—'}</span></td>
-          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF || ''}')">${formatCPF(r.CPF || '')}</span></td>
-          <td>${r.NASCIMENTO || '—'}</td>
+          <td><span class="tel-copy" onclick="copiarTelefone('${r.TELEFONE || ''}', event)">${r.TELEFONE || '—'}</span></td>
+          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF || ''}', event)">${formatCPF(r.CPF || '')}</span></td>
+          <td><span class="cpf-copy" title="Copiar nascimento" onclick="copiarTexto('${r.NASCIMENTO || ''}', 'Nascimento', event)">${r.NASCIMENTO || '—'}</span></td>
           <td>${r.CURSO || ''}</td>
           <td>${r.MODALIDADE || ''}</td>
           <td>${r.UNIDADE || ''}</td>
@@ -762,13 +765,41 @@
       return `${c.slice(0, 3)}.${c.slice(3, 6)}.${c.slice(6, 9)}-${c.slice(9)}`;
     }
 
-    function copiarCPF(cpf) {
-      navigator.clipboard.writeText(cpf).then(() => notificar('✅ CPF copiado!')).catch(() => notificar('❌ Erro ao copiar', false));
+    function copiarTexto(texto, nomeCampo, event) {
+      if (!texto) return;
+      navigator.clipboard.writeText(texto).then(() => {
+        if(event) mostrarTooltipMouse('✅ Copiado!', event);
+        else notificar('✅ ' + nomeCampo + ' copiado!');
+      }).catch(() => {
+        if(event) mostrarTooltipMouse('❌ Erro', event);
+        else notificar('❌ Erro ao copiar ' + nomeCampo, false);
+      });
     }
 
-    function copiarTelefone(tel) {
-      if (!tel) return;
-      navigator.clipboard.writeText(tel).then(() => notificar('📞 Telefone copiado!')).catch(() => notificar('❌ Erro ao copiar', false));
+    function copiarCPF(cpf, event) {
+      copiarTexto(cpf, 'CPF', event);
+    }
+
+    function copiarTelefone(tel, event) {
+      copiarTexto(tel, 'Telefone', event);
+    }
+
+    function mostrarTooltipMouse(mensagem, event) {
+      const tooltip = document.getElementById('tooltip-mouse');
+      if (!tooltip || !event) return;
+      tooltip.textContent = mensagem;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (event.clientX + 10) + 'px';
+      tooltip.style.top = (event.clientY + 10) + 'px';
+      
+      requestAnimationFrame(() => {
+        tooltip.style.opacity = '1';
+      });
+
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+        setTimeout(() => tooltip.style.display = 'none', 200);
+      }, 1500);
     }
 
     // ===== FILTROS =====
