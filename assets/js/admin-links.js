@@ -24,37 +24,12 @@ async function init() {
     return;
   }
 
-  setupMenu();
   await loadCurrentLinks();
 }
 
 function showAccessDenied() {
   document.getElementById('adminContent').style.display = 'none';
   document.getElementById('accessDenied').style.display = 'block';
-}
-
-function setupMenu() {
-  const menuToggle = document.getElementById('menuToggle');
-  const menuClose = document.getElementById('menuClose');
-  const sideMenu = document.getElementById('sideMenu');
-  const menuOverlay = document.getElementById('menuOverlay');
-
-  if (menuToggle && sideMenu) {
-    menuToggle.addEventListener('click', () => sideMenu.classList.add('is-open'));
-    menuClose?.addEventListener('click', () => sideMenu.classList.remove('is-open'));
-    menuOverlay?.addEventListener('click', () => sideMenu.classList.remove('is-open'));
-  }
-
-  document.querySelectorAll('.theme-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const theme = btn.dataset.theme;
-      document.body.dataset.theme = theme;
-      localStorage.setItem('theme', theme);
-    });
-  });
-
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) document.body.dataset.theme = savedTheme;
 }
 
 function switchTab(tabId) {
@@ -90,13 +65,14 @@ async function loadCurrentLinks() {
   try {
     const res = await fetch(`${API_URL}/processos?limit=1000`);
     const data = await res.json();
-    // Filtramos localmente removendo os que possuam deleted_at (se vierem da API)
     currentLinks = (data.data || []).filter(p => !p.deleted_at);
   } catch (err) {
     showFeedback('Erro ao carregar links do banco', 'error');
     console.error(err);
   } finally {
     showLoading(false);
+    const appLoading = document.getElementById('app-loading');
+    if (appLoading) appLoading.style.display = 'none';
   }
 }
 
@@ -194,7 +170,7 @@ function renderPreview() {
     let badge = '';
     if (p.status === 'novo') badge = '<span class="status-badge status-badge--novo">Novo</span>';
     else if (p.status === 'atualizar') badge = '<span class="status-badge status-badge--update">Atualizar</span>';
-    else badge = '<span class="status-badge" style="background:#e5e7eb;color:#374151;">Inalterado</span>';
+    else badge = '<span class="status-badge status-badge--inalterado">Inalterado</span>';
 
     return `
       <tr>
@@ -274,6 +250,9 @@ async function confirmImport() {
 // --------------------------------------------
 function renderManageLinks(filterTerm = '') {
   const tbody = document.getElementById('linksBody');
+  const emptyState = document.getElementById('emptyState');
+  const tableContainer = tbody.closest('.table-container');
+  const linksCount = document.getElementById('linksCount');
   const term = filterTerm.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
   let list = currentLinks;
@@ -285,10 +264,16 @@ function renderManageLinks(filterTerm = '') {
     });
   }
 
+  linksCount.textContent = `${list.length} link${list.length !== 1 ? 's' : ''} encontrado${list.length !== 1 ? 's' : ''}`;
+
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;">Nenhum link encontrado.</td></tr>`;
+    tableContainer.style.display = 'none';
+    emptyState.style.display = 'flex';
     return;
   }
+
+  tableContainer.style.display = 'block';
+  emptyState.style.display = 'none';
 
   tbody.innerHTML = list.map(p => `
     <tr>

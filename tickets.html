@@ -71,67 +71,7 @@
         <button class="menu-close" id="menuClose">✕</button>
       </div>
       <nav class="side-menu-nav">
-        <a class="menu-link" href="./portal.html">Portal</a>
-        <a class="menu-link" href="./links.html">Central de Links</a>
-        <button class="menu-link" type="button" data-action="open-global-search">Pesquisar cursos</button>
-        <button class="menu-link" type="button" data-action="open-prices-menu">Pesquisar preços</button>
-
-        <!-- Diário de Bordo -->
-        <a class="menu-link" href="./diario.html"> Diário de Bordo</a>
-
-        <!-- Submenu Informações -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Informações <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link" data-action="open-setores">Setores</button>
-            <button class="menu-link submenu-link" data-action="open-coordenadores">Coordenação</button>
-          </div>
-        </div>
-
-        <!-- Submenu Tema -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Tema <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link theme-option" data-theme="blue">Padrão</button>
-            <button class="menu-link submenu-link theme-option" data-theme="pink">Rosa</button>
-            <button class="menu-link submenu-link theme-option" data-theme="red">Vermelho</button>
-            <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
-            <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
-            <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
-          </div>
-        </div>
-
-        <!-- Submenu Admin (desabilitado temporariamente) -->
-        <!-- <div class="menu-item-with-submenu" id="admin-menu-item" style="display: none;">
-          <button class="menu-link submenu-toggle" aria-expanded="false">
-            Admin <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <a class="menu-link submenu-link" href="./admin-unidades.html">Editar Unidades</a>
-          </div>
-        </div> -->
-
-        <a class="menu-link is-active" href="./tickets.html" id="tickets-link" style="display:none;">
-          Tickets
-          <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-
-        <!-- Botão Sair -->
-        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
-
-        <!-- PERFIL DO USUÁRIO -->
-        <div class="user-profile" id="user-profile" style="display: none;">
-          <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <span class="user-email" id="user-email"></span>
-          </div>
-        </div>
+        <div id="menu-container"></div>
       </nav>
     </div>
 
@@ -143,6 +83,7 @@
       <div class="nav-left">
         <a class="btn btn--nav" href="./portal.html">Portal</a>
         <a class="btn btn--nav" href="./links.html">Central de Links</a>
+        <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
         <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page">
           Tickets
           <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
@@ -521,7 +462,11 @@
     });
 
     confirmClose.addEventListener('click', fecharConfirmacao);
+    let confirmInside = false;
+    confirmModal.addEventListener('mousedown', () => { confirmInside = true; });
+    confirmModal.addEventListener('mouseup', () => { confirmInside = false; });
     confirmModal.addEventListener('click', (e) => {
+      if (confirmInside) return;
       if (e.target === confirmModal) fecharConfirmacao();
     });
 

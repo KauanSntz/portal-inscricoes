@@ -1,0 +1,437 @@
+/* ============================================
+   Admin Links - Estilos Específicos
+   ============================================ */
+
+/* ----- Ações ----- */
+.actions-bar {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.actions-bar .search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+}
+
+.actions-bar .search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+/* ----- Loading ----- */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  color: #666;
+}
+
+.loading-state .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ----- Tabela ----- */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.data-table th {
+  background: var(--surface-soft);
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.data-table tbody tr:hover td {
+  background: #f0f4ff;
+}
+
+body.dark-mode .data-table tbody tr:hover td {
+  background: #334155;
+}
+
+.data-table .id-cell {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.data-table .actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ----- Badges ----- */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge--novo { background: #3b82f6; color: white; }
+.status-badge--update { background: #eab308; color: black; }
+.status-badge--inalterado { background: #e5e7eb; color: #374151; }
+.status-badge--error { background: #ef4444; color: white; }
+
+/* ----- Empty State ----- */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  color: #666;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ----- Feedback ----- */
+.feedback {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+}
+
+.feedback--success { background: #dcfce7; color: #166534; }
+.feedback--error { background: #fee2e2; color: #991b1b; }
+.feedback--info { background: #dbeafe; color: #1e40af; }
+.feedback--update { background: #fef3c7; color: #92400e; }
+
+.hidden { display: none !important; }
+
+/* ----- Tabs ----- */
+.tabs-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-soft);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.tab-btn:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, #ffffff);
+}
+
+.tab-btn.is-active {
+  color: #ffffff;
+  background: var(--accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.is-active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Import Area ----- */
+.import-area {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.import-area h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.import-area .text-sm {
+  margin: 0 0 1rem 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.import-example {
+  background: #f1f5f9;
+  border: 1px dashed #94a3b8;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.import-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 2px solid #cbd5e1;
+  background: #ffffff;
+  color: var(--text, #1e293b);
+  font-family: monospace;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.import-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+/* ----- Preview Area ----- */
+.preview-area {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.preview-header h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+/* ----- Manage Actions ----- */
+.manage-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.manage-actions .search-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.manage-count {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-left: auto;
+}
+
+/* ----- Modal Pequeno ----- */
+.modal--small {
+  max-width: 400px;
+}
+
+/* ----- Botões ----- */
+.btn--small {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  background: #ffffff;
+  color: var(--accent);
+  border-color: var(--accent) !important;
+}
+
+.btn--small:hover {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.btn--danger {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fecaca !important;
+}
+
+.btn--danger:hover {
+  background: #fecaca;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+}
+
+/* ----- Font Utilities ----- */
+.font-bold {
+  font-weight: 700;
+}
+
+/* ----- Dark Mode ----- */
+body.dark-mode .import-area,
+body.dark-mode .preview-area,
+body.dark-mode .data-table,
+body.dark-mode .empty-state {
+  background: #1e293b;
+}
+
+body.dark-mode .data-table th {
+  background: #0f172a;
+}
+
+body.dark-mode .import-textarea {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+body.dark-mode .import-example {
+  background: #0f172a;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode .tabs-container {
+  background: #1e293b;
+}
+
+body.dark-mode .tab-btn {
+  color: #94a3b8;
+}
+
+body.dark-mode .tab-btn:hover {
+  background: color-mix(in srgb, var(--accent) 15%, #1e293b);
+}
+
+body.dark-mode .manage-count {
+  color: #94a3b8;
+}
+
+body.dark-mode .feedback--info {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+body.dark-mode .feedback--success {
+  background: #14532d;
+  color: #86efac;
+}
+
+body.dark-mode .feedback--error {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+body.dark-mode .feedback--update {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+/* Status Badges - Dark Mode */
+body.dark-mode .status-badge--novo {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+body.dark-mode .status-badge--update {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+body.dark-mode .status-badge--inalterado {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+body.dark-mode .status-badge--error {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Botão Excluir - Dark Mode */
+body.dark-mode .btn--danger {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-color: #991b1b !important;
+}
+
+body.dark-mode .btn--danger:hover {
+  background: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+/* Botão Editar/Ações - Dark Mode */
+body.dark-mode .btn--small:not(.btn--danger),
+body.dark-mode .btn--sm:not(.btn--danger) {
+  background: #1e293b;
+  color: var(--accent);
+  border-color: var(--accent) !important;
+}
+
+body.dark-mode .btn--small:not(.btn--danger):hover,
+body.dark-mode .btn--sm:not(.btn--danger):hover {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}

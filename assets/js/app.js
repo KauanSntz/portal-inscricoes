@@ -300,7 +300,12 @@
       dialog.append(head, tabsEl, bodyEl);
       overlay.appendChild(dialog);
 
+      let appModalInside = false;
+      overlay.addEventListener('mousedown', () => { appModalInside = true; });
+      overlay.addEventListener('mouseup', () => { appModalInside = false; });
+
       overlay.addEventListener("click", (e) => {
+        if (appModalInside) return;
         const btn = e.target.closest("[data-action]");
         if (!btn) { if (e.target === overlay) close(); return; }
         const action = btn.dataset.action;

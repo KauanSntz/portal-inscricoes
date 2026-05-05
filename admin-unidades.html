@@ -28,40 +28,33 @@
         <button class="menu-close" id="menuClose">✕</button>
       </div>
       <nav class="side-menu-nav">
-        <a class="menu-link" href="./portal.html">Portal</a>
-        <a class="menu-link" href="./links.html">Central de Links</a>
-        <a class="menu-link" href="./admin-links.html">Gerenciar Links</a>
-        <a class="menu-link is-active" href="./admin-unidades.html">Unidades</a>
-        <a class="menu-link" href="./admin-users.html">Usuários</a>
-
-        <!-- Tema -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Tema <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link theme-option" data-theme="blue">Padrão</button>
-            <button class="menu-link submenu-link theme-option" data-theme="pink">Rosa</button>
-            <button class="menu-link submenu-link theme-option" data-theme="red">Vermelho</button>
-            <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
-            <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
-            <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
-          </div>
-        </div>
-
-        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
-
-        <div class="user-profile" id="user-profile" style="display: none;">
-          <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <span class="user-email" id="user-email"></span>
-          </div>
-        </div>
+        <div id="menu-container"></div>
       </nav>
     </div>
 
     <!-- Overlay menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- NAVEGAÇÃO SUPERIOR -->
+    <nav class="app-nav" aria-label="Navegação principal">
+      <div class="nav-left">
+        <a class="btn btn--nav" href="./portal.html">Portal</a>
+        <a class="btn btn--nav" href="./links.html">Central de Links</a>
+        <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+        <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">
+          Tickets
+          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+          <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+        </a>
+        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
+      </div>
+      <div class="nav-right">
+        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+          <span class="mode-text">Modo</span>
+          <span class="mode-icon">🌙</span>
+        </button>
+      </div>
+    </nav>
 
     <!-- RESTRIÇÃO DE ACESSO -->
     <div id="accessDenied" class="card" style="display: none;">
@@ -190,7 +183,9 @@
   <!-- TOAST -->
   <div id="toast" class="toast hidden"></div>
 
-  <script src="./assets/js/app.js"></script>
+  <script src="./assets/js/menu-loader.js"></script>
+  <script src="./assets/js/menu.js"></script>
+  <script src="./assets/js/dark-mode.js"></script>
   <script src="./assets/js/admin-unidades.js"></script>
 </body>
 </html>

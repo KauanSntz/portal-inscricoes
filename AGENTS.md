@@ -76,10 +76,20 @@ portal-inscricoes/
 | POST | `/admin/:tabela` | Criar registro |
 | PUT | `/admin/:tabela/:id` | Atualizar registro |
 | DELETE | `/admin/:tabela/:id` | Deletar registro |
-
 ---
 
-## Fluxo de Dados
+
+## Rotas de API adicionais
+
+| Nova rota | Descrição |
+|-----------|----------|
+| coordenadores | Gerencia coordenadores por unidade |
+| operadores | Gerencia operadores por unidade |
+| cursos-oferta | Listagem de cursos ofertados |
+| precos-cursos | Preços de cursos por turno |
+| cursos-tecnicos | Cursos técnicos por unidade |
+
+---
 
 ### Arquitetura Atual
 

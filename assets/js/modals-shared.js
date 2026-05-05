@@ -1408,33 +1408,16 @@
   window.coordenadoresModal = coordenadoresModal;
   window.cursosTecnicosModal = cursosTecnicosModal;
 
-  // Listener global para os botões de pesquisa
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     const action = btn.dataset.action;
+    console.log('Clique em ação:', action);
 
     if (action === 'open-cursos-tecnicos') {
       e.preventDefault();
       if (window.cursosTecnicosModal) window.cursosTecnicosModal.open();
     }
-
-    if (action === 'open-global-search') {
-      e.preventDefault();
-      if (window.globalModal) window.globalModal.open();
-    }
-
-    if (action === 'open-prices-menu') {
-      e.preventDefault();
-      if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
-    }
-  });
-
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-action]');
-    if (!btn) return;
-    const action = btn.dataset.action;
-    console.log('Clique em ação:', action); // Log para depuração
 
     if (action === 'open-global-search') {
       e.preventDefault();
