@@ -22,7 +22,9 @@ portal-inscricoes/
 ├── portal.html           # Portal de inscrições
 ├── links.html           # Central de links
 ├── tickets.html        # Sistema de tickets
+├── diario.html         # Diário de Bordo
 ├── login.html          # Login admin
+├── admin-links.html    # Admin Gerenciar Links
 ├── admin-unidades.html   # Admin CRUD Unidades (DESABILITADO temporarily)
 ├── admin-users.html   # Admin Gerenciar Usuários (DESABILITADO temporarily)
 ├── menu-content.html  # Menu carregado dinamicamente
@@ -37,7 +39,18 @@ portal-inscricoes/
 │   └── sheetsCrudService.js # CRUD Google Sheets
 ├── assets/
 │   ├── js/          # Scripts frontend
+│   │   ├── menu.js          # Lógica do menu lateral
+│   │   ├── menu-loader.js   # Carrega menu-content.html via fetch
+│   │   ├── modals-shared.js # Modais compartilhados (preços, cursos, setores, etc.)
+│   │   ├── app.js           # Lógica do portal
+│   │   ├── links-page.js    # Central de links
+│   │   ├── admin-links.js   # Admin de links
+│   │   ├── dark-mode.js     # Toggle dark mode
+│   │   └── api.js           # Utilitários de API
 │   ├── css/         # Estilos
+│   │   ├── styles.css       # Estilos globais
+│   │   ├── admin-links.css  # Estilos dedicados admin-links
+│   │   └── admin-unidades.css
 │   └── data/        # Dados (cursos, preços, coordenadores)
 ├── functions/       # Firebase Cloud Functions (tickets/users)
 ├── firebase.json    # Config Firebase
@@ -133,6 +146,80 @@ links-page.js (renderização)
 - **Dados são 100% da API** - JSON local foi removido
 - **Período vem da API** - não hardcoded (era 2026/1, agora 2026/2)
 - **Sincronização** - links-page.js aguarda PORTAL_LINKS estar disponível
+
+---
+
+## Sistema de Menu
+
+### Carregamento Dinâmico
+O menu lateral é carregado via `menu-loader.js` que faz fetch de `menu-content.html` e injeta no `#menu-container`.
+
+### Fluxo de Inicialização
+```
+menu-loader.js → fetch menu-content.html → injeta em #menu-container → dispara 'menu-loaded'
+     ↓
+menu.js → escuta 'menu-loaded' → inicializa eventos (toggle, submenus, temas)
+```
+
+### Modais do Menu
+| Botão | data-action | Modal Aberto |
+|-------|-------------|--------------|
+| Pesquisar cursos | `open-global-search` | `window.globalModal.open()` |
+| Pesquisar preços | `open-prices-menu` | `window.pricesModal.open()` |
+| Cursos Técnicos | `open-cursos-tecnicos` | `window.cursosTecnicosModal.open()` |
+| Setores | `open-setores` | `window.setoresModal.open()` |
+| Coordenação | `open-coordenadores` | `window.coordenadoresModal.open()` |
+
+**⚠️ IMPORTANTE:** Os modais são expostos como objetos (`window.pricesModal`, `window.globalModal`, etc.), **NÃO** como funções `window.openPricesMenu()`. Sempre usar:
+```js
+if (window.pricesModal) window.pricesModal.open();
+// NÃO: window.openPricesMenu() — NÃO EXISTE
+```
+
+---
+
+## Componentes de UI
+
+### Botões
+
+| Classe | Uso | Exemplo |
+|--------|-----|---------|
+| `.btn--accent` | Botões de ação principal | `<button class="btn btn--accent">Salvar</button>` |
+| `.btn--block` | Formulários (largura total) | `<button class="btn btn--accent btn--block">Entrar</button>` |
+| `.btn--sm` | Ações em tabelas | `<button class="btn btn--sm">✏️</button>` |
+| `.btn--nav` | Navegação superior | `<a class="btn btn--nav" href="...">Portal</a>` |
+| `.btn--danger` | Ações destrutivas | `<button class="btn btn--danger">Excluir</button>` |
+
+**⚠️ NÃO usar `style` attributes para tamanho de botões.** Usar classes CSS.
+
+### Navegação Superior (`app-nav`)
+Todas as páginas compartilham a mesma estrutura:
+```html
+<nav class="app-nav">
+  <div class="nav-left">
+    <a class="btn btn--nav" href="./portal.html">Portal</a>
+    <a class="btn btn--nav" href="./links.html">Central de Links</a>
+    <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+    <a class="btn btn--nav" href="./tickets.html">Tickets</a>
+    <button class="btn btn--nav" onclick="logout()">Sair</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn--nav" id="dark-mode-toggle">🌙</button>
+  </div>
+</nav>
+```
+
+### Modais - Overlay Close Pattern
+Para evitar que modais fechem durante seleção de texto (mousedown dentro → mouseup fora), usar:
+```js
+let mousedownInside = false;
+modal.addEventListener('mousedown', () => { mousedownInside = true; });
+modal.addEventListener('mouseup', () => { mousedownInside = false; });
+modal.addEventListener('click', (e) => {
+  if (mousedownInside) return;
+  if (e.target === modal) close();
+});
+```
 
 ---
 
@@ -397,6 +484,36 @@ render deploys create <service-id> --confirm
 | JSON local desatualizado | Removido - usar apenas API |
 | Período 2026/1 aparecendo | Corrigido - agora usa `ln.periodo` da API |
 | localeCompare error | `String(a.code\|\|"").localeCompare(String(b.code\|\|""), "pt-BR")` |
+| Modal "Pesquisar Preços" não abre | Verificar se está chamando `window.pricesModal.open()` e NÃO `window.openPricesMenu()` |
+| Acentos aparecem como `├í` `├ú` | Encoding corrompido. Rodar `git checkout -- <arquivo>` para restaurar UTF-8 |
+| Menu não carrega | Verificar se `menu-loader.js` consegue fetch de `menu-content.html` |
+
+---
+
+## Problemas de Encoding
+
+### Sintoma
+Texto na interface aparece como:
+- `est├í dispon├¡vel` (deveria ser `está disponível`)
+- `1┬¬ mensalidade` (deveria ser `1ª mensalidade`)
+- `a├º├úo` (deveria ser `ação`)
+
+### Causa
+Arquivos JS salvos com encoding incorreto (Windows-1252 em vez de UTF-8).
+
+### Como verificar
+```powershell
+Select-String -Path "assets\js\*.js" -Pattern "├|┬" | Group-Object Path
+```
+
+### Como corrigir
+```powershell
+git checkout -- assets/js/modals-shared.js
+```
+
+### Prevenção
+- Sempre salvar arquivos com encoding UTF-8
+- Verificar antes de commitar: `Select-String -Path "assets\js\*.js" -Pattern "├|┬"`
 
 ---
 
@@ -406,6 +523,9 @@ render deploys create <service-id> --confirm
 2. **Cache**: Dados em cache por 5 minutos no servidor, mas localStorage pode precisar limpeza
 3. **Período**: Atualmente 2026/2 - veio da API, não hardcoded
 4. **Modelo Big Pickle**: Disponibilizado via OpenCode Zen (OpenRouter), não Ollama
+5. **Modais**: Usar `window.pricesModal.open()` e NÃO `window.openPricesMenu()` (função não existe)
+6. **Encoding**: Sempre salvar arquivos JS como UTF-8. Verificar com `Select-String -Pattern "├|┬"`
+7. **Menu**: Carregado dinamicamente via `menu-loader.js` → `menu-content.html` → `menu.js`
 
 ---
 
