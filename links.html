@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Central de Links - Fametro 2026/1</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <link rel="stylesheet" href="./assets/css/copa-theme.css" />
 </head>
 
 <body>
@@ -113,12 +114,7 @@
         </a>
         <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
       </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
+      <div class="nav-right"></div>
     </nav>
 
     <!-- Filtros e listagem (conteúdo original) -->
@@ -310,8 +306,8 @@
   <!-- Utilitários e modais -->
   <script src="./assets/js/modals-shared.js"></script>
   <script src="./assets/js/menu.js"></script>
-  <script src="./assets/js/dark-mode.js"></script>
-  <script src="./assets/js/notificacoes.js"></script>
+<script src="./assets/js/theme-manager.js"></script>
+<script src="./assets/js/notificacoes.js"></script>
 
   <!-- Scripts específicos da página -->
   <script src="./assets/js/links-page.js"></script> <!-- apenas no links -->

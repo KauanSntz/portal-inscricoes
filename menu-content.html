@@ -5,4 +5,36 @@
   <nav class="side-menu-nav">
     <!-- Links serão inseridos dinamicamente por página -->
   </nav>
+
+  <!-- Tema Copa (Apenas este) -->
+  <button class="menu-link theme-option" data-theme="copa">⚽ Copa (Escuro)</button>
+
+  <!-- Submenu Admin (desabilitado temporariamente) -->
+  <!-- <div class="menu-item-with-submenu" id="admin-menu-item" style="display: none;">
+    <button class="menu-link submenu-toggle" aria-expanded="false">
+      Admin <span class="arrow">▼</span>
+    </button>
+    <div class="submenu">
+      <a class="menu-link submenu-link" href="./admin-unidades.html">Editar Unidades</a>
+      <a class="menu-link submenu-link" href="./admin-links.html">Gerenciar Links</a>
+      <a class="menu-link submenu-link" href="./admin-users.html">Usuários</a>
+    </div>
+  </div> -->
+
+  <a class="menu-link" href="./tickets.html" id="tickets-link" style="display:none;">
+    Tickets
+    <span id="tickets-badge" class="badge badge-open">0</span>
+    <span id="tickets-andamento-badge" class="badge badge-andamento">0</span>
+  </a>
+
+  <!-- Botão Sair -->
+  <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
+
+  <!-- PERFIL DO USUÁRIO -->
+  <div class="user-profile" id="user-profile" style="display: none;">
+    <div class="user-info">
+      <span class="user-name" id="user-name"></span>
+      <span class="user-email" id="user-email"></span>
+    </div>
+  </div>
 </div>

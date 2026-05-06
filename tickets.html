@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tickets - Sistema de Suporte</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <link rel="stylesheet" href="./assets/css/copa-theme.css" />
   <style>
     /* Ajuste para o campo de resolução no modal */
     #resolucao-field {
@@ -145,18 +146,12 @@
         <a class="btn btn--nav" href="./links.html">Central de Links</a>
         <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page">
           Tickets
-          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+          <span id="tickets-badge-nav" class="badge badge-open">0</span>
+          <span id="tickets-andamento-badge-nav" class="badge badge-andamento">0</span>
         </a>
         <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
       </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
+      <div class="nav-right"></div>
     </nav>
 
     <!-- Controles -->
@@ -241,7 +236,7 @@
             </div>
             <!-- Campo de resolução -->
             <div class="field" id="resolucao-field" style="display:none;">
-              <span>Mensagem de Resolução <span style="color:#dc2626;">*</span></span>
+              <span>Mensagem de Resolução           <span class="required-star">*</span></span>
               <textarea id="resolucao" class="search-input" rows="3"
                 placeholder="Digite a resolução do ticket"></textarea>
               <div id="resolucao-obrigatoria">A resolução é obrigatória para concluir o ticket.</div>
@@ -1011,8 +1006,8 @@
   <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
   <script src="./assets/js/modals-shared.js"></script>
   <script src="./assets/js/menu.js"></script>
-  <script src="./assets/js/dark-mode.js"></script>
-  <script src="./assets/js/notificacoes.js"></script>
+<script src="./assets/js/theme-manager.js"></script>
+<script src="./assets/js/notificacoes.js"></script>
 
 
 </body>

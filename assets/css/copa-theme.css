@@ -1,0 +1,650 @@
+/* Tema Copa do Mundo - Brasil
+   Ativar: <body class="copa-theme">
+   Desativa light/dark mode automaticamente
+   Adaptado do padrão do modo escuro, usando as cores da copa
+*/
+
+/* ===== VARIÁVEIS ===== */
+body.copa-theme {
+  --copa-green: #009C3B;
+  --copa-yellow: #FFDF00;
+  --copa-blue: #0B1F3A;
+  
+  /* Sobrescrever variáveis do :root para usar as cores da copa */
+  --accent: #009C3B;
+  --accent-border: color-mix(in srgb, #009C3B 25%, #ffffff);
+  --line-soft: color-mix(in srgb, #009C3B 18%, #ffffff);
+  --surface-soft: color-mix(in srgb, #009C3B 6%, #ffffff);
+  --surface-mid: color-mix(in srgb, #009C3B 12%, #ffffff);
+  --scroll-bg: #0B1F3A;
+  --scroll-thumb: #009C3B;
+  --scroll-thumb-hover: #00CC4F;
+  
+  background-color: transparent !important;
+  color: #E5E7EB !important;
+}
+
+/* ===== FUNDO: estadio.png visível - gradiente muito leve ===== */
+body.copa-theme::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(11,31,58,0.2), rgba(11,31,58,0.2)), 
+              url('../img/estadio.png') center/cover no-repeat;
+  z-index: -3;
+  pointer-events: none;
+}
+
+/* ===== SCROLLBAR ===== */
+body.copa-theme::-webkit-scrollbar-track {
+  background: var(--scroll-bg);
+}
+body.copa-theme::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+}
+body.copa-theme::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover);
+}
+
+/* ===== HEADER ===== */
+body.copa-theme .site-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(11,31,58,0.95), rgba(11,31,58,0.85)) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .site-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  background: url('../img/ribbonflag.png') center/cover no-repeat;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+body.copa-theme .site-header::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 250px; height: 100%;
+  background: url('../img/bandeiraVento.png') center/cover no-repeat;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.copa-theme .site-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #E5E7EB !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+body.copa-theme .site-header h1::after {
+  content: '';
+  display: inline-block;
+  width: 40px; height: 40px;
+  background: url('../img/worldCupDesenho.png') center/contain no-repeat;
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+body.copa-theme .site-subtitle,
+body.copa-theme .links-subtitle {
+  color: #E5E7EB !important;
+}
+
+/* ===== TEXTOS GERAIS ===== */
+body.copa-theme p,
+body.copa-theme span,
+body.copa-theme div:not([class*="btn"]):not([class*="badge"]):not([class*="status"]),
+body.copa-theme h1,
+body.copa-theme h2,
+body.copa-theme h3,
+body.copa-theme h4,
+body.copa-theme h5,
+body.copa-theme h6,
+body.copa-theme .unit-title,
+body.copa-theme .unit-group__title,
+body.copa-theme .modality-group__title,
+body.copa-theme .process-code,
+body.copa-theme .process-text,
+body.copa-theme .empty,
+body.copa-theme .ticket-meta,
+body.copa-theme .ticket-meta span,
+body.copa-theme .result-unit,
+body.copa-theme .links-meta,
+body.copa-theme .meta,
+body.copa-theme .field span,
+body.copa-theme .link-type,
+body.copa-theme .link-mod,
+body.copa-theme .course-name,
+body.copa-theme .result-course,
+body.copa-theme .result-unit,
+body.copa-theme .modal-title,
+body.copa-theme .unit-row__meta {
+  color: #E5E7EB !important;
+}
+
+/* ===== CARDS E BLOCOS ===== */
+body.copa-theme .site-header,
+body.copa-theme .unit,
+body.copa-theme .links-controls,
+body.copa-theme .unit-block,
+body.copa-theme .modal,
+body.copa-theme .links-qa,
+body.copa-theme .course,
+body.copa-theme .result-card,
+body.copa-theme .prices-card,
+body.copa-theme .info-card,
+body.copa-theme .unidade-card,
+body.copa-theme .curso-card,
+body.copa-theme .link-card,
+body.copa-theme .mod-block,
+body.copa-theme .mod-content,
+body.copa-theme .unit-row,
+body.copa-theme .empty,
+body.copa-theme .ticket-card,
+body.copa-theme .diario-entry,
+body.copa-theme .ticket-item {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .site-header {
+  background: linear-gradient(180deg, rgba(11,31,58,0.95), rgba(11,31,58,0.85)) !important;
+}
+
+/* ===== SEÇÕES: gradiente + bola ===== */
+body.copa-theme .mod-title {
+  background: linear-gradient(90deg, #009C3B 0%, #0B1F3A 50%, #009C3B 100%) !important;
+  border-top: 2px solid #FFDF00 !important;
+  position: relative;
+  padding-left: 2.2rem !important;
+  color: #fff !important;
+  text-shadow: 0 0 10px rgba(255,223,0,0.5);
+}
+
+body.copa-theme .mod-title::before {
+  content: '';
+  position: absolute;
+  left: 0.75rem; top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  background: url('../img/bola.png') center/contain no-repeat;
+}
+
+/* ===== LINK-CARDS ===== */
+body.copa-theme .link-card {
+  position: relative;
+  border-top: 3px solid #009C3B !important;
+  box-shadow: 0 0 15px rgba(0,156,59,0.3) !important;
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .link-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60%;
+  background: url('../img/futenolFansSilhueta.png') bottom/cover no-repeat;
+  opacity: 0.12;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* ===== FORMULÁRIOS E INPUTS ===== */
+body.copa-theme .search-input,
+body.copa-theme select,
+body.copa-theme input[type="email"],
+body.copa-theme input[type="password"],
+body.copa-theme input[type="text"],
+body.copa-theme textarea {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .search-input:hover,
+body.copa-theme select:hover,
+body.copa-theme input[type="email"]:hover,
+body.copa-theme input[type="password"]:hover {
+  border-color: #FFDF00 !important;
+  box-shadow: 0 0 0 3px rgba(255,223,0,0.3) !important;
+}
+
+body.copa-theme .search-input:focus,
+body.copa-theme select:focus,
+body.copa-theme input[type="email"]:focus,
+body.copa-theme input[type="password"]:focus {
+  border-color: #FFDF00 !important;
+  box-shadow: 0 0 0 3px rgba(255,223,0,0.5) !important;
+}
+
+/* ===== LOGIN ESPECÍFICO (INDEX.HTML) ===== */
+body.copa-theme #login-form .search-input,
+body.copa-theme #register-form .search-input,
+body.copa-theme input[type="email"].search-input,
+body.copa-theme input[type="password"].search-input,
+body.copa-theme input[type="text"].search-input {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border: 1px solid #009C3B !important;
+}
+
+body.copa-theme #login-form .field span,
+body.copa-theme #register-form .field span {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+body.copa-theme #login-message {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border: 1px solid #009C3B !important;
+}
+
+body.copa-theme #login-form a,
+body.copa-theme #register-form a {
+  color: #FFDF00 !important;
+}
+
+/* ===== FORÇAR TEMA COPA NO LOGIN ===== */
+body.copa-theme .links-controls {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .site-header h1,
+body.copa-theme .site-header .site-subtitle {
+  color: #E5E7EB !important;
+}
+
+/* ===== INPUTS DO LOGIN - ESPECIFICIDADE MÁXIMA ===== */
+body.copa-theme #login-form .search-input,
+body.copa-theme #register-form .search-input,
+body.copa-theme #login-form input[type="email"],
+body.copa-theme #register-form input[type="email"],
+body.copa-theme #login-form input[type="password"],
+body.copa-theme #register-form input[type="password"],
+body.copa-theme #login-form input[type="text"],
+body.copa-theme #register-form input[type="text"],
+body.copa-theme #email,
+body.copa-theme #password,
+body.copa-theme #reg-nome,
+body.copa-theme #reg-email,
+body.copa-theme #reg-password,
+body.copa-theme #reg-confirm-password {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border: 1px solid #009C3B !important;
+  box-shadow: none !important;
+  -webkit-text-fill-color: #E5E7EB !important;
+}
+
+/* Fixar cor do texto em autofill do navegador */
+body.copa-theme input:-webkit-autofill,
+body.copa-theme input:-webkit-autofill:hover,
+body.copa-theme input:-webkit-autofill:focus,
+body.copa-theme input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(11,31,58,0.95) inset !important;
+  -webkit-text-fill-color: #E5E7EB !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme #email::placeholder,
+body.copa-theme #password::placeholder,
+body.copa-theme #reg-nome::placeholder,
+body.copa-theme #reg-email::placeholder,
+body.copa-theme #reg-password::placeholder,
+body.copa-theme #reg-confirm-password::placeholder,
+body.copa-theme #login-form .search-input::placeholder,
+body.copa-theme #register-form .search-input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+body.copa-theme #login-form .field span,
+body.copa-theme #register-form .field span {
+  color: #E5E7EB !important;
+}
+
+/* Forçar cor de texto em qualquer input dentro do login */
+body.copa-theme #login-form *,
+body.copa-theme #register-form * {
+  color: inherit;
+}
+
+body.copa-theme #login-message {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border: 1px solid #009C3B !important;
+}
+
+body.copa-theme #login-message a,
+body.copa-theme #register-form a {
+  color: #FFDF00 !important;
+}
+
+/* ===== BOTÕES ===== */
+body.copa-theme .btn,
+body.copa-theme .tab,
+body.copa-theme .chip,
+body.copa-theme .btn-unit,
+body.copa-theme .prices-copy-btn,
+body.copa-theme .app-nav .btn,
+body.copa-theme .btn--nav,
+body.copa-theme button.btn[data-action="reset-filters"] {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .btn:hover,
+body.copa-theme .tab:hover,
+body.copa-theme .chip:hover,
+body.copa-theme .btn-unit:hover,
+body.copa-theme .prices-copy-btn:hover,
+body.copa-theme .app-nav .btn:hover,
+body.copa-theme .btn--nav:hover,
+body.copa-theme .link-card:hover,
+body.copa-theme .result-card:hover,
+body.copa-theme .course:hover,
+body.copa-theme [data-action]:hover,
+body.copa-theme button.btn[data-action="reset-filters"]:hover {
+  border-color: #FFDF00 !important;
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  box-shadow: 0 0 15px rgba(255,223,0,0.6), 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+
+body.copa-theme .btn--nav.is-active,
+body.copa-theme .btn--accent,
+body.copa-theme .tab.is-active,
+body.copa-theme .chip.is-active {
+  background: #009C3B !important;
+  color: #fff !important;
+  border-color: #009C3B !important;
+  box-shadow: 0 0 10px rgba(0,156,59,0.5);
+}
+
+body.copa-theme .btn--accent:hover {
+  background: #007A2E !important;
+  color: #fff !important;
+}
+
+/* ===== BADGES E STATUS ===== */
+body.copa-theme .link-code {
+  background: #FFDF00 !important;
+  color: #0B1F3A !important;
+  border-color: #FFDF00 !important;
+  box-shadow: 0 0 8px rgba(255,223,0,0.4);
+}
+
+body.copa-theme .badge,
+body.copa-theme .tag,
+body.copa-theme .badge-chip {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .status-badge.aberto {
+  background: #f97316 !important;
+  color: #fff !important;
+  border-color: #f97316 !important;
+}
+
+body.copa-theme .status-badge.em_andamento {
+  background: #3b82f6 !important;
+  color: #fff !important;
+  border-color: #3b82f6 !important;
+}
+
+body.copa-theme .status-badge.resolvido {
+  background: #10b981 !important;
+  color: #fff !important;
+  border-color: #10b981 !important;
+}
+
+body.copa-theme .badge-chip--vestibular,
+body.copa-theme .badge-chip--matricula {
+  background: rgba(11,31,58,0.95) !important;
+  color: #E5E7EB !important;
+  border-color: #009C3B !important;
+}
+
+/* ===== MODAIS ===== */
+body.copa-theme .modal-overlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+body.copa-theme .modal-head {
+  border-bottom-color: #009C3B !important;
+}
+
+body.copa-theme .modal-close {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .modal-close:hover {
+  background: #009C3B !important;
+  color: #fff !important;
+  border-color: #009C3B !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ===== MENU LATERAL ===== */
+body.copa-theme .side-menu {
+  background: rgba(11,31,58,0.98) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .menu-link {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .menu-link:hover {
+  background: rgba(0,156,59,0.2) !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .menu-toggle {
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .menu-toggle:hover {
+  background: #009C3B !important;
+  color: #fff !important;
+  border-color: #009C3B !important;
+}
+
+/* ===== TICKETS E DIÁRIO ===== */
+body.copa-theme .ticket-meta,
+body.copa-theme .ticket-meta span,
+body.copa-theme .diario-meta,
+body.copa-theme .diario-meta span {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .ticket-card,
+body.copa-theme .diario-entry {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+}
+
+/* ===== PADDING E MARGINS ===== */
+body.copa-theme .links-controls {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .links-qa {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .links-qa h2 {
+  color: #E5E7EB !important;
+}
+
+/* ===== HOVER GERAL ===== */
+body.copa-theme a:hover {
+  opacity: 0.9;
+}
+
+/* ===== CONTAGEM PAINEL (DIÁRIO) ===== */
+body.copa-theme .contagem-painel {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .contagem-titulo {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .contagem-total {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .copa-count-inscricoes {
+  color: #3b82f6 !important;
+}
+
+body.copa-theme .copa-count-matriculas {
+  color: #8b5cf6 !important;
+}
+
+body.copa-theme .contagem-grid {
+  background: transparent !important;
+}
+
+body.copa-theme .contagem-card {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .contagem-card .op-nome {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .contagem-card .op-count {
+  color: #fff !important;
+}
+
+body.copa-theme .contagem-vazio {
+  color: #E5E7EB !important;
+  opacity: 0.6;
+}
+
+/* ===== NAV-RIGHT ===== */
+body.copa-theme .nav-right {
+  color: #E5E7EB !important;
+}
+
+/* ===== BADGES TICKETS ===== */
+body.copa-theme .badge-open {
+  background: #dc2626 !important;
+  color: #fff !important;
+  border-color: #dc2626 !important;
+}
+
+body.copa-theme .badge-andamento {
+  background: #f59e0b !important;
+  color: #fff !important;
+  border-color: #f59e0b !important;
+}
+
+/* ===== REQUIRED STAR ===== */
+body.copa-theme .required-star {
+  color: #dc2626 !important;
+}
+
+/* ===== DIÁRIO DE BORDO - TABELAS ===== */
+body.copa-theme .diario-table th {
+  background: #009C3B !important;
+  color: #fff !important;
+}
+
+body.copa-theme .diario-table td {
+  color: #E5E7EB !important;
+  border-bottom-color: #009C3B !important;
+}
+
+body.copa-theme .diario-table tr:hover {
+  background: rgba(0,156,59,0.2) !important;
+}
+
+body.copa-theme .preview-item {
+  background: rgba(11,31,58,0.95) !important;
+  border-color: #009C3B !important;
+}
+
+body.copa-theme .preview-item strong {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme .sit-inscrito {
+  background: rgba(59,130,246,0.2) !important;
+  color: #93c5fd !important;
+  border: 1px solid #3b82f6 !important;
+}
+
+body.copa-theme .sit-aprovado {
+  background: rgba(16,185,129,0.2) !important;
+  color: #6ee7b7 !important;
+  border: 1px solid #10b981 !important;
+}
+
+body.copa-theme .sit-matriculado {
+  background: rgba(139,92,246,0.2) !important;
+  color: #c4b5fd !important;
+  border: 1px solid #8b5cf6 !important;
+}
+
+body.copa-theme .sit-pendente {
+  background: rgba(245,158,11,0.2) !important;
+  color: #fcd34d !important;
+  border: 1px solid #f59e0b !important;
+}
+
+/* ===== TICKETS - STATUS BADGES ===== */
+body.copa-theme .status-badge.aberto {
+  background: #f97316 !important;
+  color: #fff !important;
+}
+
+body.copa-theme .status-badge.em_andamento {
+  background: #3b82f6 !important;
+  color: #fff !important;
+}
+
+body.copa-theme .status-badge.resolvido {
+  background: #10b981 !important;
+  color: #fff !important;
+}
+
+/* ===== SCROLLBAR DENTRO DE ELEMENTOS ===== */
+body.copa-theme .side-menu-nav::-webkit-scrollbar-track {
+  background: #0B1F3A;
+}
+
+body.copa-theme .side-menu-nav::-webkit-scrollbar-thumb {
+  background-color: #009C3B;
+}

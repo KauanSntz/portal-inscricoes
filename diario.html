@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diário de Bordo - Sistema Fametro</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <link rel="stylesheet" href="./assets/css/copa-theme.css" />
   <style>
     .diario-table-wrapper {
       overflow-x: auto;
@@ -325,12 +326,7 @@
         <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">Tickets</a>
         <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
       </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
+      <div class="nav-right"></div>
     </nav>
 
     <!-- CONTROLES -->
@@ -670,10 +666,10 @@
       // Ordenar por total (maior primeiro)
       const ordenado = Object.entries(contagem).sort((a, b) => (b[1].inscricoes + b[1].matriculas) - (a[1].inscricoes + a[1].matriculas));
 
-      totalEl.innerHTML = `<span style="color:#3b82f6;">Inscrições: ${totalInsc}</span> &nbsp;·&nbsp; <span style="color:#8b5cf6;">Matrículas: ${totalMatr}</span>`;
+        totalEl.innerHTML = `<span class="copa-count-inscricoes">Inscrições: ${totalInsc}</span> &nbsp;·&nbsp; <span class="copa-count-matriculas">Matrículas: ${totalMatr}</span>`;
 
       if (!ordenado.length) {
-        grid.innerHTML = '<span style="font-size:0.85rem; color: var(--text); opacity:0.6;">Nenhum registro hoje.</span>';
+        grid.innerHTML = '<span class="contagem-vazio">Nenhum registro hoje.</span>';
       } else {
         grid.innerHTML = ordenado.map(([nome, c]) =>
           `<div class="contagem-card">
@@ -991,7 +987,8 @@
     });
   </script>
   <script src="./assets/js/menu.js"></script>
-  <script src="./assets/js/dark-mode.js"></script>
+  <script src="./assets/js/theme-manager.js"></script>
+<script src="./assets/js/theme-manager.js"></script>
 </body>
 
 </html>
