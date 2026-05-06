@@ -62,31 +62,6 @@ document.addEventListener('click', (e) => {
     }
   });
 
-  // Troca de tema
-  const themeOptions = document.querySelectorAll('.theme-option');
-  const savedTheme = localStorage.getItem('selectedTheme') || 'blue';
-  document.body.classList.add(`theme-${savedTheme}`);
-
-  themeOptions.forEach(opt => {
-    opt.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const theme = opt.dataset.theme;
-      document.body.classList.forEach(cls => {
-        if (cls.startsWith('theme-')) {
-          document.body.classList.remove(cls);
-        }
-      });
-      document.body.classList.add(`theme-${theme}`);
-      localStorage.setItem('selectedTheme', theme);
-      
-      const themeSubmenu = opt.closest('.submenu');
-      if (themeSubmenu) {
-        themeSubmenu.classList.remove('is-open');
-        themeSubmenu.previousElementSibling?.classList.remove('is-open');
-      }
-    });
-  });
-
   // Ações dos submenus
   const submenuLinks = document.querySelectorAll('.submenu-link');
   submenuLinks.forEach(link => {

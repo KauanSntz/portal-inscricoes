@@ -52,6 +52,7 @@
             <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
             <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
             <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
+            <button class="menu-link submenu-link theme-option" data-theme="copa">⚽ Copa (Escuro)</button>
           </div>
         </div>
 
