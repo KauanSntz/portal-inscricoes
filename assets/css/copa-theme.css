@@ -200,86 +200,20 @@ body.copa-theme .link-card::before {
   z-index: 0;
 }
 
-/* ===== FORMULÁRIOS E INPUTS ===== */
-body.copa-theme .search-input,
+/* ===== INPUTS GERAIS (TEMA COPA) - FORÇAR SHORTHAND BACKGROUND ===== */
+body.copa-theme input,
+body.copa-theme textarea,
 body.copa-theme select,
-body.copa-theme input[type="email"],
-body.copa-theme input[type="password"],
-body.copa-theme input[type="text"],
-body.copa-theme textarea {
-  background: rgba(11,31,58,0.95) !important;
-  border-color: #009C3B !important;
-  color: #E5E7EB !important;
-}
-
-body.copa-theme .search-input:hover,
-body.copa-theme select:hover,
-body.copa-theme input[type="email"]:hover,
-body.copa-theme input[type="password"]:hover {
-  border-color: #FFDF00 !important;
-  box-shadow: 0 0 0 3px rgba(255,223,0,0.3) !important;
-}
-
-body.copa-theme .search-input:focus,
-body.copa-theme select:focus,
-body.copa-theme input[type="email"]:focus,
-body.copa-theme input[type="password"]:focus {
-  border-color: #FFDF00 !important;
-  box-shadow: 0 0 0 3px rgba(255,223,0,0.5) !important;
-}
-
-/* ===== LOGIN ESPECÍFICO (INDEX.HTML) ===== */
-body.copa-theme #login-form .search-input,
-body.copa-theme #register-form .search-input,
-body.copa-theme input[type="email"].search-input,
-body.copa-theme input[type="password"].search-input,
-body.copa-theme input[type="text"].search-input {
+body.copa-theme .search-input {
   background: rgba(11,31,58,0.95) !important;
   color: #E5E7EB !important;
   border: 1px solid #009C3B !important;
-}
-
-body.copa-theme #login-form .field span,
-body.copa-theme #register-form .field span {
-  color: #E5E7EB !important;
-}
-
-body.copa-theme input::placeholder {
-  color: #94a3b8 !important;
+  box-shadow: none !important;
+  -webkit-text-fill-color: #E5E7EB !important;
   opacity: 1 !important;
 }
 
-body.copa-theme #login-message {
-  background: rgba(11,31,58,0.95) !important;
-  color: #E5E7EB !important;
-  border: 1px solid #009C3B !important;
-}
-
-body.copa-theme #login-form a,
-body.copa-theme #register-form a {
-  color: #FFDF00 !important;
-}
-
-/* ===== FORÇAR TEMA COPA NO LOGIN ===== */
-body.copa-theme .links-controls {
-  background: rgba(11,31,58,0.95) !important;
-  border-color: #009C3B !important;
-}
-
-body.copa-theme .site-header h1,
-body.copa-theme .site-header .site-subtitle {
-  color: #E5E7EB !important;
-}
-
-/* ===== INPUTS DO LOGIN - ESPECIFICIDADE MÁXIMA ===== */
-body.copa-theme #login-form .search-input,
-body.copa-theme #register-form .search-input,
-body.copa-theme #login-form input[type="email"],
-body.copa-theme #register-form input[type="email"],
-body.copa-theme #login-form input[type="password"],
-body.copa-theme #register-form input[type="password"],
-body.copa-theme #login-form input[type="text"],
-body.copa-theme #register-form input[type="text"],
+/* SOBRESCREVER INPUTS DO LOGIN POR ID (MÁXIMA PRIORIDADE) */
 body.copa-theme #email,
 body.copa-theme #password,
 body.copa-theme #reg-nome,
@@ -289,41 +223,47 @@ body.copa-theme #reg-confirm-password {
   background: rgba(11,31,58,0.95) !important;
   color: #E5E7EB !important;
   border: 1px solid #009C3B !important;
-  box-shadow: none !important;
   -webkit-text-fill-color: #E5E7EB !important;
 }
 
-/* Fixar cor do texto em autofill do navegador */
+/* FORÇAR TEMA COPA PARA O BODY */
+body.copa-theme {
+  color: #E5E7EB !important;
+}
+
+body.copa-theme input:hover,
+body.copa-theme textarea:hover,
+body.copa-theme select:hover {
+  border-color: #FFDF00 !important;
+}
+
+body.copa-theme input:focus,
+body.copa-theme textarea:focus,
+body.copa-theme select:focus {
+  border-color: #FFDF00 !important;
+  box-shadow: 0 0 0 3px rgba(255,223,0,0.5) !important;
+}
+
+/* ===== AUTOFILL DO NAVEGADOR ===== */
 body.copa-theme input:-webkit-autofill,
 body.copa-theme input:-webkit-autofill:hover,
-body.copa-theme input:-webkit-autofill:focus,
-body.copa-theme input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px rgba(11,31,58,0.95) inset !important;
+body.copa-theme input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(11,31,58,0.95) inset !important;
   -webkit-text-fill-color: #E5E7EB !important;
   border-color: #009C3B !important;
 }
 
-body.copa-theme #email::placeholder,
-body.copa-theme #password::placeholder,
-body.copa-theme #reg-nome::placeholder,
-body.copa-theme #reg-email::placeholder,
-body.copa-theme #reg-password::placeholder,
-body.copa-theme #reg-confirm-password::placeholder,
-body.copa-theme #login-form .search-input::placeholder,
-body.copa-theme #register-form .search-input::placeholder {
+/* ===== PLACEHOLDERS ===== */
+body.copa-theme input::placeholder,
+body.copa-theme textarea::placeholder {
   color: #94a3b8 !important;
   opacity: 1 !important;
 }
 
+/* ===== LOGIN ESPECÍFICO (INDEX.HTML) ===== */
 body.copa-theme #login-form .field span,
 body.copa-theme #register-form .field span {
   color: #E5E7EB !important;
-}
-
-/* Forçar cor de texto em qualquer input dentro do login */
-body.copa-theme #login-form *,
-body.copa-theme #register-form * {
-  color: inherit;
 }
 
 body.copa-theme #login-message {
@@ -332,7 +272,7 @@ body.copa-theme #login-message {
   border: 1px solid #009C3B !important;
 }
 
-body.copa-theme #login-message a,
+body.copa-theme #login-form a,
 body.copa-theme #register-form a {
   color: #FFDF00 !important;
 }
