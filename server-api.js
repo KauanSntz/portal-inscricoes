@@ -7,9 +7,13 @@ const unidadesRoutes = require('./routes/unidades');
 const modalidadesRoutes = require('./routes/modalidades');
 const coordenadoresRoutes = require('./routes/coordenadores');
 const setoresContatoRoutes = require('./routes/setores-contato');
-const adminRoutes = require('./routes/admin');
 const diarioRoutes = require('./routes/diario');
+const adminRoutes = require('./routes/admin');
 const operadoresRoutes = require('./routes/operadores');
+const cursosOfertaRoutes = require('./routes/cursos-oferta');
+const precosCursosRoutes = require('./routes/precos-cursos');
+const cursosTecnicosRoutes = require('./routes/cursos-tecnicos');
+const posGraduacaoRoutes = require('./routes/pos-graduacao');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,9 +31,16 @@ app.use('/unidades', unidadesRoutes);
 app.use('/modalidades', modalidadesRoutes);
 app.use('/coordenadores', coordenadoresRoutes);
 app.use('/setores-contato', setoresContatoRoutes);
-app.use('/admin', adminRoutes);
 app.use('/diario', diarioRoutes);
+app.use('/admin', adminRoutes);
 app.use('/operadores', operadoresRoutes);
+app.use('/cursos-oferta', cursosOfertaRoutes);
+app.use('/precos-cursos', precosCursosRoutes);
+app.use('/cursos-tecnicos', cursosTecnicosRoutes);
+app.use('/pos-graduacao', posGraduacaoRoutes);
+
+// Servir arquivos estáticos (HTML, CSS, JS)
+app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'API Portal Inscrições rodando' });

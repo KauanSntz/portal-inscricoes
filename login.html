@@ -15,15 +15,25 @@
       <p class="site-subtitle">Faça login para continuar</p>
     </header>
 
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left"></div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Polos</a>
+      <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+      <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
 
     <!-- Área de login/registro -->
     <div class="links-controls" style="max-width: 450px; margin: 0 auto; min-height: 380px;">
@@ -38,7 +48,7 @@
           <span>Senha</span>
           <input type="password" id="password" class="search-input" required>
         </div>
-        <button type="submit" class="btn btn--accent" style="width:100%;">Entrar</button>
+        <button type="submit" class="btn btn--accent btn--block">Entrar</button>
         
         <!-- Link esqueci minha senha -->
         <div style="text-align: right; margin-top: 0.5rem;">
@@ -70,7 +80,7 @@
           <span>Confirmar Senha</span>
           <input type="password" id="reg-confirm-password" class="search-input" required>
         </div>
-        <button type="submit" class="btn btn--accent">Registrar</button>
+        <button type="submit" class="btn btn--accent btn--block">Registrar</button>
         <p style="margin-top:0.5rem; text-align:center;">
           <a href="#" id="show-login">Voltar para login</a>
         </p>

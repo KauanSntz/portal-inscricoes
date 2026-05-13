@@ -390,4 +390,30 @@ const init = async () => {
       if (el) el.innerHTML = `<p style="color:#f87171;">Erro ao carregar dados da API.</p>`;
     }, { once: true });
   }
+
+  // Re-render quando PORTAL_LINKS for atualizado pela API
+  window.addEventListener('portal-links-updated', () => {
+    if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
+      console.log('[links-page] Re-renderizando com dados atualizados');
+      state.records = fromPortalLinks(window.PORTAL_LINKS);
+      state.records.sort((a, b) => {
+        const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+        if (aU !== bU) return aU - bU;
+        const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
+        const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
+        if (orderA !== orderB) return orderA - orderB;
+        return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
+      });
+      state.sourceLabel = `API (${state.records.length} registros)`;
+      state.qa = buildQA(state.records);
+      
+      const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
+      buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
+      buildOptions(dom.modality, [...new Set(state.records.map(r => r.modalityKey))], MODALITY_LABELS);
+      buildOptions(dom.type, [...new Set(state.records.map(r => r.typeKey))], TYPE_LABELS);
+      
+      applyFilters();
+      renderQA();
+    }
+  });
 })();

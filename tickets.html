@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tickets - Sistema de Suporte</title>
+  <title>Tickets</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <style>
     /* Ajuste para o campo de resolução no modal */
@@ -59,7 +59,7 @@
       <div class="header-row">
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
         <div>
-          <h1>Sistema de Tickets</h1>
+          <h1>Tickets</h1>
           <p class="site-subtitle">Acompanhe e gerencie solicitações</p>
         </div>
       </div>
@@ -71,67 +71,7 @@
         <button class="menu-close" id="menuClose">✕</button>
       </div>
       <nav class="side-menu-nav">
-        <a class="menu-link" href="./portal.html">Portal</a>
-        <a class="menu-link" href="./links.html">Central de Links</a>
-        <button class="menu-link" type="button" data-action="open-global-search">Pesquisar cursos</button>
-        <button class="menu-link" type="button" data-action="open-prices-menu">Pesquisar preços</button>
-
-        <!-- Diário de Bordo -->
-        <a class="menu-link" href="./diario.html"> Diário de Bordo</a>
-
-        <!-- Submenu Informações -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Informações <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link" data-action="open-setores">Setores</button>
-            <button class="menu-link submenu-link" data-action="open-coordenadores">Coordenação</button>
-          </div>
-        </div>
-
-        <!-- Submenu Tema -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Tema <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link theme-option" data-theme="blue">Padrão</button>
-            <button class="menu-link submenu-link theme-option" data-theme="pink">Rosa</button>
-            <button class="menu-link submenu-link theme-option" data-theme="red">Vermelho</button>
-            <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
-            <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
-            <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
-          </div>
-        </div>
-
-        <!-- Submenu Admin (desabilitado temporariamente) -->
-        <!-- <div class="menu-item-with-submenu" id="admin-menu-item" style="display: none;">
-          <button class="menu-link submenu-toggle" aria-expanded="false">
-            Admin <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <a class="menu-link submenu-link" href="./admin-unidades.html">Editar Unidades</a>
-          </div>
-        </div> -->
-
-        <a class="menu-link is-active" href="./tickets.html" id="tickets-link" style="display:none;">
-          Tickets
-          <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-
-        <!-- Botão Sair -->
-        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
-
-        <!-- PERFIL DO USUÁRIO -->
-        <div class="user-profile" id="user-profile" style="display: none;">
-          <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <span class="user-email" id="user-email"></span>
-          </div>
-        </div>
+        <div id="menu-container"></div>
       </nav>
     </div>
 
@@ -139,25 +79,25 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- NAVEGAÇÃO SUPERIOR (com apenas Portal, Central de Links, Tickets e Modo Escuro) -->
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <a class="btn btn--nav" href="./portal.html">Portal</a>
-        <a class="btn btn--nav" href="./links.html">Central de Links</a>
-        <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page">
-          Tickets
-          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
-      </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Polos</a>
+      <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+      <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page" id="tickets-link-nav">
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()">Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
 
     <!-- Controles -->
     <div class="links-controls">
@@ -176,8 +116,8 @@
     <div id="tickets-empty" class="empty" hidden>Nenhum ticket encontrado.</div>
 
     <!-- Modal para criar/editar ticket -->
-    <div id="ticket-modal" class="modal-overlay" style="display:none;">
-      <div class="modal" style="max-width:500px;">
+    <div id="ticket-modal" class="modal-overlay" style="display:none; align-items: center; justify-content: center;">
+      <div class="modal" style="max-width:450px;">
         <div class="modal-head">
           <div class="modal-title" id="modal-title">Novo Ticket</div>
           <button class="modal-close" id="modal-close">&times;</button>
@@ -189,6 +129,14 @@
               <span>CPF do Aluno</span>
               <input type="text" id="cpf-aluno" class="search-input" required placeholder="Apenas números"
                 maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <div class="field">
+              <span>Nome do Aluno</span>
+              <input type="text" id="nome-aluno" class="search-input" required placeholder="Nome completo">
+            </div>
+            <div class="field">
+              <span>Curso</span>
+              <input type="text" id="curso-aluno" class="search-input" required placeholder="Ex: Administração">
             </div>
             <div class="field">
               <span>Unidade</span>
@@ -273,6 +221,9 @@
   <div id="notificacao"
     style="position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 9999; display: none; transition: opacity 0.3s;">
   </div>
+
+  <!-- Tooltip de mouse -->
+  <div id="tooltip-mouse" style="position:fixed; background:#334155; color:#fff; padding:4px 8px; border-radius:4px; font-size:0.75rem; pointer-events:none; z-index:10000; display:none; opacity:0; transition:opacity 0.2s;"></div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -383,6 +334,34 @@
           }
 
           carregarTickets();
+
+          // Verificar prefill do Diario de Bordo
+          const prefillRaw = localStorage.getItem('ticketPrefill');
+          if (prefillRaw) {
+            localStorage.removeItem('ticketPrefill');
+            try {
+              const prefill = JSON.parse(prefillRaw);
+              document.getElementById('ticket-id').value = '';
+              document.getElementById('cpf-aluno').value = prefill.cpf || '';
+              document.getElementById('nome-aluno').value = prefill.nome || '';
+              document.getElementById('curso-aluno').value = prefill.curso || '';
+              document.getElementById('unidade').value = prefill.unidade || '';
+              document.getElementById('modalidade').value = prefill.modalidade || '';
+              document.getElementById('problema-select').value = '';
+              document.getElementById('problema-outro').value = '';
+              document.getElementById('motivo').value = '';
+              document.getElementById('problema-outro').style.display = 'none';
+              document.getElementById('motivo').style.display = 'none';
+              document.getElementById('resolucao').value = '';
+              document.getElementById('resolucao-field').style.display = 'none';
+              document.getElementById('resolucao-obrigatoria').style.display = 'none';
+              document.getElementById('modal-title').textContent = 'Novo Ticket (via Diario)';
+              setModalFieldsState(true);
+              document.getElementById('ticket-modal').style.display = 'flex';
+            } catch (e) {
+              console.error('[Ticket] Erro ao carregar prefill:', e);
+            }
+          }
         } catch (error) {
           console.error('Erro ao carregar perfil:', error);
           mostrarNotificacao('Erro ao carregar perfil. Redirecionando...', false);
@@ -451,14 +430,34 @@
     }
 
     // Função de cópia de CPF
-    window.copiarCPF = (cpf) => {
+    window.copiarCPF = (cpf, event) => {
       navigator.clipboard.writeText(cpf).then(() => {
-        mostrarNotificacao('✅ CPF copiado!');
+        if(event) mostrarTooltipMouse('✅ Copiado!', event);
+        else mostrarNotificacao('✅ CPF copiado!');
       }).catch((error) => {
         console.error('Erro ao copiar:', error);
-        mostrarNotificacao('❌ Erro ao copiar CPF', false);
+        if(event) mostrarTooltipMouse('❌ Erro', event);
+        else mostrarNotificacao('❌ Erro ao copiar CPF', false);
       });
     };
+
+    function mostrarTooltipMouse(mensagem, event) {
+      const tooltip = document.getElementById('tooltip-mouse');
+      if (!tooltip || !event) return;
+      tooltip.textContent = mensagem;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (event.clientX + 10) + 'px';
+      tooltip.style.top = (event.clientY + 10) + 'px';
+      
+      requestAnimationFrame(() => {
+        tooltip.style.opacity = '1';
+      });
+
+      setTimeout(() => {
+        tooltip.style.opacity = '0';
+        setTimeout(() => tooltip.style.display = 'none', 200);
+      }, 1500);
+    }
 
     // Modal de confirmação
     let confirmCallback = null;
@@ -490,7 +489,11 @@
     });
 
     confirmClose.addEventListener('click', fecharConfirmacao);
+    let confirmInside = false;
+    confirmModal.addEventListener('mousedown', () => { confirmInside = true; });
+    confirmModal.addEventListener('mouseup', () => { confirmInside = false; });
     confirmModal.addEventListener('click', (e) => {
+      if (confirmInside) return;
       if (e.target === confirmModal) fecharConfirmacao();
     });
 
@@ -536,7 +539,7 @@
 
     // Função para habilitar/desabilitar campos do modal
     function setModalFieldsState(editable) {
-      const campos = ['cpf-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'motivo', 'resolucao'];
+      const campos = ['cpf-aluno', 'nome-aluno', 'curso-aluno', 'unidade', 'modalidade', 'problema-select', 'problema-outro', 'motivo', 'resolucao'];
       campos.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = !editable;
@@ -549,6 +552,8 @@
     document.getElementById('new-ticket-btn').addEventListener('click', () => {
       document.getElementById('ticket-id').value = '';
       document.getElementById('cpf-aluno').value = '';
+      document.getElementById('nome-aluno').value = '';
+      document.getElementById('curso-aluno').value = '';
       document.getElementById('unidade').value = '';
       document.getElementById('modalidade').value = '';
       document.getElementById('problema-select').value = '';
@@ -571,9 +576,11 @@
         if (!doc.exists) return;
         const t = doc.data();
         document.getElementById('ticket-id').value = id;
-        document.getElementById('cpf-aluno').value = t.cpfAluno;
-        document.getElementById('unidade').value = t.unidade;
-        document.getElementById('modalidade').value = t.modalidade;
+        document.getElementById('cpf-aluno').value = t.cpfAluno || '';
+        document.getElementById('nome-aluno').value = t.nomeAluno || '';
+        document.getElementById('curso-aluno').value = t.cursoAluno || '';
+        document.getElementById('unidade').value = t.unidade || '';
+        document.getElementById('modalidade').value = t.modalidade || '';
 
         const problemaSelect = document.getElementById('problema-select');
         const problemaOutro = document.getElementById('problema-outro');
@@ -633,6 +640,8 @@
 
       const id = document.getElementById('ticket-id').value;
       const cpf = document.getElementById('cpf-aluno').value;
+      const nome = document.getElementById('nome-aluno').value.trim();
+      const curso = document.getElementById('curso-aluno').value.trim();
       const unidade = document.getElementById('unidade').value;
       const modalidade = document.getElementById('modalidade').value;
 
@@ -722,6 +731,8 @@
         try {
           const novo = {
             cpfAluno: cpf,
+            nomeAluno: nome,
+            cursoAluno: curso,
             unidade: unidade,
             modalidade: modalidade,
             problema: problemaTexto,
@@ -879,13 +890,13 @@
 
       if (badgeAbertos) {
         let countAbertos = tickets.filter(t => t.status === 'aberto').length;
-        badgeAbertos.textContent = countAbertos;
-        badgeAbertos.style.display = countAbertos === 0 ? 'none' : 'inline-block';
+        if (badgeAbertos) badgeAbertos.textContent = countAbertos;
+        if (badgeAbertos) badgeAbertos.style.display = countAbertos === 0 ? 'none' : 'inline-block';
       }
       if (badgeAndamento) {
         let countAndamento = tickets.filter(t => t.status === 'em_andamento').length;
-        badgeAndamento.textContent = countAndamento;
-        badgeAndamento.style.display = countAndamento === 0 ? 'none' : 'inline-block';
+        if (badgeAndamento) badgeAndamento.textContent = countAndamento;
+        if (badgeAndamento) badgeAndamento.style.display = countAndamento === 0 ? 'none' : 'inline-block';
       }
       if (badgeAbertosNav) {
         let countAbertos = tickets.filter(t => t.status === 'aberto').length;
@@ -929,9 +940,10 @@
           </div>
           <p>
             <strong>CPF:</strong> 
-            <span class="cpf-copy" onclick="copiarCPF('${t.cpfAluno}')">${t.cpfAluno}</span>
-            | <strong>Unidade:</strong> ${t.unidade} | <strong>Modalidade:</strong> ${t.modalidade}
+            <span class="cpf-copy" onclick="copiarCPF('${t.cpfAluno}', event)">${t.cpfAluno}</span>
+            | <strong>Nome:</strong> ${t.nomeAluno || '—'}
           </p>
+          <p><strong>Curso:</strong> ${t.cursoAluno || '—'} | <strong>Unidade:</strong> ${t.unidade} | <strong>Modalidade:</strong> ${t.modalidade}</p>
           <p><strong>Criado por:</strong> ${t.nomeCriador || 'Desconhecido'}</p>
           ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${t.nomeIniciador || t.iniciadoPor}</p>` : ''}
           <p><strong>Problema:</strong> ${t.problema}</p>
@@ -965,10 +977,10 @@
   <script src="./assets/data/course_prices_2026_1_data.js"></script>
 
   <!-- Carregador do menu (NOVO) -->
-  <script src="./assets/js/menu-loader.js"></script>
+  <script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
 
   <!-- Utilitários e modais -->
-  <script>window.API_URL = 'https://portal-inscricoes.onrender.com';</script>
+  <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
   <script src="./assets/js/modals-shared.js"></script>
   <script src="./assets/js/menu.js"></script>
   <script src="./assets/js/dark-mode.js"></script>

@@ -1,8 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
+const crud = require('../services/sheetsCrudService');
+const sheetsService = require('../services/sheetsService');
 
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
+/**
+ * GET /operadores
+ * Retorna lista de operadores
+ */
+router.get('/', async (req, res) => {
+  try {
+    const operadores = await sheetsService.getOperadores();
+    res.json({
+      total: operadores.length,
+      data: operadores
+    });
+  } catch (error) {
+    console.error(`[ERRO] GET /operadores: ${error.message}`);
+    res.status(503).json({ error: 'Erro ao buscar operadores' });
+  }
+});
 
 /**
  * POST /operadores
@@ -16,20 +32,17 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Nome e email são obrigatórios.' });
     }
 
-    const response = await axios.post(APPS_SCRIPT_URL, {
-      aba: 'OPERADORES',
+    const rowData = {
       id: id || '',
       uid: uid || '',
       nome,
       email,
       tipo: tipo || 'comum'
-    }, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 15000,
-      maxRedirects: 5
-    });
+    };
 
-    res.json(response.data);
+    const response = await crud.appendRow('OPERADORES', rowData);
+
+    res.json({ status: 'success', data: response });
   } catch (error) {
     console.error('[ERRO] POST /operadores:', error.message);
     res.status(500).json({ error: 'Erro ao salvar operador' });
@@ -49,18 +62,15 @@ router.put('/:uid', async (req, res) => {
       return res.status(400).json({ error: 'Tipo é obrigatório.' });
     }
 
-    const response = await axios.post(APPS_SCRIPT_URL, {
-      aba: 'OPERADORES',
-      acao: 'editar',
-      uid: uid,
-      tipo: tipo
-    }, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 15000,
-      maxRedirects: 5
-    });
+    const existingRow = await crud.findRowByField('OPERADORES', 'uid', uid);
+    if (!existingRow) {
+      return res.status(404).json({ error: 'Operador não encontrado.' });
+    }
 
-    res.json(response.data);
+    const updatedRow = { ...existingRow, tipo };
+    const response = await crud.updateRow('OPERADORES', 'uid', uid, updatedRow);
+
+    res.json({ status: 'success', data: response });
   } catch (error) {
     console.error('[ERRO] PUT /operadores:', error.message);
     res.status(500).json({ error: 'Erro ao atualizar operador' });
@@ -68,3 +78,4 @@ router.put('/:uid', async (req, res) => {
 });
 
 module.exports = router;
+

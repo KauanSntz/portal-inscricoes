@@ -21,7 +21,10 @@ const cache = {
   coordenadores: { data: null, timestamp: 0 },
   setores_contato: { data: null, timestamp: 0 },
   cursos_tecnicos: { data: null, timestamp: 0 },
-  diario_bordo: { data: null, timestamp: 0 }
+  cursos_oferta: { data: null, timestamp: 0 },
+  precos_cursos: { data: null, timestamp: 0 },
+  diario_bordo: { data: null, timestamp: 0 },
+  operadores: { data: null, timestamp: 0 }
 };
 
 function invalidateCache(cacheKey) {
@@ -168,6 +171,15 @@ async function getCoordenadores(filtros = {}) {
 }
 
 /**
+ * Busca operadores
+ * @returns {Promise<Array>} Operadores
+ */
+async function getOperadores() {
+  const url = `${BASE_URL}/OPERADORES`;
+  return fetchWithCache(url, 'operadores');
+}
+
+/**
  * Busca contatos de setores
  * @returns {Promise<Array>} Setores com contatos
  */
@@ -209,8 +221,70 @@ function invalidateCache() {
   cache.coordenadores = { data: null, timestamp: 0 };
   cache.setores_contato = { data: null, timestamp: 0 };
   cache.cursos_tecnicos = { data: null, timestamp: 0 };
+  cache.cursos_oferta = { data: null, timestamp: 0 };
+  cache.precos_cursos = { data: null, timestamp: 0 };
   cache.diario_bordo = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
+}
+
+/**
+ * Busca cursos ofertados por unidade/modalidade (da aba cursos_oferta)
+ * @returns {Promise<Array>} Cursos ofertados
+ */
+async function getCursosOferta() {
+  const url = `${BASE_URL}/cursos_oferta`;
+  return fetchWithCache(url, 'cursos_oferta');
+}
+
+/**
+ * Busca preços de cursos (da aba precos_cursos)
+ * @returns {Promise<Array>} Preços
+ */
+async function getPrecosCursos() {
+  const url = `${BASE_URL}/precos_cursos`;
+  return fetchWithCache(url, 'precos_cursos');
+}
+
+/**
+ * Busca cursos técnicos (da aba cursos_tecnicos)
+ * Reagrupa os dados tabulares no formato aninhado esperado pelo frontend
+ * @returns {Promise<Array>} Cursos técnicos agrupados por unidade
+ */
+async function getCursosTecnicos() {
+  const url = `${BASE_URL}/${URL_CURSOS_TECNICOS}`;
+  const rows = await fetchWithCache(url, 'cursos_tecnicos');
+  
+  // Reagrupar: flat rows → { unidade, endereco, cursos: [{ nome, duracao, turnos, valores, primeiraMensalidade }] }
+  const unidadesMap = new Map();
+  for (const row of rows) {
+    const key = row.unidade;
+    if (!unidadesMap.has(key)) {
+      unidadesMap.set(key, { unidade: row.unidade, endereco: row.endereco, cursosMap: new Map() });
+    }
+    const u = unidadesMap.get(key);
+    if (!u.cursosMap.has(row.curso)) {
+      u.cursosMap.set(row.curso, {
+        nome: row.curso,
+        duracao: row.duracao,
+        turnos: [],
+        valores: {},
+        primeiraMensalidade: parseFloat(row.primeira_mensalidade) || 0
+      });
+    }
+    const c = u.cursosMap.get(row.curso);
+    if (row.turno && !c.turnos.includes(row.turno)) {
+      c.turnos.push(row.turno);
+    }
+    if (row.turno && row.valor) {
+      c.valores[row.turno] = parseFloat(row.valor) || 0;
+    }
+  }
+  
+  return Array.from(unidadesMap.values()).map(u => ({
+    unidade: u.unidade,
+    endereco: u.endereco,
+    cursos: Array.from(u.cursosMap.values())
+  }));
 }
 
 /**
@@ -219,8 +293,17 @@ function invalidateCache() {
  * @returns {Promise<Array>} Registros do diário
  */
 async function getDiarioBordo(filtros = {}) {
-  const url = `${BASE_URL}/${URL_DIARIO_BORDO}`;
-  let registros = await fetchWithCache(url, 'diario_bordo');
+  // Busca direto da API do Google Sheets via CRUD para evitar delay de cache do OpenSheet
+  let registrosRaw = await crud.getAllRows('diario_bordo');
+  
+  // Converte as chaves para UPPERCASE para manter compatibilidade com o frontend
+  let registros = registrosRaw.map(r => {
+    const upperObj = {};
+    for (const key in r) {
+      upperObj[key.toUpperCase()] = r[key];
+    }
+    return upperObj;
+  });
 
   // Ignorar registros inativos
   if (Array.isArray(registros)) {
@@ -245,48 +328,55 @@ async function getDiarioBordo(filtros = {}) {
 }
 
 async function salvarDiarioBordo(registro) {
-  const { acao, id_registro, ...dados } = registro;
-
-  const rowData = {
-    id_registro: id_registro,
-    id_operador: dados.id_operador,
-    nome_operador: dados.nome_operador,
-    data_inscricao: dados.data_inscricao,
-    tipo_inscricao: dados.tipo_inscricao,
-    nome: dados.nome,
-    telefone: dados.telefone,
-    nascimento: dados.nascimento,
-    cpf: dados.cpf,
-    curso: dados.curso,
-    modalidade: dados.modalidade,
-    unidade: dados.unidade,
-    situacao: dados.situacao
+  const acao = registro.acao || 'novo';
+  
+  // Mapear campos para lowercase (formato do CRUD/Google Sheets)
+  const dados = {
+    id_registro: registro.id_registro || '',
+    id_operador: registro.id_operador || '',
+    nome_operador: registro.nome_operador || '',
+    data_inscricao: registro.data_inscricao || '',
+    tipo_inscricao: registro.tipo_inscricao || '',
+    nome: registro.nome || '',
+    telefone: registro.telefone || '',
+    nascimento: registro.nascimento || '',
+    cpf: registro.cpf || '',
+    curso: registro.curso || '',
+    modalidade: registro.modalidade || '',
+    unidade: registro.unidade || '',
+    situacao: registro.situacao || ''
   };
 
-  let response;
+  let resultado;
 
-  try {
-    if (acao === 'novo') {
-      if (!rowData.id_registro) {
-        rowData.id_registro = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-      }
-      response = await crud.appendRow('diario_bordo', rowData);
-    } else if (acao === 'editar' || acao === 'excluir') {
-      if (acao === 'excluir') {
-        rowData.situacao = 'inativo';
-      }
-      response = await crud.updateRow('diario_bordo', 'id_registro', id_registro, rowData);
-      if (!response) {
-        throw new Error(`Registro ${id_registro} não encontrado.`);
-      }
+  if (acao === 'excluir') {
+    // Soft delete: marcar como inativo
+    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, {
+      situacao: 'inativo'
+    });
+    if (!resultado) {
+      throw new Error(`Registro ${dados.id_registro} não encontrado para exclusão`);
     }
-
-    invalidateCache('diario_bordo');
-    return { status: 'ok', message: 'Registro salvo com sucesso!', data: response };
-  } catch (error) {
-    console.error('[CRUD DIARIO] Erro:', error.message);
-    throw error;
+    console.log(`[DIARIO] Registro ${dados.id_registro} marcado como inativo`);
+  } else if (acao === 'editar') {
+    // Update: atualizar registro existente pelo id_registro
+    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, dados);
+    if (!resultado) {
+      throw new Error(`Registro ${dados.id_registro} não encontrado para edição`);
+    }
+    console.log(`[DIARIO] Registro ${dados.id_registro} atualizado`);
+  } else {
+    // Novo: adicionar nova linha
+    resultado = await crud.appendRow('diario_bordo', dados);
+    console.log(`[DIARIO] Novo registro criado: ${dados.id_registro}`);
   }
+
+  // Invalidar cache do diário após salvar
+  if (cache.diario_bordo) {
+    cache.diario_bordo = { data: null, timestamp: 0 };
+  }
+
+  return { status: 'ok', action: acao, data: resultado };
 }
 
 module.exports = {
@@ -299,5 +389,9 @@ module.exports = {
   getUnidadeById,
   getDiarioBordo,
   salvarDiarioBordo,
+  getCursosOferta,
+  getPrecosCursos,
+  getCursosTecnicos,
+  getOperadores,
   invalidateCache
 };

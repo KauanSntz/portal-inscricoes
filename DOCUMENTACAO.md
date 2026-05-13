@@ -139,12 +139,12 @@ router.post('/', async (req, res) => {
   // Obriga ter nome e cpf
   if (!nome || !cpf) return res.status(400).json({ error: 'Faltam dados' });
 
-  // Dispara pro Google Apps Script (que escreve na planilha lá no Google)
+  // Salva no banco de dados (Google Sheets) via sheetsCrudService
   const resultado = await salvarDiarioBordo({ ...req.body });
   res.json(resultado);
 });
 ```
-**Como funciona:** Em vez de *ler*, aqui nós *escrevemos*. O `salvarDiarioBordo` manda um POST para um webhook (`APPS_SCRIPT_URL`), que é um códigozinho dentro do Google Sheets que insere uma linha nova na tabela.
+**Como funciona:** Em vez de *ler*, aqui nós *escrevemos*. O `salvarDiarioBordo` usa o `sheetsCrudService.js` para inserir ou atualizar uma linha diretamente na tabela do Google Sheets usando a API oficial do Google.
 
 ---
 

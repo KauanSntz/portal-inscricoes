@@ -2,129 +2,192 @@
 (() => {
   "use strict";
 
-  const menuToggle = document.getElementById('menuToggle');
-  const sideMenu = document.getElementById('sideMenu');
-  const menuClose = document.getElementById('menuClose');
-  const menuOverlay = document.getElementById('menuOverlay');
+  function initMenu() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuClose = document.getElementById('menuClose');
+    const menuOverlay = document.getElementById('menuOverlay');
 
-  if (!menuToggle || !sideMenu || !menuClose || !menuOverlay) return;
+    if (!menuToggle || !sideMenu || !menuClose || !menuOverlay) return;
 
-  function openMenu() {
-    sideMenu.classList.add('is-open');
-    menuOverlay.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
+    function openMenu() {
+      sideMenu.classList.add('is-open');
+      menuOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
 
-  // Fecha o menu ao clicar fora dele
-document.addEventListener('click', (e) => {
-  const sideMenu = document.getElementById('sideMenu');
-  const menuToggle = document.getElementById('menuToggle');
-  
-  if (!sideMenu || !menuToggle) return;
-  
-  // Se o menu estiver aberto e o clique NÃO foi no menu nem no botão de abrir
-  if (sideMenu.classList.contains('is-open') && 
-      !sideMenu.contains(e.target) && 
-      !menuToggle.contains(e.target)) {
-    closeMenu();
-  }
-});
+    let menuMousedownInside = false;
+    document.addEventListener('mousedown', (e) => {
+      menuMousedownInside = sideMenu.contains(e.target);
+    });
+    document.addEventListener('mouseup', () => { menuMousedownInside = false; });
 
-  function closeMenu() {
-    sideMenu.classList.remove('is-open');
-    menuOverlay.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
+    function closeMenu() {
+      sideMenu.classList.remove('is-open');
+      menuOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
 
-  menuToggle.addEventListener('click', openMenu);
-  menuClose.addEventListener('click', closeMenu);
-  menuOverlay.addEventListener('click', closeMenu);
+    menuToggle.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
 
-  // Submenus genéricos
-  const submenuItems = document.querySelectorAll('.menu-item-with-submenu');
-  
-  submenuItems.forEach(item => {
-    const toggle = item.querySelector('.submenu-toggle');
-    const submenu = item.querySelector('.submenu');
-    
-    if (toggle && submenu) {
-      toggle.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      if (menuMousedownInside) return;
+      if (sideMenu.classList.contains('is-open') &&
+          !sideMenu.contains(e.target) &&
+          !menuToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    menuOverlay.addEventListener('click', (e) => {
+      if (menuMousedownInside) return;
+      if (e.target === menuOverlay) closeMenu();
+    });
+
+    // Submenus genéricos
+    const submenuItems = document.querySelectorAll('.menu-item-with-submenu');
+    submenuItems.forEach(item => {
+      const toggle = item.querySelector('.submenu-toggle');
+      const submenu = item.querySelector('.submenu');
+      if (toggle && submenu) {
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          submenuItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.querySelector('.submenu-toggle')?.classList.remove('is-open');
+              otherItem.querySelector('.submenu')?.classList.remove('is-open');
+            }
+          });
+          toggle.classList.toggle('is-open');
+          submenu.classList.toggle('is-open');
+        });
+      }
+    });
+
+    // Troca de tema
+    const themeOptions = document.querySelectorAll('.theme-option');
+    const savedTheme = localStorage.getItem('selectedTheme') || 'blue';
+    document.body.classList.add(`theme-${savedTheme}`);
+
+    themeOptions.forEach(opt => {
+      opt.addEventListener('click', (e) => {
         e.stopPropagation();
-        submenuItems.forEach(otherItem => {
-          if (otherItem !== item) {
-            otherItem.querySelector('.submenu-toggle')?.classList.remove('is-open');
-            otherItem.querySelector('.submenu')?.classList.remove('is-open');
+        const theme = opt.dataset.theme;
+        document.body.classList.forEach(cls => {
+          if (cls.startsWith('theme-')) {
+            document.body.classList.remove(cls);
           }
         });
-        toggle.classList.toggle('is-open');
-        submenu.classList.toggle('is-open');
-      });
-    }
-  });
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem('selectedTheme', theme);
 
-  // Troca de tema
-  const themeOptions = document.querySelectorAll('.theme-option');
-  const savedTheme = localStorage.getItem('selectedTheme') || 'blue';
-  document.body.classList.add(`theme-${savedTheme}`);
-
-  themeOptions.forEach(opt => {
-    opt.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const theme = opt.dataset.theme;
-      document.body.classList.forEach(cls => {
-        if (cls.startsWith('theme-')) {
-          document.body.classList.remove(cls);
+        const themeSubmenu = opt.closest('.submenu');
+        if (themeSubmenu) {
+          themeSubmenu.classList.remove('is-open');
+          themeSubmenu.previousElementSibling?.classList.remove('is-open');
         }
       });
-      document.body.classList.add(`theme-${theme}`);
-      localStorage.setItem('selectedTheme', theme);
-      
-      const themeSubmenu = opt.closest('.submenu');
-      if (themeSubmenu) {
-        themeSubmenu.classList.remove('is-open');
-        themeSubmenu.previousElementSibling?.classList.remove('is-open');
+    });
+
+    // Ações dos submenus
+    const submenuLinks = document.querySelectorAll('.submenu-link');
+    submenuLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        const action = link.dataset.action;
+        if (action === 'open-setores') {
+          if (window.setoresModal) window.setoresModal.open();
+        } else if (action === 'open-coordenadores') {
+          if (window.coordenadoresModal) window.coordenadoresModal.open();
+        }
+      });
+    });
+
+    // Cursos Técnicos
+    const cursosTecnicosBtn = document.querySelector('.menu-link[data-action="open-cursos-tecnicos"]');
+    if (cursosTecnicosBtn) {
+      cursosTecnicosBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.cursosTecnicosModal) {
+          window.cursosTecnicosModal.open();
+          closeMenu();
+        }
+      });
+    }
+
+    // Pesquisar cursos / Pesquisar preços (eventos globais)
+    const globalSearchBtn = document.querySelector('.menu-link[data-action="open-global-search"]');
+    if (globalSearchBtn) {
+      globalSearchBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.globalModal) window.globalModal.open();
+      });
+    }
+
+    const pricesMenuBtn = document.querySelector('.menu-link[data-action="open-prices-menu"]');
+    if (pricesMenuBtn) {
+      pricesMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.pricesModal) window.pricesModal.open();
+      });
+    }
+
+    // Pós-Graduação
+    const posValoresBtn = document.querySelector('.menu-link[data-action="open-pos-valores"]');
+    if (posValoresBtn) {
+      posValoresBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.posGraduacaoModal) window.posGraduacaoModal.open('valores');
+      });
+    }
+
+    const posInfoBtn = document.querySelector('.menu-link[data-action="open-pos-info"]');
+    if (posInfoBtn) {
+      posInfoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.posGraduacaoModal) window.posGraduacaoModal.open('informacoes');
+      });
+    }
+
+    // Visibilidade do menu Admin
+    const adminMenuItem = document.getElementById('admin-menu-item');
+    const adminUsersLink = document.getElementById('admin-users-link');
+    if (adminMenuItem) {
+      const userType = localStorage.getItem('userType') || '';
+      if (userType === 'admin' || userType === 'superadmin' || userType === 'super_admin') {
+        adminMenuItem.style.display = 'block';
+        if (adminUsersLink && (userType === 'superadmin' || userType === 'super_admin')) {
+          adminUsersLink.style.display = 'block';
+        }
+      }
+    }
+
+    // Elementos que NÃO fecham o menu
+    const keepOpenSelectors = [
+      '.submenu-toggle',
+      '.submenu button',
+      '.user-profile'
+    ];
+
+    sideMenu.querySelectorAll('a, button').forEach(el => {
+      const shouldKeepOpen = keepOpenSelectors.some(selector => el.matches(selector));
+      if (!shouldKeepOpen) {
+        el.addEventListener('click', closeMenu);
       }
     });
-  });
+  }
 
-  // Ações dos submenus
-  const submenuLinks = document.querySelectorAll('.submenu-link');
-  submenuLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.stopPropagation();
-       closeMenu();
-      const action = link.dataset.action;
-      if (action === 'open-setores') {
-        if (window.setoresModal) window.setoresModal.open();
-      } else if (action === 'open-coordenadores') {
-        if (window.coordenadoresModal) window.coordenadoresModal.open();
-      }
-    });
-  });
-
-  // Listener específico para o botão de Cursos Técnicos (os outros são tratados globalmente)
-const cursosTecnicosBtn = document.querySelector('.menu-link[data-action="open-cursos-tecnicos"]');
-if (cursosTecnicosBtn) {
-  cursosTecnicosBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (window.cursosTecnicosModal) {
-      window.cursosTecnicosModal.open();
-      closeMenu();
-    }
-  });
-}
-
-  // Elementos que NÃO fecham o menu
-  const keepOpenSelectors = [
-    '.submenu-toggle',
-    '.submenu button',
-    '.user-profile'
-  ];
-
-  sideMenu.querySelectorAll('a, button').forEach(el => {
-    const shouldKeepOpen = keepOpenSelectors.some(selector => el.matches(selector));
-    if (!shouldKeepOpen) {
-      el.addEventListener('click', closeMenu);
-    }
-  });
+  // Inicializa se menu já estiver no DOM
+  if (document.getElementById('menu-container') === null) {
+    initMenu();
+  } else {
+    // Espera o menu-loader injetar o menu
+    document.addEventListener('menu-loaded', initMenu, { once: true });
+  }
 })();

@@ -66,7 +66,7 @@
     "tecnologia em jogos digitais": "tecnologia",
     "segurança do trabalho": "tecnologia",
     "design gráfico": "tecnologia",
-    
+
     // 📊 GESTÃO
     "administração": "gestao",
     "ciências contábeis": "gestao",
@@ -84,7 +84,7 @@
     "gestão portuária": "gestao",
     "gestão de segurança privada": "gestao",
     "recursos humanos": "gestao",
-    
+
     // 🏥 SAÚDE
     "biomedicina": "saude",
     "enfermagem": "saude",
@@ -99,7 +99,7 @@
     "radiologia": "saude",
     "terapia ocupacional": "saude",
     "estética e cosmética": "saude",
-    
+
     // ⚖️ DIREITO E SERVIÇOS SOCIAIS
     "direito": "direito",
     "direito - manaus": "direito",
@@ -107,7 +107,7 @@
     "gestão de serviços jurídicos e notariais": "direito",
     "gestão de serviços judiciais e notariais": "direito",
     "gestão de serviços judiciais e notariais (tecnólogo)": "direito",
-    
+
     // 🎓 EDUCAÇÃO
     "pedagogia": "educacao",
     "educação física": "educacao",
@@ -117,7 +117,7 @@
     "educação física licenciatura": "educacao",
     "letras": "educacao",
     "psicopedagogia": "educacao",
-    
+
     // 🎨 CRIATIVOS E COMUNICAÇÃO
     "arquitetura e urbanismo": "criativos",
     "jornalismo": "criativos",
@@ -265,15 +265,22 @@
   let pricesDataPromise = null;
   const loadPricesOnce = async () => {
     if (!pricesDataPromise) {
-      pricesDataPromise = Promise.resolve().then(() => {
-        const payload = window.COURSE_PRICES_2026_1;
-        if (!payload || !Array.isArray(payload.records)) {
-          return { records: [] };
-        }
-        return {
-          ...payload,
-          records: payload.records,
+      pricesDataPromise = new Promise((resolve) => {
+        const tryLoad = () => {
+          const payload = window.COURSE_PRICES_2026_1;
+          if (payload && Array.isArray(payload.records)) {
+            resolve({ ...payload, records: payload.records });
+          } else {
+            // Esperar evento prices-loaded (dados agora vêm via fetch assíncrono)
+            window.addEventListener('prices-loaded', () => {
+              const p = window.COURSE_PRICES_2026_1;
+              resolve(p && Array.isArray(p.records) ? { ...p, records: p.records } : { records: [] });
+            }, { once: true });
+            // Timeout fallback: 10s
+            setTimeout(() => resolve({ records: [] }), 10000);
+          }
         };
+        tryLoad();
       });
     }
     return pricesDataPromise;
@@ -804,7 +811,7 @@
         const q = norm(filterText);
         const filtered = data.filter(item => {
           if (!q) return true;
-          return Object.values(item).some(val => 
+          return Object.values(item).some(val =>
             val && norm(String(val)).includes(q)
           );
         });
@@ -831,7 +838,7 @@
         overlay.className = 'modal-overlay info-overlay';
         overlay.id = modalId;
         overlay.setAttribute('aria-hidden', 'true');
-        
+
         const modal = document.createElement('div');
         modal.className = 'modal info-modal';
         modal.setAttribute('role', 'dialog');
@@ -989,325 +996,326 @@
   );
 
   // ==================== MODAL DE CURSOS TÉCNICOS ====================
-const cursosTecnicosModal = (() => {
-  let overlay, titleEl, searchInput, turnoSelect, duracaoSelect, listEl, emptyEl, backBtn, filtersRow;
-  let isOpen = false, lastFocus = null;
-  let data = [];
-  let currentView = 'units'; // 'units' ou 'courses'
-  let currentUnit = null;
-  let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+  const cursosTecnicosModal = (() => {
+    let overlay, titleEl, searchInput, turnoSelect, duracaoSelect, listEl, emptyEl, backBtn, filtersRow;
+    let isOpen = false, lastFocus = null;
+    let data = [];
+    let currentView = 'units'; // 'units' ou 'courses'
+    let currentUnit = null;
+    let currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
 
-  const loadData = async () => {
-    try {
-      const response = await fetch('./assets/data/cursos_tecnicos.json');
-      if (!response.ok) throw new Error('Erro ao carregar cursos técnicos');
-      data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('[CursosTecnicos] Erro ao carregar dados locais:', error);
-      return [];
-    }
-  };
+    const loadData = async () => {
+      try {
+        const API_URL = window.API_URL || '';
+        const response = await fetch(`${API_URL}/cursos-tecnicos`);
+        if (!response.ok) throw new Error('Erro ao carregar cursos técnicos');
+        data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('[CursosTecnicos] Erro ao carregar dados da API:', error);
+        return [];
+      }
+    };
 
-  const getUniqueDuracoes = () => {
-    const duracoes = new Set();
-    data.forEach(u => u.cursos.forEach(c => duracoes.add(c.duracao)));
-    return Array.from(duracoes).sort();
-  };
+    const getUniqueDuracoes = () => {
+      const duracoes = new Set();
+      data.forEach(u => u.cursos.forEach(c => duracoes.add(c.duracao)));
+      return Array.from(duracoes).sort();
+    };
 
-  const renderUnits = (filterText = '') => {
-    const q = window.norm(filterText);
-    const filtered = data.filter(u => {
-      if (!q) return true;
-      return window.norm(u.unidade).includes(q) || u.cursos.some(c => window.norm(c.nome).includes(q));
-    });
+    const renderUnits = (filterText = '') => {
+      const q = window.norm(filterText);
+      const filtered = data.filter(u => {
+        if (!q) return true;
+        return window.norm(u.unidade).includes(q) || u.cursos.some(c => window.norm(c.nome).includes(q));
+      });
 
-    listEl.innerHTML = '';
+      listEl.innerHTML = '';
 
-    if (!filtered.length) {
-      emptyEl.hidden = false;
-      emptyEl.textContent = 'Nenhuma unidade encontrada.';
-      return;
-    }
+      if (!filtered.length) {
+        emptyEl.hidden = false;
+        emptyEl.textContent = 'Nenhuma unidade encontrada.';
+        return;
+      }
 
-    emptyEl.hidden = true;
-    filtered.forEach(u => {
-      const card = document.createElement('article');
-      card.className = 'info-card unidade-card';
-      card.innerHTML = `
+      emptyEl.hidden = true;
+      filtered.forEach(u => {
+        const card = document.createElement('article');
+        card.className = 'info-card unidade-card';
+        card.innerHTML = `
         <h3 class="unidade-nome">${u.unidade}</h3>
         <p class="unidade-endereco">${u.endereco}</p>
       `;
-      card.addEventListener('click', () => showCourses(u));
-      listEl.appendChild(card);
-    });
-  };
+        card.addEventListener('click', () => showCourses(u));
+        listEl.appendChild(card);
+      });
+    };
 
-  const renderCourses = () => {
-    if (!currentUnit) return;
+    const renderCourses = () => {
+      if (!currentUnit) return;
 
-    let cursos = currentUnit.cursos;
+      let cursos = currentUnit.cursos;
 
-    const q = window.norm(currentFilter.text);
-    if (q) {
-      cursos = cursos.filter(c => window.norm(c.nome).includes(q));
-    }
-    if (currentFilter.turno !== 'todos') {
-      cursos = cursos.filter(c => c.turnos.includes(currentFilter.turno));
-    }
-    if (currentFilter.duracao !== 'todos') {
-      cursos = cursos.filter(c => c.duracao === currentFilter.duracao);
-    }
+      const q = window.norm(currentFilter.text);
+      if (q) {
+        cursos = cursos.filter(c => window.norm(c.nome).includes(q));
+      }
+      if (currentFilter.turno !== 'todos') {
+        cursos = cursos.filter(c => c.turnos.includes(currentFilter.turno));
+      }
+      if (currentFilter.duracao !== 'todos') {
+        cursos = cursos.filter(c => c.duracao === currentFilter.duracao);
+      }
 
-    listEl.innerHTML = '';
+      listEl.innerHTML = '';
 
-    if (!cursos.length) {
-      emptyEl.hidden = false;
-      emptyEl.textContent = 'Nenhum curso encontrado.';
-      return;
-    }
+      if (!cursos.length) {
+        emptyEl.hidden = false;
+        emptyEl.textContent = 'Nenhum curso encontrado.';
+        return;
+      }
 
-    emptyEl.hidden = true;
-    cursos.forEach(curso => {
-      const card = document.createElement('article');
-      card.className = 'info-card curso-card';
+      emptyEl.hidden = true;
+      cursos.forEach(curso => {
+        const card = document.createElement('article');
+        card.className = 'info-card curso-card';
 
-      const header = document.createElement('div');
-      header.className = 'curso-header';
-      header.innerHTML = `
+        const header = document.createElement('div');
+        header.className = 'curso-header';
+        header.innerHTML = `
         <h4 class="curso-nome">${curso.nome}</h4>
         <span class="curso-duracao-badge">${curso.duracao}</span>
       `;
-      card.appendChild(header);
+        card.appendChild(header);
 
-      const valoresDiv = document.createElement('div');
-      valoresDiv.className = 'curso-valores';
-      
-      const primeira = document.createElement('div');
-      primeira.className = 'primeira-mensalidade';
-      primeira.textContent = `1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}`;
-      valoresDiv.appendChild(primeira);
+        const valoresDiv = document.createElement('div');
+        valoresDiv.className = 'curso-valores';
 
-      Object.entries(curso.valores).forEach(([turno, valor]) => {
-        const turnoDiv = document.createElement('div');
-        turnoDiv.className = 'curso-turno';
-        turnoDiv.textContent = `${turno}: R$ ${valor.toFixed(2)}`;
-        valoresDiv.appendChild(turnoDiv);
+        const primeira = document.createElement('div');
+        primeira.className = 'primeira-mensalidade';
+        primeira.textContent = `1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}`;
+        valoresDiv.appendChild(primeira);
+
+        Object.entries(curso.valores).forEach(([turno, valor]) => {
+          const turnoDiv = document.createElement('div');
+          turnoDiv.className = 'curso-turno';
+          turnoDiv.textContent = `${turno}: R$ ${valor.toFixed(2)}`;
+          valoresDiv.appendChild(turnoDiv);
+        });
+        card.appendChild(valoresDiv);
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'info-copy-btn';
+        copyBtn.textContent = 'Copiar mensagem';
+        copyBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const turnosStr = Object.entries(curso.valores)
+            .map(([t, v]) => `  • ${t}: R$ ${v.toFixed(2)}`)
+            .join('\n');
+          const mensagem = `🎓 *Curso Técnico em ${curso.nome}* - Unidade ${currentUnit.unidade}\n` +
+            `📍 Endereço: ${currentUnit.endereco}\n` +
+            `⏱️ Duração: ${curso.duracao}\n` +
+            `📅 Turnos disponíveis: ${curso.turnos.join(', ')}\n\n` +
+            `💰 *Valores*:\n` +
+            `- 1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}\n` +
+            `- A partir da 2ª:\n${turnosStr}`;
+          const ok = await copyText(mensagem);
+          copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
+          setTimeout(() => copyBtn.textContent = 'Copiar mensagem', 1200);
+        });
+        card.appendChild(copyBtn);
+
+        listEl.appendChild(card);
       });
-      card.appendChild(valoresDiv);
+    };
 
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'info-copy-btn';
-      copyBtn.textContent = 'Copiar mensagem';
-      copyBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const turnosStr = Object.entries(curso.valores)
-          .map(([t, v]) => `  • ${t}: R$ ${v.toFixed(2)}`)
-          .join('\n');
-        const mensagem = `🎓 *Curso Técnico em ${curso.nome}* - Unidade ${currentUnit.unidade}\n` +
-          `📍 Endereço: ${currentUnit.endereco}\n` +
-          `⏱️ Duração: ${curso.duracao}\n` +
-          `📅 Turnos disponíveis: ${curso.turnos.join(', ')}\n\n` +
-          `💰 *Valores*:\n` +
-          `- 1ª mensalidade: R$ ${curso.primeiraMensalidade.toFixed(2)}\n` +
-          `- A partir da 2ª:\n${turnosStr}`;
-        const ok = await copyText(mensagem);
-        copyBtn.textContent = ok ? 'Copiado!' : 'Erro';
-        setTimeout(() => copyBtn.textContent = 'Copiar mensagem', 1200);
-      });
-      card.appendChild(copyBtn);
-
-      listEl.appendChild(card);
-    });
-  };
-
-  const updateView = () => {
-    if (currentView === 'units') {
-      titleEl.textContent = 'Cursos Técnicos - Unidades';
-      searchInput.placeholder = 'Buscar unidade ou curso...';
-      filtersRow.style.display = 'none';
-      backBtn.style.display = 'none';
-      renderUnits(searchInput.value);
-    } else {
-      titleEl.textContent = `Cursos - ${currentUnit.unidade}`;
-      searchInput.placeholder = 'Buscar curso...';
-      filtersRow.style.display = 'flex';
-      backBtn.style.display = 'inline-block';
-      renderCourses();
-    }
-  };
-
-  const showCourses = (unit) => {
-    currentUnit = unit;
-    currentView = 'courses';
-    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
-    searchInput.value = '';
-    turnoSelect.value = 'todos';
-    duracaoSelect.value = 'todos';
-    updateView();
-  };
-
-  const goBack = () => {
-    currentView = 'units';
-    currentUnit = null;
-    currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
-    searchInput.value = '';
-    turnoSelect.value = 'todos';
-    duracaoSelect.value = 'todos';
-    updateView();
-  };
-
-  const ensure = () => {
-    if (overlay) return overlay;
-
-    overlay = document.createElement('div');
-    overlay.className = 'modal-overlay info-overlay';
-    overlay.setAttribute('aria-hidden', 'true');
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal info-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'Cursos Técnicos');
-
-    const head = document.createElement('div');
-    head.className = 'modal-head info-head';
-    titleEl = document.createElement('div');
-    titleEl.className = 'modal-title info-title';
-    titleEl.textContent = 'Cursos Técnicos - Unidades';
-    
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'modal-close info-close';
-    closeBtn.type = 'button';
-    closeBtn.setAttribute('aria-label', 'Fechar');
-    closeBtn.textContent = '×';
-    closeBtn.addEventListener('click', close);
-    
-    head.appendChild(titleEl);
-    head.appendChild(closeBtn);
-
-    const body = document.createElement('div');
-    body.className = 'modal-body info-body';
-
-    const searchRow = document.createElement('div');
-    searchRow.className = 'search-row info-search-row';
-    searchInput = document.createElement('input');
-    searchInput.className = 'search-input info-search';
-    searchInput.type = 'search';
-    searchInput.placeholder = 'Buscar unidade ou curso...';
-    searchInput.addEventListener('input', debounce(() => {
+    const updateView = () => {
       if (currentView === 'units') {
+        titleEl.textContent = 'Cursos Técnicos - Unidades';
+        searchInput.placeholder = 'Buscar unidade ou curso...';
+        filtersRow.style.display = 'none';
+        backBtn.style.display = 'none';
         renderUnits(searchInput.value);
       } else {
-        currentFilter.text = searchInput.value;
+        titleEl.textContent = `Cursos - ${currentUnit.unidade}`;
+        searchInput.placeholder = 'Buscar curso...';
+        filtersRow.style.display = 'flex';
+        backBtn.style.display = 'inline-block';
         renderCourses();
       }
-    }, 200));
-    searchRow.appendChild(searchInput);
+    };
 
-    filtersRow = document.createElement('div');
-    filtersRow.className = 'filters-row';
-    filtersRow.style.display = 'none';
+    const showCourses = (unit) => {
+      currentUnit = unit;
+      currentView = 'courses';
+      currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+      searchInput.value = '';
+      turnoSelect.value = 'todos';
+      duracaoSelect.value = 'todos';
+      updateView();
+    };
 
-    turnoSelect = document.createElement('select');
-    turnoSelect.className = 'search-input filter-select';
-    turnoSelect.innerHTML = `
+    const goBack = () => {
+      currentView = 'units';
+      currentUnit = null;
+      currentFilter = { text: '', turno: 'todos', duracao: 'todos' };
+      searchInput.value = '';
+      turnoSelect.value = 'todos';
+      duracaoSelect.value = 'todos';
+      updateView();
+    };
+
+    const ensure = () => {
+      if (overlay) return overlay;
+
+      overlay = document.createElement('div');
+      overlay.className = 'modal-overlay info-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+
+      const modal = document.createElement('div');
+      modal.className = 'modal info-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Cursos Técnicos');
+
+      const head = document.createElement('div');
+      head.className = 'modal-head info-head';
+      titleEl = document.createElement('div');
+      titleEl.className = 'modal-title info-title';
+      titleEl.textContent = 'Cursos Técnicos - Unidades';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'modal-close info-close';
+      closeBtn.type = 'button';
+      closeBtn.setAttribute('aria-label', 'Fechar');
+      closeBtn.textContent = '×';
+      closeBtn.addEventListener('click', close);
+
+      head.appendChild(titleEl);
+      head.appendChild(closeBtn);
+
+      const body = document.createElement('div');
+      body.className = 'modal-body info-body';
+
+      const searchRow = document.createElement('div');
+      searchRow.className = 'search-row info-search-row';
+      searchInput = document.createElement('input');
+      searchInput.className = 'search-input info-search';
+      searchInput.type = 'search';
+      searchInput.placeholder = 'Buscar unidade ou curso...';
+      searchInput.addEventListener('input', debounce(() => {
+        if (currentView === 'units') {
+          renderUnits(searchInput.value);
+        } else {
+          currentFilter.text = searchInput.value;
+          renderCourses();
+        }
+      }, 200));
+      searchRow.appendChild(searchInput);
+
+      filtersRow = document.createElement('div');
+      filtersRow.className = 'filters-row';
+      filtersRow.style.display = 'none';
+
+      turnoSelect = document.createElement('select');
+      turnoSelect.className = 'search-input filter-select';
+      turnoSelect.innerHTML = `
       <option value="todos">Todos os turnos</option>
       <option value="matutino">Matutino</option>
       <option value="vespertino">Vespertino</option>
       <option value="noturno">Noturno</option>
       <option value="sabado">Sábado</option>
     `;
-    turnoSelect.addEventListener('change', () => {
-      currentFilter.turno = turnoSelect.value;
-      renderCourses();
-    });
+      turnoSelect.addEventListener('change', () => {
+        currentFilter.turno = turnoSelect.value;
+        renderCourses();
+      });
 
-    duracaoSelect = document.createElement('select');
-    duracaoSelect.className = 'search-input filter-select';
+      duracaoSelect = document.createElement('select');
+      duracaoSelect.className = 'search-input filter-select';
 
-    backBtn = document.createElement('button');
-    backBtn.className = 'btn back-btn';
-    backBtn.textContent = '← Voltar';
-    backBtn.style.display = 'none';
-    backBtn.addEventListener('click', goBack);
+      backBtn = document.createElement('button');
+      backBtn.className = 'btn back-btn';
+      backBtn.textContent = '← Voltar';
+      backBtn.style.display = 'none';
+      backBtn.addEventListener('click', goBack);
 
-    filtersRow.appendChild(turnoSelect);
-    filtersRow.appendChild(duracaoSelect);
-    filtersRow.appendChild(backBtn);
+      filtersRow.appendChild(turnoSelect);
+      filtersRow.appendChild(duracaoSelect);
+      filtersRow.appendChild(backBtn);
 
-    listEl = document.createElement('div');
-    listEl.className = 'info-grid';
+      listEl = document.createElement('div');
+      listEl.className = 'info-grid';
 
-    emptyEl = document.createElement('div');
-    emptyEl.className = 'empty info-empty';
-    emptyEl.textContent = 'Carregando...';
+      emptyEl = document.createElement('div');
+      emptyEl.className = 'empty info-empty';
+      emptyEl.textContent = 'Carregando...';
 
-    body.appendChild(searchRow);
-    body.appendChild(filtersRow);
-    body.appendChild(listEl);
-    body.appendChild(emptyEl);
-    modal.appendChild(head);
-    modal.appendChild(body);
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
+      body.appendChild(searchRow);
+      body.appendChild(filtersRow);
+      body.appendChild(listEl);
+      body.appendChild(emptyEl);
+      modal.appendChild(head);
+      modal.appendChild(body);
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
 
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) close();
-    });
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+      });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) close();
-    });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) close();
+      });
 
-    return overlay;
-  };
+      return overlay;
+    };
 
-  const open = async () => {
-    ensure();
-    lastFocus = document.activeElement;
-    await loadData();
+    const open = async () => {
+      ensure();
+      lastFocus = document.activeElement;
+      await loadData();
 
-    const duracoes = getUniqueDuracoes();
-    duracaoSelect.innerHTML = '<option value="todos">Todas as durações</option>';
-    duracoes.forEach(d => {
-      const option = document.createElement('option');
-      option.value = d;
-      option.textContent = d;
-      duracaoSelect.appendChild(option);
-    });
+      const duracoes = getUniqueDuracoes();
+      duracaoSelect.innerHTML = '<option value="todos">Todas as durações</option>';
+      duracoes.forEach(d => {
+        const option = document.createElement('option');
+        option.value = d;
+        option.textContent = d;
+        duracaoSelect.appendChild(option);
+      });
 
-    currentView = 'units';
-    currentUnit = null;
-    searchInput.value = '';
-    turnoSelect.value = 'todos';
-    duracaoSelect.value = 'todos';
-    updateView();
+      currentView = 'units';
+      currentUnit = null;
+      searchInput.value = '';
+      turnoSelect.value = 'todos';
+      duracaoSelect.value = 'todos';
+      updateView();
 
-    overlay.classList.add('is-open');
-    overlay.setAttribute('aria-hidden', 'false');
-    isOpen = true;
-    scrollLock.lock();
-    searchInput.focus();
-  };
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      isOpen = true;
+      scrollLock.lock();
+      searchInput.focus();
+    };
 
-  const close = () => {
-    if (!overlay || !isOpen) return;
-    overlay.classList.remove('is-open');
-    overlay.setAttribute('aria-hidden', 'true');
-    isOpen = false;
-    scrollLock.unlock();
-    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
-  };
+    const close = () => {
+      if (!overlay || !isOpen) return;
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      isOpen = false;
+      scrollLock.unlock();
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    };
 
-  return { open, close };
-})();
+    return { open, close };
+  })();
 
-// Expor globalmente (adicione esta linha junto com os outros exports)
-window.cursosTecnicosModal = cursosTecnicosModal; 
+  // Expor globalmente (adicione esta linha junto com os outros exports)
+  window.cursosTecnicosModal = cursosTecnicosModal;
 
-// ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
-const coordenadoresModal = createInfoModal(
+  // ==================== MODAL DE COORDENAÇÃO (ATUALIZADO) ====================
+  const coordenadoresModal = createInfoModal(
     'coordenadores-modal',
     'Coordenação de Cursos e Contatos',
     '/coordenadores',
@@ -1316,8 +1324,8 @@ const coordenadoresModal = createInfoModal(
       card.className = 'info-card coordenador-card';
 
       const displayUnidade = item.unidade_nome || item.unidade || '';
-      const displayCursos = (item.cursos && typeof item.cursos === 'string') 
-        ? item.cursos.split(',').map(c => c.trim()) 
+      const displayCursos = (item.cursos && typeof item.cursos === 'string')
+        ? item.cursos.split(',').map(c => c.trim())
         : (Array.isArray(item.cursos) ? item.cursos : []);
 
       // Nome do coordenador
@@ -1393,52 +1401,35 @@ const coordenadoresModal = createInfoModal(
     }
   );
 
- // Expor globalmente
-window.globalModal = globalModal;
-window.pricesModal = pricesModal;
-window.setoresModal = setoresModal;
-window.coordenadoresModal = coordenadoresModal;
-window.cursosTecnicosModal = cursosTecnicosModal;
+  // Expor globalmente
+  window.globalModal = globalModal;
+  window.pricesModal = pricesModal;
+  window.setoresModal = setoresModal;
+  window.coordenadoresModal = coordenadoresModal;
+  window.cursosTecnicosModal = cursosTecnicosModal;
 
-  // Listener global para os botões de pesquisa
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     const action = btn.dataset.action;
+    console.log('Clique em ação:', action);
 
     if (action === 'open-cursos-tecnicos') {
-  e.preventDefault();
-  if (window.cursosTecnicosModal) window.cursosTecnicosModal.open();
-}
+      e.preventDefault();
+      if (window.cursosTecnicosModal) window.cursosTecnicosModal.open();
+    }
 
     if (action === 'open-global-search') {
       e.preventDefault();
       if (window.globalModal) window.globalModal.open();
+      else console.error('globalModal não encontrado');
     }
 
     if (action === 'open-prices-menu') {
       e.preventDefault();
       if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
+      else console.error('pricesModal não encontrado');
     }
   });
-
-  document.addEventListener('click', (e) => {
-  const btn = e.target.closest('[data-action]');
-  if (!btn) return;
-  const action = btn.dataset.action;
-  console.log('Clique em ação:', action); // Log para depuração
-
-  if (action === 'open-global-search') {
-    e.preventDefault();
-    if (window.globalModal) window.globalModal.open();
-    else console.error('globalModal não encontrado');
-  }
-
-  if (action === 'open-prices-menu') {
-    e.preventDefault();
-    if (window.pricesModal) window.pricesModal.open({ unitKey: 'sede', unitTitle: 'Manaus' });
-    else console.error('pricesModal não encontrado');
-  }
-});
 
 })();

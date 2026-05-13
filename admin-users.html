@@ -3,14 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Gerenciar Usuários</title>
+  <title>Gerenciar Usuários</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    .user-card {
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+    .user-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .user-nome {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--text);
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+    body.dark-mode .user-nome {
+      color: var(--accent);
+    }
+    body.dark-mode .user-email {
+      color: #cbd5e1;
+    }
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 0.75rem;
+    }
+    .self-tag { font-size: 0.78rem; color: #dc2626; font-weight: 600; }
+
+    /* Toast inline de sucesso/erro */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 9999;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: slideIn 0.25s ease;
+    }
+    .toast.ok { background: #10b981; }
+    .toast.err { background: #ef4444; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .users-search {
+      margin-bottom: 1rem;
+    }
+    .users-count {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-bottom: 0.75rem;
+    }
+  </style>
 </head>
 <body>
   <div class="top-stripe" aria-hidden="true"></div>
 
   <main class="container app-shell">
-    <!-- HEADER com menu hambúrguer -->
+    <!-- HEADER -->
     <header class="site-header">
       <div class="header-row">
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
@@ -27,84 +96,47 @@
         <button class="menu-close" id="menuClose">✕</button>
       </div>
       <nav class="side-menu-nav">
-        <a class="menu-link" href="./portal.html">Portal</a>
-        <a class="menu-link" href="./links.html">Central de Links</a>
-        <button class="menu-link" type="button" data-action="open-global-search">Pesquisar cursos</button>
-        <button class="menu-link" type="button" data-action="open-prices-menu">Pesquisar preços</button>
-
-        <!-- Submenu Informações -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Informações <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link" data-action="open-setores">Setores</button>
-            <button class="menu-link submenu-link" data-action="open-coordenadores">Coordenação</button>
-          </div>
-        </div>
-
-        <!-- Submenu Tema -->
-        <div class="menu-item-with-submenu">
-          <button class="menu-link submenu-toggle">
-            Tema <span class="arrow">▼</span>
-          </button>
-          <div class="submenu">
-            <button class="menu-link submenu-link theme-option" data-theme="blue">Padrão</button>
-            <button class="menu-link submenu-link theme-option" data-theme="pink">Rosa</button>
-            <button class="menu-link submenu-link theme-option" data-theme="red">Vermelho</button>
-            <button class="menu-link submenu-link theme-option" data-theme="green">Verde</button>
-            <button class="menu-link submenu-link theme-option" data-theme="yellow">Amarelo</button>
-            <button class="menu-link submenu-link theme-option" data-theme="orange">Laranja</button>
-          </div>
-        </div>
-
-        <a class="menu-link" href="./tickets.html" id="tickets-link" style="display:none;">
-          Tickets 
-          <span id="tickets-badge" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-
-        <!-- Botão Sair -->
-        <button class="menu-link" id="logout-btn-menu" onclick="logout()" style="display:none;">Sair</button>
-
-        <!-- PERFIL DO USUÁRIO -->
-        <div class="user-profile" id="user-profile" style="display: none;">
-          <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <span class="user-email" id="user-email"></span>
-          </div>
-        </div>
+        <div id="menu-container"></div>
       </nav>
     </div>
 
     <!-- Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
 
-    <!-- NAVEGAÇÃO SUPERIOR -->
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <a class="btn btn--nav" href="./portal.html">Portal</a>
-        <a class="btn btn--nav" href="./links.html">Central de Links</a>
-        <a class="menu-link" href="./admin-links.html">Gerenciar Links</a>
-        <a class="menu-link" href="./admin-unidades.html">Unidades</a>
-        <a class="menu-link is-active" href="./admin-users.html">Usuários</a>
-        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
-      </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <!-- NAV SUPERIOR -->
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Polos</a>
+      <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+      <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" >
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" >Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
+
+    <!-- Controles -->
+    <div class="links-controls">
+      <input type="search" id="busca-usuarios" class="search-input users-search" placeholder="Buscar por nome ou e-mail..." />
+      <p class="users-count" id="users-count"></p>
+    </div>
 
     <!-- Lista de usuários -->
-    <div id="users-list" class="links-groups"></div>
+    <div id="users-list"></div>
     <div id="users-empty" class="empty" hidden>Nenhum usuário encontrado.</div>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
+    <p>&copy; 2026 Nawk &amp; Bentes – Todos os direitos reservados</p>
   </footer>
 
   <!-- Firebase SDK -->
@@ -126,42 +158,64 @@
     const db = firebase.firestore();
 
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => console.log('✅ Persistência LOCAL definida em admin'))
-      .catch(error => console.error('❌ Erro na persistência:', error));
+      .catch(error => console.error('Erro na persistência:', error));
 
     let currentUser = null;
+    let todosUsuarios = [];
+
+    // ===== TOAST =====
+    function toast(msg, ok = true) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const el = document.createElement('div');
+      el.className = 'toast ' + (ok ? 'ok' : 'err');
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ===== CONFIRMAÇÃO =====
+    function confirmar(msg) {
+      return new Promise(resolve => {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;';
+        const box = document.createElement('div');
+        box.style.cssText = 'background:var(--bg);border-radius:12px;padding:1.5rem;max-width:360px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,0.3);';
+        box.innerHTML = `
+          <p style="margin:0 0 1.25rem;font-size:0.95rem;line-height:1.5;">${msg}</p>
+          <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
+            <button id="conf-nao" class="btn">Cancelar</button>
+            <button id="conf-sim" class="btn btn--accent">Confirmar</button>
+          </div>
+        `;
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+        box.querySelector('#conf-sim').onclick = () => { overlay.remove(); resolve(true); };
+        box.querySelector('#conf-nao').onclick = () => { overlay.remove(); resolve(false); };
+        overlay.onclick = (e) => { if (e.target === overlay) { overlay.remove(); resolve(false); } };
+      });
+    }
 
     auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = './index.html';
-        return;
-      }
-
+      if (!user) { window.location.href = './index.html'; return; }
       try {
         const doc = await db.collection('users').doc(user.uid).get();
-        if (!doc.exists) {
-          alert('Perfil não encontrado.');
-          auth.signOut();
-          window.location.href = './index.html';
-          return;
-        }
+        if (!doc.exists) { auth.signOut(); window.location.href = './index.html'; return; }
 
         currentUser = { uid: user.uid, ...doc.data() };
         localStorage.setItem('userType', currentUser.tipo);
 
         if (currentUser.tipo !== 'super_admin') {
-          alert('Acesso negado.');
-          window.location.href = './portal.html';
+          toast('Acesso negado. Apenas super admins.', false);
+          setTimeout(() => window.location.href = './portal.html', 1500);
           return;
         }
 
-        // Mostrar botões de logout e perfil
         const logoutBtnNav = document.getElementById('logout-btn-nav');
         const logoutBtnMenu = document.getElementById('logout-btn-menu');
         if (logoutBtnNav) logoutBtnNav.style.display = 'inline-block';
         if (logoutBtnMenu) logoutBtnMenu.style.display = 'inline-block';
 
-        // Preencher perfil
         const userProfile = document.getElementById('user-profile');
         const userNameSpan = document.getElementById('user-name');
         const userEmailSpan = document.getElementById('user-email');
@@ -179,73 +233,107 @@
     });
 
     async function carregarUsuarios() {
-      const snapshot = await db.collection('users').get();
-      const users = [];
-      snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
-      renderUsers(users);
+      try {
+        const snapshot = await db.collection('users').get();
+        todosUsuarios = [];
+        snapshot.forEach(doc => todosUsuarios.push({ id: doc.id, ...doc.data() }));
+        todosUsuarios.sort((a, b) => (a.nome || '').localeCompare(b.nome || '', 'pt-BR'));
+        renderUsers(todosUsuarios);
+      } catch (e) {
+        toast('Erro ao carregar usuários: ' + e.message, false);
+      }
     }
 
     function renderUsers(users) {
       const container = document.getElementById('users-list');
       const empty = document.getElementById('users-empty');
+      const count = document.getElementById('users-count');
       container.innerHTML = '';
-      if (users.length === 0) {
-        empty.hidden = false;
-        return;
-      }
+
+      if (!users.length) { empty.hidden = false; count.textContent = ''; return; }
       empty.hidden = true;
-      users.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+      count.textContent = `${users.length} usuário(s) encontrado(s)`;
+
       users.forEach(user => {
         const isSelf = user.id === currentUser.uid;
-        const card = document.createElement('article');
-        card.className = 'unit-block';
+        const tipo = user.tipo || 'comum';
+
+        const card = document.createElement('div');
+        card.className = 'info-card user-card';
         card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3 class="unit-group__title" style="margin-bottom:0;">${user.nome || 'Sem nome'}</h3>
-            <span class="badge" style="background:${user.tipo === 'super_admin' ? '#7c3aed' : user.tipo === 'admin' ? '#2563eb' : '#6b7280'}">${user.tipo || 'comum'}</span>
+          <div class="user-card-header">
+            <span class="user-nome">${user.nome || 'Sem nome'} ${isSelf ? '<span class="self-tag">(você)</span>' : ''}</span>
+            <span class="badge badge--${tipo.replace('_','')}">${tipo === 'super_admin' ? 'superadmin' : tipo}</span>
           </div>
-          <p><strong>Email:</strong> ${user.email}</p>
-          <p><strong>UID:</strong> <code>${user.id}</code></p>
-          <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
-            <select class="search-input" id="select-${user.id}" style="width:auto;" ${isSelf ? 'disabled' : ''}>
-              <option value="comum" ${user.tipo === 'comum' ? 'selected' : ''}>Comum</option>
-              <option value="admin" ${user.tipo === 'admin' ? 'selected' : ''}>Admin</option>
-              <option value="super_admin" ${user.tipo === 'super_admin' ? 'selected' : ''}>Super Admin</option>
-            </select>
-            <button class="btn" onclick="alterarTipo('${user.id}')" ${isSelf ? 'disabled' : ''}>Salvar</button>
-            ${isSelf ? '<span style="color: #dc2626; font-size:0.8rem;">(você)</span>' : ''}
+          <div class="user-email">${user.email || '—'}</div>
+          <div class="user-actions" id="actions-${user.id}">
+            ${isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : `
+              <button class="btn btn--sm" onclick="promover('${user.id}','comum')" ${tipo === 'comum' ? 'disabled' : ''}>
+                Comum
+              </button>
+              <button class="btn btn--sm" onclick="promover('${user.id}','admin')" ${tipo === 'admin' ? 'disabled' : ''}>
+                Admin
+              </button>
+              <button class="btn btn--sm" onclick="promover('${user.id}','super_admin')" ${tipo === 'super_admin' ? 'disabled' : ''}>
+                Super Admin
+              </button>
+            `}
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    window.alterarTipo = async (uid) => {
-      const select = document.getElementById(`select-${uid}`);
-      const novoTipo = select.value;
-      if (!confirm(`Tem certeza que deseja alterar o tipo deste usuário para "${novoTipo}"?`)) return;
+    window.promover = async (uid, novoTipo) => {
+      const usuario = todosUsuarios.find(u => u.id === uid);
+      if (!usuario) return;
+      const tipoLabel = novoTipo === 'super_admin' ? 'Super Admin' : novoTipo === 'admin' ? 'Admin' : 'Comum';
+      const ok = await confirmar(`Promover <strong>${usuario.nome || 'este usuário'}</strong> para <strong>${tipoLabel}</strong>?`);
+      if (!ok) return;
+
+      // Desabilitar botões durante a operação
+      const actions = document.getElementById(`actions-${uid}`);
+      if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = true);
+
       try {
-        // Atualiza no Firestore
         await db.collection('users').doc(uid).update({ tipo: novoTipo });
-        
-        // Atualiza no Google Sheets (via API)
-        await fetch(`${window.API_URL}/operadores/${uid}`, {
+
+        // Sincronizar com Google Sheets
+        const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+          ? 'http://localhost:3000'
+          : 'https://portal-inscricoes.onrender.com';
+        await fetch(`${apiUrl}/operadores/${uid}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tipo: novoTipo })
-        }).catch(e => console.warn('Aviso: falha ao sincronizar com Google Sheets:', e));
+        }).catch(e => console.warn('Aviso: falha ao sincronizar com Sheets:', e));
 
-        alert('Tipo alterado com sucesso!');
-        carregarUsuarios();
+        toast(`${usuario.nome || 'Usuário'} promovido para ${tipoLabel}!`);
+        await carregarUsuarios();
       } catch (error) {
-        alert('Erro ao alterar tipo: ' + error.message);
+        toast('Erro: ' + error.message, false);
+        if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = false);
       }
     };
 
+    // Busca em tempo real
+    document.addEventListener('DOMContentLoaded', () => {
+      const busca = document.getElementById('busca-usuarios');
+      if (busca) {
+        busca.addEventListener('input', () => {
+          const q = busca.value.trim().toLowerCase();
+          if (!q) { renderUsers(todosUsuarios); return; }
+          const filtrados = todosUsuarios.filter(u =>
+            (u.nome || '').toLowerCase().includes(q) ||
+            (u.email || '').toLowerCase().includes(q)
+          );
+          renderUsers(filtrados);
+        });
+      }
+    });
+
     window.logout = () => {
-      auth.signOut().then(() => {
-        window.location.href = './index.html';
-      });
+      auth.signOut().then(() => window.location.href = './index.html');
     };
   </script>
 
@@ -254,8 +342,8 @@
 <script src="./assets/data/courses-data.js"></script>
 <script src="./assets/data/course_prices_2026_1_data.js"></script>
 
-<!-- Carregador do menu (NOVO) -->
-<script src="./assets/js/menu-loader.js"></script>
+<!-- Carregador do menu -->
+<script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
 
 <!-- Utilitários e modais -->
 <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
