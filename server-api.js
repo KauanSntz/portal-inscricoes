@@ -13,6 +13,7 @@ const operadoresRoutes = require('./routes/operadores');
 const cursosOfertaRoutes = require('./routes/cursos-oferta');
 const precosCursosRoutes = require('./routes/precos-cursos');
 const cursosTecnicosRoutes = require('./routes/cursos-tecnicos');
+const posGraduacaoRoutes = require('./routes/pos-graduacao');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use('/operadores', operadoresRoutes);
 app.use('/cursos-oferta', cursosOfertaRoutes);
 app.use('/precos-cursos', precosCursosRoutes);
 app.use('/cursos-tecnicos', cursosTecnicosRoutes);
+app.use('/pos-graduacao', posGraduacaoRoutes);
 
 // Servir arquivos estáticos (HTML, CSS, JS)
 app.use(express.static(__dirname));

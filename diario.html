@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diário de Bordo - Sistema Fametro</title>
+  <title>Diário de Bordo</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <style>
     .diario-table-wrapper {
@@ -307,25 +307,25 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- NAV SUPERIOR -->
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <a class="btn btn--nav" href="./portal.html">Portal</a>
-        <a class="btn btn--nav" href="./links.html">Central de Links</a>
-        <a class="btn btn--nav is-active" href="./diario.html" aria-current="page">Diário de Bordo</a>
-        <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">
-          Tickets
-          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
-      </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Polos</a>
+      <a class="btn btn--nav is-active" href="./diario.html" aria-current="page">Diário de Bordo</a>
+      <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav">
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()">Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
 
     <!-- CONTROLES -->
     <div class="links-controls">
@@ -622,6 +622,7 @@
           <td><span class="sit-badge ${sitClass}">${r.SITUACAO || ''}</span></td>
           <td style="white-space:nowrap;">
             ${podeEditar && r.ID_REGISTRO ? `<button class="btn btn--sm" onclick="editarRegistro('${rawData}')">✏️</button>` : ''}
+            <button class="btn btn--sm" style="background:var(--accent);color:#fff;" onclick="abrirTicketDoRegistro('${rawData}')">Ticket</button>
             ${podeExcluir && r.ID_REGISTRO ? `<button class="btn btn--sm btn--danger" onclick="excluirRegistro('${rawData}')">Excluir</button>` : ''}
           </td>
         </tr>`;
@@ -680,6 +681,19 @@
 
       painel.style.display = 'block';
     }
+
+    // ===== ABRIR TICKET A PARTIR DO REGISTRO =====
+    window.abrirTicketDoRegistro = (encodedData) => {
+      const r = JSON.parse(decodeURIComponent(encodedData));
+      localStorage.setItem('ticketPrefill', JSON.stringify({
+        nome: r.NOME || '',
+        cpf: r.CPF || '',
+        curso: r.CURSO || '',
+        unidade: r.UNIDADE || '',
+        modalidade: r.MODALIDADE || '',
+      }));
+      window.location.href = './tickets.html';
+    };
 
     // ===== EXCLUIR REGISTRO =====
     let registroParaExcluir = null;
@@ -987,9 +1001,12 @@
       }
     });
   </script>
-  <script src="./assets/js/menu-loader.js"></script>
+  <script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
+  <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
+  <script src="./assets/js/modals-shared.js"></script>
   <script src="./assets/js/menu.js"></script>
   <script src="./assets/js/dark-mode.js"></script>
+  <script src="./assets/js/notificacoes.js"></script>
 </body>
 
 </html>

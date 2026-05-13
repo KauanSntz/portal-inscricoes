@@ -1,6 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const crud = require('../services/sheetsCrudService');
+const sheetsService = require('../services/sheetsService');
+
+/**
+ * GET /operadores
+ * Retorna lista de operadores
+ */
+router.get('/', async (req, res) => {
+  try {
+    const operadores = await sheetsService.getOperadores();
+    res.json({
+      total: operadores.length,
+      data: operadores
+    });
+  } catch (error) {
+    console.error(`[ERRO] GET /operadores: ${error.message}`);
+    res.status(503).json({ error: 'Erro ao buscar operadores' });
+  }
+});
 
 /**
  * POST /operadores

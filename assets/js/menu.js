@@ -136,6 +136,38 @@
       });
     }
 
+    // Pós-Graduação
+    const posValoresBtn = document.querySelector('.menu-link[data-action="open-pos-valores"]');
+    if (posValoresBtn) {
+      posValoresBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.posGraduacaoModal) window.posGraduacaoModal.open('valores');
+      });
+    }
+
+    const posInfoBtn = document.querySelector('.menu-link[data-action="open-pos-info"]');
+    if (posInfoBtn) {
+      posInfoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMenu();
+        if (window.posGraduacaoModal) window.posGraduacaoModal.open('informacoes');
+      });
+    }
+
+    // Visibilidade do menu Admin
+    const adminMenuItem = document.getElementById('admin-menu-item');
+    const adminUsersLink = document.getElementById('admin-users-link');
+    if (adminMenuItem) {
+      const userType = localStorage.getItem('userType') || '';
+      if (userType === 'admin' || userType === 'superadmin' || userType === 'super_admin') {
+        adminMenuItem.style.display = 'block';
+        if (adminUsersLink && (userType === 'superadmin' || userType === 'super_admin')) {
+          adminUsersLink.style.display = 'block';
+        }
+      }
+    }
+
     // Elementos que NÃO fecham o menu
     const keepOpenSelectors = [
       '.submenu-toggle',

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Central de Links - Fametro 2026/1</title>
+  <title>Polos</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 
@@ -23,7 +23,7 @@
       <div class="header-row">
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
         <div>
-          <h1>Central de Links — Fametro 2026/1</h1>
+          <h1>Polos</h1>
           <p class="site-subtitle">Busca rápida por unidade, modalidade e tipo</p>
         </div>
       </div>
@@ -43,26 +43,25 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- NAVEGAÇÃO SUPERIOR -->
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <a class="btn btn--nav" href="./portal.html">Portal</a>
-        <a class="btn btn--nav is-active" href="./links.html" aria-current="page">Central de Links</a>
-        <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
-        <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav" style="display:none;">
-          Tickets
-          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
-      </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav is-active" href="./links.html" aria-current="page">Polos</a>
+      <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+      <a class="btn btn--nav" href="./tickets.html" id="tickets-link-nav">
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()">Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
 
     <!-- Filtros e listagem (conteúdo original) -->
     <div class="links-controls">
@@ -192,10 +191,10 @@
       const badgeAbertosNav = document.getElementById('tickets-badge-nav');
       const badgeAndamentoNav = document.getElementById('tickets-andamento-badge-nav');
 
-      if (!badgeAbertos || !badgeAndamento || !badgeAbertosNav || !badgeAndamentoNav) {
-        console.warn('Elementos de badge não encontrados');
-        return;
-      }
+      if (!badgeAbertosNav || !badgeAndamentoNav) {
+    console.warn('Elementos de badge Nav não encontrados');
+    return;
+  }
 
       let queryAbertos = db.collection('tickets').where('status', '==', 'aberto');
       let queryAndamento = db.collection('tickets').where('status', '==', 'em_andamento');
@@ -214,11 +213,11 @@
       try {
         const [snapAbertos, snapAndamento] = await Promise.all([queryAbertos.get(), queryAndamento.get()]);
 
-        badgeAbertos.textContent = snapAbertos.size;
-        badgeAbertos.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
+        if (badgeAbertos) badgeAbertos.textContent = snapAbertos.size;
+        if (badgeAbertos) badgeAbertos.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
 
-        badgeAndamento.textContent = snapAndamento.size;
-        badgeAndamento.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
+        if (badgeAndamento) badgeAndamento.textContent = snapAndamento.size;
+        if (badgeAndamento) badgeAndamento.style.display = snapAndamento.size === 0 ? 'none' : 'inline-block';
 
         badgeAbertosNav.textContent = snapAbertos.size;
         badgeAbertosNav.style.display = snapAbertos.size === 0 ? 'none' : 'inline-block';
@@ -245,7 +244,7 @@
   <script src="./assets/data/course_prices_2026_1_data.js"></script>
 
   <!-- Carregador do menu (NOVO) -->
-  <script src="./assets/js/menu-loader.js"></script>
+  <script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
 
   <!-- API URL -->
   <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>

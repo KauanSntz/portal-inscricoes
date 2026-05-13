@@ -23,7 +23,8 @@ const cache = {
   cursos_tecnicos: { data: null, timestamp: 0 },
   cursos_oferta: { data: null, timestamp: 0 },
   precos_cursos: { data: null, timestamp: 0 },
-  diario_bordo: { data: null, timestamp: 0 }
+  diario_bordo: { data: null, timestamp: 0 },
+  operadores: { data: null, timestamp: 0 }
 };
 
 function invalidateCache(cacheKey) {
@@ -167,6 +168,15 @@ async function getCoordenadores(filtros = {}) {
   }
   
   return resultados;
+}
+
+/**
+ * Busca operadores
+ * @returns {Promise<Array>} Operadores
+ */
+async function getOperadores() {
+  const url = `${BASE_URL}/OPERADORES`;
+  return fetchWithCache(url, 'operadores');
 }
 
 /**
@@ -382,5 +392,6 @@ module.exports = {
   getCursosOferta,
   getPrecosCursos,
   getCursosTecnicos,
+  getOperadores,
   invalidateCache
 };

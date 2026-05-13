@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tickets - Sistema de Suporte</title>
+  <title>Tickets</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <style>
     /* Ajuste para o campo de resolução no modal */
@@ -59,7 +59,7 @@
       <div class="header-row">
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
         <div>
-          <h1>Sistema de Tickets</h1>
+          <h1>Tickets</h1>
           <p class="site-subtitle">Acompanhe e gerencie solicitações</p>
         </div>
       </div>
@@ -79,26 +79,25 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <!-- NAVEGAÇÃO SUPERIOR (com apenas Portal, Central de Links, Tickets e Modo Escuro) -->
-    <nav class="app-nav" aria-label="Navegação principal">
-      <div class="nav-left">
-        <a class="btn btn--nav" href="./portal.html">Portal</a>
-        <a class="btn btn--nav" href="./links.html">Central de Links</a>
-        <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
-        <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page">
-          Tickets
-          <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
-          <span id="tickets-andamento-badge-nav" class="badge"
-            style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
-        </a>
-        <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()" style="display:none;">Sair</button>
-      </div>
-      <div class="nav-right">
-        <button class="btn btn--nav" type="button" id="dark-mode-toggle">
-          <span class="mode-text">Modo</span>
-          <span class="mode-icon">🌙</span>
-        </button>
-      </div>
-    </nav>
+    <div class="nav-quick">
+    <div class="nav-left">
+      <a class="btn btn--nav" href="./portal.html">Portal</a>
+      <a class="btn btn--nav" href="./links.html">Polos</a>
+      <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
+      <a class="btn btn--nav is-active" href="./tickets.html" aria-current="page" id="tickets-link-nav">
+        Tickets 
+        <span id="tickets-badge-nav" class="badge" style="background-color:#dc2626;">0</span>
+        <span id="tickets-andamento-badge-nav" class="badge" style="background-color:#f59e0b; margin-left:0.2rem;">0</span>
+      </a>
+      <button class="btn btn--nav" id="logout-btn-nav" onclick="logout()">Sair</button>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn--nav" type="button" id="dark-mode-toggle">
+        <span class="mode-text">Modo</span>
+        <span class="mode-icon">🌙</span>
+      </button>
+    </div>
+  </div>
 
     <!-- Controles -->
     <div class="links-controls">
@@ -335,6 +334,34 @@
           }
 
           carregarTickets();
+
+          // Verificar prefill do Diario de Bordo
+          const prefillRaw = localStorage.getItem('ticketPrefill');
+          if (prefillRaw) {
+            localStorage.removeItem('ticketPrefill');
+            try {
+              const prefill = JSON.parse(prefillRaw);
+              document.getElementById('ticket-id').value = '';
+              document.getElementById('cpf-aluno').value = prefill.cpf || '';
+              document.getElementById('nome-aluno').value = prefill.nome || '';
+              document.getElementById('curso-aluno').value = prefill.curso || '';
+              document.getElementById('unidade').value = prefill.unidade || '';
+              document.getElementById('modalidade').value = prefill.modalidade || '';
+              document.getElementById('problema-select').value = '';
+              document.getElementById('problema-outro').value = '';
+              document.getElementById('motivo').value = '';
+              document.getElementById('problema-outro').style.display = 'none';
+              document.getElementById('motivo').style.display = 'none';
+              document.getElementById('resolucao').value = '';
+              document.getElementById('resolucao-field').style.display = 'none';
+              document.getElementById('resolucao-obrigatoria').style.display = 'none';
+              document.getElementById('modal-title').textContent = 'Novo Ticket (via Diario)';
+              setModalFieldsState(true);
+              document.getElementById('ticket-modal').style.display = 'flex';
+            } catch (e) {
+              console.error('[Ticket] Erro ao carregar prefill:', e);
+            }
+          }
         } catch (error) {
           console.error('Erro ao carregar perfil:', error);
           mostrarNotificacao('Erro ao carregar perfil. Redirecionando...', false);
@@ -863,13 +890,13 @@
 
       if (badgeAbertos) {
         let countAbertos = tickets.filter(t => t.status === 'aberto').length;
-        badgeAbertos.textContent = countAbertos;
-        badgeAbertos.style.display = countAbertos === 0 ? 'none' : 'inline-block';
+        if (badgeAbertos) badgeAbertos.textContent = countAbertos;
+        if (badgeAbertos) badgeAbertos.style.display = countAbertos === 0 ? 'none' : 'inline-block';
       }
       if (badgeAndamento) {
         let countAndamento = tickets.filter(t => t.status === 'em_andamento').length;
-        badgeAndamento.textContent = countAndamento;
-        badgeAndamento.style.display = countAndamento === 0 ? 'none' : 'inline-block';
+        if (badgeAndamento) badgeAndamento.textContent = countAndamento;
+        if (badgeAndamento) badgeAndamento.style.display = countAndamento === 0 ? 'none' : 'inline-block';
       }
       if (badgeAbertosNav) {
         let countAbertos = tickets.filter(t => t.status === 'aberto').length;
@@ -950,7 +977,7 @@
   <script src="./assets/data/course_prices_2026_1_data.js"></script>
 
   <!-- Carregador do menu (NOVO) -->
-  <script src="./assets/js/menu-loader.js"></script>
+  <script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
 
   <!-- Utilitários e modais -->
   <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
