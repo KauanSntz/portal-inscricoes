@@ -146,10 +146,6 @@
       }
     });
 
-    // Conta desativada ou sem cadastro (ver vigiarConta em portal-api.js)
-    if (new URLSearchParams(location.search).get('conta') === 'inativa') {
-      showMessage('Sua conta não tem acesso ao sistema. Fale com um administrador.');
-    }
 
     // Login
     loginForm.addEventListener('submit', async (e) => {
@@ -175,5 +171,6 @@
     };
   </script>
   <script src="./assets/js/dark-mode.js"></script>
+  <script src="./assets/js/solicitar-acesso.js"></script>
 </body>
 </html>

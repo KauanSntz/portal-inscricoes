@@ -69,31 +69,45 @@
     };
   }
 
-  // Contas que podem usar o sistema. "excluido" (e conta sem cadastro em users/) fica de fora.
+  // Contas que podem usar o sistema. Ficam de fora: "pendente" (pediu acesso e ainda não foi
+  // aprovada), "excluido", conta sem cadastro em users/ e acesso temporário vencido (expiraEm).
   const TIPOS_ATIVOS = ['comum', 'admin', 'super_admin'];
 
-  // Vigia de conta: em qualquer página, quem loga sem cadastro ativo é deslogado.
-  // Não existe mais auto-cadastro: quem cria usuários é o super_admin (admin-users.html).
+  /** Situação da conta a partir do doc users/{uid}: 'ativa', 'pendente', 'expirada' ou 'inativa'. */
+  function situacaoConta(dados) {
+    if (!dados) return 'inativa';
+    if (dados.tipo === 'pendente') return 'pendente';
+    if (!TIPOS_ATIVOS.includes(dados.tipo)) return 'inativa';
+    const expira = dados.expiraEm && dados.expiraEm.toDate ? dados.expiraEm.toDate() : null;
+    if (expira && expira <= new Date()) return 'expirada';
+    return 'ativa';
+  }
+
+  // Vigia de conta: em qualquer página, quem loga sem conta ativa é deslogado e volta para o
+  // login com o motivo (pendente/expirada/inativa, ver solicitar-acesso.js).
   function vigiarConta() {
     if (!window.firebase || !firebase.apps || !firebase.apps.length || !firebase.firestore) return;
     firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) return;
+      let situacao;
       try {
         const doc = await firebase.firestore().collection('users').doc(user.uid).get();
-        if (doc.exists && TIPOS_ATIVOS.includes(doc.data().tipo)) return;
+        situacao = situacaoConta(doc.exists ? doc.data() : null);
       } catch (e) {
         return;   // falha de rede não derruba ninguém; a API e as regras do Firestore barram de qualquer jeito
       }
+      if (situacao === 'ativa') return;
       localStorage.removeItem('userType');
       await firebase.auth().signOut();
-      if (!/(^|\/)(index|login)\.html$|\/$/.test(location.pathname)) {
-        location.href = './index.html?conta=inativa';
+      if (new URLSearchParams(location.search).get('conta') !== situacao) {
+        location.href = `./index.html?conta=${situacao}`;
       }
     });
   }
 
   window.PORTAL_API_URL = PORTAL_API_URL;
   window.PORTAL_TIPOS_ATIVOS = TIPOS_ATIVOS;
+  window.situacaoConta = situacaoConta;
   window.portalFetch = portalFetch;
   window.addEventListener('load', vigiarConta);
 })();

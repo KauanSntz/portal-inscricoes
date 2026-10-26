@@ -2,10 +2,11 @@ rules_version = '2';
 
 // Regras do Firestore do portal. Publicar em: Firebase Console → Firestore Database → Regras.
 //
-// Conta ativa = existe users/{uid} com tipo comum, admin ou super_admin.
-// Não há mais auto-cadastro: só o super_admin cria e "exclui" (tipo = 'excluido') usuários
-// (admin-users.html). Uma conta criada direto pela API do Firebase fica sem documento em
-// users/ e não consegue ler nem gravar nada além de tentar ler o próprio doc.
+// Conta ativa = existe users/{uid} com tipo comum, admin ou super_admin e, se tiver expiraEm
+// (acesso temporário de e-mail fora de @fametro.edu.br), o prazo ainda não venceu.
+// Qualquer pessoa pode "Solicitar acesso" (solicitar-acesso.js): cria o próprio doc com
+// tipo 'pendente', que não dá acesso a nada. admin e super_admin aprovam (pendente → comum);
+// só o super_admin cria, recusa, "exclui" (tipo = 'excluido') e promove (admin-users.html).
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -16,7 +17,12 @@ service cloud.firestore {
     function ativo() {
       return request.auth != null
         && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && perfil().tipo in ['comum', 'admin', 'super_admin'];
+        && perfil().tipo in ['comum', 'admin', 'super_admin']
+        && (!('expiraEm' in perfil()) || perfil().expiraEm > request.time);
+    }
+
+    function emailFametro(email) {
+      return email is string && email.lower().matches('.*@fametro[.]edu[.]br');
     }
 
     function isAdmin() {
@@ -31,11 +37,24 @@ service cloud.firestore {
       // Próprio doc (até excluído, para a tela saber que deve deslogar) ou admin/super_admin
       allow read: if (request.auth != null && request.auth.uid == userId) || isAdmin();
 
-      // Criar, excluir e mudar tipo: só super_admin
+      // Solicitar acesso: a própria pessoa cria o doc, só como pendente
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly(['nome', 'email', 'tipo', 'createdAt'])
+        && request.resource.data.tipo == 'pendente'
+        && request.resource.data.email == request.auth.token.email;
+
+      // Criar direto, excluir e mudar tipo: só super_admin
       allow create, delete: if isSuperAdmin();
       allow update: if isSuperAdmin()
+        // admin aprova: pendente → comum; e-mail fora da Fametro precisa de expiraEm de até 3 dias
+        || (isAdmin() && resource.data.tipo == 'pendente'
+            && request.resource.data.tipo == 'comum'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['tipo', 'id_operador', 'expiraEm'])
+            && (emailFametro(resource.data.email)
+                || (request.resource.data.expiraEm is timestamp
+                    && request.resource.data.expiraEm <= request.time + duration.value(3, 'd') + duration.value(10, 'm'))))
         || (ativo() && request.auth.uid == userId
-            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['tipo', 'id_operador', 'email']));
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['tipo', 'id_operador', 'email', 'expiraEm']));
     }
 
     // Contador do id_operador (usado ao criar usuário)

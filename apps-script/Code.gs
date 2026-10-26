@@ -12,6 +12,7 @@
  *   - leituras públicas (links, unidades, cursos, preços, pós, contatos): sem login
  *   - diário de bordo (tem CPF/telefone): usuário logado com conta ativa (comum, admin, super_admin)
  *   - /admin/* e /operadores (criar usuário, mudar tipo, excluir): super_admin
+ *   - POST /operadores também para admin (aprovar solicitação de acesso), sempre como "comum"
  * O token do Firebase é validado lendo users/{uid} no Firestore com o próprio token
  * (o Firestore confere a assinatura), igual ao que routes/admin.js fazia.
  *
@@ -116,8 +117,11 @@ function rotear(req) {
       return ok(comTotal(lerAba('OPERADORES')));
     }
     if (method === 'POST') {
-      exigirSuperAdmin(req.token);
-      return criarOperador(body);
+      // admin aprova solicitações de acesso: entra sempre como "comum"
+      const usuario = exigirLogin(req.token);
+      if (usuario.tipo === 'super_admin') return criarOperador(body);
+      if (usuario.tipo === 'admin') return criarOperador(Object.assign({}, body, { tipo: 'comum' }));
+      throw erroHttp(403, 'Forbidden', 'Apenas administradores podem aprovar usuários.');
     }
     if (method === 'PUT' && r1) {
       exigirSuperAdmin(req.token);
@@ -292,10 +296,22 @@ function exigirLogin(token) {
   const tipo = fields.tipo && fields.tipo.stringValue;
   // Conta criada fora do sistema (sem tipo) ou excluída pelo super_admin: sem acesso
   if (TIPOS_ATIVOS.indexOf(tipo) < 0) throw erroHttp(403, 'Forbidden', 'Sua conta não tem acesso ao sistema.');
+  // Acesso temporário (e-mail fora de @fametro.edu.br): vale até expiraEm
+  const expira = fields.expiraEm && fields.expiraEm.timestampValue ? new Date(fields.expiraEm.timestampValue).getTime() : 0;
+  if (expira && expira <= Date.now()) throw erroHttp(403, 'Forbidden', 'Seu acesso temporário terminou.');
   const usuario = { uid: payload.user_id, email: payload.email || '', tipo };
-  const restante = Math.floor(payload.exp - Date.now() / 1000);
+  let restante = Math.floor(payload.exp - Date.now() / 1000);
+  if (expira) restante = Math.min(restante, Math.floor((expira - Date.now()) / 1000));
   if (restante > 30) cache.put('tok:' + hash, JSON.stringify(usuario), Math.min(300, restante));
   return usuario;
+}
+
+// Rode esta função UMA vez no editor (▶ Executar) para o Google pedir todas as permissões,
+// inclusive a de chamar URLs externas (UrlFetchApp, usada no login). Marque todas as caixas.
+function autorizar() {
+  planilha().getName();
+  UrlFetchApp.fetch('https://firestore.googleapis.com/', { muteHttpExceptions: true });
+  console.log('Permissões OK');
 }
 
 function exigirSuperAdmin(token) {
@@ -483,7 +499,7 @@ function salvarDiario(b, usuario) {
 // Operadores
 // ============================================
 
-// Só o super_admin cria usuários (admin-users.html), então os dados vêm do corpo
+// O super_admin cria usuários e o admin aprova solicitações (admin-users.html): os dados vêm do corpo
 function criarOperador(b) {
   if (!b.nome || !b.email || !b.uid) throw erroHttp(400, 'Bad Request', 'uid, nome e email são obrigatórios.');
   const tipo = TIPOS_ATIVOS.indexOf(b.tipo) >= 0 ? b.tipo : 'comum';

@@ -19,6 +19,15 @@ Não precisa de servidor, de conta de serviço nem de planilha pública.
 Teste no navegador: `<URL>?route=processos&limit=2` deve mostrar
 `{"status":200,"body":{"total":...}}`.
 
+## Erro "Você não tem permissão para chamar UrlFetchApp.fetch"
+
+A conta que publicou não autorizou chamadas externas (usadas para validar o login).
+No editor do Apps Script, escolha a função **`autorizar`** na barra de cima → **▶ Executar** →
+**Revisar permissões** → escolha a conta → **Avançado → Acessar** → **marque todas as caixas**
+(principalmente "Conectar a um serviço externo") → **Permitir**. Depois publique uma nova versão
+(abaixo). Se não aparecer a tela de permissões: myaccount.google.com/permissions → remova o
+acesso do script e rode `autorizar` de novo.
+
 ## Atualizar o script depois
 
 **Implantar → Gerenciar implantações → lápis → Versão: Nova versão → Implantar.**

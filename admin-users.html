@@ -125,8 +125,17 @@
     </div>
   </div>
 
-    <!-- Criar usuário (o cadastro pela tela de login foi removido: só o super_admin cria contas) -->
-    <details class="info-card" id="novo-usuario" style="margin-bottom:1rem;">
+    <!-- Solicitações de acesso (tela de login → "Solicitar acesso"): admin e super_admin aprovam -->
+    <section class="info-card" id="pendentes" style="margin-bottom:1rem;" hidden>
+      <h2 style="margin:0 0 0.5rem;font-size:1.1rem;">Solicitações de acesso <span id="pendentes-count"></span></h2>
+      <p style="font-size:0.82rem;opacity:0.75;margin:0 0 0.75rem;">
+        E-mail @fametro.edu.br recebe acesso normal. Outros e-mails recebem acesso temporário de 3 dias.
+      </p>
+      <div id="pendentes-list"></div>
+    </section>
+
+    <!-- Criar usuário direto (só super_admin) -->
+    <details class="info-card" id="novo-usuario" style="margin-bottom:1rem;" hidden>
       <summary style="cursor:pointer;font-weight:600;">+ Criar usuário</summary>
       <form id="form-novo-usuario" style="display:grid;gap:0.75rem;margin-top:1rem;">
         <label class="field"><span>Nome</span>
@@ -147,6 +156,7 @@
         </label>
         <p style="font-size:0.82rem;opacity:0.75;margin:0;">
           Passe a senha para a pessoa. Ela pode trocar depois em "Esqueci minha senha" na tela de login.
+          E-mail fora de @fametro.edu.br vira acesso temporário de 3 dias.
         </p>
         <button type="submit" class="btn btn--accent" id="btn-criar-usuario">Criar usuário</button>
       </form>
@@ -238,11 +248,13 @@
         currentUser = { uid: user.uid, ...doc.data() };
         localStorage.setItem('userType', currentUser.tipo);
 
-        if (currentUser.tipo !== 'super_admin') {
-          toast('Acesso negado. Apenas super admins.', false);
+        // admin só aprova solicitações; super_admin faz todo o resto
+        if (!['admin', 'super_admin'].includes(currentUser.tipo)) {
+          toast('Acesso negado. Apenas administradores.', false);
           setTimeout(() => window.location.href = './portal.html', 1500);
           return;
         }
+        if (isSuper()) document.getElementById('novo-usuario').hidden = false;
 
         const logoutBtnNav = document.getElementById('logout-btn-nav');
         const logoutBtnMenu = document.getElementById('logout-btn-menu');
@@ -265,16 +277,84 @@
       }
     });
 
+    // ===== Regras de e-mail / acesso temporário =====
+    const DOMINIO_FAMETRO = '@fametro.edu.br';
+    const DIAS_TEMPORARIO = 3;
+    const ehFametro = (email) => String(email || '').trim().toLowerCase().endsWith(DOMINIO_FAMETRO);
+    const isSuper = () => currentUser && currentUser.tipo === 'super_admin';
+    const dataExpira = (u) => (u.expiraEm && u.expiraEm.toDate ? u.expiraEm.toDate() : null);
+    const fmtData = (d) => d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+    /** Prazo do acesso de quem é aprovado/criado agora: null (Fametro) ou daqui a 3 dias. */
+    function prazoPara(email) {
+      if (ehFametro(email)) return null;
+      return new Date(Date.now() + DIAS_TEMPORARIO * 24 * 60 * 60 * 1000);
+    }
+
+    function avisoTemporario(nome, expira) {
+      return `<br><br>⚠️ O e-mail não é <strong>${DOMINIO_FAMETRO}</strong>: <strong>${escapeHtml(nome)}</strong> será um
+        <strong>usuário temporário</strong>, com acesso por ${DIAS_TEMPORARIO} dias (até <strong>${fmtData(expira)}</strong>).
+        Depois disso a conta é excluída automaticamente. Quando o funcionário tiver o e-mail Fametro,
+        ele precisa solicitar acesso de novo com esse e-mail.`;
+    }
+
     async function carregarUsuarios() {
       try {
         const snapshot = await db.collection('users').get();
         todosUsuarios = [];
         snapshot.forEach(doc => todosUsuarios.push({ id: doc.id, ...doc.data() }));
         todosUsuarios.sort((a, b) => (a.nome || '').localeCompare(b.nome || '', 'pt-BR'));
-        renderUsers(todosUsuarios);
+        if (isSuper()) await excluirExpirados();
+        renderPendentes();
+        renderUsers(listaPrincipal());
       } catch (e) {
         toast('Erro ao carregar usuários: ' + e.message, false);
       }
+    }
+
+    const listaPrincipal = () => todosUsuarios.filter(u => u.tipo !== 'pendente');
+
+    // Exclusão automática dos temporários vencidos. O acesso já é cortado na hora exata pelo
+    // prazo (telas, API e regras do Firestore conferem expiraEm); aqui a conta é marcada como
+    // excluída, na primeira vez que um super_admin abre esta página depois do prazo.
+    async function excluirExpirados() {
+      const agora = new Date();
+      const vencidos = todosUsuarios.filter(u => ['comum', 'admin', 'super_admin'].includes(u.tipo) && dataExpira(u) && dataExpira(u) <= agora);
+      for (const u of vencidos) {
+        try {
+          await db.collection('users').doc(u.id).update({ tipo: 'excluido' });
+          await portalFetch(`/operadores/${u.id}`, { method: 'PUT', body: JSON.stringify({ tipo: 'excluido' }) }).catch(() => {});
+          u.tipo = 'excluido';
+        } catch (e) {
+          console.warn('Não foi possível excluir o temporário vencido', u.email, e);
+        }
+      }
+      if (vencidos.length) toast(`${vencidos.length} usuário(s) temporário(s) com prazo vencido foram excluídos.`);
+    }
+
+    function renderPendentes() {
+      const pendentes = todosUsuarios.filter(u => u.tipo === 'pendente');
+      const secao = document.getElementById('pendentes');
+      const lista = document.getElementById('pendentes-list');
+      secao.hidden = pendentes.length === 0;
+      document.getElementById('pendentes-count').textContent = pendentes.length ? `(${pendentes.length})` : '';
+      lista.innerHTML = '';
+      pendentes.forEach(u => {
+        const card = document.createElement('div');
+        card.className = 'info-card user-card';
+        card.innerHTML = `
+          <div class="user-card-header">
+            <span class="user-nome">${escapeHtml(u.nome || 'Sem nome')}</span>
+            <span class="badge">${ehFametro(u.email) ? 'Fametro' : `externo · temporário ${DIAS_TEMPORARIO} dias`}</span>
+          </div>
+          <div class="user-email">${escapeHtml(u.email || '—')}</div>
+          <div class="user-actions" id="actions-${u.id}">
+            <button class="btn btn--sm btn--accent" onclick="aprovar(${jsArg(u.id)})">Aprovar</button>
+            ${isSuper() ? `<button class="btn btn--sm" style="color:#c0392b;" onclick="recusar(${jsArg(u.id)})">Recusar</button>` : ''}
+          </div>
+        `;
+        lista.appendChild(card);
+      });
     }
 
     function renderUsers(users) {
@@ -291,6 +371,7 @@
         const isSelf = user.id === currentUser.uid;
         const tipo = user.tipo || 'comum';
         const excluido = tipo === 'excluido';
+        const expira = !excluido && dataExpira(user);
 
         const card = document.createElement('div');
         card.className = 'info-card user-card';
@@ -301,8 +382,9 @@
             <span class="badge badge--${escapeHtml(tipo.replace('_',''))}">${tipo === 'super_admin' ? 'superadmin' : excluido ? 'excluído' : escapeHtml(tipo)}</span>
           </div>
           <div class="user-email">${escapeHtml(user.email || '—')}</div>
+          ${expira ? `<div style="font-size:0.82rem;color:#b9770e;">⏳ Temporário até ${fmtData(expira)}</div>` : ''}
           <div class="user-actions" id="actions-${user.id}">
-            ${isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : excluido ? `
+            ${!isSuper() ? '' : isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : excluido ? `
               <button class="btn btn--sm" onclick="reativar(${jsArg(user.id)})">Reativar</button>
             ` : `
               <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'comum')" ${tipo === 'comum' ? 'disabled' : ''}>
@@ -324,13 +406,18 @@
       });
     }
 
+    // expiraEm para gravar no Firestore: data do prazo, ou apaga o campo (acesso sem prazo)
+    const campoExpira = (expira) => expira
+      ? firebase.firestore.Timestamp.fromDate(expira)
+      : firebase.firestore.FieldValue.delete();
+
     // Grava o novo tipo no Firestore e na aba OPERADORES
-    async function mudarTipo(uid, novoTipo, mensagemOk) {
+    async function mudarTipo(uid, novoTipo, mensagemOk, extra = {}) {
       const actions = document.getElementById(`actions-${uid}`);
       if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = true);
 
       try {
-        await db.collection('users').doc(uid).update({ tipo: novoTipo });
+        await db.collection('users').doc(uid).update({ tipo: novoTipo, ...extra });
 
         await portalFetch(`/operadores/${uid}`, {
           method: 'PUT',
@@ -365,12 +452,65 @@
       await mudarTipo(uid, 'excluido', `${usuario.nome || 'Usuário'} excluído.`);
     };
 
+    // Reativar conta como acesso novo: e-mail fora da Fametro ganha outros 3 dias
     window.reativar = async (uid) => {
       const usuario = todosUsuarios.find(u => u.id === uid);
       if (!usuario) return;
-      const ok = await confirmar(`Reativar <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong> como <strong>Comum</strong>?`);
+      const expira = prazoPara(usuario.email);
+      const ok = await confirmar(`Reativar <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong> como <strong>Comum</strong>?`
+        + (expira ? avisoTemporario(usuario.nome || 'o usuário', expira) : ''));
       if (!ok) return;
-      await mudarTipo(uid, 'comum', `${usuario.nome || 'Usuário'} reativado.`);
+      await mudarTipo(uid, 'comum', `${usuario.nome || 'Usuário'} reativado.`, { expiraEm: campoExpira(expira) });
+    };
+
+    window.recusar = async (uid) => {
+      const usuario = todosUsuarios.find(u => u.id === uid);
+      if (!usuario) return;
+      const ok = await confirmar(`Recusar a solicitação de <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong>? A conta fica como excluída (dá para reativar depois).`);
+      if (!ok) return;
+      await mudarTipo(uid, 'excluido', `Solicitação de ${usuario.nome || 'usuário'} recusada.`);
+    };
+
+    // id_operador auto-incrementado (o mesmo contador que o cadastro antigo usava)
+    function proximoIdOperador() {
+      const contadorRef = db.collection('counters').doc('id_operador');
+      return db.runTransaction(async (t) => {
+        const atual = await t.get(contadorRef);
+        const proximo = (atual.exists ? (atual.data().current || 0) : 0) + 1;
+        t.set(contadorRef, { current: proximo });
+        return proximo;
+      });
+    }
+
+    // Aprovar solicitação (admin e super_admin): pendente → comum, com id_operador e prazo
+    window.aprovar = async (uid) => {
+      const usuario = todosUsuarios.find(u => u.id === uid);
+      if (!usuario) return;
+      const nome = usuario.nome || 'Usuário';
+      const expira = prazoPara(usuario.email);
+      const ok = await confirmar(`Aprovar o acesso de <strong>${escapeHtml(nome)}</strong> (${escapeHtml(usuario.email || '—')}) como <strong>Comum</strong>?`
+        + (expira ? avisoTemporario(nome, expira) : ''));
+      if (!ok) return;
+
+      const actions = document.getElementById(`actions-${uid}`);
+      if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = true);
+      try {
+        const idOperador = await proximoIdOperador();
+        const dados = { tipo: 'comum', id_operador: idOperador };
+        if (expira) dados.expiraEm = firebase.firestore.Timestamp.fromDate(expira);
+        await db.collection('users').doc(uid).update(dados);
+
+        await portalFetch('/operadores', {
+          method: 'POST',
+          body: JSON.stringify({ id: idOperador, uid, nome: usuario.nome || '', email: usuario.email || '', tipo: 'comum' })
+        }).catch(err => console.warn('Aviso: não salvou no Sheets:', err));
+
+        toast(expira ? `${nome} aprovado como temporário até ${fmtData(expira)}.` : `${nome} aprovado.`);
+        await carregarUsuarios();
+      } catch (error) {
+        toast('Erro: ' + error.message, false);
+        if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = false);
+      }
     };
 
     // Criar usuário. Usa uma segunda instância do Firebase para criar a conta: a primeira
@@ -382,6 +522,9 @@
       const senha = document.getElementById('novo-senha').value;
       const tipo = document.getElementById('novo-tipo').value;
       if (!nome) { toast('Informe o nome.', false); return; }
+
+      const expira = prazoPara(email);
+      if (expira && !(await confirmar(`Criar <strong>${escapeHtml(nome)}</strong> (${escapeHtml(email)})?` + avisoTemporario(nome, expira)))) return;
 
       const btn = document.getElementById('btn-criar-usuario');
       btn.disabled = true;
@@ -396,29 +539,24 @@
         const uid = cred.user.uid;
         await authCriacao.signOut();
 
-        // id_operador auto-incrementado (o mesmo contador que o cadastro antigo usava)
-        const contadorRef = db.collection('counters').doc('id_operador');
-        const idOperador = await db.runTransaction(async (t) => {
-          const atual = await t.get(contadorRef);
-          const proximo = (atual.exists ? (atual.data().current || 0) : 0) + 1;
-          t.set(contadorRef, { current: proximo });
-          return proximo;
-        });
+        const idOperador = await proximoIdOperador();
 
-        await db.collection('users').doc(uid).set({
+        const novo = {
           id_operador: idOperador,
           nome,
           email,
           tipo,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        };
+        if (expira) novo.expiraEm = firebase.firestore.Timestamp.fromDate(expira);
+        await db.collection('users').doc(uid).set(novo);
 
         await portalFetch('/operadores', {
           method: 'POST',
           body: JSON.stringify({ id: idOperador, uid, nome, email, tipo })
         }).catch(err => console.warn('Aviso: não salvou no Sheets:', err));
 
-        toast(`${nome} criado. Passe o e-mail e a senha para a pessoa.`);
+        toast(`${nome} criado${expira ? ` (temporário até ${fmtData(expira)})` : ''}. Passe o e-mail e a senha para a pessoa.`);
         document.getElementById('form-novo-usuario').reset();
         await carregarUsuarios();
       } catch (error) {
@@ -443,8 +581,8 @@
       if (busca) {
         busca.addEventListener('input', () => {
           const q = busca.value.trim().toLowerCase();
-          if (!q) { renderUsers(todosUsuarios); return; }
-          const filtrados = todosUsuarios.filter(u =>
+          if (!q) { renderUsers(listaPrincipal()); return; }
+          const filtrados = listaPrincipal().filter(u =>
             (u.nome || '').toLowerCase().includes(q) ||
             (u.email || '').toLowerCase().includes(q)
           );

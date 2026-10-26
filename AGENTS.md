@@ -210,8 +210,24 @@ text
 | Valor | Acesso |
 |---|---|
 | `"comum"` | Lê e edita apenas o próprio documento |
-| `"admin"` | Lê todos os usuários, não pode alterar `tipo` |
-| `"super_admin"` | Lê todos e pode alterar o campo `tipo` de qualquer usuário |
+| `"pendente"` | Pediu acesso em "Solicitar acesso" (login); não entra até ser aprovado |
+| `"comum"` | Lê e edita apenas o próprio documento |
+| `"admin"` | Lê todos os usuários e **só aprova** pendentes (pendente → comum). Não cria, exclui, recusa nem promove |
+| `"super_admin"` | Aprova, recusa, cria, exclui (`excluido`), reativa e promove |
+| `"excluido"` | Sem acesso (reversível com Reativar) |
+
+### Solicitação de acesso e usuário temporário
+
+- `assets/js/solicitar-acesso.js` (index.html e login.html): cria a conta numa 2ª instância do
+  Firebase e grava `users/{uid}` com `tipo: 'pendente'`. Mostra os avisos `?conta=pendente|expirada|inativa`.
+- Ao aprovar, criar ou reativar com e-mail **fora de `@fametro.edu.br`**: confirmação avisa que é
+  **usuário temporário de 3 dias** e grava `expiraEm` (Timestamp). Quando tiver e-mail Fametro, a
+  pessoa solicita acesso de novo com ele.
+- Prazo vencido: `situacaoConta()` (portal-api.js) desloga, o Apps Script (`exigirLogin`) e as regras
+  do Firestore (`ativo()`) negam; quando um super_admin abre admin-users.html, `excluirExpirados()`
+  marca a conta como `excluido`.
+- Usuários antigos sem `expiraEm` não são afetados (a regra vale só para novas aprovações).
+- `POST /operadores` no Apps Script aceita admin, mas grava sempre `tipo: 'comum'`.
 
 **⚠️ O código (front e `routes/admin.js`) usa `super_admin` com underscore.** As regras abaixo
 foram ajustadas para isso; confira se as regras publicadas no Firebase Console usam o mesmo valor.
@@ -608,6 +624,7 @@ Verificar se o evento `'menu-loaded'` está sendo disparado.
 | Modal de preços vazio após cold start | Resultado vazio por timeout não fica mais em cache |
 | `express.static` servia `routes/`, `services/`, `assets/credentials/` | `server-api.js` responde 404 nesses caminhos antes do static |
 | "Pesquisar cursos/preços" sem efeito no Diário | `diario.html` agora carrega `links-data.js`, `courses-data.js` e `course_prices_2026_1_data.js` |
+| Pendente/temporário vencido entrava no portal | `vigiarConta()` usa `situacaoConta()` (tipo + `expiraEm`) e manda para `index.html?conta=<situação>` |
 
 ---
 
