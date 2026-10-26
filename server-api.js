@@ -39,6 +39,11 @@ app.use('/precos-cursos', precosCursosRoutes);
 app.use('/cursos-tecnicos', cursosTecnicosRoutes);
 app.use('/pos-graduacao', posGraduacaoRoutes);
 
+// Nunca servir credenciais nem código do servidor como arquivo estático
+app.use(['/assets/credentials', '/routes', '/services', '/functions', '/scripts', '/node_modules'], (req, res) => {
+  res.status(404).json({ error: 'Endpoint não encontrado' });
+});
+
 // Servir arquivos estáticos (HTML, CSS, JS)
 app.use(express.static(__dirname));
 

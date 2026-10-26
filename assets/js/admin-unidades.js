@@ -316,10 +316,7 @@ async function submitForm(e) {
     
     const res = await fetch(url, {
       method: isEdit ? 'PUT' : 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-password': localStorage.getItem('adminPassword') || 'admin123'
-      },
+      headers: await adminHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(data)
     });
 
@@ -386,7 +383,7 @@ document.getElementById('confirmDeleteBtn')?.addEventListener('click', async () 
     console.log('[confirmDeleteBtn] Enviando DELETE para:', `${API_URL}/admin/unidades/${deleteTargetId}`);
     const res = await fetch(`${API_URL}/admin/unidades/${deleteTargetId}`, {
       method: 'DELETE',
-      headers: { 'x-admin-password': localStorage.getItem('adminPassword') || 'admin123' }
+      headers: await adminHeaders()
     });
 
     console.log('[confirmDeleteBtn] Status:', res.status);
@@ -431,13 +428,16 @@ function showLoading(show) {
 // --------------------------------------------
 // Utilitários
 // --------------------------------------------
+// A API de admin exige o token do Firebase de um usuário super_admin
+async function adminHeaders(extra = {}) {
+  const user = (typeof auth !== 'undefined') ? auth.currentUser : null;
+  const token = user ? await user.getIdToken() : '';
+  return { ...extra, Authorization: `Bearer ${token}` };
+}
+
 function logout() {
   localStorage.removeItem('userType');
   localStorage.removeItem('adminPassword');
-  window.location.href = './login.html';
-}
-
-// Inicializar senha admin (para testes)
-if (!localStorage.getItem('adminPassword')) {
-  localStorage.setItem('adminPassword', 'admin123');
+  const sair = (typeof auth !== 'undefined') ? auth.signOut() : Promise.resolve();
+  sair.finally(() => { window.location.href = './index.html'; });
 }

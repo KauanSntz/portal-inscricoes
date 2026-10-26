@@ -197,6 +197,7 @@
 }
 
     window.logout = () => {
+      localStorage.removeItem('userType');
       auth.signOut().then(() => {
         window.location.href = './index.html';
       }).catch(error => {

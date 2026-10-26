@@ -95,62 +95,47 @@
     return units.filter(u => unidadeIds.includes(u.key));
   }
 
+  // A planilha tem mais de 500 processos; o padrão da API é limit=10
+  const PROCESSOS_URL = `${API_URL}/processos?limit=10000`;
+
   async function refreshFromAPI() {
     try {
       console.log("[links-data] Atualizando da API...");
-      const response = await fetch(`${API_URL}/processos?limit=500`);
+      const response = await fetch(PROCESSOS_URL);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const json = await response.json();
       const portalLinks = transformToPortalLinks(json.data || []);
+      const mudou = JSON.stringify(portalLinks) !== JSON.stringify(window.PORTAL_LINKS);
       setCachedData(portalLinks);
-      console.log(`[links-data] Cache atualizado (${json.data?.length || 0} processos)`);
-      
-      // SEMPRE atualizar PORTAL_LINKS com dados frescos da API
       window.PORTAL_LINKS = portalLinks;
-      
+      console.log(`[links-data] ✅ PORTAL_LINKS setado: ${portalLinks.length} unidades, ${json.data?.length || 0} processos`);
+
       if (!window._portalLinksInitialLoaded) {
-        // Primeira carga: disparar evento de carregamento
+        // Primeira carga (sem cache): disparar evento de carregamento
         window._portalLinksInitialLoaded = true;
         window.dispatchEvent(new Event('portal-links-loaded'));
-      } else {
-        // Atualizações subsequentes: disparar evento de update para re-render
+      } else if (mudou) {
+        // A página já renderizou o cache: re-renderizar só se os dados mudaram
         window.dispatchEvent(new Event('portal-links-updated'));
       }
-      console.log("[links-data] PORTAL_LINKS atualizado em tempo real");
     } catch (error) {
-      console.warn("[links-data] Erro ao atualizar:", error);
+      console.error("[links-data] ❌ Erro ao buscar processos:", error);
+      if (!window._portalLinksInitialLoaded) {
+        window.PORTAL_LINKS = [];
+        window.dispatchEvent(new Event('portal-links-error'));
+      }
     }
   }
 
   function init() {
     console.log("[links-data] ✅ Script carregado");
     const cached = getCachedData();
-    console.log("[links-data] Cache encontrado:", !!cached);
     if (cached && cached.length > 0) {
-      console.log("[links-data] Usando cache local:", cached.length, "unidades");
+      console.log("[links-data] PORTAL_LINKS setado (cache):", cached.length, "unidades");
       window.PORTAL_LINKS = cached;
-      console.log("[links-data] PORTAL_LINKS setado (cache)");
+      window._portalLinksInitialLoaded = true;
     } else {
-      console.log("[links-data] Sem cache, tentando API...");
-      fetch(`${API_URL}/processos?limit=500`)
-        .then(r => {
-          console.log("[links-data] Resposta API status:", r.status);
-          return r.json();
-        })
-        .then(json => {
-          console.log("[links-data] JSON recebido:", json);
-          const portalLinks = transformToPortalLinks(json.data || []);
-          console.log("[links-data] Transformado:", portalLinks.length, "unidades");
-          setCachedData(portalLinks);
-          window.PORTAL_LINKS = portalLinks;
-          console.log(`[links-data] ✅ PORTAL_LINKS setado: ${portalLinks.length} unidades, ${portalLinks.reduce((acc, u) => acc + Object.values(u.blocks).reduce((a, b) => a + b.links.length, 0), 0)} links`);
-          window.dispatchEvent(new Event('portal-links-loaded'));
-        })
-        .catch(err => {
-          console.error("[links-data] ❌ Erro:", err);
-          window.PORTAL_LINKS = [];
-          window.dispatchEvent(new Event('portal-links-error'));
-        });
+      console.log("[links-data] Sem cache, buscando na API...");
     }
 
     refreshFromAPI();

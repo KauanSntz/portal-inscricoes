@@ -463,6 +463,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
   <script>
+    // Escapa texto vindo do usuário/banco antes de inserir via innerHTML
+    const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // Argumento seguro para onclick="fn(...)": string JS escapada para dentro de atributo HTML
+    const jsArg = (v) => escapeHtml(JSON.stringify(String(v ?? '')));
+
     const firebaseConfig = {
       apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
       authDomain: "portal-inscricoes-tickets.firebaseapp.com",
@@ -516,7 +521,10 @@
       } catch (e) { console.error('Erro auth:', e); window.location.href = './index.html'; }
     });
 
-    window.logout = () => auth.signOut().then(() => window.location.href = './index.html');
+    window.logout = () => {
+      localStorage.removeItem('userType');
+      return auth.signOut().then(() => window.location.href = './index.html');
+    };
 
     // ===== PARSER =====
     function parsearTexto(texto) {
@@ -608,18 +616,18 @@
         const podeEditar = r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome || isAdmin();
         const podeExcluir = r.ID_OPERADOR == currentUser.id_operador || r.NOME_OPERADOR === currentUser.nome || isAdmin();
         // Escape data para o botão de editar
-        const rawData = encodeURIComponent(JSON.stringify(r));
+        const rawData = encodeURIComponent(JSON.stringify(r)).replace(/'/g, '%27');
         return `<tr>
-          <td>${r.DATA_INSCRICAO || ''}</td>
-          <td>${r.TIPO_INSCRICAO || ''}</td>
-          <td>${r.NOME || ''}</td>
-          <td><span class="tel-copy" onclick="copiarTelefone('${r.TELEFONE || ''}', event)">${r.TELEFONE || '—'}</span></td>
-          <td><span class="cpf-copy" onclick="copiarCPF('${r.CPF || ''}', event)">${formatCPF(r.CPF || '')}</span></td>
-          <td><span class="cpf-copy" title="Copiar nascimento" onclick="copiarTexto('${r.NASCIMENTO || ''}', 'Nascimento', event)">${r.NASCIMENTO || '—'}</span></td>
-          <td>${r.CURSO || ''}</td>
-          <td>${r.MODALIDADE || ''}</td>
-          <td>${r.UNIDADE || ''}</td>
-          <td><span class="sit-badge ${sitClass}">${r.SITUACAO || ''}</span></td>
+          <td>${escapeHtml(r.DATA_INSCRICAO)}</td>
+          <td>${escapeHtml(r.TIPO_INSCRICAO)}</td>
+          <td>${escapeHtml(r.NOME)}</td>
+          <td><span class="tel-copy" onclick="copiarTelefone(${jsArg(r.TELEFONE)}, event)">${escapeHtml(r.TELEFONE || '—')}</span></td>
+          <td><span class="cpf-copy" onclick="copiarCPF(${jsArg(r.CPF)}, event)">${escapeHtml(formatCPF(r.CPF || ''))}</span></td>
+          <td><span class="cpf-copy" title="Copiar nascimento" onclick="copiarTexto(${jsArg(r.NASCIMENTO)}, 'Nascimento', event)">${escapeHtml(r.NASCIMENTO || '—')}</span></td>
+          <td>${escapeHtml(r.CURSO)}</td>
+          <td>${escapeHtml(r.MODALIDADE)}</td>
+          <td>${escapeHtml(r.UNIDADE)}</td>
+          <td><span class="sit-badge ${sitClass}">${escapeHtml(r.SITUACAO)}</span></td>
           <td style="white-space:nowrap;">
             ${podeEditar && r.ID_REGISTRO ? `<button class="btn btn--sm" onclick="editarRegistro('${rawData}')">✏️</button>` : ''}
             <button class="btn btn--sm" style="background:var(--accent);color:#fff;" onclick="abrirTicketDoRegistro('${rawData}')">Ticket</button>
@@ -672,7 +680,7 @@
       } else {
         grid.innerHTML = ordenado.map(([nome, c]) =>
           `<div class="contagem-card">
-            <span class="op-nome">${nome}</span>
+            <span class="op-nome">${escapeHtml(nome)}</span>
             <span class="op-count count-inscricoes" title="Inscrições (Inscrito + Aprovado)">${c.inscricoes}</span>
             <span class="op-count count-matriculas" title="Matrículas (Matriculado + Pgto pendente)">${c.matriculas}</span>
           </div>`
@@ -706,7 +714,7 @@
     window.excluirRegistro = (encodedData) => {
       const r = JSON.parse(decodeURIComponent(encodedData));
       registroParaExcluir = r;
-      document.getElementById('confirmacao-msg').innerHTML = `Tem certeza que deseja excluir o registro de <strong>${r.NOME || 'este candidato'}</strong>?<br><br><span style="color:var(--text); opacity:0.8; font-size:0.85rem;">Essa ação não pode ser desfeita.</span>`;
+      document.getElementById('confirmacao-msg').innerHTML = `Tem certeza que deseja excluir o registro de <strong>${escapeHtml(r.NOME || 'este candidato')}</strong>?<br><br><span style="color:var(--text); opacity:0.8; font-size:0.85rem;">Essa ação não pode ser desfeita.</span>`;
       document.getElementById('confirmacao-modal').style.display = 'flex';
     };
 
@@ -874,15 +882,15 @@
       const tipoOptions = tipoOpcoes.map(t => `<option value="${t}" ${dadosExtraidos.tipo_inscricao === t ? 'selected' : ''}>${t}</option>`).join('');
 
       grid.innerHTML = `
-        <div class="preview-item"><strong>Data de Inscrição</strong><input type="text" class="edit-input" id="edit-data" value="${dataExibicao}" ${modoEdicao ? '' : 'readonly'} /></div>
+        <div class="preview-item"><strong>Data de Inscrição</strong><input type="text" class="edit-input" id="edit-data" value="${escapeHtml(dataExibicao)}" ${modoEdicao ? '' : 'readonly'} /></div>
         <div class="preview-item"><strong>Tipo de Inscrição</strong><select class="edit-select" id="edit-tipo"><option value="">Selecione...</option>${tipoOptions}</select></div>
-        <div class="preview-item"><strong>Nome</strong><input type="text" class="edit-input" id="edit-nome" value="${dadosExtraidos.nome || ''}" /></div>
-        <div class="preview-item"><strong>Telefone</strong><input type="text" class="edit-input" id="edit-telefone" value="${dadosExtraidos.telefone || ''}" placeholder="Somente números" /></div>
-        <div class="preview-item"><strong>Nascimento</strong><input type="text" class="edit-input" id="edit-nascimento" value="${dadosExtraidos.nascimento || ''}" /></div>
-        <div class="preview-item"><strong>CPF</strong><input type="text" class="edit-input" id="edit-cpf" value="${dadosExtraidos.cpf || ''}" placeholder="Somente números" /></div>
-        <div class="preview-item"><strong>Curso</strong><input type="text" class="edit-input" id="edit-curso" value="${dadosExtraidos.curso || ''}" /></div>
-        <div class="preview-item"><strong>Modalidade</strong><input type="text" class="edit-input" id="edit-modalidade" value="${dadosExtraidos.modalidade || ''}" /></div>
-        <div class="preview-item"><strong>Unidade</strong><input type="text" class="edit-input" id="edit-unidade" value="${dadosExtraidos.unidade || ''}" /></div>
+        <div class="preview-item"><strong>Nome</strong><input type="text" class="edit-input" id="edit-nome" value="${escapeHtml(dadosExtraidos.nome)}" /></div>
+        <div class="preview-item"><strong>Telefone</strong><input type="text" class="edit-input" id="edit-telefone" value="${escapeHtml(dadosExtraidos.telefone)}" placeholder="Somente números" /></div>
+        <div class="preview-item"><strong>Nascimento</strong><input type="text" class="edit-input" id="edit-nascimento" value="${escapeHtml(dadosExtraidos.nascimento)}" /></div>
+        <div class="preview-item"><strong>CPF</strong><input type="text" class="edit-input" id="edit-cpf" value="${escapeHtml(dadosExtraidos.cpf)}" placeholder="Somente números" /></div>
+        <div class="preview-item"><strong>Curso</strong><input type="text" class="edit-input" id="edit-curso" value="${escapeHtml(dadosExtraidos.curso)}" /></div>
+        <div class="preview-item"><strong>Modalidade</strong><input type="text" class="edit-input" id="edit-modalidade" value="${escapeHtml(dadosExtraidos.modalidade)}" /></div>
+        <div class="preview-item"><strong>Unidade</strong><input type="text" class="edit-input" id="edit-unidade" value="${escapeHtml(dadosExtraidos.unidade)}" /></div>
       `;
     }
 
@@ -891,10 +899,10 @@
     document.getElementById('novo-registro-btn').addEventListener('click', () => abrirModal(false));
     document.getElementById('modal-close').addEventListener('click', fecharModal);
     document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
-    let diarioModalInside = false;
-    modal.addEventListener('mousedown', () => { diarioModalInside = true; });
-    modal.addEventListener('mouseup', () => { diarioModalInside = false; });
-    modal.addEventListener('click', (e) => { if (diarioModalInside) return; if (e.target === modal) fecharModal(); });
+    // Só fecha se o clique começou no fundo (evita fechar ao selecionar texto e soltar fora)
+    let diarioDownOnOverlay = false;
+    modal.addEventListener('mousedown', (e) => { diarioDownOnOverlay = e.target === modal; });
+    modal.addEventListener('click', (e) => { if (e.target === modal && diarioDownOnOverlay) fecharModal(); });
 
     // Copiar texto padrão
     document.getElementById('btn-copiar-texto').addEventListener('click', () => {
@@ -1001,6 +1009,10 @@
       }
     });
   </script>
+  <!-- Dados usados pelos modais do menu (Pesquisar cursos / preços) -->
+  <script src="./assets/data/links-data.js"></script>
+  <script src="./assets/data/courses-data.js"></script>
+  <script src="./assets/data/course_prices_2026_1_data.js"></script>
   <script src="./assets/js/pos-graduacao-modal.js"></script><script src="./assets/js/menu-loader.js"></script>
   <script>window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';</script>
   <script src="./assets/js/modals-shared.js"></script>

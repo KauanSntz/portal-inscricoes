@@ -415,8 +415,10 @@
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
 
+      let downOnOverlay = false;
+      overlay.addEventListener('mousedown', (e) => { downOnOverlay = e.target === overlay; });
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) close();
+        if (e.target === overlay && downOnOverlay) close();
       });
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen) close();
