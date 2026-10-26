@@ -52,7 +52,7 @@
   }
 
   async function fetchFromAPI() {
-    const response = await fetch(`${API_URL}/processos?limit=500`);
+    const response = await portalFetch(`/processos?limit=500`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const json = await response.json();
     return json.data || [];

@@ -74,6 +74,7 @@
       margin-bottom: 0.75rem;
     }
   </style>
+  <script src="./assets/js/portal-api.js"></script>
 </head>
 <body>
   <div class="top-stripe" aria-hidden="true"></div>
@@ -307,7 +308,7 @@
         const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
           ? 'http://localhost:3000'
           : 'https://portal-inscricoes.onrender.com';
-        await fetch(`${apiUrl}/operadores/${uid}`, {
+        await portalFetch(`/operadores/${uid}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ tipo: novoTipo })

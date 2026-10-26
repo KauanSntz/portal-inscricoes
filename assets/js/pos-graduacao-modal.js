@@ -80,7 +80,7 @@
     async function loadTab(tab) {
       if (allData[tab]) return allData[tab];
       try {
-        const res = await fetch(`${API_BASE}/pos-graduacao/${tab}`);
+        const res = await portalFetch(`/pos-graduacao/${tab}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         allData[tab] = json.data || [];

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Sistema Fametro</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <script src="./assets/js/portal-api.js"></script>
 </head>
 
 <body>
@@ -251,7 +252,7 @@
 
         // Salvar na aba OPERADORES do Google Sheets (via API backend)
         const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : 'https://portal-inscricoes.onrender.com';
-        fetch(`${apiUrl}/operadores`, {
+        portalFetch(`/operadores`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -75,7 +75,7 @@ async function loadUnidades() {
   showLoading(true);
   
   try {
-    const res = await fetch(`${API_URL}/unidades`);
+    const res = await portalFetch(`/unidades`);
     const data = await res.json();
     
     // Filtrar apenas ativas para display inicial
@@ -311,10 +311,10 @@ async function submitForm(e) {
 
   try {
     const url = isEdit 
-      ? `${API_URL}/admin/unidades/${editId}`
-      : `${API_URL}/admin/unidades`;
+      ? `/admin/unidades/${editId}`
+      : `/admin/unidades`;
     
-    const res = await fetch(url, {
+    const res = await portalFetch(url, {
       method: isEdit ? 'PUT' : 'POST',
       headers: await adminHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(data)
@@ -380,8 +380,8 @@ document.getElementById('confirmDeleteBtn')?.addEventListener('click', async () 
   btn.textContent = 'Excluindo...';
 
   try {
-    console.log('[confirmDeleteBtn] Enviando DELETE para:', `${API_URL}/admin/unidades/${deleteTargetId}`);
-    const res = await fetch(`${API_URL}/admin/unidades/${deleteTargetId}`, {
+    console.log('[confirmDeleteBtn] Enviando DELETE para:', `/admin/unidades/${deleteTargetId}`);
+    const res = await portalFetch(`/admin/unidades/${deleteTargetId}`, {
       method: 'DELETE',
       headers: await adminHeaders()
     });

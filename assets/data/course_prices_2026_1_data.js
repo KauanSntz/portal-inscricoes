@@ -8,7 +8,7 @@
   const loadPrices = async () => {
     try {
       console.log('[course-prices] Carregando preços da API...');
-      const response = await fetch(`${API_URL}/precos-cursos`);
+      const response = await portalFetch(`/precos-cursos`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const json = await response.json();
       const rows = json.data || json;

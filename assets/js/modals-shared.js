@@ -141,7 +141,7 @@
 
   const loadApiData = async (endpoint) => {
     try {
-      const response = await fetch(`${API_URL}${endpoint}`);
+      const response = await portalFetch(`${endpoint}`);
       if (!response.ok) throw new Error(`Erro ${response.status}`);
       const json = await response.json();
       return extractData(json);
@@ -1017,7 +1017,7 @@
     const loadData = async () => {
       try {
         const API_URL = window.API_URL || '';
-        const response = await fetch(`${API_URL}/cursos-tecnicos`);
+        const response = await portalFetch(`/cursos-tecnicos`);
         if (!response.ok) throw new Error('Erro ao carregar cursos técnicos');
         data = await response.json();
         return data;

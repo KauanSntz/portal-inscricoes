@@ -96,12 +96,12 @@
   }
 
   // A planilha tem mais de 500 processos; o padrão da API é limit=10
-  const PROCESSOS_URL = `${API_URL}/processos?limit=10000`;
+  const PROCESSOS_URL = "/processos?limit=10000";
 
   async function refreshFromAPI() {
     try {
       console.log("[links-data] Atualizando da API...");
-      const response = await fetch(PROCESSOS_URL);
+      const response = await portalFetch(PROCESSOS_URL);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const json = await response.json();
       const portalLinks = transformToPortalLinks(json.data || []);

@@ -282,6 +282,7 @@
       color: #fcd34d;
     }
   </style>
+  <script src="./assets/js/portal-api.js"></script>
 </head>
 
 <body>
@@ -568,7 +569,7 @@
     // ===== CARREGAR REGISTROS =====
     async function carregarRegistros() {
       try {
-        const res = await fetch(`${API_URL}/diario`);
+        const res = await portalFetch(`/diario`);
         const json = await res.json();
         const registros = json.data || [];
         renderTabela(registros);
@@ -728,7 +729,7 @@
         btn.disabled = true;
         btn.textContent = 'Excluindo...';
 
-        const res = await fetch(`${API_URL}/diario`, {
+        const res = await portalFetch(`/diario`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -985,7 +986,7 @@
       try {
         document.getElementById('btn-salvar').disabled = true;
         document.getElementById('btn-salvar').textContent = modoEdicao ? 'Atualizando...' : 'Salvando...';
-        const res = await fetch(`${API_URL}/diario`, {
+        const res = await portalFetch(`/diario`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

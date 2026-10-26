@@ -106,7 +106,7 @@ async function apiAdmin(path, { method = 'GET', body } = {}) {
   const headers = { Authorization: `Bearer ${token}` };
   if (body) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(`${API_URL}/admin${path}`, {
+  const res = await portalFetch(`/admin${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined
@@ -121,7 +121,7 @@ async function loadData() {
   try {
     const [processos, unidadesResp] = await Promise.all([
       apiAdmin('/processos'),
-      fetch(`${API_URL}/unidades`).then(r => (r.ok ? r.json() : { data: [] })).catch(() => ({ data: [] }))
+      portalFetch(`/unidades`).then(r => (r.ok ? r.json() : { data: [] })).catch(() => ({ data: [] }))
     ]);
 
     currentLinks = processos.data || [];
