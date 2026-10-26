@@ -170,8 +170,10 @@ function tabela(nome) {
     const linha = valores[i];
     if (!linha.some(v => v !== '')) continue;
     const obj = { _row: i + 1 };
-    // Como o OpenSheet: célula vazia não vira campo
-    headers.forEach((h, c) => { if (h !== '' && linha[c] !== '') obj[h] = linha[c]; });
+    // Como o OpenSheet: célula vazia no meio da linha vira "", as vazias do fim não viram campo
+    let ultima = linha.length - 1;
+    while (ultima >= 0 && linha[ultima] === '') ultima--;
+    headers.forEach((h, c) => { if (h !== '' && c <= ultima) obj[h] = linha[c]; });
     rows.push(obj);
   }
   return { sh, headers, rows };

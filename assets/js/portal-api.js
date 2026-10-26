@@ -11,7 +11,7 @@
 // alguém logado; as rotas protegidas (diário, operadores, admin) exigem.
 (function () {
   // URL do app da web publicado (Implantar → Nova implantação → App da Web). Ver apps-script/README.md.
-  const PORTAL_API_URL = 'https://script.google.com/macros/s/AKfycbyH7F3frtZGcXkfseLNxOXfLQ5iT2RzOc1yoGlI0HsnYNjSaPwknSnF3kAI-Fe3we6QnQ/exec';
+  const PORTAL_API_URL = 'https://script.google.com/macros/s/AKfycbzm7jfTcrQYbZRUAayT2nwwmTYKe8IwToXx9actxNs5Gso4r2_kdz5x1lYWQCKbdAU52g/exec';
 
   async function tokenAtual() {
     try {
