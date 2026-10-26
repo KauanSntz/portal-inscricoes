@@ -10,8 +10,8 @@
  *
  * Permissões:
  *   - leituras públicas (links, unidades, cursos, preços, pós, contatos): sem login
- *   - diário de bordo (tem CPF/telefone) e operadores: usuário logado no Firebase
- *   - /admin/* e PUT /operadores: super_admin
+ *   - diário de bordo (tem CPF/telefone): usuário logado com conta ativa (comum, admin, super_admin)
+ *   - /admin/* e /operadores (criar usuário, mudar tipo, excluir): super_admin
  * O token do Firebase é validado lendo users/{uid} no Firestore com o próprio token
  * (o Firestore confere a assinatura), igual ao que routes/admin.js fazia.
  *
@@ -25,6 +25,7 @@ const ABA_PROCESSOS = 'processos_normalizados';
 const CAMPOS_PROCESSO = ['codigo', 'tipo_ingresso', 'unidade_id', 'modalidade', 'periodo', 'link'];
 const MODALIDADES_VALIDAS = ['PRESENCIAL', 'EAD', 'SEMIPRESENCIAL', 'FLEX', 'HÍBRIDO'];
 const MAX_ITENS_LOTE = 1000;
+const TIPOS_ATIVOS = ['comum', 'admin', 'super_admin'];   // "excluido" fica de fora
 const CACHE_LEITURA_S = 60;
 
 // ============================================
@@ -114,7 +115,10 @@ function rotear(req) {
       exigirSuperAdmin(req.token);
       return ok(comTotal(lerAba('OPERADORES')));
     }
-    if (method === 'POST') return criarOperador(body, exigirLogin(req.token));
+    if (method === 'POST') {
+      exigirSuperAdmin(req.token);
+      return criarOperador(body);
+    }
     if (method === 'PUT' && r1) {
       exigirSuperAdmin(req.token);
       return atualizarOperador(r1, body);
@@ -285,11 +289,10 @@ function exigirLogin(token) {
   if (code !== 200) throw erroHttp(503, 'Service Unavailable', 'Não foi possível validar o usuário agora. Tente novamente.');
 
   const fields = JSON.parse(resp.getContentText()).fields || {};
-  const usuario = {
-    uid: payload.user_id,
-    email: payload.email || '',
-    tipo: (fields.tipo && fields.tipo.stringValue) || 'comum'
-  };
+  const tipo = fields.tipo && fields.tipo.stringValue;
+  // Conta criada fora do sistema (sem tipo) ou excluída pelo super_admin: sem acesso
+  if (TIPOS_ATIVOS.indexOf(tipo) < 0) throw erroHttp(403, 'Forbidden', 'Sua conta não tem acesso ao sistema.');
+  const usuario = { uid: payload.user_id, email: payload.email || '', tipo };
   const restante = Math.floor(payload.exp - Date.now() / 1000);
   if (restante > 30) cache.put('tok:' + hash, JSON.stringify(usuario), Math.min(300, restante));
   return usuario;
@@ -480,10 +483,11 @@ function salvarDiario(b, usuario) {
 // Operadores
 // ============================================
 
-function criarOperador(b, usuario) {
-  if (!b.nome || !b.email) throw erroHttp(400, 'Bad Request', 'Nome e email são obrigatórios.');
-  // Cada pessoa só cadastra a si mesma (o uid vem do token, não do corpo)
-  const dados = { id: b.id || '', uid: usuario.uid, nome: b.nome, email: b.email, tipo: 'comum' };
+// Só o super_admin cria usuários (admin-users.html), então os dados vêm do corpo
+function criarOperador(b) {
+  if (!b.nome || !b.email || !b.uid) throw erroHttp(400, 'Bad Request', 'uid, nome e email são obrigatórios.');
+  const tipo = TIPOS_ATIVOS.indexOf(b.tipo) >= 0 ? b.tipo : 'comum';
+  const dados = { id: b.id || '', uid: b.uid, nome: b.nome, email: b.email, tipo };
   return comTrava(() => {
     const { sh, headers } = tabela('OPERADORES');
     acrescentar(sh, headers, [dados]);

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Sistema Fametro</title>
   <link rel="stylesheet" href="./assets/css/styles.css" />
+  <script src="./assets/js/portal-api.js"></script>
 </head>
 <body>
   <div class="top-stripe"></div>
@@ -55,36 +56,8 @@
           <a href="#" id="forgot-password">Esqueci minha senha</a>
         </div>
 
-        <!-- Link para registrar (aparece apenas no login) -->
-        <p style="margin-top:1rem; text-align:center;">
-          Não tem conta? <a href="#" id="show-register">Registrar</a>
-        </p>
       </form>
 
-      <!-- Formulário de Registro -->
-      <form id="register-form" style="display:none; margin-top:1rem;">
-        <h3>Registrar</h3>
-        <div class="field">
-          <span>Nome</span>
-          <input type="text" id="reg-nome" class="search-input" required>
-        </div>
-        <div class="field">
-          <span>E-mail</span>
-          <input type="email" id="reg-email" class="search-input" required>
-        </div>
-        <div class="field">
-          <span>Senha</span>
-          <input type="password" id="reg-password" class="search-input" required>
-        </div>
-        <div class="field">
-          <span>Confirmar Senha</span>
-          <input type="password" id="reg-confirm-password" class="search-input" required>
-        </div>
-        <button type="submit" class="btn btn--accent btn--block">Registrar</button>
-        <p style="margin-top:0.5rem; text-align:center;">
-          <a href="#" id="show-login">Voltar para login</a>
-        </p>
-      </form>
 
       <!-- Mensagem de erro/sucesso -->
       <div id="login-message"></div>
@@ -127,9 +100,6 @@
 
     // Elementos do DOM
     const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const showRegister = document.getElementById('show-register');
-    const showLogin = document.getElementById('show-login');
     const forgotPasswordLink = document.getElementById('forgot-password');
     const messageDiv = document.getElementById('login-message');
 
@@ -161,21 +131,6 @@
       return erros[errorCode] || `Erro desconhecido: ${errorCode}`;
     }
 
-    // Alternar para registro
-    showRegister.addEventListener('click', (e) => {
-      e.preventDefault();
-      loginForm.style.display = 'none';
-      registerForm.style.display = 'block';
-      messageDiv.style.display = 'none';
-    });
-
-    // Alternar para login
-    showLogin.addEventListener('click', (e) => {
-      e.preventDefault();
-      registerForm.style.display = 'none';
-      loginForm.style.display = 'block';
-      messageDiv.style.display = 'none';
-    });
 
     // Esqueci minha senha
     forgotPasswordLink.addEventListener('click', async (e) => {
@@ -191,6 +146,11 @@
       }
     });
 
+    // Conta desativada ou sem cadastro (ver vigiarConta em portal-api.js)
+    if (new URLSearchParams(location.search).get('conta') === 'inativa') {
+      showMessage('Sua conta não tem acesso ao sistema. Fale com um administrador.');
+    }
+
     // Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -205,46 +165,6 @@
       }
     });
 
-    // Registro
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const nome = document.getElementById('reg-nome').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
-      const password = document.getElementById('reg-password').value;
-      const confirmPassword = document.getElementById('reg-confirm-password').value;
-
-      if (password !== confirmPassword) {
-        showMessage('As senhas não coincidem.');
-        return;
-      }
-
-      if (nome === '') {
-        showMessage('Por favor, informe seu nome.');
-        return;
-      }
-      
-      messageDiv.style.display = 'none';
-
-      try {
-        const cred = await auth.createUserWithEmailAndPassword(email, password);
-        
-        // Salvar no Firestore com o nome fornecido
-        await db.collection('users').doc(cred.user.uid).set({
-          nome: nome,
-          email: email,
-          tipo: 'comum',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // Atualizar o displayName no Auth
-        await cred.user.updateProfile({ displayName: nome });
-
-        console.log('Registro bem-sucedido');
-      } catch (error) {
-        showMessage(traduzirErroFirebase(error.code));
-      }
-    });
 
     // Logout (para uso em outras páginas)
     window.logout = () => {

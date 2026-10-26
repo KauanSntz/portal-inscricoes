@@ -1,0 +1,50 @@
+rules_version = '2';
+
+// Regras do Firestore do portal. Publicar em: Firebase Console → Firestore Database → Regras.
+//
+// Conta ativa = existe users/{uid} com tipo comum, admin ou super_admin.
+// Não há mais auto-cadastro: só o super_admin cria e "exclui" (tipo = 'excluido') usuários
+// (admin-users.html). Uma conta criada direto pela API do Firebase fica sem documento em
+// users/ e não consegue ler nem gravar nada além de tentar ler o próprio doc.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function perfil() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function ativo() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && perfil().tipo in ['comum', 'admin', 'super_admin'];
+    }
+
+    function isAdmin() {
+      return ativo() && perfil().tipo in ['admin', 'super_admin'];
+    }
+
+    function isSuperAdmin() {
+      return ativo() && perfil().tipo == 'super_admin';
+    }
+
+    match /users/{userId} {
+      // Próprio doc (até excluído, para a tela saber que deve deslogar) ou admin/super_admin
+      allow read: if (request.auth != null && request.auth.uid == userId) || isAdmin();
+
+      // Criar, excluir e mudar tipo: só super_admin
+      allow create, delete: if isSuperAdmin();
+      allow update: if isSuperAdmin()
+        || (ativo() && request.auth.uid == userId
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['tipo', 'id_operador', 'email']));
+    }
+
+    // Contador do id_operador (usado ao criar usuário)
+    match /counters/{document=**} {
+      allow read, write: if ativo();
+    }
+
+    match /tickets/{document=**} {
+      allow read, write: if ativo();
+    }
+  }
+}

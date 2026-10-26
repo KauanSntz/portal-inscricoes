@@ -305,10 +305,9 @@
             const newUser = {
               email: user.email,
               nome: user.displayName || 'Usuário',
-              tipo: 'comum',
-              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              tipo: ''
             };
-            await db.collection('users').doc(user.uid).set(newUser);
+            // Sem cadastro: não cria mais (quem cria usuários é o super_admin); o portal-api.js desloga
             currentUser = { uid: user.uid, ...newUser };
           }
           

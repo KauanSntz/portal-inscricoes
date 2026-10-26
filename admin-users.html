@@ -125,6 +125,33 @@
     </div>
   </div>
 
+    <!-- Criar usuário (o cadastro pela tela de login foi removido: só o super_admin cria contas) -->
+    <details class="info-card" id="novo-usuario" style="margin-bottom:1rem;">
+      <summary style="cursor:pointer;font-weight:600;">+ Criar usuário</summary>
+      <form id="form-novo-usuario" style="display:grid;gap:0.75rem;margin-top:1rem;">
+        <label class="field"><span>Nome</span>
+          <input type="text" id="novo-nome" class="search-input" required>
+        </label>
+        <label class="field"><span>E-mail</span>
+          <input type="email" id="novo-email" class="search-input" required>
+        </label>
+        <label class="field"><span>Senha inicial (mínimo 6 caracteres)</span>
+          <input type="text" id="novo-senha" class="search-input" minlength="6" autocomplete="off" required>
+        </label>
+        <label class="field"><span>Tipo</span>
+          <select id="novo-tipo" class="search-input">
+            <option value="comum">Comum</option>
+            <option value="admin">Admin</option>
+            <option value="super_admin">Super Admin</option>
+          </select>
+        </label>
+        <p style="font-size:0.82rem;opacity:0.75;margin:0;">
+          Passe a senha para a pessoa. Ela pode trocar depois em "Esqueci minha senha" na tela de login.
+        </p>
+        <button type="submit" class="btn btn--accent" id="btn-criar-usuario">Criar usuário</button>
+      </form>
+    </details>
+
     <!-- Controles -->
     <div class="links-controls">
       <input type="search" id="busca-usuarios" class="search-input users-search" placeholder="Buscar por nome ou e-mail..." />
@@ -263,17 +290,21 @@
       users.forEach(user => {
         const isSelf = user.id === currentUser.uid;
         const tipo = user.tipo || 'comum';
+        const excluido = tipo === 'excluido';
 
         const card = document.createElement('div');
         card.className = 'info-card user-card';
+        if (excluido) card.style.opacity = '0.6';
         card.innerHTML = `
           <div class="user-card-header">
             <span class="user-nome">${escapeHtml(user.nome || 'Sem nome')} ${isSelf ? '<span class="self-tag">(você)</span>' : ''}</span>
-            <span class="badge badge--${escapeHtml(tipo.replace('_',''))}">${tipo === 'super_admin' ? 'superadmin' : escapeHtml(tipo)}</span>
+            <span class="badge badge--${escapeHtml(tipo.replace('_',''))}">${tipo === 'super_admin' ? 'superadmin' : excluido ? 'excluído' : escapeHtml(tipo)}</span>
           </div>
           <div class="user-email">${escapeHtml(user.email || '—')}</div>
           <div class="user-actions" id="actions-${user.id}">
-            ${isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : `
+            ${isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : excluido ? `
+              <button class="btn btn--sm" onclick="reativar(${jsArg(user.id)})">Reativar</button>
+            ` : `
               <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'comum')" ${tipo === 'comum' ? 'disabled' : ''}>
                 Comum
               </button>
@@ -283,11 +314,35 @@
               <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'super_admin')" ${tipo === 'super_admin' ? 'disabled' : ''}>
                 Super Admin
               </button>
+              <button class="btn btn--sm" style="color:#c0392b;" onclick="excluirUsuario(${jsArg(user.id)})">
+                Excluir
+              </button>
             `}
           </div>
         `;
         container.appendChild(card);
       });
+    }
+
+    // Grava o novo tipo no Firestore e na aba OPERADORES
+    async function mudarTipo(uid, novoTipo, mensagemOk) {
+      const actions = document.getElementById(`actions-${uid}`);
+      if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = true);
+
+      try {
+        await db.collection('users').doc(uid).update({ tipo: novoTipo });
+
+        await portalFetch(`/operadores/${uid}`, {
+          method: 'PUT',
+          body: JSON.stringify({ tipo: novoTipo })
+        }).catch(e => console.warn('Aviso: falha ao sincronizar com Sheets:', e));
+
+        toast(mensagemOk);
+        await carregarUsuarios();
+      } catch (error) {
+        toast('Erro: ' + error.message, false);
+        if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = false);
+      }
     }
 
     window.promover = async (uid, novoTipo) => {
@@ -296,31 +351,91 @@
       const tipoLabel = novoTipo === 'super_admin' ? 'Super Admin' : novoTipo === 'admin' ? 'Admin' : 'Comum';
       const ok = await confirmar(`Promover <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong> para <strong>${tipoLabel}</strong>?`);
       if (!ok) return;
+      await mudarTipo(uid, novoTipo, `${usuario.nome || 'Usuário'} promovido para ${tipoLabel}!`);
+    };
 
-      // Desabilitar botões durante a operação
-      const actions = document.getElementById(`actions-${uid}`);
-      if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = true);
+    // "Excluir" desativa: o navegador não consegue apagar a conta de login de outra pessoa
+    // (só pelo Firebase Console). Com tipo "excluido" ela é barrada nas telas, na API e no Firestore,
+    // e o histórico dela no diário continua.
+    window.excluirUsuario = async (uid) => {
+      const usuario = todosUsuarios.find(u => u.id === uid);
+      if (!usuario) return;
+      const ok = await confirmar(`Excluir <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong>? A pessoa perde o acesso ao sistema na hora. Dá para reativar depois.`);
+      if (!ok) return;
+      await mudarTipo(uid, 'excluido', `${usuario.nome || 'Usuário'} excluído.`);
+    };
 
+    window.reativar = async (uid) => {
+      const usuario = todosUsuarios.find(u => u.id === uid);
+      if (!usuario) return;
+      const ok = await confirmar(`Reativar <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong> como <strong>Comum</strong>?`);
+      if (!ok) return;
+      await mudarTipo(uid, 'comum', `${usuario.nome || 'Usuário'} reativado.`);
+    };
+
+    // Criar usuário. Usa uma segunda instância do Firebase para criar a conta: a primeira
+    // continua logada como o super_admin (criar conta loga automaticamente na instância usada).
+    async function criarUsuario(e) {
+      e.preventDefault();
+      const nome = document.getElementById('novo-nome').value.trim();
+      const email = document.getElementById('novo-email').value.trim().toLowerCase();
+      const senha = document.getElementById('novo-senha').value;
+      const tipo = document.getElementById('novo-tipo').value;
+      if (!nome) { toast('Informe o nome.', false); return; }
+
+      const btn = document.getElementById('btn-criar-usuario');
+      btn.disabled = true;
+      btn.textContent = 'Criando...';
+
+      const appCriacao = firebase.apps.find(a => a.name === 'criacao') || firebase.initializeApp(firebaseConfig, 'criacao');
+      const authCriacao = appCriacao.auth();
       try {
-        await db.collection('users').doc(uid).update({ tipo: novoTipo });
+        await authCriacao.setPersistence(firebase.auth.Auth.Persistence.NONE);
+        const cred = await authCriacao.createUserWithEmailAndPassword(email, senha);
+        await cred.user.updateProfile({ displayName: nome });
+        const uid = cred.user.uid;
+        await authCriacao.signOut();
 
-        // Sincronizar com Google Sheets
-        const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-          ? 'http://localhost:3000'
-          : 'https://portal-inscricoes.onrender.com';
-        await portalFetch(`/operadores/${uid}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tipo: novoTipo })
-        }).catch(e => console.warn('Aviso: falha ao sincronizar com Sheets:', e));
+        // id_operador auto-incrementado (o mesmo contador que o cadastro antigo usava)
+        const contadorRef = db.collection('counters').doc('id_operador');
+        const idOperador = await db.runTransaction(async (t) => {
+          const atual = await t.get(contadorRef);
+          const proximo = (atual.exists ? (atual.data().current || 0) : 0) + 1;
+          t.set(contadorRef, { current: proximo });
+          return proximo;
+        });
 
-        toast(`${usuario.nome || 'Usuário'} promovido para ${tipoLabel}!`);
+        await db.collection('users').doc(uid).set({
+          id_operador: idOperador,
+          nome,
+          email,
+          tipo,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await portalFetch('/operadores', {
+          method: 'POST',
+          body: JSON.stringify({ id: idOperador, uid, nome, email, tipo })
+        }).catch(err => console.warn('Aviso: não salvou no Sheets:', err));
+
+        toast(`${nome} criado. Passe o e-mail e a senha para a pessoa.`);
+        document.getElementById('form-novo-usuario').reset();
         await carregarUsuarios();
       } catch (error) {
-        toast('Erro: ' + error.message, false);
-        if (actions) actions.querySelectorAll('button').forEach(b => b.disabled = false);
+        const msgs = {
+          'auth/email-already-in-use': 'Já existe uma conta com esse e-mail. Se ela estiver na lista como excluída, use "Reativar".',
+          'auth/invalid-email': 'E-mail inválido.',
+          'auth/weak-password': 'Senha muito curta (mínimo 6 caracteres).'
+        };
+        toast(msgs[error.code] || ('Erro: ' + error.message), false);
+      } finally {
+        await authCriacao.signOut().catch(() => {});
+        btn.disabled = false;
+        btn.textContent = 'Criar usuário';
       }
-    };
+    }
+
+    document.getElementById('form-novo-usuario').addEventListener('submit', criarUsuario);
 
     // Busca em tempo real
     document.addEventListener('DOMContentLoaded', () => {
