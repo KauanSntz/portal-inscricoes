@@ -1054,7 +1054,7 @@
         card.className = 'info-card unidade-card';
         card.innerHTML = `
         <h3 class="unidade-nome">${u.unidade}</h3>
-        <p class="unidade-endereco">${u.endereco}</p>
+        <p class="unidade-endereco">${u.endereco || ""}</p>
       `;
         card.addEventListener('click', () => showCourses(u));
         listEl.appendChild(card);
@@ -1123,7 +1123,7 @@
             .map(([t, v]) => `  • ${t}: R$ ${v.toFixed(2)}`)
             .join('\n');
           const mensagem = `🎓 *Curso Técnico em ${curso.nome}* - Unidade ${currentUnit.unidade}\n` +
-            `📍 Endereço: ${currentUnit.endereco}\n` +
+            `📍 Endereço: ${currentUnit.endereco || ""}\n` +
             `⏱️ Duração: ${curso.duracao}\n` +
             `📅 Turnos disponíveis: ${curso.turnos.join(', ')}\n\n` +
             `💰 *Valores*:\n` +
