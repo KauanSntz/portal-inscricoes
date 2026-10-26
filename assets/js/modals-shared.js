@@ -282,6 +282,10 @@
         };
         tryLoad();
       });
+      // Resultado vazio (timeout no cold start do Render) não fica em cache: tenta de novo na próxima abertura
+      pricesDataPromise.then(data => {
+        if (!data.records.length) pricesDataPromise = null;
+      });
     }
     return pricesDataPromise;
   };
@@ -371,8 +375,10 @@
       dialog.appendChild(body);
       overlay.appendChild(dialog);
 
+      let downOnOverlay = false;
+      overlay.addEventListener("mousedown", (e) => { downOnOverlay = e.target === overlay; });
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) { close(); return; }
+        if (e.target === overlay) { if (downOnOverlay) close(); return; }
         const btn = e.target.closest("[data-action]");
         if (!btn) return;
         if (btn.dataset.action === "close-global-modal") { close(); return; }
@@ -740,8 +746,10 @@
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
 
+      let downOnOverlay = false;
+      overlay.addEventListener("mousedown", (e) => { downOnOverlay = e.target === overlay; });
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) close();
+        if (e.target === overlay && downOnOverlay) close();
       });
 
       unitSelectEl.addEventListener("change", updateFilters);
@@ -892,8 +900,10 @@
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
 
+        let downOnOverlay = false;
+        overlay.addEventListener('mousedown', (e) => { downOnOverlay = e.target === overlay; });
         overlay.addEventListener('click', (e) => {
-          if (e.target === overlay) close();
+          if (e.target === overlay && downOnOverlay) close();
         });
 
         document.addEventListener('keydown', (e) => {
@@ -1260,8 +1270,10 @@
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
 
+      let downOnOverlay = false;
+      overlay.addEventListener('mousedown', (e) => { downOnOverlay = e.target === overlay; });
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) close();
+        if (e.target === overlay && downOnOverlay) close();
       });
 
       document.addEventListener('keydown', (e) => {

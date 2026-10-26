@@ -61,25 +61,25 @@
   </div>
 
     <!-- RESTRIÇÃO DE ACESSO -->
-    <div id="accessDenied" class="card" style="display: none;">
-      <h2 style="color: var(--accent);">Acesso Restrito</h2>
-      <p>Você precisa ser Super Admin para acessar esta página.</p>
+    <div id="accessDenied" class="card access-denied hidden">
+      <h2>Acesso Restrito</h2>
+      <p id="accessDeniedText">Você precisa ser Super Admin para acessar esta página.</p>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="adminContent">
-      
+    <!-- CONTEÚDO PRINCIPAL (liberado após verificar o usuário no Firebase) -->
+    <div id="adminContent" class="hidden">
+
       <!-- TABS -->
       <div class="tabs-container">
-        <button class="tab-btn is-active" onclick="switchTab('importTab')">📥 Importação em Lote</button>
-        <button class="tab-btn" onclick="switchTab('manageTab')">📋 Gerenciar Ativos</button>
+        <button class="tab-btn is-active" type="button" data-tab="importTab">📥 Importação em Lote</button>
+        <button class="tab-btn" type="button" data-tab="manageTab">📋 Gerenciar Links</button>
       </div>
 
       <!-- FEEDBACK -->
-      <div id="feedback" class="feedback hidden"></div>
+      <div id="feedback" class="feedback hidden" role="status"></div>
 
       <!-- LOADING -->
-      <div id="loading" class="loading-state" style="display: none;">
+      <div id="loading" class="loading-state hidden">
         <div class="spinner"></div>
         <p id="loadingText">Processando...</p>
       </div>
@@ -88,36 +88,46 @@
       <div id="importTab" class="tab-content is-active">
         <div class="import-area">
           <h3>📋 Colar Texto de Links</h3>
-          <p class="text-sm">Cole a mensagem enviada com os links. O sistema identificará automaticamente os dados.</p>
-          
+          <p class="text-sm">
+            Cole a mensagem com os códigos e links: a linha do título seguida da linha do link.
+            Linhas de cabeçalho (ex: "CAPITAL - EAD / SEMI") são ignoradas. Nada é salvo antes de você conferir o preview.
+          </p>
+
           <div class="import-example">
             Exemplo:<br>
-            3424 VESTIBULAR ONLINE - SEDE PRESENCIAL - 2026/2<br>
-            https://forms.gle/...
+            3434 VESTIBULAR ONLINE - LESTE PRESENCIAL - 2026/2<br>
+            https://inscricao.fametro.edu.br/...?c=1&amp;f=1&amp;ps=3434#/es/inscricoeswizard<br>
+            3425 VESTIBULAR ONLINE - 100% EAD - 2026/2 ← sem unidade: atualiza todas as unidades que usam o código<br>
+            https://inscricao.fametro.edu.br/...?c=1&amp;f=15&amp;ps=3425#/es/inscricoeswizard
           </div>
 
           <textarea id="importText" class="import-textarea" placeholder="Cole aqui a mensagem com os códigos e links..."></textarea>
-          
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <button class="btn btn--accent" onclick="parseText()">Processar Texto</button>
-            <button class="btn" onclick="document.getElementById('importText').value = ''">Limpar</button>
+
+          <div class="import-actions">
+            <button class="btn btn--accent" type="button" id="btnParse">Processar Texto</button>
+            <button class="btn" type="button" id="btnClear">Limpar</button>
           </div>
         </div>
 
-        <div id="previewArea" class="preview-area" style="display: none;">
+        <div id="previewArea" class="preview-area hidden">
           <div class="preview-header">
-            <h3>Preview de Importação</h3>
-            <button class="btn btn--accent" id="btnConfirmImport" onclick="confirmImport()">Confirmar e Salvar</button>
+            <div>
+              <h3>Preview de Importação</h3>
+              <p class="preview-summary" id="previewSummary"></p>
+            </div>
+            <button class="btn btn--accent" type="button" id="btnConfirmImport">Confirmar e Salvar</button>
           </div>
-          
+
           <div class="table-container">
             <table class="data-table">
               <thead>
                 <tr>
+                  <th class="col-check"><input type="checkbox" id="previewSelectAll" checked aria-label="Selecionar todos" /></th>
                   <th>Código</th>
                   <th>Unidade</th>
                   <th>Tipo / Modalidade</th>
                   <th>Período</th>
+                  <th>Link</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -125,26 +135,29 @@
               </tbody>
             </table>
           </div>
+          <datalist id="unitOptions"></datalist>
         </div>
       </div>
 
       <!-- ABA 2: GERENCIAMENTO -->
       <div id="manageTab" class="tab-content">
         <div class="manage-actions">
-          <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar links (ex: sede, 3424)..." oninput="filterLinks()" />
-          <button class="btn btn--danger" onclick="confirmBulkDelete()">Inativar Selecionados</button>
-          <span class="manage-count" id="linksCount">0 links cadastrados</span>
+          <input type="search" id="searchInput" class="search-input" placeholder="Pesquisar (código, unidade, modalidade, período, link)..." />
+          <label class="manage-toggle"><input type="checkbox" id="showInactive" /> Mostrar inativos</label>
+          <button class="btn btn--danger" type="button" id="btnBulkDelete">Inativar Selecionados</button>
+          <span class="manage-count" id="linksCount">0 links</span>
         </div>
 
-        <div class="table-container">
+        <div class="table-container" id="manageTable">
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 50px;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" /></th>
+                <th class="col-check"><input type="checkbox" id="selectAll" aria-label="Selecionar todos" /></th>
                 <th>Código</th>
                 <th>Unidade</th>
                 <th>Processo</th>
                 <th>Período</th>
+                <th>Link</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -153,7 +166,7 @@
           </table>
         </div>
 
-        <div id="emptyState" class="empty-state" style="display: none;">
+        <div id="emptyState" class="empty-state hidden">
           <p>Nenhum link encontrado.</p>
         </div>
       </div>

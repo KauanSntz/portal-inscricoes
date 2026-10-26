@@ -20,7 +20,6 @@
     document.addEventListener('mousedown', (e) => {
       menuMousedownInside = sideMenu.contains(e.target);
     });
-    document.addEventListener('mouseup', () => { menuMousedownInside = false; });
 
     function closeMenu() {
       sideMenu.classList.remove('is-open');

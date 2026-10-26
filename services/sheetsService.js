@@ -27,15 +27,6 @@ const cache = {
   operadores: { data: null, timestamp: 0 }
 };
 
-function invalidateCache(cacheKey) {
-  if (cache[cacheKey]) {
-    cache[cacheKey] = { data: null, timestamp: 0 };
-    console.log(`[CACHE] ${cacheKey} invalidado`);
-  }
-}
-
-
-
 /**
  * Busca dados de uma URL com cache
  * @param {string} url - URL para buscar
@@ -57,7 +48,7 @@ async function fetchWithCache(url, cacheKey) {
   const response = await axios.get(url, { timeout: 10000 });
   
   if (response.status !== 200) {
-    throw new Error(`Falha ao buscar dados: статус ${response.status}`);
+    throw new Error(`Falha ao buscar dados: status ${response.status}`);
   }
 
   const data = response.data;
@@ -212,7 +203,7 @@ async function getUnidadeById(unidade_id) {
 }
 
 /**
- * Força刷新 do cache
+ * Força a atualização do cache
  */
 function invalidateCache() {
   cache.processos = { data: null, timestamp: 0 };
@@ -224,7 +215,20 @@ function invalidateCache() {
   cache.cursos_oferta = { data: null, timestamp: 0 };
   cache.precos_cursos = { data: null, timestamp: 0 };
   cache.diario_bordo = { data: null, timestamp: 0 };
+  cache.operadores = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
+}
+
+/**
+ * Substitui o cache com dados lidos direto do Google Sheets (após escrita do admin).
+ * O OpenSheet mantém cache próprio; sem isso, a API poderia guardar a versão antiga por mais 5 min.
+ * @param {string} cacheKey - Chave do cache (ex: 'processos')
+ * @param {Array} data - Linhas no mesmo formato retornado pelo OpenSheet
+ */
+function setCache(cacheKey, data) {
+  if (!cache[cacheKey]) return;
+  cache[cacheKey] = { data, timestamp: Date.now() };
+  console.log(`[CACHE] ${cacheKey} atualizado direto da planilha (${data.length} registros)`);
 }
 
 /**
@@ -393,5 +397,6 @@ module.exports = {
   getPrecosCursos,
   getCursosTecnicos,
   getOperadores,
-  invalidateCache
+  invalidateCache,
+  setCache
 };

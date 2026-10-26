@@ -144,6 +144,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
   <script>
+    // Escapa texto vindo do usuário/banco antes de inserir via innerHTML
+    const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // Argumento seguro para onclick="fn(...)": string JS escapada para dentro de atributo HTML
+    const jsArg = (v) => escapeHtml(JSON.stringify(String(v ?? '')));
+
     const firebaseConfig = {
       apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
       authDomain: "portal-inscricoes-tickets.firebaseapp.com",
@@ -262,19 +267,19 @@
         card.className = 'info-card user-card';
         card.innerHTML = `
           <div class="user-card-header">
-            <span class="user-nome">${user.nome || 'Sem nome'} ${isSelf ? '<span class="self-tag">(você)</span>' : ''}</span>
-            <span class="badge badge--${tipo.replace('_','')}">${tipo === 'super_admin' ? 'superadmin' : tipo}</span>
+            <span class="user-nome">${escapeHtml(user.nome || 'Sem nome')} ${isSelf ? '<span class="self-tag">(você)</span>' : ''}</span>
+            <span class="badge badge--${escapeHtml(tipo.replace('_',''))}">${tipo === 'super_admin' ? 'superadmin' : escapeHtml(tipo)}</span>
           </div>
-          <div class="user-email">${user.email || '—'}</div>
+          <div class="user-email">${escapeHtml(user.email || '—')}</div>
           <div class="user-actions" id="actions-${user.id}">
             ${isSelf ? '<span style="font-size:0.82rem;opacity:0.6;">Não é possível alterar seu próprio perfil.</span>' : `
-              <button class="btn btn--sm" onclick="promover('${user.id}','comum')" ${tipo === 'comum' ? 'disabled' : ''}>
+              <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'comum')" ${tipo === 'comum' ? 'disabled' : ''}>
                 Comum
               </button>
-              <button class="btn btn--sm" onclick="promover('${user.id}','admin')" ${tipo === 'admin' ? 'disabled' : ''}>
+              <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'admin')" ${tipo === 'admin' ? 'disabled' : ''}>
                 Admin
               </button>
-              <button class="btn btn--sm" onclick="promover('${user.id}','super_admin')" ${tipo === 'super_admin' ? 'disabled' : ''}>
+              <button class="btn btn--sm" onclick="promover(${jsArg(user.id)},'super_admin')" ${tipo === 'super_admin' ? 'disabled' : ''}>
                 Super Admin
               </button>
             `}
@@ -288,7 +293,7 @@
       const usuario = todosUsuarios.find(u => u.id === uid);
       if (!usuario) return;
       const tipoLabel = novoTipo === 'super_admin' ? 'Super Admin' : novoTipo === 'admin' ? 'Admin' : 'Comum';
-      const ok = await confirmar(`Promover <strong>${usuario.nome || 'este usuário'}</strong> para <strong>${tipoLabel}</strong>?`);
+      const ok = await confirmar(`Promover <strong>${escapeHtml(usuario.nome || 'este usuário')}</strong> para <strong>${tipoLabel}</strong>?`);
       if (!ok) return;
 
       // Desabilitar botões durante a operação
@@ -333,6 +338,7 @@
     });
 
     window.logout = () => {
+      localStorage.removeItem('userType');
       auth.signOut().then(() => window.location.href = './index.html');
     };
   </script>

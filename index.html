@@ -274,6 +274,7 @@
 
     // Logout (para uso em outras páginas)
     window.logout = () => {
+      localStorage.removeItem('userType');
       auth.signOut().then(() => {
         window.location.href = './index.html';
       });

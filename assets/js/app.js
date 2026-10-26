@@ -300,14 +300,13 @@
       dialog.append(head, tabsEl, bodyEl);
       overlay.appendChild(dialog);
 
-      let appModalInside = false;
-      overlay.addEventListener('mousedown', () => { appModalInside = true; });
-      overlay.addEventListener('mouseup', () => { appModalInside = false; });
+      // Só fecha se o clique começou no fundo (evita fechar ao selecionar texto e soltar fora)
+      let appDownOnOverlay = false;
+      overlay.addEventListener('mousedown', (e) => { appDownOnOverlay = e.target === overlay; });
 
       overlay.addEventListener("click", (e) => {
-        if (appModalInside) return;
         const btn = e.target.closest("[data-action]");
-        if (!btn) { if (e.target === overlay) close(); return; }
+        if (!btn) { if (e.target === overlay && appDownOnOverlay) close(); return; }
         const action = btn.dataset.action;
         if (action === "close-unit-modal") close();
         if (action === "set-tab") {
@@ -443,6 +442,7 @@ setTimeout(() => {
 
   // ----------------------------- INIT -----------------------------
   let appInitialized = false;
+  let eventsBound = false;
 
   const init = () => {
     if (appInitialized) return;
@@ -458,7 +458,10 @@ setTimeout(() => {
       const idx = buildCourseIndex(courses, units);
       idx.unitOrder = units.map(u => u.coursesKey);
       renderApp({ units });
-      bindEvents(idx);
+      if (!eventsBound) {
+        bindEvents(idx);
+        eventsBound = true;
+      }
       if (new URLSearchParams(location.search).get("openPrices") === "1") {
         if (window.pricesModal) window.pricesModal.open({ unitKey: "sede", unitTitle: "Manaus" });
       }

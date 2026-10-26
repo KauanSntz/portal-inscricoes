@@ -230,6 +230,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
   <script>
+    // Escapa texto vindo do usuário/banco antes de inserir via innerHTML
+    const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // Argumento seguro para onclick="fn(...)": string JS escapada para dentro de atributo HTML
+    const jsArg = (v) => escapeHtml(JSON.stringify(String(v ?? '')));
+
     const firebaseConfig = {
       apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
       authDomain: "portal-inscricoes-tickets.firebaseapp.com",
@@ -489,12 +494,11 @@
     });
 
     confirmClose.addEventListener('click', fecharConfirmacao);
-    let confirmInside = false;
-    confirmModal.addEventListener('mousedown', () => { confirmInside = true; });
-    confirmModal.addEventListener('mouseup', () => { confirmInside = false; });
+    // Só fecha se o clique começou no fundo (evita fechar ao selecionar texto e soltar fora)
+    let confirmDownOnOverlay = false;
+    confirmModal.addEventListener('mousedown', (e) => { confirmDownOnOverlay = e.target === confirmModal; });
     confirmModal.addEventListener('click', (e) => {
-      if (confirmInside) return;
-      if (e.target === confirmModal) fecharConfirmacao();
+      if (e.target === confirmModal && confirmDownOnOverlay) fecharConfirmacao();
     });
 
     // Função de notificação
@@ -936,25 +940,25 @@
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3 class="unit-group__title" style="margin-bottom:0;">Ticket #${t.id.slice(0, 6)}</h3>
-            <span class="badge" style="background:${badgeColor}">${statusText}</span>
+            <span class="badge" style="background:${badgeColor}">${escapeHtml(statusText)}</span>
           </div>
           <p>
             <strong>CPF:</strong> 
-            <span class="cpf-copy" onclick="copiarCPF('${t.cpfAluno}', event)">${t.cpfAluno}</span>
-            | <strong>Nome:</strong> ${t.nomeAluno || '—'}
+            <span class="cpf-copy" onclick="copiarCPF(${jsArg(t.cpfAluno)}, event)">${escapeHtml(t.cpfAluno)}</span>
+            | <strong>Nome:</strong> ${escapeHtml(t.nomeAluno || '—')}
           </p>
-          <p><strong>Curso:</strong> ${t.cursoAluno || '—'} | <strong>Unidade:</strong> ${t.unidade} | <strong>Modalidade:</strong> ${t.modalidade}</p>
-          <p><strong>Criado por:</strong> ${t.nomeCriador || 'Desconhecido'}</p>
-          ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${t.nomeIniciador || t.iniciadoPor}</p>` : ''}
-          <p><strong>Problema:</strong> ${t.problema}</p>
-          ${t.motivo ? `<p><strong>Motivo:</strong> ${t.motivo}</p>` : ''}
-          ${t.resolucao ? `<p><strong>Resolução:</strong> ${t.resolucao}</p>` : ''}
+          <p><strong>Curso:</strong> ${escapeHtml(t.cursoAluno || '—')} | <strong>Unidade:</strong> ${escapeHtml(t.unidade)} | <strong>Modalidade:</strong> ${escapeHtml(t.modalidade)}</p>
+          <p><strong>Criado por:</strong> ${escapeHtml(t.nomeCriador || 'Desconhecido')}</p>
+          ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${escapeHtml(t.nomeIniciador || t.iniciadoPor)}</p>` : ''}
+          <p><strong>Problema:</strong> ${escapeHtml(t.problema)}</p>
+          ${t.motivo ? `<p><strong>Motivo:</strong> ${escapeHtml(t.motivo)}</p>` : ''}
+          ${t.resolucao ? `<p><strong>Resolução:</strong> ${escapeHtml(t.resolucao)}</p>` : ''}
           <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
-            <button class="btn" onclick="verTicket('${t.id}')">Ver detalhes</button>
-            ${(podeAgir && t.status === 'aberto') ? `<button class="btn btn--accent" onclick="iniciarTicket('${t.id}')">Iniciar</button>` : ''}
-            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn btn--accent" onclick="concluirTicket('${t.id}')">Concluir</button>` : ''}
-            ${(podeAgir && t.status === 'concluido') ? `<button class="btn" onclick="reabrirTicket('${t.id}')">Reabrir</button>` : ''}
-            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn" onclick="devolverTicket('${t.id}')">Devolver</button>` : ''}
+            <button class="btn" onclick="verTicket(${jsArg(t.id)})">Ver detalhes</button>
+            ${(podeAgir && t.status === 'aberto') ? `<button class="btn btn--accent" onclick="iniciarTicket(${jsArg(t.id)})">Iniciar</button>` : ''}
+            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn btn--accent" onclick="concluirTicket(${jsArg(t.id)})">Concluir</button>` : ''}
+            ${(podeAgir && t.status === 'concluido') ? `<button class="btn" onclick="reabrirTicket(${jsArg(t.id)})">Reabrir</button>` : ''}
+            ${(podeAgir && t.status === 'em_andamento') ? `<button class="btn" onclick="devolverTicket(${jsArg(t.id)})">Devolver</button>` : ''}
           </div>
         `;
         container.appendChild(card);
@@ -962,6 +966,7 @@
     }
 
     window.logout = () => {
+      localStorage.removeItem('userType');
       auth.signOut().then(() => {
         window.location.href = './index.html';
       }).catch(error => {

@@ -342,46 +342,47 @@
     dom.type.addEventListener("change", () => { state.filters.type = dom.type.value; applyFilters(); });
   };
 
-const init = async () => {
-    const hideLoading = () => document.getElementById('app-loading')?.remove();
-    const showError = (msg) => {
-      const el = document.getElementById('app-loading');
-      if (el) el.innerHTML = `<p style="color:#f87171;">${msg || 'Erro ao carregar dados.'}</p>`;
-    };
+const sortRecords = (records) => records.sort((a, b) => {
+    const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
+    if (aU !== bU) return aU - bU;
+    const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
+    const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
+    if (orderA !== orderB) return orderA - orderB;
+    return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
+  });
 
-    if (!window.PORTAL_LINKS || !Array.isArray(window.PORTAL_LINKS)) {
-      window.addEventListener('portal-links-loaded', () => init(), { once: true });
-      window.addEventListener('portal-links-error', () => showError('Erro ao carregar dados da API.'), { once: true });
-      return;
-    }
-
-    hideLoading();
-    state.records = fromPortalLinks(window.PORTAL_LINKS);
-
-    state.records.sort((a, b) => {
-      const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
-      if (aU !== bU) return aU - bU;
-      const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
-      const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
-      if (orderA !== orderB) return orderA - orderB;
-      return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
-    });
-    
+  // Monta registros e opções dos filtros; mantém a seleção atual se a opção ainda existir
+  const loadRecords = () => {
+    state.records = sortRecords(fromPortalLinks(window.PORTAL_LINKS));
     state.sourceLabel = `API (${state.records.length} registros)`;
     state.qa = buildQA(state.records);
-    
+
     const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
     buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
     buildOptions(dom.modality, [...new Set(state.records.map(r => r.modalityKey))], MODALITY_LABELS);
     buildOptions(dom.type, [...new Set(state.records.map(r => r.typeKey))], TYPE_LABELS);
-    
-    bindEvents();
+
+    [["unit", dom.unit], ["modality", dom.modality], ["type", dom.type]].forEach(([key, select]) => {
+      const exists = Array.from(select.options).some(o => o.value === state.filters[key]);
+      if (!exists) state.filters[key] = "all";
+      select.value = state.filters[key];
+    });
+
     applyFilters();
     renderQA();
   };
 
+  let initialized = false;
+  const init = () => {
+    if (initialized || !Array.isArray(window.PORTAL_LINKS)) return;
+    initialized = true;
+    document.getElementById('app-loading')?.remove();
+    bindEvents();
+    loadRecords();
+  };
+
   // Fonte única: dados já disponíveis (cache) -> init imediato
-  if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
+  if (Array.isArray(window.PORTAL_LINKS)) {
     init();
   } else {
     window.addEventListener('portal-links-loaded', init, { once: true });
@@ -393,27 +394,9 @@ const init = async () => {
 
   // Re-render quando PORTAL_LINKS for atualizado pela API
   window.addEventListener('portal-links-updated', () => {
-    if (window.PORTAL_LINKS && Array.isArray(window.PORTAL_LINKS)) {
-      console.log('[links-page] Re-renderizando com dados atualizados');
-      state.records = fromPortalLinks(window.PORTAL_LINKS);
-      state.records.sort((a, b) => {
-        const aU = a.unitCanonical === UNKNOWN_UNIT ? 1 : 0, bU = b.unitCanonical === UNKNOWN_UNIT ? 1 : 0;
-        if (aU !== bU) return aU - bU;
-        const orderA = UNIT_ORDER[a.unitCanonical] ?? 99;
-        const orderB = UNIT_ORDER[b.unitCanonical] ?? 99;
-        if (orderA !== orderB) return orderA - orderB;
-        return a.unitCanonical.localeCompare(b.unitCanonical, "pt-BR") || (MODALITY_ORDER[a.modalityKey] ?? 9) - (MODALITY_ORDER[b.modalityKey] ?? 9) || (TYPE_ORDER[a.typeKey] ?? 9) - (TYPE_ORDER[b.typeKey] ?? 9) || String(a.code || "").localeCompare(String(b.code || ""), "pt-BR");
-      });
-      state.sourceLabel = `API (${state.records.length} registros)`;
-      state.qa = buildQA(state.records);
-      
-      const unitMap = Object.fromEntries(state.records.map(r => [r.unitKey, r.unitCanonical === UNKNOWN_UNIT ? UNKNOWN_UNIT : toTitle(r.unitCanonical)]));
-      buildOptions(dom.unit, [...new Set(state.records.map(r => r.unitKey))], unitMap);
-      buildOptions(dom.modality, [...new Set(state.records.map(r => r.modalityKey))], MODALITY_LABELS);
-      buildOptions(dom.type, [...new Set(state.records.map(r => r.typeKey))], TYPE_LABELS);
-      
-      applyFilters();
-      renderQA();
-    }
+    if (!Array.isArray(window.PORTAL_LINKS)) return;
+    if (!initialized) { init(); return; }
+    console.log('[links-page] Re-renderizando com dados atualizados');
+    loadRecords();
   });
 })();

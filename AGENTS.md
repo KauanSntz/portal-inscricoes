@@ -104,7 +104,7 @@ text
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/` | Status da API |
-| GET | `/processos` | Lista todos os processos (287 registros) |
+| GET | `/processos` | Lista processos ativos (**padrão `limit=10`**; a planilha tem 535 linhas — o front usa `limit=10000`) |
 | GET | `/processos?limit=10` | Lista com paginação |
 | GET | `/processos?unidade_id=SEDE` | Filtra por unidade |
 | GET | `/processos?modalidade=EAD` | Filtra por modalidade |
@@ -116,9 +116,28 @@ text
 | GET | `/cursos-oferta` | Cursos ofertados |
 | GET | `/precos-cursos` | Preços por turno |
 | GET | `/cursos-tecnicos` | Cursos técnicos por unidade |
-| POST | `/admin/:tabela` | Criar registro |
-| PUT | `/admin/:tabela/:id` | Atualizar registro |
-| DELETE | `/admin/:tabela/:id` | Deletar registro |
+| POST | `/admin/:tabela` | Criar registro (`processos`: cria ou atualiza código + `unidade_id`) |
+| PUT | `/admin/:tabela/:id` | Atualizar registro (`processos`: com `unidade_id` no body/query atualiza uma linha; sem, atualiza link/período de todas as unidades do código) |
+| DELETE | `/admin/:tabela/:id` | Inativar registro (`processos`: exige `?unidade_id=` se o código for usado por mais de uma unidade → senão 409) |
+| GET | `/admin/processos` | Lista direto do Google Sheets (sem cache do OpenSheet), incluindo inativos |
+| POST | `/admin/processos/lote` | `{ itens: [...] }` cria/atualiza/reativa até 1000 processos com 1 leitura e até 2 escritas |
+| POST | `/admin/processos/inativar` | `{ itens: [{ codigo, unidade_id }] }` soft delete em lote |
+| POST | `/admin/processos/reativar` | `{ itens: [{ codigo, unidade_id }] }` desfaz o soft delete |
+
+### Autenticação das rotas `/admin`
+
+- Header `Authorization: Bearer <ID token do Firebase>` de um usuário com `tipo == "super_admin"`.
+  O servidor lê `users/{uid}` no Firestore via REST **com o próprio token** (o Firestore valida a
+  assinatura), então não precisa de credencial do Firebase no Render.
+- No front: `await auth.currentUser.getIdToken()` (ver `apiAdmin()` em `admin-links.js` e
+  `adminHeaders()` em `admin-unidades.js`).
+- `x-admin-password` só funciona se `ADMIN_PASSWORD` estiver definida no Render. **Não existe mais
+  senha padrão** (`admin123` foi removida).
+
+### Chave dos processos
+
+O mesmo `codigo` aparece em várias linhas (ex: 3425/3426 EAD em 68 polos). Toda escrita identifica a
+linha por **`codigo` + `unidade_id`** (comparação sem acento/maiúscula). Nunca usar só o código.
 
 ---
 
@@ -192,7 +211,10 @@ text
 |---|---|
 | `"comum"` | Lê e edita apenas o próprio documento |
 | `"admin"` | Lê todos os usuários, não pode alterar `tipo` |
-| `"superadmin"` | Lê todos e pode alterar o campo `tipo` de qualquer usuário |
+| `"super_admin"` | Lê todos e pode alterar o campo `tipo` de qualquer usuário |
+
+**⚠️ O código (front e `routes/admin.js`) usa `super_admin` com underscore.** As regras abaixo
+foram ajustadas para isso; confira se as regras publicadas no Firebase Console usam o mesmo valor.
 
 ### Regras do Firestore (`firestore.rules`)
 rules_version = '2';
@@ -205,12 +227,12 @@ return request.auth != null;
 
 function isSuperAdmin() {
 return isAuthenticated() &&
-get(/databases/$(database)/documents/users/$(request.auth.uid)).data.tipo == 'superadmin';
+get(/databases/$(database)/documents/users/$(request.auth.uid)).data.tipo == 'super_admin';
 }
 
 function isAdmin() {
 return isAuthenticated() &&
-get(/databases/$(database)/documents/users/$(request.auth.uid)).data.tipo in ['admin', 'superadmin'];
+get(/databases/$(database)/documents/users/$(request.auth.uid)).data.tipo in ['admin', 'super_admin'];
 }
 
 match /users/{userId} {
@@ -237,7 +259,7 @@ allow read, write: if isAuthenticated();
 text
 
 **⚠️ NUNCA alterar o campo `tipo` via frontend sem verificar se o usuário logado
-é `superadmin`. A regra do Firestore bloqueia no banco, mas a UI deve bloquear antes.**
+é `super_admin`. A regra do Firestore bloqueia no banco, mas a UI deve bloquear antes.**
 
 ---
 
@@ -342,17 +364,25 @@ Todas as páginas compartilham a mesma estrutura:
 
 ### Overlay Close Pattern
 
-Para evitar que modais fechem durante seleção de texto:
+Para evitar que modais fechem durante seleção de texto (arrastar de dentro do modal e soltar no
+fundo), só feche se o clique **começou** no fundo:
 
 ```js
-let mousedownInside = false;
-modal.addEventListener('mousedown', () => { mousedownInside = true; });
-modal.addEventListener('mouseup', () => { mousedownInside = false; });
+let downOnOverlay = false;
+modal.addEventListener('mousedown', (e) => { downOnOverlay = e.target === modal; });
 modal.addEventListener('click', (e) => {
-  if (mousedownInside) return;
-  if (e.target === modal) close();
+  if (e.target === modal && downOnOverlay) close();
 });
 ```
+
+❌ Não usar a versão antiga com `mouseup` zerando a flag: o `mouseup` dispara antes do `click`,
+então a proteção nunca funcionava.
+
+### Texto do usuário em `innerHTML`
+
+Nome, CPF, ticket, registro do diário etc. **sempre** passam por `escapeHtml()` antes de entrar em
+`innerHTML`. Em `onclick="fn(...)"` use `jsArg(valor)` (JSON + escape), nunca `'${valor}'`.
+Sem isso, um nome com HTML roda script na sessão de quem abre a página (ex: super_admin).
 
 ### Expor modal no `window`
 
@@ -404,6 +434,9 @@ Push para `feature/sistema-tickets` → Render deploya automaticamente.
 | `URL_UNIDADES` | unidades |
 | `URL_MODALIDADES` | modalidades |
 | `CACHE_DURATION_MS` | 300000 (5 min) |
+| `GOOGLE_CREDENTIALS_JSON` | JSON da service account com acesso de edição à planilha (obrigatória para `/admin` e `/diario`) |
+| `FIREBASE_PROJECT_ID` | Opcional — padrão `portal-inscricoes-tickets` (valida o token nas rotas `/admin`) |
+| `ADMIN_PASSWORD` | Opcional — habilita `x-admin-password` para scripts. Sem ela, só token de super_admin |
 
 ---
 
@@ -560,6 +593,21 @@ Verificar se o evento `'menu-loaded'` está sendo disparado.
 | Permissão negada no painel admin | Verificar `tipo` do usuário no Firestore |
 | `undefined` no EAD | Verificar campos `mesesX`/`pontX` na API |
 | Botão "15 meses" deformado | `white-space: nowrap` em `.pos-dur-btn` |
+| Gerenciar Links alterava/inativava a unidade errada | Código é compartilhado entre unidades — chave agora é `codigo` + `unidade_id` |
+| "Inativar" dizia sucesso mas nada mudava | Aba sem coluna `deleted_at`; o CRUD agora cria a coluna antes de gravar (`ensureHeaders`) |
+| Importação gravava `unidade_id` "SEDE"/"BOA VISTA" e tipo "VESTIBULAR" | Parser novo resolve a unidade pela lista real (`/unidades` + ids existentes) e mantém "VESTIBULAR ONLINE" |
+| Importação em massa batia no limite da API do Google | Rota `/admin/processos/lote` (1 leitura + 2 escritas por envio) |
+| Central de Links sem 35 processos | `links-data.js` buscava `limit=500`; agora `limit=10000` |
+| Central de Links não atualizava após o cache | `links-data.js` dispara `portal-links-updated` quando os dados da API mudam |
+| API pública mostrava link antigo após salvar | Após escrita, `sheetsService.setCache('processos', ...)` usa os dados lidos do Sheets (o OpenSheet tem cache próprio) |
+| Rotas `/admin` abertas com `admin123` | Removida senha padrão; exige token Firebase de super_admin |
+| XSS em tickets/diário/usuários | `escapeHtml()` / `jsArg()` em todo `innerHTML` com dado do usuário |
+| Botões do diário mortos com apóstrofo no nome | `encodeURIComponent(...).replace(/'/g, '%27')` |
+| Modal fechava ao selecionar texto | Novo Overlay Close Pattern (ver seção Modais) |
+| Admin continuava aparecendo após trocar de usuário | Todo `logout()` remove `userType` do localStorage |
+| Modal de preços vazio após cold start | Resultado vazio por timeout não fica mais em cache |
+| `express.static` servia `routes/`, `services/`, `assets/credentials/` | `server-api.js` responde 404 nesses caminhos antes do static |
+| "Pesquisar cursos/preços" sem efeito no Diário | `diario.html` agora carrega `links-data.js`, `courses-data.js` e `course_prices_2026_1_data.js` |
 
 ---
 

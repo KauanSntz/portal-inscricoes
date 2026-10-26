@@ -17,5 +17,6 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('notificationclick', (event) => {
   console.log('🔔 Notificação clicada', event.notification);
   event.notification.close();
-  event.waitUntil(clients.openWindow('/portal-inscricoes/'));
+  // Caminho relativo ao próprio arquivo: funciona no GitHub Pages (/portal-inscricoes/) e no Render (/)
+  event.waitUntil(clients.openWindow(new URL('../../tickets.html', self.location).href));
 });
