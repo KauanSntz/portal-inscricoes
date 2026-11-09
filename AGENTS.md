@@ -42,7 +42,6 @@ portal-inscricoes/
 ├── portal.html # Portal de inscrições
 ├── links.html # Central de links
 ├── tickets.html # Sistema de tickets
-├── diario.html # Diário de Bordo
 ├── login.html # Login admin
 ├── admin-links.html # Admin Gerenciar Links
 ├── admin-unidades.html # Admin CRUD Unidades (DESABILITADO temporarily)
@@ -355,7 +354,6 @@ Todas as páginas compartilham a mesma estrutura:
   <div class="nav-left">
     <a class="btn btn--nav" href="./portal.html">Portal</a>
     <a class="btn btn--nav" href="./links.html">Central de Links</a>
-    <a class="btn btn--nav" href="./diario.html">Diário de Bordo</a>
     <a class="btn btn--nav" href="./tickets.html">Tickets</a>
     <button class="btn btn--nav" onclick="logout()">Sair</button>
   </div>
@@ -396,7 +394,7 @@ então a proteção nunca funcionava.
 
 ### Texto do usuário em `innerHTML`
 
-Nome, CPF, ticket, registro do diário etc. **sempre** passam por `escapeHtml()` antes de entrar em
+Nome, CPF, ticket, etc. **sempre** passam por `escapeHtml()` antes de entrar em
 `innerHTML`. Em `onclick="fn(...)"` use `jsArg(valor)` (JSON + escape), nunca `'${valor}'`.
 Sem isso, um nome com HTML roda script na sessão de quem abre a página (ex: super_admin).
 
@@ -450,7 +448,7 @@ Push para `feature/sistema-tickets` → Render deploya automaticamente.
 | `URL_UNIDADES` | unidades |
 | `URL_MODALIDADES` | modalidades |
 | `CACHE_DURATION_MS` | 300000 (5 min) |
-| `GOOGLE_CREDENTIALS_JSON` | JSON da service account com acesso de edição à planilha (obrigatória para `/admin` e `/diario`) |
+| `GOOGLE_CREDENTIALS_JSON` | JSON da service account com acesso de edição à planilha (obrigatória para `/admin`) |
 | `FIREBASE_PROJECT_ID` | Opcional — padrão `portal-inscricoes-tickets` (valida o token nas rotas `/admin`) |
 | `ADMIN_PASSWORD` | Opcional — habilita `x-admin-password` para scripts. Sem ela, só token de super_admin |
 
@@ -617,13 +615,12 @@ Verificar se o evento `'menu-loaded'` está sendo disparado.
 | Central de Links não atualizava após o cache | `links-data.js` dispara `portal-links-updated` quando os dados da API mudam |
 | API pública mostrava link antigo após salvar | Após escrita, `sheetsService.setCache('processos', ...)` usa os dados lidos do Sheets (o OpenSheet tem cache próprio) |
 | Rotas `/admin` abertas com `admin123` | Removida senha padrão; exige token Firebase de super_admin |
-| XSS em tickets/diário/usuários | `escapeHtml()` / `jsArg()` em todo `innerHTML` com dado do usuário |
-| Botões do diário mortos com apóstrofo no nome | `encodeURIComponent(...).replace(/'/g, '%27')` |
+| XSS em tickets/usuários | `escapeHtml()` / `jsArg()` em todo `innerHTML` com dado do usuário |
 | Modal fechava ao selecionar texto | Novo Overlay Close Pattern (ver seção Modais) |
 | Admin continuava aparecendo após trocar de usuário | Todo `logout()` remove `userType` do localStorage |
 | Modal de preços vazio após cold start | Resultado vazio por timeout não fica mais em cache |
 | `express.static` servia `routes/`, `services/`, `assets/credentials/` | `server-api.js` responde 404 nesses caminhos antes do static |
-| "Pesquisar cursos/preços" sem efeito no Diário | `diario.html` agora carrega `links-data.js`, `courses-data.js` e `course_prices_2026_1_data.js` |
+| Diário de Bordo removido do sistema | Saíram `diario.html`, a rota `/diario` (Express e Apps Script) e as funções do `sheetsService`. A aba `diario_bordo` da planilha continua com os dados |
 | Pendente/temporário vencido entrava no portal | `vigiarConta()` usa `situacaoConta()` (tipo + `expiraEm`) e manda para `index.html?conta=<situação>` |
 
 ---

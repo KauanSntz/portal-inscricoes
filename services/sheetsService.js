@@ -9,7 +9,6 @@ const URL_MODALIDADES = process.env.URL_MODALIDADES || 'modalidades';
 const URL_COORDENADORES = process.env.URL_COORDENADORES || 'coordenadores';
 const URL_SETORES_CONTATO = process.env.URL_SETORES_CONTATO || 'setores_contato';
 const URL_CURSOS_TECNICOS = process.env.URL_CURSOS_TECNICOS || 'cursos_tecnicos';
-const URL_DIARIO_BORDO = process.env.URL_DIARIO_BORDO || 'diario_bordo';
 const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycby8b4xiDWKVYums7HLlBwLdep-cpgykKGT0sRlolQVJFvGGvcuZLQi3jItu9EKg0qXX6w/exec';
 const CACHE_DURATION = parseInt(process.env.CACHE_DURATION_MS) || 300000;
 
@@ -23,7 +22,6 @@ const cache = {
   cursos_tecnicos: { data: null, timestamp: 0 },
   cursos_oferta: { data: null, timestamp: 0 },
   precos_cursos: { data: null, timestamp: 0 },
-  diario_bordo: { data: null, timestamp: 0 },
   operadores: { data: null, timestamp: 0 }
 };
 
@@ -214,7 +212,6 @@ function invalidateCache() {
   cache.cursos_tecnicos = { data: null, timestamp: 0 };
   cache.cursos_oferta = { data: null, timestamp: 0 };
   cache.precos_cursos = { data: null, timestamp: 0 };
-  cache.diario_bordo = { data: null, timestamp: 0 };
   cache.operadores = { data: null, timestamp: 0 };
   console.log('[CACHE] Cache invalidado');
 }
@@ -291,98 +288,6 @@ async function getCursosTecnicos() {
   }));
 }
 
-/**
- * Busca registros do diário de bordo
- * @param {Object} filtros - Filtros opcionais (operador, data, cpf)
- * @returns {Promise<Array>} Registros do diário
- */
-async function getDiarioBordo(filtros = {}) {
-  // Busca direto da API do Google Sheets via CRUD para evitar delay de cache do OpenSheet
-  let registrosRaw = await crud.getAllRows('diario_bordo');
-  
-  // Converte as chaves para UPPERCASE para manter compatibilidade com o frontend
-  let registros = registrosRaw.map(r => {
-    const upperObj = {};
-    for (const key in r) {
-      upperObj[key.toUpperCase()] = r[key];
-    }
-    return upperObj;
-  });
-
-  // Ignorar registros inativos
-  if (Array.isArray(registros)) {
-    registros = registros.filter(r => r && typeof r === 'object' && (r.SITUACAO || '').toLowerCase() !== 'inativo');
-  }
-
-  if (filtros.operador) {
-    registros = registros.filter(r => String(r.ID_OPERADOR) === String(filtros.operador));
-  }
-  if (filtros.data) {
-    registros = registros.filter(r => r.DATA_INSCRICAO === filtros.data);
-  }
-  if (filtros.cpf) {
-    registros = registros.filter(r => (r.CPF || '').includes(filtros.cpf));
-  }
-  if (filtros.nome) {
-    const termo = filtros.nome.toLowerCase();
-    registros = registros.filter(r => (r.NOME || '').toLowerCase().includes(termo));
-  }
-
-  return registros;
-}
-
-async function salvarDiarioBordo(registro) {
-  const acao = registro.acao || 'novo';
-  
-  // Mapear campos para lowercase (formato do CRUD/Google Sheets)
-  const dados = {
-    id_registro: registro.id_registro || '',
-    id_operador: registro.id_operador || '',
-    nome_operador: registro.nome_operador || '',
-    data_inscricao: registro.data_inscricao || '',
-    tipo_inscricao: registro.tipo_inscricao || '',
-    nome: registro.nome || '',
-    telefone: registro.telefone || '',
-    nascimento: registro.nascimento || '',
-    cpf: registro.cpf || '',
-    curso: registro.curso || '',
-    modalidade: registro.modalidade || '',
-    unidade: registro.unidade || '',
-    situacao: registro.situacao || ''
-  };
-
-  let resultado;
-
-  if (acao === 'excluir') {
-    // Soft delete: marcar como inativo
-    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, {
-      situacao: 'inativo'
-    });
-    if (!resultado) {
-      throw new Error(`Registro ${dados.id_registro} não encontrado para exclusão`);
-    }
-    console.log(`[DIARIO] Registro ${dados.id_registro} marcado como inativo`);
-  } else if (acao === 'editar') {
-    // Update: atualizar registro existente pelo id_registro
-    resultado = await crud.updateRow('diario_bordo', 'id_registro', dados.id_registro, dados);
-    if (!resultado) {
-      throw new Error(`Registro ${dados.id_registro} não encontrado para edição`);
-    }
-    console.log(`[DIARIO] Registro ${dados.id_registro} atualizado`);
-  } else {
-    // Novo: adicionar nova linha
-    resultado = await crud.appendRow('diario_bordo', dados);
-    console.log(`[DIARIO] Novo registro criado: ${dados.id_registro}`);
-  }
-
-  // Invalidar cache do diário após salvar
-  if (cache.diario_bordo) {
-    cache.diario_bordo = { data: null, timestamp: 0 };
-  }
-
-  return { status: 'ok', action: acao, data: resultado };
-}
-
 module.exports = {
   getProcessos,
   getUnidades,
@@ -391,8 +296,6 @@ module.exports = {
   getSetoresContato,
   getProcessoByCodigo,
   getUnidadeById,
-  getDiarioBordo,
-  salvarDiarioBordo,
   getCursosOferta,
   getPrecosCursos,
   getCursosTecnicos,

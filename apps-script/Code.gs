@@ -105,12 +105,6 @@ function rotear(req) {
     if (r0 === 'pos-graduacao' && r1) return posGraduacao(r1);
   }
 
-  if (r0 === 'diario') {
-    const usuario = exigirLogin(req.token);
-    if (method === 'GET') return ok(listarDiario(q));
-    if (method === 'POST') return salvarDiario(body, usuario);
-  }
-
   if (r0 === 'operadores') {
     if (method === 'GET') {
       exigirSuperAdmin(req.token);
@@ -442,57 +436,6 @@ function posGraduacao(tab) {
     ? raw.filter(r => r['EAD'] && r['EAD'].trim()).map(posEAD)
     : raw.filter(r => r['CURSO'] && r['CURSO'].trim()).map(posSimples);
   return ok({ status: 'ok', modalidade: tab, data });
-}
-
-// ============================================
-// Diário de bordo (dados pessoais: só logado)
-// ============================================
-
-function listarDiario(q) {
-  let registros = lerAba('diario_bordo').map(r => {
-    const o = {};
-    Object.keys(r).forEach(k => { o[k.toUpperCase()] = r[k]; });
-    return o;
-  }).filter(r => String(r.SITUACAO || '').toLowerCase() !== 'inativo');
-
-  if (q.operador) registros = registros.filter(r => String(r.ID_OPERADOR) === String(q.operador));
-  if (q.data) registros = registros.filter(r => r.DATA_INSCRICAO === q.data);
-  if (q.cpf) registros = registros.filter(r => String(r.CPF || '').indexOf(q.cpf) >= 0);
-  if (q.nome) {
-    const termo = String(q.nome).toLowerCase();
-    registros = registros.filter(r => String(r.NOME || '').toLowerCase().indexOf(termo) >= 0);
-  }
-  if (q.limit) registros = registros.slice(0, parseInt(q.limit, 10));
-  return comTotal(registros);
-}
-
-function salvarDiario(b, usuario) {
-  const acao = b.acao || 'novo';
-  if (acao !== 'excluir' && acao !== 'editar' && (!b.nome || !b.cpf)) {
-    throw erroHttp(400, 'Bad Request', 'Nome e CPF são obrigatórios para novos registros.');
-  }
-  const campos = ['id_registro', 'id_operador', 'nome_operador', 'data_inscricao', 'tipo_inscricao', 'nome',
-    'telefone', 'nascimento', 'cpf', 'curso', 'modalidade', 'unidade', 'situacao'];
-  const dados = {};
-  campos.forEach(c => { dados[c] = b[c] || ''; });
-
-  return comTrava(() => {
-    const { sh, headers, rows } = tabela('diario_bordo');
-    const chave = headers.find(h => h.toLowerCase() === 'id_registro') || 'id_registro';
-    const alvo = acao === 'novo' ? null : rows.find(r => String(r[chave]) === String(dados.id_registro));
-
-    if (acao === 'excluir') {
-      if (!alvo) throw erroHttp(500, 'Internal Server Error', `Registro ${dados.id_registro} não encontrado para exclusão`);
-      gravarCampos(sh, headers, alvo._row, { situacao: 'inativo' }, false);
-    } else if (acao === 'editar') {
-      if (!alvo) throw erroHttp(500, 'Internal Server Error', `Registro ${dados.id_registro} não encontrado para edição`);
-      gravarCampos(sh, headers, alvo._row, dados, false);
-    } else {
-      acrescentar(sh, headers, [dados]);
-    }
-    console.log(`[DIARIO] ${acao} ${dados.id_registro} por ${usuario.email}`);
-    return ok({ status: 'ok', action: acao, data: dados });
-  });
 }
 
 // ============================================
