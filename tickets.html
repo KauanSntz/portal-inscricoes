@@ -235,6 +235,29 @@
     // Argumento seguro para onclick="fn(...)": string JS escapada para dentro de atributo HTML
     const jsArg = (v) => escapeHtml(JSON.stringify(String(v ?? '')));
 
+    // Timestamp do Firestore -> "09/11/2026 14:32" (horário de Manaus)
+    const formatarData = (ts) => {
+      const d = ts && typeof ts.toDate === 'function' ? ts.toDate() : null;
+      if (!d) return '';
+      return d.toLocaleString('pt-BR', {
+        timeZone: 'America/Manaus', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+    };
+
+    // Linha com as datas do ticket; mostra só as que fazem sentido para o status atual
+    const datasDoTicket = (t) => {
+      const datas = [
+        ['Criado em', t.criadoEm],
+        ['Reaberto em', t.status !== 'concluido' && t.reabertoEm],
+        ['Devolvido em', t.status === 'aberto' && t.devolvidoEm],
+        ['Iniciado em', t.status !== 'aberto' && t.iniciadoEm],
+        ['Concluído em', t.status === 'concluido' && t.concluidoEm]
+      ]
+        .map(([rotulo, ts]) => (formatarData(ts) ? `<span><strong>${rotulo}:</strong> ${formatarData(ts)}</span>` : ''))
+        .filter(Boolean);
+      return datas.length ? `<p class="ticket-meta">${datas.join(' · ')}</p>` : '';
+    };
+
     const firebaseConfig = {
       apiKey: "AIzaSyBqKuf4gC-UCzhrQu3samKeZxVK7kN9Ym4",
       authDomain: "portal-inscricoes-tickets.firebaseapp.com",
@@ -826,7 +849,9 @@
               status: 'aberto',
               iniciadoPor: null,
               nomeIniciador: null,
-              iniciadoEm: null
+              iniciadoEm: null,
+              devolvidoPor: currentUser.uid,
+              devolvidoEm: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
               console.log('Ticket devolvido:', id);
               carregarTickets();
@@ -920,6 +945,7 @@
           </p>
           <p><strong>Curso:</strong> ${escapeHtml(t.cursoAluno || '—')} | <strong>Unidade:</strong> ${escapeHtml(t.unidade)} | <strong>Modalidade:</strong> ${escapeHtml(t.modalidade)}</p>
           <p><strong>Criado por:</strong> ${escapeHtml(t.nomeCriador || 'Desconhecido')}</p>
+          ${datasDoTicket(t)}
           ${t.iniciadoPor ? `<p><strong>Responsável:</strong> ${escapeHtml(t.nomeIniciador || t.iniciadoPor)}</p>` : ''}
           <p><strong>Problema:</strong> ${escapeHtml(t.problema)}</p>
           ${t.motivo ? `<p><strong>Motivo:</strong> ${escapeHtml(t.motivo)}</p>` : ''}
