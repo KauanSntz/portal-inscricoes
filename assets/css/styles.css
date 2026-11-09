@@ -393,6 +393,12 @@ select:focus-visible,
   font-weight: 500;
 }
 
+/* Datas do card de ticket (tickets.html) */
+.ticket-meta {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
 .empty {
   border: 1px solid var(--accent-border);
   border-radius: var(--radius-md);
@@ -878,11 +884,6 @@ body.dark-mode .modality-group__title,
 body.dark-mode .process-code,
 body.dark-mode .process-text,
 body.dark-mode .empty,
-.ticket-meta {
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
 body.dark-mode .ticket-meta,
 body.dark-mode .ticket-meta span,
 body.dark-mode .result-unit,
