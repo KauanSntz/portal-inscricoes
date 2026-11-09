@@ -36,7 +36,7 @@ Assim a URL continua a mesma. ("Nova implantação" gera outra URL.)
 ## Depois que o site estiver usando o script
 
 - **Compartilhar → Acesso geral → Restrito**: a planilha deixa de ser pública
-  (o diário de bordo tem CPF e telefone).
+  (o site lê e grava só pelo script).
 - Remova o acesso de `sheets-api@portal-inscricoes-api.iam.gserviceaccount.com`:
   a API antiga do Render deixa de conseguir ler e gravar.
 

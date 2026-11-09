@@ -620,7 +620,6 @@ Verificar se o evento `'menu-loaded'` está sendo disparado.
 | Admin continuava aparecendo após trocar de usuário | Todo `logout()` remove `userType` do localStorage |
 | Modal de preços vazio após cold start | Resultado vazio por timeout não fica mais em cache |
 | `express.static` servia `routes/`, `services/`, `assets/credentials/` | `server-api.js` responde 404 nesses caminhos antes do static |
-| Diário de Bordo removido do sistema | Saíram `diario.html`, a rota `/diario` (Express e Apps Script) e as funções do `sheetsService`. A aba `diario_bordo` da planilha continua com os dados |
 | Tickets não mostravam datas | Card mostra Criado/Iniciado/Concluído/Reaberto/Devolvido em (`datasDoTicket()` em `tickets.html`, horário de Manaus). "Devolver" agora grava `devolvidoEm` e `devolvidoPor` |
 | Pendente/temporário vencido entrava no portal | `vigiarConta()` usa `situacaoConta()` (tipo + `expiraEm`) e manda para `index.html?conta=<situação>` |
 

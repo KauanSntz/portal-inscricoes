@@ -103,7 +103,7 @@ async function getProcessos(filtros = {}) {
 
 ## 3. As Portas do Backend: `/routes/`
 
-Os arquivos na pasta `routes/` (ex: `processos.js`, `diario.js`) são as portas que o frontend chama.
+Os arquivos na pasta `routes/` (ex: `processos.js`, `unidades.js`) são as portas que o frontend chama.
 
 ### 🌐 Rota GET `/processos`
 ```javascript
@@ -129,22 +129,6 @@ router.get('/', async (req, res) => {
 });
 ```
 **Como funciona:** Express Route típica. Ela traduz a URL em variáveis, limpa o lixo, e manda para o serviço.
-
-### 📝 Rota POST `/diario`
-```javascript
-// routes/diario.js
-router.post('/', async (req, res) => {
-  const { id_operador, nome, cpf /* ... */ } = req.body;
-
-  // Obriga ter nome e cpf
-  if (!nome || !cpf) return res.status(400).json({ error: 'Faltam dados' });
-
-  // Salva no banco de dados (Google Sheets) via sheetsCrudService
-  const resultado = await salvarDiarioBordo({ ...req.body });
-  res.json(resultado);
-});
-```
-**Como funciona:** Em vez de *ler*, aqui nós *escrevemos*. O `salvarDiarioBordo` usa o `sheetsCrudService.js` para inserir ou atualizar uma linha diretamente na tabela do Google Sheets usando a API oficial do Google.
 
 ---
 

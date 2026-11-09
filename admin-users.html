@@ -441,8 +441,7 @@
     };
 
     // "Excluir" desativa: o navegador não consegue apagar a conta de login de outra pessoa
-    // (só pelo Firebase Console). Com tipo "excluido" ela é barrada nas telas, na API e no Firestore,
-    // e o histórico dela no diário continua.
+    // (só pelo Firebase Console). Com tipo "excluido" ela é barrada nas telas, na API e no Firestore.
     window.excluirUsuario = async (uid) => {
       const usuario = todosUsuarios.find(u => u.id === uid);
       if (!usuario) return;

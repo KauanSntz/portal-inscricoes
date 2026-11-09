@@ -10,7 +10,6 @@
  *
  * Permissões:
  *   - leituras públicas (links, unidades, cursos, preços, pós, contatos): sem login
- *   - diário de bordo (tem CPF/telefone): usuário logado com conta ativa (comum, admin, super_admin)
  *   - /admin/* e /operadores (criar usuário, mudar tipo, excluir): super_admin
  *   - POST /operadores também para admin (aprovar solicitação de acesso), sempre como "comum"
  * O token do Firebase é validado lendo users/{uid} no Firestore com o próprio token

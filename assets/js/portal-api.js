@@ -8,7 +8,7 @@
 //
 // Por baixo é sempre um POST text/plain (não dispara preflight de CORS no Apps Script)
 // com { route, method, query, body, token }. O token do Firebase vai junto quando há
-// alguém logado; as rotas protegidas (diário, operadores, admin) exigem.
+// alguém logado; as rotas protegidas (operadores, admin) exigem.
 (function () {
   // URL do app da web publicado (Implantar → Nova implantação → App da Web). Ver apps-script/README.md.
   const PORTAL_API_URL = 'https://script.google.com/macros/s/AKfycbzm7jfTcrQYbZRUAayT2nwwmTYKe8IwToXx9actxNs5Gso4r2_kdz5x1lYWQCKbdAU52g/exec';
