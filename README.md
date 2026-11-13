@@ -1,6 +1,6 @@
 # 🎓 Portal de Inscrições FAMETRO
 
-Portal de inscriptions para processos seletivos, cursos técnicos e vestibulares da FAMETRO.
+Portal de inscrições para processos seletivos, cursos técnicos e vestibulares da FAMETRO.
 
 ## 🔗 Links
 
